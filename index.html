@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录系统 - agai.online</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 380px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+      font-size: 28px;
+    }
+    .input-group { margin-bottom: 20px; }
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+    input:focus { outline: none; border-color: #667eea; }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    #message { margin-top: 15px; text-align: center; min-height: 24px; color: #e74c3c; }
+    #message.success { color: #27ae60; }
+    .info { 
+      margin-top: 20px; 
+      text-align: center; 
+      color: #888; 
+      font-size: 14px; 
+    }
+    .register-link {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+    .register-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>🔐 智能考勤系统</h2>
+    <div class="input-group">
+      <input type="text" id="username" placeholder="学号" autocomplete="off">
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="密码">
+    </div>
+    <button id="loginBtn" onclick="login()">登 录</button>
+    <div id="message"></div>
+    <div class="register-link">
+      还没有账号？<a href="#" onclick="showRegister()">立即注册</a>
+    </div>
+    <div class="info">AG工作室 · 智能考勤系统</div>
+  </div>
+
+  <script>
+    // ✅ API 地址配置
+    const API_BASE = 'https://login-production-f825.up.railway.app/api';
+    
+    // 登录函数
+    async function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const btn = document.getElementById("loginBtn");
+      const msg = document.getElementById("message");
+      
+      if (!username || !password) {
+        msg.textContent = "❌ 请输入学号和密码";
+        msg.className = "";
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = "登录中...";
+      msg.textContent = "正在连接服务器...";
+      msg.className = "";
+      
+      try {
+        const response = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            studentId: username, 
+            password: password 
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          msg.textContent = "✅ 登录成功！正在跳转...";
+          msg.className = "success";
+          
+          // 保存登录信息
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          
+          // 跳转到控制面板
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 800);
+        } else {
+          msg.textContent = "❌ " + (data.message || "学号或密码错误");
+          msg.className = "";
+        }
+      } catch (error) {
+        console.error("登录错误:", error);
+        msg.textContent = "❌ 网络错误，请检查后端服务";
+        msg.className = "";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "登 录";
+      }
+    }
+    
+    // 显示注册表单（简化版）
+    function showRegister() {
+      const msg = document.getElementById("message");
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const btn = document.getElementById("loginBtn");
+      
+      // 检查是否已经显示注册表单
+      if (btn.textContent === "注 册") {
+        // 切换回登录模式
+        btn.textContent = "登 录";
+        btn.onclick = login;
+        usernameInput.placeholder = "学号";
+        document.querySelector("h2").textContent = "🔐 智能考勤系统";
+        document.querySelector(".register-link").innerHTML = '还没有账号？<a href="#" onclick="showRegister()">立即注册</a>';
+        msg.textContent = "";
+        return;
+      }
+      
+      // 切换到注册模式
+      btn.textContent = "注 册";
+      btn.onclick = register;
+      usernameInput.placeholder = "学号";
+      document.querySelector("h2").textContent = "📝 注册账号";
+      document.querySelector(".register-link").innerHTML = '已有账号？<a href="#" onclick="showRegister()">去登录</a>';
+      msg.textContent = "";
+      
+      // 动态添加姓名字段
+      const loginBox = document.querySelector(".login-box");
+      const passwordGroup = document.querySelector(".input-group:last-of-type");
+      
+      // 检查是否已添加姓名字段
+      if (!document.getElementById("name")) {
+        const nameGroup = document.createElement("div");
+        nameGroup.className = "input-group";
+        nameGroup.innerHTML = '<input type="text" id="name" placeholder="姓名" autocomplete="off">';
+        loginBox.insertBefore(nameGroup, passwordGroup);
+      }
+      
+      // 动态添加考勤密码字段
+      if (!document.getElementById("attendancePassword")) {
+        const attendanceGroup = document.createElement("div");
+        attendanceGroup.className = "input-group";
+        attendanceGroup.innerHTML = '<input type="password" id="attendancePassword" placeholder="考勤系统密码（可选）" value="Ahgydx@920">';
+        loginBox.insertBefore(attendanceGroup, passwordGroup.nextSibling);
+      }
+    }
+    
+    // 注册函数
+    async function register() {
+      const studentId = document.getElementById("username").value;
+      const name = document.getElementById("name")?.value || "";
+      const attendancePassword = document.getElementById("attendancePassword")?.value || "Ahgydx@920";
+      const password = document.getElementById("password").value;
+      const btn = document.getElementById("loginBtn");
+      const msg = document.getElementById("message");
+      
+      if (!studentId || !password || !name) {
+        msg.textContent = "❌ 请填写学号、姓名和密码";
+        msg.className = "";
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = "注册中...";
+      msg.textContent = "正在提交...";
+      msg.className = "";
+      
+      try {
+        const response = await fetch(`${API_BASE}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            studentId, 
+            password, 
+            name,
+            attendancePassword 
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          msg.textContent = "✅ 注册成功！正在登录...";
+          msg.className = "success";
+          
+          // 保存登录信息
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          
+          // 跳转到控制面板
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 800);
+        } else {
+          msg.textContent = "❌ " + (data.message || "注册失败");
+          msg.className = "";
+        }
+      } catch (error) {
+        console.error("注册错误:", error);
+        msg.textContent = "❌ 网络错误，请重试";
+        msg.className = "";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "注 册";
+      }
+    }
+    
+    // 回车登录/注册
+    document.getElementById("password").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const btn = document.getElementById("loginBtn");
+        if (btn.textContent === "登 录") {
+          login();
+        } else {
+          register();
+        }
+      }
+    });
+    
+    // 页面加载时检查是否已登录
+    (function checkLoginStatus() {
+      const token = localStorage.getItem("token");
+      if (token) {
+        // 验证 token 是否有效
+        fetch(`${API_BASE}/user/profile`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/dashboard';
+          } else {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
