@@ -507,22 +507,42 @@
     
     if (!token) window.location.href = '/';
     
-    async function checkAdmin() {
-      try {
-        const res = await fetch(`${API_BASE}/user/profile`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (!data.success || data.user.role !== 'admin') {
-          alert('需要管理员权限');
-          window.location.href = '/dashboard';
-          return;
-        }
-        document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
-      } catch (e) {
-        window.location.href = '/';
-      }
+async function checkAdmin() {
+  console.log('🔍 开始检查管理员权限...');
+  console.log('Token:', token ? token.substring(0, 50) + '...' : '无');
+  
+  try {
+    const res = await fetch(`${API_BASE}/user/profile`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    console.log('📡 API 响应状态:', res.status);
+    
+    const data = await res.json();
+    console.log('📋 API 返回数据:', data);
+    console.log('👤 用户角色:', data.user?.role);
+    
+    if (!data.success) {
+      console.error('❌ API 返回 success: false');
+      alert('API 返回失败: ' + (data.message || '未知错误'));
+      return;
     }
+    
+    if (data.user.role !== 'admin') {
+      console.error('❌ 用户不是管理员，角色为:', data.user.role);
+      alert('需要管理员权限，当前角色: ' + data.user.role);
+      window.location.href = '/dashboard';
+      return;
+    }
+    
+    console.log('✅ 管理员权限验证通过');
+    document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
+  } catch (e) {
+    console.error('❌ 请求异常:', e);
+    alert('网络错误: ' + e.message);
+    // window.location.href = '/';
+  }
+}
     
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
