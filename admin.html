@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>管理后台 · AG智能考勤</title>
+  <title>管理后台 · 智能考勤</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -285,6 +285,7 @@
     
     .toast.success { background: #28a745; }
     .toast.error { background: #dc3545; }
+    .toast.info { background: #17a2b8; }
     
     .action-buttons {
       display: flex;
@@ -298,7 +299,7 @@
     <!-- 侧边栏 -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.0</h2>
+        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.1</h2>
       </div>
       <div class="sidebar-menu">
         <div class="menu-item active" data-page="dashboard">
@@ -507,42 +508,44 @@
     
     if (!token) window.location.href = '/';
     
-async function checkAdmin() {
-  console.log('🔍 开始检查管理员权限...');
-  console.log('Token:', token ? token.substring(0, 50) + '...' : '无');
-  
-  try {
-    const res = await fetch(`${API_BASE}/user/profile`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    // 调试模式
+    const DEBUG = true;
     
-    console.log('📡 API 响应状态:', res.status);
-    
-    const data = await res.json();
-    console.log('📋 API 返回数据:', data);
-    console.log('👤 用户角色:', data.user?.role);
-    
-    if (!data.success) {
-      console.error('❌ API 返回 success: false');
-      alert('API 返回失败: ' + (data.message || '未知错误'));
-      return;
+    async function checkAdmin() {
+      if (DEBUG) console.log('🔍 开始检查管理员权限...');
+      if (DEBUG) console.log('Token:', token ? token.substring(0, 50) + '...' : '无');
+      
+      try {
+        const res = await fetch(`${API_BASE}/user/profile`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (DEBUG) console.log('📡 API 响应状态:', res.status);
+        
+        const data = await res.json();
+        if (DEBUG) console.log('📋 API 返回数据:', data);
+        if (DEBUG) console.log('👤 用户角色:', data.user?.role);
+        
+        if (!data.success) {
+          console.error('❌ API 返回 success: false');
+          alert('API 返回失败: ' + (data.message || '未知错误'));
+          return;
+        }
+        
+        if (data.user.role !== 'admin') {
+          console.error('❌ 用户不是管理员，角色为:', data.user.role);
+          alert('需要管理员权限，当前角色: ' + data.user.role);
+          window.location.href = '/dashboard';
+          return;
+        }
+        
+        console.log('✅ 管理员权限验证通过');
+        document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
+      } catch (e) {
+        console.error('❌ 请求异常:', e);
+        alert('网络错误: ' + e.message);
+      }
     }
-    
-    if (data.user.role !== 'admin') {
-      console.error('❌ 用户不是管理员，角色为:', data.user.role);
-      alert('需要管理员权限，当前角色: ' + data.user.role);
-      window.location.href = '/dashboard';
-      return;
-    }
-    
-    console.log('✅ 管理员权限验证通过');
-    document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
-  } catch (e) {
-    console.error('❌ 请求异常:', e);
-    alert('网络错误: ' + e.message);
-    // window.location.href = '/';
-  }
-}
     
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
@@ -636,13 +639,16 @@ async function checkAdmin() {
                     <td>${u.successSignCount || 0}/${u.totalSignCount || 0}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')">
+                        <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')" title="查看详情">
                           <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)">
+                        <button class="btn btn-success btn-sm" onclick="adminSign('${u._id}', '${u.studentId}')" title="帮TA签到">
+                          <i class="fas fa-pen"></i>
+                        </button>
+                        <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)" title="加30天VIP">
                           <i class="fas fa-crown"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')">
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')" title="删除用户">
                           <i class="fas fa-trash"></i>
                         </button>
                       </div>
@@ -665,6 +671,48 @@ async function checkAdmin() {
     }
     
     function searchUsers() { loadUsers(1); }
+    
+    // 管理员代签
+    async function adminSign(userId, studentId) {
+      const password = prompt(`请输入 ${studentId} 的考勤密码（留空使用已保存的密码）:`);
+      
+      try {
+        showToast(`正在为 ${studentId} 签到...`, 'info');
+        
+        const res = await fetch(`${API_BASE}/admin/sign/${userId}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            attendancePassword: password || undefined 
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          if (data.result.success) {
+            showToast(`✅ 为 ${studentId} 签到成功！`, 'success');
+          } else {
+            showToast(`❌ 签到失败: ${data.result.message}`, 'error');
+          }
+          loadUsers(currentPage);
+          loadDashboardStats();
+        } else {
+          showToast(data.message || '签到失败', 'error');
+        }
+      } catch (e) {
+        showToast('网络错误', 'error');
+      }
+    }
+    
+    // 从详情弹窗代签
+    async function adminSignFromDetail(userId, studentId) {
+      closeUserModal();
+      await adminSign(userId, studentId);
+    }
     
     async function viewUser(userId) {
       currentUserId = userId;
@@ -726,9 +774,12 @@ async function checkAdmin() {
                 </select>
               </div>
             </div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
               <button class="btn btn-primary" onclick="saveUserChanges()">
                 <i class="fas fa-save"></i> 保存修改
+              </button>
+              <button class="btn btn-success" onclick="adminSignFromDetail('${user._id}', '${user.studentId}')">
+                <i class="fas fa-pen"></i> 帮 TA 签到
               </button>
               <button class="btn btn-warning" onclick="addVipDays(30)">
                 <i class="fas fa-crown"></i> +30天VIP
@@ -754,6 +805,7 @@ async function checkAdmin() {
               <span>${l.status === 'success' ? '✅' : '❌'}</span>
               <strong style="margin-left: 10px;">${l.subscriptionName}</strong>
               <span style="margin-left: 10px; color: #888;">${new Date(l.executedAt).toLocaleString()}</span>
+              <span style="margin-left: 10px; font-size: 13px;">${l.message || ''}</span>
             </div>
           `).join('') : '<p>暂无记录</p>';
           
@@ -856,23 +908,26 @@ async function checkAdmin() {
     
     async function deleteUser(userId, studentId) {
       if (!confirm(`确定删除用户 ${studentId} 吗？此操作不可恢复！`)) return;
-      if (!confirm('再次确认：删除后将无法恢复！')) return;
+      if (!confirm('再次确认：删除后将清除该用户的所有数据！')) return;
       
       try {
         const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
+        
         const data = await res.json();
+        
         if (data.success) {
-          showToast('用户已删除', 'success');
+          showToast(`✅ 用户 ${studentId} 已删除`, 'success');
           closeUserModal();
           loadUsers(currentPage);
+          loadDashboardStats();
         } else {
-          showToast(data.message || '删除失败', 'error');
+          showToast(`❌ ${data.message || '删除失败'}`, 'error');
         }
       } catch (e) {
-        showToast('删除失败', 'error');
+        showToast('网络错误', 'error');
       }
     }
     
