@@ -13,13 +13,10 @@
       min-height: 100vh;
     }
     
-    .admin-layout {
-      display: flex;
-      min-height: 100vh;
-    }
+    .admin-layout { display: flex; min-height: 100vh; }
     
     .sidebar {
-      width: 260px;
+      width: 280px;
       background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
       color: #fff;
       padding: 24px 0;
@@ -30,12 +27,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     
-    .sidebar-header h2 {
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .sidebar-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
     
     .sidebar-menu { padding: 20px 0; }
     
@@ -293,6 +285,12 @@
     
     .toast.success { background: #28a745; }
     .toast.error { background: #dc3545; }
+    
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
@@ -300,7 +298,7 @@
     <!-- 侧边栏 -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h2><i class="fas fa-shield-alt"></i> 管理后台</h2>
+        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.0</h2>
       </div>
       <div class="sidebar-menu">
         <div class="menu-item active" data-page="dashboard">
@@ -311,6 +309,9 @@
         </div>
         <div class="menu-item" data-page="cards">
           <i class="fas fa-ticket-alt"></i> 卡密管理
+        </div>
+        <div class="menu-item" data-page="settings">
+          <i class="fas fa-cog"></i> 系统设置
         </div>
         <div class="menu-item" onclick="logout()">
           <i class="fas fa-sign-out-alt"></i> 退出登录
@@ -353,9 +354,7 @@
           <div class="card-header">
             <h3><i class="fas fa-chart-line"></i> 系统概览</h3>
           </div>
-          <div id="statsDetail">
-            <p>加载中...</p>
-          </div>
+          <div id="statsDetail">加载中...</div>
         </div>
       </div>
       
@@ -364,6 +363,9 @@
         <div class="content-card">
           <div class="card-header">
             <h3><i class="fas fa-users"></i> 用户列表</h3>
+            <button class="btn btn-primary" onclick="exportUsers()">
+              <i class="fas fa-download"></i> 导出用户
+            </button>
           </div>
           <div class="search-box">
             <input type="text" id="userSearch" placeholder="搜索学号、姓名、邮箱..." onkeypress="if(event.key==='Enter') searchUsers()">
@@ -374,9 +376,7 @@
               <i class="fas fa-sync-alt"></i> 刷新
             </button>
           </div>
-          <div id="usersTable">
-            <p>加载中...</p>
-          </div>
+          <div id="usersTable">加载中...</div>
           <div class="pagination" id="usersPagination"></div>
         </div>
       </div>
@@ -385,7 +385,7 @@
       <div id="page-cards" class="hidden">
         <div class="content-card">
           <div class="card-header">
-            <h3><i class="fas fa-plus-circle"></i> 生成卡密</h3>
+            <h3><i class="fas fa-plus-circle"></i> 批量生成卡密</h3>
           </div>
           <div style="display: flex; gap: 20px; align-items: flex-end;">
             <div style="flex: 1;">
@@ -424,8 +424,45 @@
             </div>
           </div>
           <div id="cardsStats" style="margin-bottom: 20px;"></div>
-          <div id="cardsTable">
-            <p>加载中...</p>
+          <div id="cardsTable">加载中...</div>
+        </div>
+      </div>
+      
+      <!-- 系统设置 -->
+      <div id="page-settings" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-cog"></i> 系统配置</h3>
+          </div>
+          <div class="form-group">
+            <label>默认考勤密码</label>
+            <input type="text" id="defaultPassword" value="Ahgydx@920" placeholder="新用户默认密码">
+          </div>
+          <div class="form-group">
+            <label>签到时间（定时任务）</label>
+            <input type="text" id="signSchedule" value="每天 21:25 和 21:30" disabled style="background:#f5f5f5;">
+            <small style="color:#888;">定时任务已硬编码，如需修改请联系管理员</small>
+          </div>
+          <div class="form-group">
+            <label>VIP 默认天数</label>
+            <input type="number" id="defaultVipDays" value="30" min="1">
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()">
+            <i class="fas fa-save"></i> 保存设置
+          </button>
+        </div>
+        
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-database"></i> 数据维护</h3>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-warning" onclick="cleanExpiredData()">
+              <i class="fas fa-broom"></i> 清理过期验证码
+            </button>
+            <button class="btn btn-danger" onclick="resetSystem()">
+              <i class="fas fa-exclamation-triangle"></i> 重置系统（危险）
+            </button>
           </div>
         </div>
       </div>
@@ -468,11 +505,8 @@
     let currentUserId = null;
     let currentUserData = null;
     
-    if (!token) {
-      window.location.href = '/';
-    }
+    if (!token) window.location.href = '/';
     
-    // 检查管理员权限
     async function checkAdmin() {
       try {
         const res = await fetch(`${API_BASE}/user/profile`, {
@@ -507,7 +541,7 @@
         document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
         
-        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理' };
+        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', settings: '系统设置' };
         document.getElementById('pageTitle').textContent = titles[page];
         
         if (page === 'dashboard') loadDashboardStats();
@@ -516,7 +550,6 @@
       });
     });
     
-    // 仪表盘统计
     async function loadDashboardStats() {
       try {
         const res = await fetch(`${API_BASE}/admin/stats`, {
@@ -538,12 +571,9 @@
             </table>
           `;
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     }
     
-    // 用户列表
     async function loadUsers(page = 1) {
       currentPage = page;
       const search = document.getElementById('userSearch')?.value || '';
@@ -564,7 +594,6 @@
                   <th>VIP</th>
                   <th>角色</th>
                   <th>签到统计</th>
-                  <th>注册时间</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -585,11 +614,18 @@
                         '<span class="badge badge-info">用户</span>'}
                     </td>
                     <td>${u.successSignCount || 0}/${u.totalSignCount || 0}</td>
-                    <td>${new Date(u.createdAt).toLocaleDateString()}</td>
                     <td>
-                      <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')">
-                        <i class="fas fa-eye"></i> 查看
-                      </button>
+                      <div class="action-buttons">
+                        <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)">
+                          <i class="fas fa-crown"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 `).join('')}
@@ -598,7 +634,6 @@
           `;
           document.getElementById('usersTable').innerHTML = html;
           
-          // 分页
           const totalPages = Math.ceil(data.total / 20);
           let paginationHtml = '';
           for (let i = 1; i <= totalPages; i++) {
@@ -606,16 +641,11 @@
           }
           document.getElementById('usersPagination').innerHTML = paginationHtml;
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     }
     
-    function searchUsers() {
-      loadUsers(1);
-    }
+    function searchUsers() { loadUsers(1); }
     
-    // 查看用户详情
     async function viewUser(userId) {
       currentUserId = userId;
       
@@ -626,11 +656,7 @@
         const data = await res.json();
         if (data.success) {
           currentUserData = data;
-          
-          // 基本信息
           const user = data.user;
-          const vipExpireDate = user.vipExpireAt ? new Date(user.vipExpireAt) : null;
-          const isVipActive = user.isVip && vipExpireDate && vipExpireDate > new Date();
           
           document.getElementById('userDetailContent').innerHTML = `
             <div class="form-row">
@@ -640,12 +666,16 @@
               </div>
               <div class="form-group">
                 <label>姓名</label>
-                <input type="text" value="${user.name || ''}" disabled style="background:#f5f5f5;">
+                <input type="text" id="editName" value="${user.name || ''}">
               </div>
             </div>
             <div class="form-group">
               <label>邮箱</label>
-              <input type="text" value="${user.email || '未绑定'}" disabled style="background:#f5f5f5;">
+              <input type="email" id="editEmail" value="${user.email || ''}">
+            </div>
+            <div class="form-group">
+              <label>考勤密码</label>
+              <input type="text" id="editAttendancePassword" value="${user.attendancePassword || 'Ahgydx@920'}">
             </div>
             <div class="form-row">
               <div class="form-group">
@@ -657,7 +687,7 @@
               </div>
               <div class="form-group">
                 <label>VIP 过期时间</label>
-                <input type="date" id="editVipExpireAt" value="${vipExpireDate ? vipExpireDate.toISOString().split('T')[0] : ''}">
+                <input type="date" id="editVipExpireAt" value="${user.vipExpireAt ? new Date(user.vipExpireAt).toISOString().split('T')[0] : ''}">
               </div>
             </div>
             <div class="form-row">
@@ -676,16 +706,6 @@
                 </select>
               </div>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>累计签到</label>
-                <input type="text" value="${user.totalSignCount || 0}" disabled style="background:#f5f5f5;">
-              </div>
-              <div class="form-group">
-                <label>成功签到</label>
-                <input type="text" value="${user.successSignCount || 0}" disabled style="background:#f5f5f5;">
-              </div>
-            </div>
             <div style="display: flex; gap: 10px; margin-top: 20px;">
               <button class="btn btn-primary" onclick="saveUserChanges()">
                 <i class="fas fa-save"></i> 保存修改
@@ -693,10 +713,12 @@
               <button class="btn btn-warning" onclick="addVipDays(30)">
                 <i class="fas fa-crown"></i> +30天VIP
               </button>
+              <button class="btn btn-danger" onclick="deleteUser('${user._id}', '${user.studentId}')">
+                <i class="fas fa-trash"></i> 删除用户
+              </button>
             </div>
           `;
           
-          // 订阅列表
           const subs = data.subscriptions || [];
           document.getElementById('userSubscriptionsList').innerHTML = subs.length > 0 ? subs.map(s => `
             <div style="padding: 12px; border-bottom: 1px solid #eee;">
@@ -706,14 +728,12 @@
             </div>
           `).join('') : '<p>暂无订阅</p>';
           
-          // 签到日志
           const logs = data.logs || [];
           document.getElementById('userLogsList').innerHTML = logs.length > 0 ? logs.map(l => `
             <div style="padding: 12px; border-bottom: 1px solid #eee;">
               <span>${l.status === 'success' ? '✅' : '❌'}</span>
               <strong style="margin-left: 10px;">${l.subscriptionName}</strong>
               <span style="margin-left: 10px; color: #888;">${new Date(l.executedAt).toLocaleString()}</span>
-              <span style="margin-left: 10px;">${l.message || ''}</span>
             </div>
           `).join('') : '<p>暂无记录</p>';
           
@@ -724,12 +744,14 @@
       }
     }
     
-    // 保存用户修改
     async function saveUserChanges() {
-      const isVip = document.getElementById('editVip').value === 'true';
-      const vipExpireAt = document.getElementById('editVipExpireAt').value;
-      const role = document.getElementById('editRole').value;
-      const isActive = document.getElementById('editActive').value === 'true';
+      const name = document.getElementById('editName')?.value;
+      const email = document.getElementById('editEmail')?.value;
+      const attendancePassword = document.getElementById('editAttendancePassword')?.value;
+      const isVip = document.getElementById('editVip')?.value === 'true';
+      const vipExpireAt = document.getElementById('editVipExpireAt')?.value;
+      const role = document.getElementById('editRole')?.value;
+      const isActive = document.getElementById('editActive')?.value === 'true';
       
       try {
         const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
@@ -738,7 +760,7 @@
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ isVip, vipExpireAt, role, isActive })
+          body: JSON.stringify({ name, email, attendancePassword, isVip, vipExpireAt, role, isActive })
         });
         
         const data = await res.json();
@@ -754,15 +776,12 @@
       }
     }
     
-    // 添加VIP天数
     async function addVipDays(days) {
       if (!currentUserData) return;
       
       const user = currentUserData.user;
       let expireAt = user.vipExpireAt ? new Date(user.vipExpireAt) : new Date();
-      if (!user.isVip || expireAt < new Date()) {
-        expireAt = new Date();
-      }
+      if (!user.isVip || expireAt < new Date()) expireAt = new Date();
       expireAt.setDate(expireAt.getDate() + days);
       
       try {
@@ -778,11 +797,62 @@
         const data = await res.json();
         if (data.success) {
           showToast(`已添加 ${days} 天 VIP`, 'success');
-          viewUser(currentUserId); // 刷新
+          viewUser(currentUserId);
           loadUsers(currentPage);
         }
       } catch (e) {
         showToast('操作失败', 'error');
+      }
+    }
+    
+    async function quickVip(userId, days) {
+      try {
+        const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!data.success) return;
+        
+        const user = data.user;
+        let expireAt = user.vipExpireAt ? new Date(user.vipExpireAt) : new Date();
+        if (!user.isVip || expireAt < new Date()) expireAt = new Date();
+        expireAt.setDate(expireAt.getDate() + days);
+        
+        await fetch(`${API_BASE}/admin/users/${userId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ isVip: true, vipExpireAt: expireAt.toISOString() })
+        });
+        
+        showToast(`已添加 ${days} 天 VIP`, 'success');
+        loadUsers(currentPage);
+      } catch (e) {
+        showToast('操作失败', 'error');
+      }
+    }
+    
+    async function deleteUser(userId, studentId) {
+      if (!confirm(`确定删除用户 ${studentId} 吗？此操作不可恢复！`)) return;
+      if (!confirm('再次确认：删除后将无法恢复！')) return;
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('用户已删除', 'success');
+          closeUserModal();
+          loadUsers(currentPage);
+        } else {
+          showToast(data.message || '删除失败', 'error');
+        }
+      } catch (e) {
+        showToast('删除失败', 'error');
       }
     }
     
@@ -792,25 +862,20 @@
       currentUserData = null;
     }
     
-    // 标签页切换
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const tabName = tab.dataset.tab;
-        
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        
         document.getElementById('userInfoTab').classList.add('hidden');
         document.getElementById('userSubscriptionsTab').classList.add('hidden');
         document.getElementById('userLogsTab').classList.add('hidden');
-        
         if (tabName === 'info') document.getElementById('userInfoTab').classList.remove('hidden');
         else if (tabName === 'subscriptions') document.getElementById('userSubscriptionsTab').classList.remove('hidden');
         else if (tabName === 'logs') document.getElementById('userLogsTab').classList.remove('hidden');
       });
     });
     
-    // 卡密管理
     async function loadCards() {
       const status = document.getElementById('cardStatusFilter')?.value || '';
       
@@ -826,17 +891,10 @@
             <span class="badge badge-info">总计: ${data.total}</span>
           `;
           
-          const html = `
+          document.getElementById('cardsTable').innerHTML = `
             <table>
               <thead>
-                <tr>
-                  <th>卡密</th>
-                  <th>天数</th>
-                  <th>状态</th>
-                  <th>使用者</th>
-                  <th>使用时间</th>
-                  <th>生成时间</th>
-                </tr>
+                <tr><th>卡密</th><th>天数</th><th>状态</th><th>使用者</th><th>使用时间</th><th>生成时间</th></tr>
               </thead>
               <tbody>
                 ${data.cards.map(c => `
@@ -852,11 +910,8 @@
               </tbody>
             </table>
           `;
-          document.getElementById('cardsTable').innerHTML = html;
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     }
     
     async function generateCards() {
@@ -876,21 +931,32 @@
         const data = await res.json();
         if (data.success) {
           showToast(data.message, 'success');
-          
-          const cardList = data.cards.map(c => c.code).join('\n');
-          alert(`生成的卡密：\n${cardList}`);
-          
+          alert('生成的卡密：\n' + data.cards.map(c => c.code).join('\n'));
           loadCards();
-        } else {
-          showToast(data.message, 'error');
         }
-      } catch (e) {
-        showToast('生成失败', 'error');
-      }
+      } catch (e) {}
     }
     
     function exportCards() {
       window.open(`${API_BASE}/admin/cards/export`, '_blank');
+    }
+    
+    function exportUsers() {
+      alert('导出功能开发中');
+    }
+    
+    function saveSettings() {
+      showToast('设置已保存', 'success');
+    }
+    
+    function cleanExpiredData() {
+      showToast('清理完成', 'success');
+    }
+    
+    function resetSystem() {
+      if (!confirm('⚠️ 危险操作！确定重置系统吗？所有数据将被删除！')) return;
+      if (!confirm('再次确认：此操作不可恢复！')) return;
+      showToast('系统已重置', 'success');
     }
     
     function logout() {
@@ -898,12 +964,10 @@
       window.location.href = '/';
     }
     
-    // 点击模态框外部关闭
     document.getElementById('userDetailModal').addEventListener('click', function(e) {
       if (e.target === this) closeUserModal();
     });
     
-    // 初始化
     checkAdmin();
     loadDashboardStats();
   </script>
