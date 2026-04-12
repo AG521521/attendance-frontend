@@ -135,7 +135,10 @@
     
     .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
     .btn-success { background: #28a745; color: #fff; }
+    .btn-warning { background: #f39c12; color: #fff; }
+    .btn-danger { background: #dc3545; color: #fff; }
     .btn-outline { background: #fff; border: 1px solid #ddd; color: #666; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
     
     table {
       width: 100%;
@@ -166,6 +169,7 @@
     .badge-warning { background: #fff3cd; color: #856404; }
     .badge-danger { background: #f8d7da; color: #721c24; }
     .badge-info { background: #d1ecf1; color: #0c5460; }
+    .badge-admin { background: #667eea; color: #fff; }
     
     .search-box {
       display: flex;
@@ -179,6 +183,13 @@
       border: 2px solid #e0e0e0;
       border-radius: 10px;
       font-size: 14px;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
     }
     
     .modal {
@@ -198,9 +209,72 @@
       border-radius: 24px;
       padding: 32px;
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       max-height: 90vh;
       overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .modal-close {
+      font-size: 28px;
+      cursor: pointer;
+      color: #aaa;
+    }
+    
+    .form-group {
+      margin-bottom: 18px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #f5f7fb;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #888;
+    }
+    
+    .tab.active {
+      background: #fff;
+      color: #667eea;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     
     .hidden { display: none !important; }
@@ -254,7 +328,7 @@
         </div>
       </div>
       
-      <!-- 仪表盘页面 -->
+      <!-- 仪表盘 -->
       <div id="page-dashboard">
         <div class="stats-grid">
           <div class="stat-card">
@@ -285,25 +359,29 @@
         </div>
       </div>
       
-      <!-- 用户管理页面 -->
+      <!-- 用户管理 -->
       <div id="page-users" class="hidden">
         <div class="content-card">
           <div class="card-header">
             <h3><i class="fas fa-users"></i> 用户列表</h3>
           </div>
           <div class="search-box">
-            <input type="text" id="userSearch" placeholder="搜索学号、姓名、邮箱...">
+            <input type="text" id="userSearch" placeholder="搜索学号、姓名、邮箱..." onkeypress="if(event.key==='Enter') searchUsers()">
             <button class="btn btn-primary" onclick="searchUsers()">
               <i class="fas fa-search"></i> 搜索
+            </button>
+            <button class="btn btn-outline" onclick="loadUsers()">
+              <i class="fas fa-sync-alt"></i> 刷新
             </button>
           </div>
           <div id="usersTable">
             <p>加载中...</p>
           </div>
+          <div class="pagination" id="usersPagination"></div>
         </div>
       </div>
       
-      <!-- 卡密管理页面 -->
+      <!-- 卡密管理 -->
       <div id="page-cards" class="hidden">
         <div class="content-card">
           <div class="card-header">
@@ -332,6 +410,11 @@
           <div class="card-header">
             <h3><i class="fas fa-list"></i> 卡密列表</h3>
             <div>
+              <select id="cardStatusFilter" onchange="loadCards()" style="padding: 8px; border-radius: 8px; margin-right: 10px;">
+                <option value="">全部</option>
+                <option value="unused">未使用</option>
+                <option value="used">已使用</option>
+              </select>
               <button class="btn btn-outline" onclick="exportCards()">
                 <i class="fas fa-download"></i> 导出未使用
               </button>
@@ -352,12 +435,25 @@
   <!-- 用户详情弹窗 -->
   <div class="modal" id="userDetailModal">
     <div class="modal-content">
-      <div class="card-header">
+      <div class="modal-header">
         <h3>用户详情</h3>
-        <span style="cursor: pointer; font-size: 24px;" onclick="closeUserModal()">&times;</span>
+        <span class="modal-close" onclick="closeUserModal()">&times;</span>
       </div>
-      <div id="userDetail">
-        加载中...
+      
+      <div class="tabs">
+        <div class="tab active" data-tab="info">基本信息</div>
+        <div class="tab" data-tab="subscriptions">订阅列表</div>
+        <div class="tab" data-tab="logs">签到记录</div>
+      </div>
+      
+      <div id="userInfoTab">
+        <div id="userDetailContent">加载中...</div>
+      </div>
+      <div id="userSubscriptionsTab" class="hidden">
+        <div id="userSubscriptionsList">加载中...</div>
+      </div>
+      <div id="userLogsTab" class="hidden">
+        <div id="userLogsList">加载中...</div>
       </div>
     </div>
   </div>
@@ -367,6 +463,10 @@
   <script>
     const API_BASE = 'https://api.agai.online/api';
     const token = localStorage.getItem('token');
+    
+    let currentPage = 1;
+    let currentUserId = null;
+    let currentUserData = null;
     
     if (!token) {
       window.location.href = '/';
@@ -382,6 +482,7 @@
         if (!data.success || data.user.role !== 'admin') {
           alert('需要管理员权限');
           window.location.href = '/dashboard';
+          return;
         }
         document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
       } catch (e) {
@@ -415,7 +516,7 @@
       });
     });
     
-    // 加载仪表盘统计
+    // 仪表盘统计
     async function loadDashboardStats() {
       try {
         const res = await fetch(`${API_BASE}/admin/stats`, {
@@ -442,10 +543,13 @@
       }
     }
     
-    // 加载用户列表
-    async function loadUsers(page = 1, search = '') {
+    // 用户列表
+    async function loadUsers(page = 1) {
+      currentPage = page;
+      const search = document.getElementById('userSearch')?.value || '';
+      
       try {
-        const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${search}`, {
+        const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -459,6 +563,7 @@
                   <th>邮箱</th>
                   <th>VIP</th>
                   <th>角色</th>
+                  <th>签到统计</th>
                   <th>注册时间</th>
                   <th>操作</th>
                 </tr>
@@ -468,17 +573,38 @@
                   <tr>
                     <td>${u.studentId}</td>
                     <td>${u.name || '-'}</td>
-                    <td>${u.email || '-'}</td>
-                    <td><span class="badge ${u.isVip ? 'badge-success' : 'badge-danger'}">${u.isVip ? 'VIP' : '普通'}</span></td>
-                    <td><span class="badge badge-info">${u.role || 'user'}</span></td>
+                    <td>${u.email || '-'} ${u.emailVerified ? '✓' : ''}</td>
+                    <td>
+                      ${u.isVip ? 
+                        `<span class="badge badge-success">VIP ${u.vipExpireAt ? new Date(u.vipExpireAt).toLocaleDateString() : ''}</span>` : 
+                        '<span class="badge badge-danger">普通</span>'}
+                    </td>
+                    <td>
+                      ${u.role === 'admin' ? 
+                        '<span class="badge badge-admin">管理员</span>' : 
+                        '<span class="badge badge-info">用户</span>'}
+                    </td>
+                    <td>${u.successSignCount || 0}/${u.totalSignCount || 0}</td>
                     <td>${new Date(u.createdAt).toLocaleDateString()}</td>
-                    <td><button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')">查看</button></td>
+                    <td>
+                      <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')">
+                        <i class="fas fa-eye"></i> 查看
+                      </button>
+                    </td>
                   </tr>
                 `).join('')}
               </tbody>
             </table>
           `;
           document.getElementById('usersTable').innerHTML = html;
+          
+          // 分页
+          const totalPages = Math.ceil(data.total / 20);
+          let paginationHtml = '';
+          for (let i = 1; i <= totalPages; i++) {
+            paginationHtml += `<button class="btn ${i === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadUsers(${i})">${i}</button>`;
+          }
+          document.getElementById('usersPagination').innerHTML = paginationHtml;
         }
       } catch (e) {
         console.error(e);
@@ -486,14 +612,210 @@
     }
     
     function searchUsers() {
-      const search = document.getElementById('userSearch').value;
-      loadUsers(1, search);
+      loadUsers(1);
     }
     
-    // 加载卡密列表
-    async function loadCards() {
+    // 查看用户详情
+    async function viewUser(userId) {
+      currentUserId = userId;
+      
       try {
-        const res = await fetch(`${API_BASE}/admin/cards?limit=100`, {
+        const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          currentUserData = data;
+          
+          // 基本信息
+          const user = data.user;
+          const vipExpireDate = user.vipExpireAt ? new Date(user.vipExpireAt) : null;
+          const isVipActive = user.isVip && vipExpireDate && vipExpireDate > new Date();
+          
+          document.getElementById('userDetailContent').innerHTML = `
+            <div class="form-row">
+              <div class="form-group">
+                <label>学号</label>
+                <input type="text" value="${user.studentId}" disabled style="background:#f5f5f5;">
+              </div>
+              <div class="form-group">
+                <label>姓名</label>
+                <input type="text" value="${user.name || ''}" disabled style="background:#f5f5f5;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>邮箱</label>
+              <input type="text" value="${user.email || '未绑定'}" disabled style="background:#f5f5f5;">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>VIP 状态</label>
+                <select id="editVip">
+                  <option value="true" ${user.isVip ? 'selected' : ''}>是</option>
+                  <option value="false" ${!user.isVip ? 'selected' : ''}>否</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>VIP 过期时间</label>
+                <input type="date" id="editVipExpireAt" value="${vipExpireDate ? vipExpireDate.toISOString().split('T')[0] : ''}">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>角色</label>
+                <select id="editRole">
+                  <option value="user" ${user.role === 'user' ? 'selected' : ''}>普通用户</option>
+                  <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>管理员</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>账号状态</label>
+                <select id="editActive">
+                  <option value="true" ${user.isActive !== false ? 'selected' : ''}>启用</option>
+                  <option value="false" ${user.isActive === false ? 'selected' : ''}>禁用</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>累计签到</label>
+                <input type="text" value="${user.totalSignCount || 0}" disabled style="background:#f5f5f5;">
+              </div>
+              <div class="form-group">
+                <label>成功签到</label>
+                <input type="text" value="${user.successSignCount || 0}" disabled style="background:#f5f5f5;">
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+              <button class="btn btn-primary" onclick="saveUserChanges()">
+                <i class="fas fa-save"></i> 保存修改
+              </button>
+              <button class="btn btn-warning" onclick="addVipDays(30)">
+                <i class="fas fa-crown"></i> +30天VIP
+              </button>
+            </div>
+          `;
+          
+          // 订阅列表
+          const subs = data.subscriptions || [];
+          document.getElementById('userSubscriptionsList').innerHTML = subs.length > 0 ? subs.map(s => `
+            <div style="padding: 12px; border-bottom: 1px solid #eee;">
+              <strong>${s.name}</strong>
+              <span class="badge ${s.enabled ? 'badge-success' : 'badge-danger'}">${s.enabled ? '启用' : '禁用'}</span>
+              <span style="margin-left: 10px; color: #888;">${s.signTime}</span>
+            </div>
+          `).join('') : '<p>暂无订阅</p>';
+          
+          // 签到日志
+          const logs = data.logs || [];
+          document.getElementById('userLogsList').innerHTML = logs.length > 0 ? logs.map(l => `
+            <div style="padding: 12px; border-bottom: 1px solid #eee;">
+              <span>${l.status === 'success' ? '✅' : '❌'}</span>
+              <strong style="margin-left: 10px;">${l.subscriptionName}</strong>
+              <span style="margin-left: 10px; color: #888;">${new Date(l.executedAt).toLocaleString()}</span>
+              <span style="margin-left: 10px;">${l.message || ''}</span>
+            </div>
+          `).join('') : '<p>暂无记录</p>';
+          
+          document.getElementById('userDetailModal').classList.add('show');
+        }
+      } catch (e) {
+        showToast('加载失败', 'error');
+      }
+    }
+    
+    // 保存用户修改
+    async function saveUserChanges() {
+      const isVip = document.getElementById('editVip').value === 'true';
+      const vipExpireAt = document.getElementById('editVipExpireAt').value;
+      const role = document.getElementById('editRole').value;
+      const isActive = document.getElementById('editActive').value === 'true';
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ isVip, vipExpireAt, role, isActive })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          showToast('保存成功', 'success');
+          closeUserModal();
+          loadUsers(currentPage);
+        } else {
+          showToast(data.message || '保存失败', 'error');
+        }
+      } catch (e) {
+        showToast('保存失败', 'error');
+      }
+    }
+    
+    // 添加VIP天数
+    async function addVipDays(days) {
+      if (!currentUserData) return;
+      
+      const user = currentUserData.user;
+      let expireAt = user.vipExpireAt ? new Date(user.vipExpireAt) : new Date();
+      if (!user.isVip || expireAt < new Date()) {
+        expireAt = new Date();
+      }
+      expireAt.setDate(expireAt.getDate() + days);
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ isVip: true, vipExpireAt: expireAt.toISOString() })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          showToast(`已添加 ${days} 天 VIP`, 'success');
+          viewUser(currentUserId); // 刷新
+          loadUsers(currentPage);
+        }
+      } catch (e) {
+        showToast('操作失败', 'error');
+      }
+    }
+    
+    function closeUserModal() {
+      document.getElementById('userDetailModal').classList.remove('show');
+      currentUserId = null;
+      currentUserData = null;
+    }
+    
+    // 标签页切换
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        document.getElementById('userInfoTab').classList.add('hidden');
+        document.getElementById('userSubscriptionsTab').classList.add('hidden');
+        document.getElementById('userLogsTab').classList.add('hidden');
+        
+        if (tabName === 'info') document.getElementById('userInfoTab').classList.remove('hidden');
+        else if (tabName === 'subscriptions') document.getElementById('userSubscriptionsTab').classList.remove('hidden');
+        else if (tabName === 'logs') document.getElementById('userLogsTab').classList.remove('hidden');
+      });
+    });
+    
+    // 卡密管理
+    async function loadCards() {
+      const status = document.getElementById('cardStatusFilter')?.value || '';
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/cards?limit=100${status ? '&status=' + status : ''}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -537,7 +859,6 @@
       }
     }
     
-    // 生成卡密
     async function generateCards() {
       const count = parseInt(document.getElementById('cardCount').value);
       const days = parseInt(document.getElementById('cardDays').value);
@@ -556,7 +877,6 @@
         if (data.success) {
           showToast(data.message, 'success');
           
-          // 显示生成的卡密
           const cardList = data.cards.map(c => c.code).join('\n');
           alert(`生成的卡密：\n${cardList}`);
           
@@ -569,7 +889,6 @@
       }
     }
     
-    // 导出卡密
     function exportCards() {
       window.open(`${API_BASE}/admin/cards/export`, '_blank');
     }
@@ -578,6 +897,11 @@
       localStorage.clear();
       window.location.href = '/';
     }
+    
+    // 点击模态框外部关闭
+    document.getElementById('userDetailModal').addEventListener('click', function(e) {
+      if (e.target === this) closeUserModal();
+    });
     
     // 初始化
     checkAdmin();
