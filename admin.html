@@ -299,7 +299,7 @@
     <!-- 侧边栏 -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.1</h2>
+        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.2</h2>
       </div>
       <div class="sidebar-menu">
         <div class="menu-item active" data-page="dashboard">
@@ -310,6 +310,10 @@
         </div>
         <div class="menu-item" data-page="cards">
           <i class="fas fa-ticket-alt"></i> 卡密管理
+        </div>
+        <div class="menu-item" data-page="feedback">
+          <i class="fas fa-comment-dots"></i> 留言管理
+          <span id="feedbackBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
         </div>
         <div class="menu-item" data-page="settings">
           <i class="fas fa-cog"></i> 系统设置
@@ -429,6 +433,43 @@
         </div>
       </div>
       
+      <!-- 留言管理 -->
+      <div id="page-feedback" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-filter"></i> 筛选</h3>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <select id="feedbackStatusFilter" onchange="loadFeedbacks()" style="padding:10px; border-radius:8px;">
+              <option value="">全部状态</option>
+              <option value="pending">⏳ 待处理</option>
+              <option value="read">👀 已读</option>
+              <option value="replied">✅ 已回复</option>
+              <option value="closed">🔒 已关闭</option>
+            </select>
+            <select id="feedbackTypeFilter" onchange="loadFeedbacks()" style="padding:10px; border-radius:8px;">
+              <option value="">全部类型</option>
+              <option value="bug">🐛 问题反馈</option>
+              <option value="suggestion">💡 功能建议</option>
+              <option value="question">❓ 使用疑问</option>
+              <option value="other">📝 其他</option>
+            </select>
+            <button class="btn btn-outline" onclick="loadFeedbacks()">
+              <i class="fas fa-sync-alt"></i> 刷新
+            </button>
+          </div>
+        </div>
+        
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-comments"></i> 留言列表</h3>
+          </div>
+          <div id="feedbackStats" style="margin-bottom:20px;"></div>
+          <div id="feedbacksTable">加载中...</div>
+          <div class="pagination" id="feedbackPagination"></div>
+        </div>
+      </div>
+      
       <!-- 系统设置 -->
       <div id="page-settings" class="hidden">
         <div class="content-card">
@@ -540,6 +581,17 @@
     </div>
   </div>
   
+  <!-- 回复留言弹窗 -->
+  <div class="modal" id="replyModal">
+    <div class="modal-content" style="max-width:600px;">
+      <div class="modal-header">
+        <h3>回复留言</h3>
+        <span class="modal-close" onclick="closeReplyModal()">&times;</span>
+      </div>
+      <div id="replyModalContent">加载中...</div>
+    </div>
+  </div>
+  
   <div class="toast" id="toast"></div>
 
   <script>
@@ -549,6 +601,7 @@
     let currentPage = 1;
     let currentUserId = null;
     let currentUserData = null;
+    let feedbackCurrentPage = 1;
     
     if (!token) window.location.href = '/';
     
@@ -598,12 +651,13 @@
         document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
         
-        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', settings: '系统设置' };
+        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', feedback: '留言管理', settings: '系统设置' };
         document.getElementById('pageTitle').textContent = titles[page];
         
         if (page === 'dashboard') loadDashboardStats();
         else if (page === 'users') loadUsers();
         else if (page === 'cards') loadCards();
+        else if (page === 'feedback') loadFeedbacks();
         else if (page === 'settings') loadSettings();
       });
     });
@@ -1052,7 +1106,193 @@
       alert('导出功能开发中');
     }
     
-    // 加载设置
+    // ============ 留言管理功能 ============
+    async function loadFeedbacks(page = 1) {
+      feedbackCurrentPage = page;
+      const status = document.getElementById('feedbackStatusFilter')?.value || '';
+      const type = document.getElementById('feedbackTypeFilter')?.value || '';
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/feedback?page=${page}&status=${status}&type=${type}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          const badge = document.getElementById('feedbackBadge');
+          if (data.stats.pending > 0) {
+            badge.textContent = data.stats.pending;
+            badge.style.display = 'block';
+          } else {
+            badge.style.display = 'none';
+          }
+          
+          document.getElementById('feedbackStats').innerHTML = `
+            <span class="badge badge-warning">待处理: ${data.stats.pending}</span>
+            <span class="badge badge-info">已读: ${data.stats.read}</span>
+            <span class="badge badge-success">已回复: ${data.stats.replied}</span>
+            <span class="badge badge-danger">已关闭: ${data.stats.closed}</span>
+          `;
+          
+          const typeMap = { bug: '🐛', suggestion: '💡', question: '❓', other: '📝' };
+          const statusMap = {
+            pending: '<span class="badge badge-warning">待处理</span>',
+            read: '<span class="badge badge-info">已读</span>',
+            replied: '<span class="badge badge-success">已回复</span>',
+            closed: '<span class="badge badge-danger">已关闭</span>'
+          };
+          
+          document.getElementById('feedbacksTable').innerHTML = `
+            <table>
+              <thead>
+                <tr><th>类型</th><th>用户</th><th>标题</th><th>状态</th><th>提交时间</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                ${data.feedbacks.map(f => `
+                  <tr>
+                    <td>${typeMap[f.type] || '📝'}</td>
+                    <td>${f.userId?.name || f.userId?.studentId || '未知'}</td>
+                    <td>${f.title}</td>
+                    <td>${statusMap[f.status]}</td>
+                    <td>${new Date(f.createdAt).toLocaleString()}</td>
+                    <td>
+                      <div class="action-buttons">
+                        <button class="btn btn-outline btn-sm" onclick="viewFeedbackDetail('${f._id}')">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="openReplyModal('${f._id}')">
+                          <i class="fas fa-reply"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${f._id}')">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+          
+          const totalPages = Math.ceil(data.total / 20);
+          let paginationHtml = '';
+          for (let i = 1; i <= totalPages; i++) {
+            paginationHtml += `<button class="btn ${i === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadFeedbacks(${i})">${i}</button>`;
+          }
+          document.getElementById('feedbackPagination').innerHTML = paginationHtml;
+        }
+      } catch (e) {}
+    }
+    
+    async function viewFeedbackDetail(id) {
+      try {
+        const res = await fetch(`${API_BASE}/feedback/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          const f = data.feedback;
+          alert(`标题：${f.title}\n内容：${f.content}\n${f.adminReply ? '回复：' + f.adminReply : '暂无回复'}`);
+        }
+      } catch (e) {}
+    }
+    
+    async function openReplyModal(id) {
+      try {
+        const res = await fetch(`${API_BASE}/feedback/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          const f = data.feedback;
+          document.getElementById('replyModalContent').innerHTML = `
+            <p><strong>用户：</strong>${f.userId?.name || f.userId?.studentId}</p>
+            <p><strong>标题：</strong>${f.title}</p>
+            <div style="background:#f5f7fa; padding:12px; border-radius:8px; margin:15px 0;">
+              ${f.content.replace(/\n/g, '<br>')}
+            </div>
+            <div class="form-group">
+              <label>回复内容</label>
+              <textarea id="replyContent" rows="5" style="width:100%; padding:12px; border-radius:8px;">${f.adminReply || ''}</textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitReply('${f._id}')">
+              <i class="fas fa-paper-plane"></i> 提交回复
+            </button>
+            ${f.status === 'pending' ? `
+              <button class="btn btn-outline" onclick="markAsRead('${f._id}')" style="margin-left:10px;">
+                <i class="fas fa-check"></i> 标记为已读
+              </button>
+            ` : ''}
+          `;
+          document.getElementById('replyModal').classList.add('show');
+        }
+      } catch (e) {}
+    }
+    
+    async function submitReply(id) {
+      const reply = document.getElementById('replyContent').value.trim();
+      if (!reply) { alert('请输入回复内容'); return; }
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/feedback/${id}/reply`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ reply })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          showToast('回复成功', 'success');
+          closeReplyModal();
+          loadFeedbacks(feedbackCurrentPage);
+        } else {
+          showToast(data.message || '回复失败', 'error');
+        }
+      } catch (e) {
+        showToast('网络错误', 'error');
+      }
+    }
+    
+    async function markAsRead(id) {
+      try {
+        await fetch(`${API_BASE}/admin/feedback/${id}/status`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ status: 'read' })
+        });
+        closeReplyModal();
+        loadFeedbacks(feedbackCurrentPage);
+      } catch (e) {}
+    }
+    
+    async function deleteFeedback(id) {
+      if (!confirm('确定删除这条留言吗？')) return;
+      
+      try {
+        await fetch(`${API_BASE}/admin/feedback/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        showToast('删除成功', 'success');
+        loadFeedbacks(feedbackCurrentPage);
+      } catch (e) {
+        showToast('删除失败', 'error');
+      }
+    }
+    
+    function closeReplyModal() {
+      document.getElementById('replyModal').classList.remove('show');
+    }
+    
+    // ============ 设置功能 ============
     async function loadSettings() {
       try {
         const res = await fetch(`${API_BASE}/admin/config`, {
@@ -1150,6 +1390,10 @@
     
     document.getElementById('userDetailModal').addEventListener('click', function(e) {
       if (e.target === this) closeUserModal();
+    });
+    
+    document.getElementById('replyModal').addEventListener('click', function(e) {
+      if (e.target === this) closeReplyModal();
     });
     
     checkAdmin();
