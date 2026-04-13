@@ -3,1059 +3,577 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>智能考勤 · 控制面板</title>
-  <!-- Font Awesome 图标库 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>考勤控制面板 - agai.online</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: #f5f7fb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f7fa;
       min-height: 100vh;
     }
-
-    /* 侧边栏 */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 260px;
-      height: 100vh;
-      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      z-index: 100;
-    }
-
-    .sidebar-header {
-      padding: 24px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .sidebar-header h2 {
-      font-size: 22px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sidebar-header h2 i {
-      color: #667eea;
-    }
-
-    .sidebar-header p {
-      font-size: 12px;
-      opacity: 0.6;
-      margin-top: 5px;
-    }
-
-    .sidebar-menu {
-      flex: 1;
-      padding: 20px 0;
-    }
-
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 20px;
-      margin: 4px 12px;
-      border-radius: 10px;
-      color: rgba(255,255,255,0.7);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .menu-item i {
-      width: 24px;
-      font-size: 18px;
-    }
-
-    .menu-item:hover {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-    }
-
-    .menu-item.active {
+    .header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-    }
-
-    .sidebar-footer {
-      padding: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      font-size: 13px;
-      opacity: 0.6;
-    }
-
-    /* 主内容区 */
-    .main-content {
-      margin-left: 260px;
-      padding: 24px 32px;
-      min-height: 100vh;
-    }
-
-    /* 顶部栏 */
-    .top-bar {
+      color: white;
+      padding: 20px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 28px;
     }
-
-    .page-title {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1a1a2e;
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      background: #fff;
-      padding: 10px 20px;
-      border-radius: 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    .user-details {
-      line-height: 1.4;
-    }
-
-    .user-name {
-      font-weight: 600;
-      color: #1a1a2e;
-    }
-
-    .user-id {
-      font-size: 12px;
-      color: #888;
-    }
-
-    .vip-badge {
-      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .vip-badge.expired {
-      background: #95a5a6;
-    }
-
+    .header h1 { font-size: 24px; }
+    .user-info { display: flex; align-items: center; gap: 15px; }
     .logout-btn {
-      background: none;
-      border: 1px solid #ddd;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
       padding: 8px 16px;
-      border-radius: 20px;
-      color: #666;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.2s;
     }
-
-    .logout-btn:hover {
-      background: #f5f5f5;
-      border-color: #ccc;
+    .logout-btn:hover { background: rgba(255,255,255,0.3); }
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
     }
-
-    /* 统计卡片 */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-bottom: 28px;
-    }
-
-    .stat-card {
-      background: #fff;
-      padding: 24px;
+    .card {
+      background: white;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: transform 0.2s;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-
-    .stat-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-    }
-
-    .stat-icon.blue {
-      background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
-      color: #667eea;
-    }
-
-    .stat-icon.green {
-      background: #d4edda;
-      color: #28a745;
-    }
-
-    .stat-icon.orange {
-      background: #fff3cd;
-      color: #f39c12;
-    }
-
-    .stat-icon.purple {
-      background: #e2d9f3;
-      color: #764ba2;
-    }
-
-    .stat-content h3 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1a1a2e;
-    }
-
-    .stat-content p {
-      color: #888;
-      font-size: 14px;
-    }
-
-    /* 内容卡片 */
-    .content-card {
-      background: #fff;
-      border-radius: 20px;
       padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .card h2 {
       margin-bottom: 20px;
-    }
-
-    .card-header h3 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a2e;
+      color: #333;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
-    /* 按钮 */
     .btn {
-      padding: 10px 20px;
-      border-radius: 10px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
     }
-
     .btn-primary {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
+      color: white;
     }
-
-    .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
+    .btn-success { background: #28a745; color: white; }
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-outline { background: white; border: 1px solid #ddd; color: #666; }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    
+    .subscription-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
     }
-
-    .btn-success {
-      background: #28a745;
-      color: #fff;
-    }
-
-    .btn-outline {
-      background: #fff;
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label { font-weight: 500; color: #666; font-size: 14px; }
+    .form-group input, .form-group select {
+      padding: 10px 12px;
       border: 1px solid #ddd;
-      color: #666;
+      border-radius: 8px;
+      font-size: 14px;
     }
-
-    .btn-outline:hover {
-      background: #f5f5f5;
-    }
-
-    .btn-danger {
-      background: #dc3545;
-      color: #fff;
-    }
-
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: 12px;
-    }
-
-    /* 手动签到区域 */
-    .quick-sign-area {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .sign-btn {
-      padding: 16px 32px;
-      font-size: 18px;
-      border-radius: 50px;
-    }
-
-    .sign-result {
-      font-size: 15px;
-    }
-
-    /* 订阅列表 */
-    .subscription-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
+    
     .subscription-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 20px;
-      background: #f8f9fa;
-      border-radius: 14px;
-      transition: all 0.2s;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      margin-bottom: 10px;
     }
-
-    .subscription-item:hover {
-      background: #f0f2f5;
+    .subscription-info h4 { margin-bottom: 5px; }
+    .subscription-info p { color: #888; font-size: 13px; }
+    .subscription-actions { display: flex; gap: 8px; }
+    
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
     }
-
-    .sub-info h4 {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1a1a2e;
-      margin-bottom: 6px;
-    }
-
-    .sub-meta {
-      display: flex;
-      gap: 20px;
-      font-size: 13px;
-      color: #888;
-    }
-
-    .sub-meta i {
-      margin-right: 4px;
-    }
-
-    .sub-actions {
+    .status-enabled { background: #d4edda; color: #155724; }
+    .status-disabled { background: #f8d7da; color: #721c24; }
+    
+    .log-item {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
-
-    .toggle-switch {
-      width: 44px;
-      height: 24px;
-      background: #ccc;
-      border-radius: 12px;
-      cursor: pointer;
-      position: relative;
-      transition: background 0.2s;
-    }
-
-    .toggle-switch.active {
-      background: #28a745;
-    }
-
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #fff;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: left 0.2s;
-    }
-
-    .toggle-switch.active::after {
-      left: 22px;
-    }
-
-    /* 日期选择器 */
-    .weekday-selector {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
+    .log-success { color: #28a745; }
+    .log-failed { color: #dc3545; }
+    
+    .weekday-selector { display: flex; gap: 5px; flex-wrap: wrap; }
     .weekday-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      border: 2px solid #e0e0e0;
-      background: #fff;
-      font-size: 14px;
-      font-weight: 500;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      background: white;
       cursor: pointer;
-      transition: all 0.2s;
     }
-
     .weekday-btn.selected {
       background: #667eea;
-      color: #fff;
+      color: white;
       border-color: #667eea;
     }
+    
+    .loading { color: #999; text-align: center; padding: 20px; }
+    .empty { color: #999; text-align: center; padding: 30px; }
 
-    /* 表单 */
-    .form-group {
-      margin-bottom: 18px;
+    /* 侧边栏样式 */
+    .dashboard-layout { display: flex; min-height: calc(100vh - 80px); }
+    .sidebar {
+      width: 260px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px 0;
+      margin-right: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      height: fit-content;
     }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: #555;
-      font-size: 14px;
+    .sidebar-menu { list-style: none; }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
     }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 14px;
-      transition: border 0.2s;
+    .menu-item i { width: 24px; font-size: 18px; }
+    .menu-item:hover { background: #f5f7fa; color: #667eea; }
+    .menu-item.active {
+      background: linear-gradient(90deg, #667eea10 0%, transparent 100%);
+      color: #667eea;
+      border-left-color: #667eea;
     }
+    .content-area { flex: 1; }
+    .page { display: block; }
+    .page.hidden { display: none; }
 
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #667eea;
-    }
-
-    .form-row {
+    .stats-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
-    }
-
-    /* 日志表格 */
-    .log-table {
-      width: 100%;
-    }
-
-    .log-row {
-      display: flex;
-      align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .log-status {
-      width: 40px;
-      font-size: 18px;
-    }
-
-    .log-info {
-      flex: 1;
-    }
-
-    .log-name {
-      font-weight: 500;
-      color: #1a1a2e;
-    }
-
-    .log-time {
-      font-size: 12px;
-      color: #aaa;
-      margin-top: 4px;
-    }
-
-    .log-message {
-      max-width: 300px;
-      color: #888;
-      font-size: 13px;
-    }
-
-    /* 弹窗 */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 24px;
-      padding: 32px;
-      width: 100%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 24px;
     }
-
-    .modal-header h3 {
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .modal-close {
-      font-size: 24px;
-      cursor: pointer;
-      color: #aaa;
-    }
-
-    /* 空状态 */
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: #aaa;
-    }
-
-    .empty-state i {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-
-    /* 提示消息 */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #1a1a2e;
-      color: #fff;
-      padding: 14px 24px;
+    .stat-card {
+      background: white;
+      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      z-index: 2000;
-      animation: slideIn 0.3s;
-      display: none;
-    }
-
-    @keyframes slideIn {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    .toast.success { background: #28a745; }
-    .toast.error { background: #dc3545; }
-
-    /* 标签页 */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      background: #f5f7fb;
-      padding: 4px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      color: #888;
-      transition: all 0.2s;
-    }
-
-    .tab.active {
-      background: #fff;
-      color: #667eea;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
+    .stat-value { font-size: 28px; font-weight: 700; color: #1a1a2e; }
+    .stat-label { color: #888; font-size: 13px; margin-top: 4px; }
 
-    /* 隐藏类 */
-    .hidden {
-      display: none !important;
+    .invite-box {
+      text-align: center;
+      padding: 30px;
     }
-
-    /* 响应式 */
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main-content { margin-left: 0; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .invite-code {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      background: #f5f7fa;
+      padding: 15px 30px;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 20px 0;
+    }
+    .copy-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 10px;
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <!-- 侧边栏 -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h2><i class="fas fa-robot"></i> 智能考勤</h2>
-      <p>AG工作室 · v3.0</p>
-    </div>
-    <div class="sidebar-menu">
-      <div class="menu-item active" data-page="dashboard">
-        <i class="fas fa-tachometer-alt"></i> 仪表盘
-      </div>
-      <div class="menu-item" data-page="subscriptions">
-        <i class="fas fa-calendar-check"></i> 我的订阅
-      </div>
-      <div class="menu-item" data-page="email">
-        <i class="fas fa-envelope"></i> 邮箱绑定
-        <span id="emailBadge" style="margin-left: auto; font-size: 10px; background: #f39c12; padding: 2px 6px; border-radius: 10px;">VIP</span>
-      </div>
-      <div class="menu-item" data-page="logs">
-        <i class="fas fa-history"></i> 签到日志
-      </div>
-      <div class="menu-item" data-page="profile">
-        <i class="fas fa-user-cog"></i> 个人中心
-      </div>
-    </div>
-    <div class="sidebar-footer">
-      <i class="far fa-clock"></i> 自动签到 21:25
+  <div class="header">
+    <h1><i class="fas fa-robot"></i> 智能考勤控制面板</h1>
+    <div class="user-info">
+      <span id="userName">加载中...</span>
+      <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
     </div>
   </div>
-
-  <!-- 主内容区 -->
-  <div class="main-content">
-    <!-- 顶部栏 -->
-    <div class="top-bar">
-      <h1 class="page-title" id="pageTitle">仪表盘</h1>
-      <div class="user-badge">
-        <div class="user-info">
-          <div class="user-avatar" id="userAvatar">学</div>
-          <div class="user-details">
-            <div class="user-name" id="userName">加载中...</div>
-            <div class="user-id" id="userStudentId"></div>
-          </div>
-        </div>
-        <span class="vip-badge" id="vipBadge">免费用户</span>
-        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> 退出</button>
+  
+  <div class="container">
+    <div class="dashboard-layout">
+      <!-- 侧边栏 -->
+      <div class="sidebar">
+        <ul class="sidebar-menu">
+          <li class="menu-item active" data-page="dashboard">
+            <i class="fas fa-tachometer-alt"></i> 仪表盘
+          </li>
+          <li class="menu-item" data-page="subscriptions">
+            <i class="fas fa-calendar-check"></i> 我的订阅
+          </li>
+          <li class="menu-item" data-page="email">
+            <i class="fas fa-envelope"></i> 邮箱绑定
+            <span id="emailBadge" style="margin-left: auto; font-size: 10px; background: #f39c12; padding: 2px 6px; border-radius: 10px; color: white;">VIP</span>
+          </li>
+          <li class="menu-item" data-page="invite">
+            <i class="fas fa-gift"></i> 邀请好友
+          </li>
+          <li class="menu-item" data-page="logs">
+            <i class="fas fa-history"></i> 签到日志
+          </li>
+          <li class="menu-item" data-page="profile">
+            <i class="fas fa-user-cog"></i> 个人中心
+          </li>
+        </ul>
       </div>
-    </div>
-
-    <!-- 统计卡片 -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon blue"><i class="fas fa-calendar"></i></div>
-        <div class="stat-content">
-          <h3 id="totalSigns">0</h3>
-          <p>累计签到</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
-        <div class="stat-content">
-          <h3 id="successSigns">0</h3>
-          <p>成功签到</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
-        <div class="stat-content">
-          <h3 id="todaySigns">0</h3>
-          <p>今日签到</p>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon purple"><i class="fas fa-bell"></i></div>
-        <div class="stat-content">
-          <h3 id="activeSubs">0</h3>
-          <p>活跃订阅</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 仪表盘页面 -->
-    <div id="page-dashboard">
-      <!-- 快速签到 -->
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-bolt" style="color: #f39c12;"></i> 快速签到</h3>
-        </div>
-        <div class="quick-sign-area">
-          <button class="btn btn-success sign-btn" onclick="manualSign()" id="signBtn">
-            <i class="fas fa-pen"></i> 立即手动签到
-          </button>
-          <span class="sign-result" id="signResult"></span>
-        </div>
-        <p style="margin-top: 16px; color: #888; font-size: 13px;">
-          <i class="fas fa-info-circle"></i> 手动签到使用您登录时填写的考勤密码
-        </p>
-      </div>
-
-      <!-- 活跃订阅预览 -->
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-list-check"></i> 活跃订阅</h3>
-          <button class="btn btn-outline btn-sm" onclick="switchPage('subscriptions')">
-            查看全部 <i class="fas fa-arrow-right"></i>
-          </button>
-        </div>
-        <div id="activeSubscriptionsList">
-          <div class="empty-state">
-            <i class="fas fa-calendar"></i>
-            <p>暂无活跃订阅，去"我的订阅"创建一个吧</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 订阅管理页面 -->
-    <div id="page-subscriptions" class="hidden">
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-plus-circle"></i> 创建订阅</h3>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>订阅名称</label>
-            <input type="text" id="subName" placeholder="例如：晚寝签到" value="晚寝签到">
-          </div>
-          <div class="form-group">
-            <label>签到时间</label>
-            <input type="time" id="subTime" value="21:25">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>重复类型</label>
-          <select id="subScheduleType">
-            <option value="daily">每天</option>
-            <option value="weekdays" selected>工作日（周一至周五）</option>
-            <option value="custom">自定义</option>
-          </select>
-        </div>
-        <div class="form-group" id="customDaysGroup" style="display: none;">
-          <label>选择日期</label>
-          <div class="weekday-selector" id="weekdaySelector">
-            <button class="weekday-btn" data-day="1">一</button>
-            <button class="weekday-btn" data-day="2">二</button>
-            <button class="weekday-btn" data-day="3">三</button>
-            <button class="weekday-btn" data-day="4">四</button>
-            <button class="weekday-btn" data-day="5">五</button>
-            <button class="weekday-btn" data-day="6">六</button>
-            <button class="weekday-btn" data-day="0">日</button>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>最大重试次数</label>
-            <input type="number" id="subMaxRetries" value="3" min="1" max="5">
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="createSubscription()">
-          <i class="fas fa-plus"></i> 创建订阅
-        </button>
-      </div>
-
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-list"></i> 我的订阅</h3>
-        </div>
-        <div id="subscriptionsList">
-          <div class="empty-state">
-            <i class="fas fa-calendar"></i>
-            <p>暂无订阅，创建一个开始自动签到吧</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 邮箱绑定页面 -->
-    <div id="page-email" class="hidden">
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-crown" style="color: #f39c12;"></i> VIP 邮箱绑定</h3>
-        </div>
-        <div id="emailStatus">
-          <!-- 动态渲染 -->
-        </div>
-        <div id="emailBindForm">
-          <div class="form-group">
-            <label>邮箱地址</label>
-            <input type="email" id="bindEmail" placeholder="your@email.com">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>验证码</label>
-              <input type="text" id="emailCode" placeholder="6位验证码">
+      
+      <!-- 内容区域 -->
+      <div class="content-area">
+        <!-- 仪表盘页面 -->
+        <div id="page-dashboard" class="page">
+          <!-- 系统通知区 -->
+          <div class="card" id="noticeCard" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h2 id="noticeTitle" style="margin-bottom: 0;"><i class="fas fa-bullhorn"></i> 系统公告</h2>
             </div>
-            <div class="form-group">
-              <label>&nbsp;</label>
-              <button class="btn btn-outline" onclick="sendEmailCode()" id="sendCodeBtn" style="width: 100%;">
-                发送验证码
+            <div id="noticeContent" style="padding: 10px 0;"></div>
+          </div>
+
+          <!-- 统计卡片 -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value" id="statTotalSigns">0</div>
+              <div class="stat-label">累计签到</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statSuccessSigns">0</div>
+              <div class="stat-label">成功签到</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statTodaySigns">0</div>
+              <div class="stat-label">今日签到</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="statActiveSubs">0</div>
+              <div class="stat-label">活跃订阅</div>
+            </div>
+          </div>
+
+          <!-- 快捷签到 -->
+          <div class="card">
+            <h2><i class="fas fa-bolt" style="color: #f39c12;"></i> 快速签到</h2>
+            <p style="margin-bottom: 15px; color: #666;">点击按钮立即执行一次签到</p>
+            <button class="btn btn-success" onclick="quickSign()" id="quickSignBtn">
+              <i class="fas fa-pen"></i> 立即签到
+            </button>
+            <span id="signResult" style="margin-left: 15px;"></span>
+          </div>
+          
+          <!-- 活跃订阅预览 -->
+          <div class="card">
+            <h2><i class="fas fa-list-check"></i> 活跃订阅</h2>
+            <div id="activeSubscriptionsList">
+              <p class="loading">加载中...</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 订阅管理页面 -->
+        <div id="page-subscriptions" class="page hidden">
+          <div class="card">
+            <h2><i class="fas fa-plus-circle"></i> 添加考勤订阅</h2>
+            <div class="subscription-form">
+              <div class="form-group">
+                <label>课程名称</label>
+                <input type="text" id="courseName" placeholder="例如：晚寝签到" value="晚寝签到">
+              </div>
+              <div class="form-group">
+                <label>签到时间</label>
+                <input type="time" id="signTime" value="21:25">
+              </div>
+              <div class="form-group">
+                <label>最大重试次数</label>
+                <input type="number" id="maxRetries" value="3" min="1" max="5">
+              </div>
+              <div class="form-group">
+                <label>自动签到</label>
+                <select id="autoSign">
+                  <option value="true">✅ 开启</option>
+                  <option value="false">❌ 关闭</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label>签到日期（可多选）</label>
+              <div class="weekday-selector" id="weekdaySelector">
+                <button class="weekday-btn selected" data-day="1">一</button>
+                <button class="weekday-btn selected" data-day="2">二</button>
+                <button class="weekday-btn selected" data-day="3">三</button>
+                <button class="weekday-btn selected" data-day="4">四</button>
+                <button class="weekday-btn selected" data-day="5">五</button>
+                <button class="weekday-btn" data-day="6">六</button>
+                <button class="weekday-btn" data-day="0">日</button>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+              <label><input type="checkbox" id="notifyOnSuccess" checked> 签到成功时发送邮件通知</label>
+              <label style="margin-left: 20px;"><input type="checkbox" id="notifyOnFailure" checked> 签到失败时发送邮件通知</label>
+            </div>
+            <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加订阅</button>
+          </div>
+          
+          <div class="card">
+            <h2><i class="fas fa-list"></i> 我的订阅</h2>
+            <div id="subscriptionsList">
+              <p class="loading">加载中...</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 邮箱绑定页面 -->
+        <div id="page-email" class="page hidden">
+          <div class="card">
+            <h2><i class="fas fa-crown" style="color: #f39c12;"></i> VIP 邮箱绑定</h2>
+            <div id="emailStatus"></div>
+            <div id="emailBindForm">
+              <div class="form-group">
+                <label>邮箱地址</label>
+                <input type="email" id="bindEmail" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="emailCode" placeholder="验证码" style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
+                <button id="sendCodeBtn" onclick="sendEmailCode()" style="padding: 12px 24px; background: #667eea; color: #fff; border: none; border-radius: 10px; cursor: pointer;">
+                  发送验证码
+                </button>
+              </div>
+              <button onclick="verifyEmail()" style="margin-top: 15px; padding: 12px 24px; background: #28a745; color: #fff; border: none; border-radius: 10px; cursor: pointer; width: 100%;">
+                <i class="fas fa-check"></i> 验证并绑定
               </button>
+              <p style="margin-top: 16px; color: #888; font-size: 13px;">
+                <i class="fas fa-gem"></i> 绑定邮箱后自动获得 30 天 VIP，享受签到邮件通知特权
+              </p>
             </div>
           </div>
-          <button class="btn btn-primary" onclick="verifyEmail()">
-            <i class="fas fa-check"></i> 验证并绑定
-          </button>
-          <p style="margin-top: 16px; color: #888; font-size: 13px;">
-            <i class="fas fa-gem"></i> 绑定邮箱后自动获得 30 天 VIP，享受邮件通知特权
-          </p>
         </div>
-      </div>
-    </div>
+        
+        <!-- 邀请好友页面 -->
+        <div id="page-invite" class="page hidden">
+          <div class="card">
+            <h2><i class="fas fa-gift" style="color: #f39c12;"></i> 邀请好友，双方各得 VIP</h2>
+            
+            <div style="text-align: center; padding: 20px;">
+              <div style="font-size: 48px; margin-bottom: 20px;">🎁</div>
+              <h2 style="margin-bottom: 10px;">每邀请 1 人注册</h2>
+              <p style="font-size: 24px; color: #f39c12; font-weight: 700; margin-bottom: 20px;">
+                双方各得 <span id="rewardDays">10</span> 天 VIP
+              </p>
+            </div>
+            
+            <div class="form-group">
+              <label>您的专属邀请链接</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="inviteUrl" readonly style="flex: 1; background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <button class="btn btn-primary" onclick="copyInviteUrl()">
+                  <i class="fas fa-copy"></i> 复制
+                </button>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>您的邀请码</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="inviteCode" readonly style="flex: 1; background: #f5f5f5; font-size: 24px; font-weight: 700; text-align: center; letter-spacing: 4px; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <button class="btn btn-primary" onclick="copyInviteCode()">
+                  <i class="fas fa-copy"></i> 复制
+                </button>
+              </div>
+            </div>
+            
+            <div style="margin-top: 30px;">
+              <h4><i class="fas fa-users"></i> 已邀请用户 (<span id="inviteCount">0</span>人)</h4>
+              <div id="invitedList" style="margin-top: 15px; max-height: 300px; overflow-y: auto;">
+                <p class="loading">加载中...</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 输入邀请码绑定 -->
+          <div class="card" id="bindInviteCard">
+            <h2><i class="fas fa-user-plus"></i> 我有邀请码</h2>
+            <div id="bindInviteArea"></div>
+            <div class="form-group">
+              <label>输入邀请码</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="inputInviteCode" placeholder="请输入 8 位邀请码" style="flex: 1; text-transform: uppercase; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <button class="btn btn-success" onclick="applyInviteCode()">
+                  绑定邀请人
+                </button>
+              </div>
+            </div>
+            <p style="color: #888; font-size: 13px;">
+              <i class="fas fa-info-circle"></i> 绑定后双方各得 <span id="bindRewardDays">10</span> 天 VIP
+            </p>
+          </div>
+        </div>
+        
+        <!-- 签到日志页面 -->
+        <div id="page-logs" class="page hidden">
+          <div class="card">
+            <h2><i class="fas fa-history"></i> 签到记录</h2>
+            <div id="logsList">
+              <p class="loading">加载中...</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 个人中心页面 -->
+        <div id="page-profile" class="page hidden">
+          <div class="card">
+            <h2><i class="fas fa-user"></i> 个人资料</h2>
+            <div class="form-group">
+              <label>学号</label>
+              <input type="text" id="profileStudentId" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+            </div>
+            <div class="form-group">
+              <label>姓名</label>
+              <input type="text" id="profileName" placeholder="设置你的姓名" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+            </div>
+            <div class="form-group">
+              <label>考勤密码</label>
+              <input type="text" id="profileAttendancePassword" placeholder="考勤系统密码" value="Ahgydx@920" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+            </div>
+            <div class="form-group">
+              <label>绑定邮箱</label>
+              <input type="text" id="profileEmail" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+            </div>
+            <div class="form-group">
+              <label>VIP 状态</label>
+              <input type="text" id="profileVip" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+            </div>
+            <div class="form-group">
+              <label>邀请码</label>
+              <input type="text" id="profileInviteCode" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+            </div>
+            <button class="btn btn-primary" onclick="updateProfile()">
+              <i class="fas fa-save"></i> 保存修改
+            </button>
+          </div>
 
-    <!-- 签到日志页面 -->
-    <div id="page-logs" class="hidden">
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-history"></i> 签到记录</h3>
-        </div>
-        <div id="logsList">
-          <div class="empty-state">
-            <i class="fas fa-history"></i>
-            <p>暂无签到记录</p>
+          <div class="card">
+            <h2><i class="fas fa-ticket-alt"></i> 卡密兑换</h2>
+            <div class="form-group">
+              <label>输入卡密</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="redeemCode" placeholder="VIP卡密" style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-transform: uppercase;">
+                <button class="btn btn-primary" onclick="redeemCode()">兑换</button>
+              </div>
+            </div>
+            <p style="color: #888; font-size: 13px;">
+              <i class="fas fa-info-circle"></i> 购买卡密请联系管理员
+            </p>
+          </div>
+
+          <div class="card">
+            <h2><i class="fas fa-chart-bar"></i> 签到统计</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center;">
+              <div>
+                <div style="font-size: 36px; font-weight: 700; color: #667eea;" id="profileTotalSigns">0</div>
+                <div style="color: #888;">累计签到</div>
+              </div>
+              <div>
+                <div style="font-size: 36px; font-weight: 700; color: #28a745;" id="profileSuccessSigns">0</div>
+                <div style="color: #888;">成功签到</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- 个人中心页面 -->
-    <div id="page-profile" class="hidden">
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-user"></i> 个人资料</h3>
-        </div>
-        <div class="form-group">
-          <label>学号</label>
-          <input type="text" id="profileStudentId" disabled style="background: #f5f5f5;">
-        </div>
-        <div class="form-group">
-          <label>姓名</label>
-          <input type="text" id="profileName" placeholder="设置你的姓名">
-        </div>
-        <div class="form-group">
-          <label>绑定邮箱</label>
-          <input type="text" id="profileEmail" disabled style="background: #f5f5f5;">
-        </div>
-        <div class="form-group">
-          <label>VIP 状态</label>
-          <input type="text" id="profileVip" disabled style="background: #f5f5f5;">
-        </div>
-        <button class="btn btn-primary" onclick="updateProfile()">
-          <i class="fas fa-save"></i> 保存修改
-        </button>
-      </div>
-
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-chart-bar"></i> 签到统计</h3>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-          <div style="text-align: center; padding: 20px;">
-            <div style="font-size: 36px; font-weight: 700; color: #667eea;" id="statTotal">0</div>
-            <div style="color: #888;">累计签到</div>
-          </div>
-          <div style="text-align: center; padding: 20px;">
-            <div style="font-size: 36px; font-weight: 700; color: #28a745;" id="statSuccess">0</div>
-            <div style="color: #888;">成功签到</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 提示消息 -->
-  <div class="toast" id="toast"></div>
-
-  <!-- 编辑订阅弹窗 -->
-  <div class="modal" id="editSubModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>编辑订阅</h3>
-        <span class="modal-close" onclick="closeEditModal()">&times;</span>
-      </div>
-      <input type="hidden" id="editSubId">
-      <div class="form-group">
-        <label>订阅名称</label>
-        <input type="text" id="editSubName">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>签到时间</label>
-          <input type="time" id="editSubTime">
-        </div>
-        <div class="form-group">
-          <label>最大重试</label>
-          <input type="number" id="editSubMaxRetries" min="1" max="5">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>重复类型</label>
-        <select id="editSubScheduleType">
-          <option value="daily">每天</option>
-          <option value="weekdays">工作日</option>
-          <option value="custom">自定义</option>
-        </select>
-      </div>
-      <div class="form-group" id="editCustomDaysGroup" style="display: none;">
-        <label>选择日期</label>
-        <div class="weekday-selector" id="editWeekdaySelector"></div>
-      </div>
-      <button class="btn btn-primary" onclick="updateSubscription()">
-        <i class="fas fa-check"></i> 保存修改
-      </button>
     </div>
   </div>
 
   <script>
-    // ============ 全局配置 ============
     const API_BASE = 'https://api.agai.online/api';
     const token = localStorage.getItem('token');
     let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
     const attendancePassword = localStorage.getItem('attendancePassword') || 'Ahgydx@920';
-
-    if (!token) {
-      window.location.href = '/';
-    }
-
-    // ============ 工具函数 ============
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = `toast ${type}`;
-      toast.style.display = 'block';
-      setTimeout(() => toast.style.display = 'none', 3000);
-    }
-
-    function formatDate(dateStr) {
-      const d = new Date(dateStr);
-      return d.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
-    }
-
-    function getDayName(day) {
-      const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-      return days[day] || '';
-    }
-
-    function getDaysText(days) {
-      if (!days || days.length === 0) return '未设置';
-      return days.map(d => getDayName(d)).join('、');
-    }
-
-    // ============ 页面切换 ============
-    function switchPage(page) {
-      document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
-      document.getElementById(`page-${page}`).classList.remove('hidden');
-      
-      document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-      document.querySelector(`[data-page="${page}"]`).classList.add('active');
-      
-      const titles = {
-        dashboard: '仪表盘',
-        subscriptions: '我的订阅',
-        email: '邮箱绑定',
-        logs: '签到日志',
-        profile: '个人中心'
-      };
-      document.getElementById('pageTitle').textContent = titles[page] || page;
-      
-      // 加载对应页面数据
-      if (page === 'dashboard') loadDashboard();
-      else if (page === 'subscriptions') loadSubscriptions();
-      else if (page === 'email') loadEmailStatus();
-      else if (page === 'logs') loadLogs();
-      else if (page === 'profile') loadProfile();
-    }
-
+    
+    if (!token) { window.location.href = '/'; }
+    
+    // 显示用户名
+    document.getElementById('userName').textContent = `${currentUser.name || currentUser.studentId} (${currentUser.studentId})`;
+    
+    // 页面切换
     document.querySelectorAll('.menu-item').forEach(item => {
-      item.addEventListener('click', () => switchPage(item.dataset.page));
+      item.addEventListener('click', () => {
+        const page = item.dataset.page;
+        document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        document.getElementById(`page-${page}`).classList.remove('hidden');
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        item.classList.add('active');
+        
+        if (page === 'dashboard') { loadStats(); loadActiveSubscriptions(); loadNotice(); }
+        else if (page === 'subscriptions') loadSubscriptions();
+        else if (page === 'email') loadEmailStatus();
+        else if (page === 'invite') loadInviteInfo();
+        else if (page === 'logs') loadLogs();
+        else if (page === 'profile') loadProfile();
+      });
     });
-
-    // ============ 加载用户信息 ============
-    async function loadUserInfo() {
+    
+    // 星期选择器
+    document.querySelectorAll('.weekday-btn').forEach(btn => {
+      btn.addEventListener('click', function() { this.classList.toggle('selected'); });
+    });
+    
+    // 加载系统通知
+    async function loadNotice() {
       try {
-        const res = await fetch(`${API_BASE}/user/profile`, {
+        const res = await fetch(`${API_BASE}/notice`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
-        if (data.success) {
-          currentUser = data.user;
-          localStorage.setItem('user', JSON.stringify(currentUser));
+        
+        if (data.success && data.notice && data.notice.enabled) {
+          const notice = data.notice;
+          const card = document.getElementById('noticeCard');
+          const titleEl = document.getElementById('noticeTitle');
+          const contentEl = document.getElementById('noticeContent');
           
-          document.getElementById('userName').textContent = currentUser.name || currentUser.studentId;
-          document.getElementById('userStudentId').textContent = currentUser.studentId;
-          document.getElementById('userAvatar').textContent = (currentUser.name || currentUser.studentId).charAt(0).toUpperCase();
+          const styles = {
+            info: { bg: '#d1ecf1', border: '#bee5eb', color: '#0c5460', icon: '📢' },
+            success: { bg: '#d4edda', border: '#c3e6cb', color: '#155724', icon: '✅' },
+            warning: { bg: '#fff3cd', border: '#ffeeba', color: '#856404', icon: '⚠️' },
+            error: { bg: '#f8d7da', border: '#f5c6cb', color: '#721c24', icon: '❌' }
+          };
           
-          const vipBadge = document.getElementById('vipBadge');
-          if (currentUser.isVip) {
-            const expireDate = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null;
-            const isExpired = expireDate && expireDate < new Date();
-            vipBadge.textContent = isExpired ? 'VIP 已过期' : 'VIP 会员';
-            vipBadge.className = `vip-badge ${isExpired ? 'expired' : ''}`;
-          } else {
-            vipBadge.textContent = '免费用户';
-            vipBadge.className = 'vip-badge expired';
-          }
-          
-          const emailBadge = document.getElementById('emailBadge');
-          if (currentUser.emailVerified) {
-            emailBadge.style.background = '#28a745';
-            emailBadge.textContent = '✓';
-          }
+          const style = styles[notice.style] || styles.info;
+          titleEl.innerHTML = `<i class="fas fa-bullhorn"></i> ${style.icon} ${notice.title}`;
+          contentEl.innerHTML = `
+            <div style="background: ${style.bg}; border-left: 4px solid ${style.border}; padding: 16px; border-radius: 8px; color: ${style.color};">
+              ${notice.content}
+            </div>
+          `;
+          card.style.display = 'block';
         }
-      } catch (e) {
-        console.error('加载用户信息失败', e);
-      }
+      } catch (e) { console.error('加载通知失败', e); }
     }
-
-    // ============ 加载统计 ============
+    
+    // 加载统计
     async function loadStats() {
       try {
         const res = await fetch(`${API_BASE}/stats`, {
@@ -1063,20 +581,16 @@
         });
         const data = await res.json();
         if (data.success) {
-          document.getElementById('totalSigns').textContent = data.stats.totalSigns || 0;
-          document.getElementById('successSigns').textContent = data.stats.successSigns || 0;
-          document.getElementById('todaySigns').textContent = data.stats.todaySigns || 0;
-          document.getElementById('activeSubs').textContent = data.stats.activeSubscriptions || 0;
+          document.getElementById('statTotalSigns').textContent = data.stats.totalSigns || 0;
+          document.getElementById('statSuccessSigns').textContent = data.stats.successSigns || 0;
+          document.getElementById('statTodaySigns').textContent = data.stats.todaySigns || 0;
+          document.getElementById('statActiveSubs').textContent = data.stats.activeSubscriptions || 0;
         }
-      } catch (e) {
-        console.error('加载统计失败', e);
-      }
+      } catch (e) { console.error('加载统计失败', e); }
     }
-
-    // ============ 仪表盘 ============
-    async function loadDashboard() {
-      await loadStats();
-      
+    
+    // 加载活跃订阅预览
+    async function loadActiveSubscriptions() {
       try {
         const res = await fetch(`${API_BASE}/subscriptions`, {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -1087,45 +601,78 @@
           const container = document.getElementById('activeSubscriptionsList');
           
           if (activeSubs.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar"></i><p>暂无活跃订阅</p></div>`;
+            container.innerHTML = '<p class="empty">暂无活跃订阅</p>';
             return;
           }
           
+          const days = ['日', '一', '二', '三', '四', '五', '六'];
           container.innerHTML = activeSubs.slice(0, 3).map(sub => {
-            let scheduleText = '';
-            if (sub.scheduleType === 'daily') scheduleText = '每天';
-            else if (sub.scheduleType === 'weekdays') scheduleText = '工作日';
-            else scheduleText = getDaysText(sub.customDays);
-            
+            let scheduleText = sub.scheduleType === 'daily' ? '每天' : 
+              (sub.scheduleType === 'weekdays' ? '工作日' : 
+                (sub.customDays || []).map(d => days[d]).join('、'));
             return `
               <div class="subscription-item">
-                <div class="sub-info">
+                <div class="subscription-info">
                   <h4>${sub.name}</h4>
-                  <div class="sub-meta">
-                    <span><i class="far fa-clock"></i> ${sub.signTime}</span>
-                    <span><i class="far fa-calendar"></i> ${scheduleText}</span>
-                  </div>
-                </div>
-                <div class="sub-actions">
-                  <div class="toggle-switch active" onclick="toggleSubscription('${sub._id}', this)"></div>
+                  <p>⏰ ${sub.signTime} | 📅 ${scheduleText}</p>
                 </div>
               </div>
             `;
           }).join('');
         }
-      } catch (e) {
-        console.error('加载订阅失败', e);
-      }
+      } catch (e) { console.error('加载活跃订阅失败', e); }
     }
-
-    // ============ 手动签到 ============
-    async function manualSign() {
-      const btn = document.getElementById('signBtn');
+    
+    // 加载订阅列表
+    async function loadSubscriptions() {
+      try {
+        const res = await fetch(`${API_BASE}/subscriptions`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const container = document.getElementById('subscriptionsList');
+        
+        if (!data.subscriptions || data.subscriptions.length === 0) {
+          container.innerHTML = '<p class="empty">暂无订阅，请添加考勤订阅</p>';
+          return;
+        }
+        
+        const days = ['日', '一', '二', '三', '四', '五', '六'];
+        container.innerHTML = data.subscriptions.map(sub => {
+          let scheduleText = sub.scheduleType === 'daily' ? '每天' : 
+            (sub.scheduleType === 'weekdays' ? '工作日' : 
+              (sub.customDays || []).map(d => days[d]).join('、'));
+          return `
+            <div class="subscription-item">
+              <div class="subscription-info">
+                <h4>${sub.name}</h4>
+                <p>⏰ ${sub.signTime} | 📅 ${scheduleText} | 🔄 重试 ${sub.maxRetries} 次</p>
+              </div>
+              <div class="subscription-actions">
+                <span class="status-badge ${sub.enabled ? 'status-enabled' : 'status-disabled'}">
+                  ${sub.enabled ? '已启用' : '已禁用'}
+                </span>
+                <button class="btn btn-outline" onclick="toggleSubscription('${sub._id}', ${!sub.enabled})">
+                  ${sub.enabled ? '禁用' : '启用'}
+                </button>
+                <button class="btn btn-outline" onclick="editSubscription('${sub._id}')">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger" onclick="deleteSubscription('${sub._id}')">删除</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (e) { console.error('加载订阅失败', e); }
+    }
+    
+    // 添加快捷签到
+    async function quickSign() {
+      const btn = document.getElementById('quickSignBtn');
       const resultSpan = document.getElementById('signResult');
       
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 签到中...';
-      resultSpan.innerHTML = '';
       
       try {
         const res = await fetch(`${API_BASE}/sign/manual`, {
@@ -1136,90 +683,41 @@
           },
           body: JSON.stringify({ attendancePassword })
         });
-        
         const data = await res.json();
         
         if (data.success) {
           if (data.result.success) {
             resultSpan.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle"></i> 签到成功！</span>';
-            showToast('签到成功！', 'success');
           } else {
             resultSpan.innerHTML = `<span style="color: #dc3545;"><i class="fas fa-times-circle"></i> ${data.result.message || '签到失败'}</span>`;
-            showToast(data.result.message || '签到失败', 'error');
           }
           loadStats();
-          if (document.getElementById('page-logs').classList.contains('hidden') === false) {
-            loadLogs();
-          }
-        } else {
-          showToast(data.message || '签到失败', 'error');
         }
       } catch (e) {
         resultSpan.innerHTML = '<span style="color: #dc3545;"><i class="fas fa-times-circle"></i> 网络错误</span>';
-        showToast('网络错误', 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-pen"></i> 立即手动签到';
+        btn.innerHTML = '<i class="fas fa-pen"></i> 立即签到';
       }
     }
-
-    // ============ 订阅管理 ============
-    async function loadSubscriptions() {
-      try {
-        const res = await fetch(`${API_BASE}/subscriptions`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (data.success) {
-          const container = document.getElementById('subscriptionsList');
-          
-          if (data.subscriptions.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-calendar"></i><p>暂无订阅</p></div>`;
-            return;
-          }
-          
-          container.innerHTML = data.subscriptions.map(sub => {
-            let scheduleText = '';
-            if (sub.scheduleType === 'daily') scheduleText = '每天';
-            else if (sub.scheduleType === 'weekdays') scheduleText = '工作日';
-            else scheduleText = getDaysText(sub.customDays);
-            
-            return `
-              <div class="subscription-item">
-                <div class="sub-info">
-                  <h4>${sub.name} ${sub.enabled ? '' : '<span style="color:#999; font-size:12px;">(已禁用)</span>'}</h4>
-                  <div class="sub-meta">
-                    <span><i class="far fa-clock"></i> ${sub.signTime}</span>
-                    <span><i class="far fa-calendar"></i> ${scheduleText}</span>
-                    <span><i class="fas fa-redo"></i> 重试${sub.maxRetries}次</span>
-                  </div>
-                </div>
-                <div class="sub-actions">
-                  <div class="toggle-switch ${sub.enabled ? 'active' : ''}" onclick="toggleSubscription('${sub._id}', this)"></div>
-                  <button class="btn btn-outline btn-sm" onclick="editSubscription('${sub._id}')"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteSubscription('${sub._id}')"><i class="fas fa-trash"></i></button>
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      } catch (e) {
-        console.error('加载订阅失败', e);
-      }
-    }
-
-    async function createSubscription() {
-      const name = document.getElementById('subName').value || '晚寝签到';
-      const signTime = document.getElementById('subTime').value || '21:25';
-      const scheduleType = document.getElementById('subScheduleType').value;
-      const maxRetries = parseInt(document.getElementById('subMaxRetries').value) || 3;
+    
+    // 添加订阅
+    async function addSubscription() {
+      const name = document.getElementById('courseName').value || '晚寝签到';
+      const signTime = document.getElementById('signTime').value || '21:25';
+      const maxRetries = parseInt(document.getElementById('maxRetries').value) || 3;
+      const autoSign = document.getElementById('autoSign').value === 'true';
+      const notifyOnSuccess = document.getElementById('notifyOnSuccess').checked;
+      const notifyOnFailure = document.getElementById('notifyOnFailure').checked;
       
-      let customDays = [];
-      if (scheduleType === 'custom') {
-        document.querySelectorAll('#weekdaySelector .weekday-btn.selected').forEach(btn => {
-          customDays.push(parseInt(btn.dataset.day));
-        });
-      }
+      const selectedDays = [];
+      document.querySelectorAll('.weekday-btn.selected').forEach(btn => {
+        selectedDays.push(parseInt(btn.dataset.day));
+      });
+      
+      let scheduleType = 'custom';
+      if (selectedDays.length === 7) scheduleType = 'daily';
+      else if (selectedDays.length === 5 && selectedDays.every(d => d >= 1 && d <= 5)) scheduleType = 'weekdays';
       
       try {
         const res = await fetch(`${API_BASE}/subscriptions`, {
@@ -1228,140 +726,85 @@
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ name, scheduleType, customDays, signTime, maxRetries })
+          body: JSON.stringify({
+            name, scheduleType, customDays: selectedDays, signTime,
+            maxRetries, autoSign, notifyOnSuccess, notifyOnFailure
+          })
         });
         
         const data = await res.json();
         if (data.success) {
-          showToast('订阅创建成功', 'success');
+          alert('订阅添加成功！');
           loadSubscriptions();
           loadStats();
-          
-          document.getElementById('subName').value = '晚寝签到';
         } else {
-          showToast(data.message || '创建失败', 'error');
+          alert('添加失败：' + data.message);
         }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+      } catch (e) { alert('网络错误'); }
     }
-
-    async function toggleSubscription(id, element) {
+    
+    // 切换订阅状态
+    async function toggleSubscription(id, enabled) {
       try {
-        const res = await fetch(`${API_BASE}/subscriptions/${id}/toggle`, {
+        await fetch(`${API_BASE}/subscriptions/${id}/toggle`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        const data = await res.json();
-        if (data.success) {
-          element.classList.toggle('active', data.enabled);
-          showToast(data.enabled ? '已启用' : '已禁用', 'success');
-          loadStats();
-        }
-      } catch (e) {
-        showToast('操作失败', 'error');
-      }
+        loadSubscriptions();
+        loadStats();
+      } catch (e) { alert('操作失败'); }
     }
-
-    let editingSubId = null;
-
-    async function editSubscription(id) {
-      try {
-        const res = await fetch(`${API_BASE}/subscriptions`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        const sub = data.subscriptions.find(s => s._id === id);
-        if (!sub) return;
-        
-        editingSubId = id;
-        document.getElementById('editSubId').value = id;
-        document.getElementById('editSubName').value = sub.name;
-        document.getElementById('editSubTime').value = sub.signTime;
-        document.getElementById('editSubMaxRetries').value = sub.maxRetries;
-        document.getElementById('editSubScheduleType').value = sub.scheduleType;
-        
-        // 渲染星期选择器
-        const container = document.getElementById('editWeekdaySelector');
-        container.innerHTML = '';
-        [1,2,3,4,5,6,0].forEach(day => {
-          const btn = document.createElement('button');
-          btn.className = `weekday-btn ${sub.customDays?.includes(day) ? 'selected' : ''}`;
-          btn.dataset.day = day;
-          btn.textContent = getDayName(day).charAt(0);
-          btn.onclick = () => btn.classList.toggle('selected');
-          container.appendChild(btn);
-        });
-        
-        document.getElementById('editCustomDaysGroup').style.display = 
-          sub.scheduleType === 'custom' ? 'block' : 'none';
-        
-        document.getElementById('editSubModal').classList.add('show');
-      } catch (e) {
-        showToast('加载失败', 'error');
-      }
-    }
-
-    async function updateSubscription() {
-      const id = document.getElementById('editSubId').value;
-      const name = document.getElementById('editSubName').value;
-      const signTime = document.getElementById('editSubTime').value;
-      const scheduleType = document.getElementById('editSubScheduleType').value;
-      const maxRetries = parseInt(document.getElementById('editSubMaxRetries').value);
-      
-      let customDays = [];
-      if (scheduleType === 'custom') {
-        document.querySelectorAll('#editWeekdaySelector .weekday-btn.selected').forEach(btn => {
-          customDays.push(parseInt(btn.dataset.day));
-        });
-      }
-      
-      try {
-        const res = await fetch(`${API_BASE}/subscriptions/${id}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ name, scheduleType, customDays, signTime, maxRetries })
-        });
-        
-        const data = await res.json();
-        if (data.success) {
-          showToast('更新成功', 'success');
-          closeEditModal();
-          loadSubscriptions();
-        } else {
-          showToast(data.message || '更新失败', 'error');
-        }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
-    }
-
+    
+    // 删除订阅
     async function deleteSubscription(id) {
       if (!confirm('确定删除这个订阅吗？')) return;
-      
       try {
         await fetch(`${API_BASE}/subscriptions/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        showToast('删除成功', 'success');
         loadSubscriptions();
         loadStats();
-      } catch (e) {
-        showToast('删除失败', 'error');
-      }
+      } catch (e) { alert('删除失败'); }
     }
-
-    function closeEditModal() {
-      document.getElementById('editSubModal').classList.remove('show');
-      editingSubId = null;
+    
+    // 编辑订阅（简化版，可自行扩展弹窗）
+    function editSubscription(id) {
+      alert('编辑功能开发中，请先删除后重新添加');
     }
-
-    // ============ 邮箱绑定 ============
+    
+    // 加载签到日志
+    async function loadLogs() {
+      try {
+        const res = await fetch(`${API_BASE}/sign/logs?limit=50`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const container = document.getElementById('logsList');
+        
+        if (!data.logs || data.logs.length === 0) {
+          container.innerHTML = '<p class="empty">暂无签到记录</p>';
+          return;
+        }
+        
+        container.innerHTML = data.logs.map(log => `
+          <div class="log-item">
+            <span class="${log.status === 'success' ? 'log-success' : 'log-failed'}">
+              ${log.status === 'success' ? '✅' : '❌'}
+            </span>
+            <div style="flex: 1;">
+              <strong>${log.subscriptionName || '手动签到'}</strong>
+              <span style="color: #999; margin-left: 10px;">${new Date(log.executedAt || log.signTime).toLocaleString('zh-CN')}</span>
+            </div>
+            <span style="color: #666; font-size: 13px;">${log.message || ''}</span>
+          </div>
+        `).join('');
+      } catch (e) { console.error('加载日志失败', e); }
+    }
+    
+    // 加载邮箱状态
     async function loadEmailStatus() {
+      await loadUserInfo();
       const container = document.getElementById('emailStatus');
       const form = document.getElementById('emailBindForm');
       
@@ -1383,13 +826,11 @@
         form.style.display = 'block';
       }
     }
-
+    
+    // 发送验证码
     async function sendEmailCode() {
       const email = document.getElementById('bindEmail').value;
-      if (!email) {
-        showToast('请输入邮箱', 'error');
-        return;
-      }
+      if (!email) { alert('请输入邮箱'); return; }
       
       const btn = document.getElementById('sendCodeBtn');
       btn.disabled = true;
@@ -1406,7 +847,7 @@
         
         const data = await res.json();
         if (data.success) {
-          showToast('验证码已发送', 'success');
+          alert('验证码已发送');
           if (data.debugCode) {
             document.getElementById('emailCode').value = data.debugCode;
           }
@@ -1422,23 +863,21 @@
             }
           }, 1000);
         } else {
-          showToast(data.message || '发送失败', 'error');
+          alert(data.message || '发送失败');
           btn.disabled = false;
         }
       } catch (e) {
-        showToast('网络错误', 'error');
+        alert('网络错误');
         btn.disabled = false;
       }
     }
-
+    
+    // 验证邮箱
     async function verifyEmail() {
       const email = document.getElementById('bindEmail').value;
       const code = document.getElementById('emailCode').value;
       
-      if (!email || !code) {
-        showToast('请填写邮箱和验证码', 'error');
-        return;
-      }
+      if (!email || !code) { alert('请填写邮箱和验证码'); return; }
       
       try {
         const res = await fetch(`${API_BASE}/email/verify`, {
@@ -1452,53 +891,105 @@
         
         const data = await res.json();
         if (data.success) {
-          showToast('邮箱绑定成功！VIP 已激活', 'success');
+          alert('邮箱绑定成功！VIP 已激活');
           await loadUserInfo();
           loadEmailStatus();
         } else {
-          showToast(data.message || '验证失败', 'error');
+          alert(data.message || '验证失败');
         }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+      } catch (e) { alert('网络错误'); }
     }
-
-    // ============ 签到日志 ============
-    async function loadLogs() {
+    
+    // 加载邀请信息
+    async function loadInviteInfo() {
       try {
-        const res = await fetch(`${API_BASE}/sign/logs?limit=50`, {
+        const res = await fetch(`${API_BASE}/invite/info`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
         
-        const container = document.getElementById('logsList');
-        if (!data.logs || data.logs.length === 0) {
-          container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>暂无签到记录</p></div>`;
-          return;
+        if (data.success) {
+          document.getElementById('inviteUrl').value = data.inviteUrl || '';
+          document.getElementById('inviteCode').value = data.inviteCode || '生成中...';
+          document.getElementById('inviteCount').textContent = data.inviteCount || 0;
+          document.getElementById('rewardDays').textContent = data.rewardDays || 10;
+          document.getElementById('bindRewardDays').textContent = data.rewardDays || 10;
+          
+          if (currentUser.invitedBy) {
+            const area = document.getElementById('bindInviteArea');
+            if (area) {
+              area.innerHTML = `
+                <div style="background: #d4edda; padding: 15px; border-radius: 10px; color: #155724; margin-bottom: 15px;">
+                  <i class="fas fa-check-circle"></i> 您已绑定邀请人
+                </div>
+              `;
+            }
+            const inputGroup = document.querySelector('#bindInviteCard .form-group');
+            if (inputGroup) inputGroup.style.display = 'none';
+          }
+          
+          const listEl = document.getElementById('invitedList');
+          if (data.invitedUsers && data.invitedUsers.length > 0) {
+            listEl.innerHTML = data.invitedUsers.map(u => `
+              <div style="padding: 12px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                <span><i class="fas fa-user" style="color: #667eea; margin-right: 8px;"></i>${u.name || u.studentId}</span>
+                <span style="color: #999; font-size: 12px;">${new Date(u.createdAt).toLocaleDateString()}</span>
+              </div>
+            `).join('');
+          } else {
+            listEl.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">暂无邀请记录，快去邀请好友吧！</p>';
+          }
         }
-        
-        container.innerHTML = data.logs.map(log => `
-          <div class="log-row">
-            <div class="log-status">
-              ${log.status === 'success' ? '<i class="fas fa-check-circle" style="color: #28a745;"></i>' : '<i class="fas fa-times-circle" style="color: #dc3545;"></i>'}
-            </div>
-            <div class="log-info">
-              <div class="log-name">${log.subscriptionName || '手动签到'}</div>
-              <div class="log-time">${formatDate(log.executedAt || log.signTime)}</div>
-            </div>
-            <div class="log-message">${log.message || (log.status === 'success' ? '签到成功' : '签到失败')}</div>
-          </div>
-        `).join('');
-      } catch (e) {
-        console.error('加载日志失败', e);
-      }
+      } catch (e) { console.error('加载邀请信息失败', e); }
     }
-
-    // ============ 个人中心 ============
+    
+    function copyInviteUrl() {
+      document.getElementById('inviteUrl').select();
+      document.execCommand('copy');
+      alert('邀请链接已复制');
+    }
+    
+    function copyInviteCode() {
+      document.getElementById('inviteCode').select();
+      document.execCommand('copy');
+      alert('邀请码已复制');
+    }
+    
+    async function applyInviteCode() {
+      const code = document.getElementById('inputInviteCode').value.trim().toUpperCase();
+      if (!code) { alert('请输入邀请码'); return; }
+      if (code.length !== 8) { alert('邀请码应为 8 位字符'); return; }
+      
+      try {
+        const res = await fetch(`${API_BASE}/invite/apply`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ inviteCode: code })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          alert(data.message);
+          await loadUserInfo();
+          loadInviteInfo();
+          loadStats();
+        } else {
+          alert(data.message);
+        }
+      } catch (e) { alert('绑定失败，请重试'); }
+    }
+    
+    // 加载个人资料
     async function loadProfile() {
+      await loadUserInfo();
       document.getElementById('profileStudentId').value = currentUser.studentId || '';
       document.getElementById('profileName').value = currentUser.name || '';
+      document.getElementById('profileAttendancePassword').value = currentUser.attendancePassword || attendancePassword;
       document.getElementById('profileEmail').value = currentUser.email || '未绑定';
+      document.getElementById('profileInviteCode').value = currentUser.inviteCode || '';
       
       let vipText = '免费用户';
       if (currentUser.isVip) {
@@ -1511,12 +1002,14 @@
       }
       document.getElementById('profileVip').value = vipText;
       
-      document.getElementById('statTotal').textContent = currentUser.totalSignCount || 0;
-      document.getElementById('statSuccess').textContent = currentUser.successSignCount || 0;
+      document.getElementById('profileTotalSigns').textContent = currentUser.totalSignCount || 0;
+      document.getElementById('profileSuccessSigns').textContent = currentUser.successSignCount || 0;
     }
-
+    
+    // 更新个人资料
     async function updateProfile() {
       const name = document.getElementById('profileName').value;
+      const attendancePassword = document.getElementById('profileAttendancePassword').value;
       
       try {
         const res = await fetch(`${API_BASE}/user/profile`, {
@@ -1525,55 +1018,77 @@
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ name })
+          body: JSON.stringify({ name, attendancePassword })
         });
         
         const data = await res.json();
         if (data.success) {
-          showToast('保存成功', 'success');
+          alert('保存成功');
           await loadUserInfo();
         } else {
-          showToast(data.message || '保存失败', 'error');
+          alert(data.message || '保存失败');
         }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+      } catch (e) { alert('网络错误'); }
     }
-
-    // ============ 退出登录 ============
+    
+    // 卡密兑换
+    async function redeemCode() {
+      const code = document.getElementById('redeemCode').value.trim().toUpperCase();
+      if (!code) { alert('请输入卡密'); return; }
+      
+      try {
+        const res = await fetch(`${API_BASE}/vip/redeem`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          alert(data.message);
+          document.getElementById('redeemCode').value = '';
+          await loadUserInfo();
+          loadStats();
+        } else {
+          alert(data.message || '兑换失败');
+        }
+      } catch (e) { alert('网络错误'); }
+    }
+    
+    // 加载用户信息
+    async function loadUserInfo() {
+      try {
+        const res = await fetch(`${API_BASE}/user/profile`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          currentUser = data.user;
+          localStorage.setItem('user', JSON.stringify(currentUser));
+          document.getElementById('userName').textContent = `${currentUser.name || currentUser.studentId} (${currentUser.studentId})`;
+          
+          const emailBadge = document.getElementById('emailBadge');
+          if (currentUser.emailVerified) {
+            emailBadge.style.background = '#28a745';
+            emailBadge.textContent = '✓';
+          }
+        }
+      } catch (e) { console.error('加载用户信息失败', e); }
+    }
+    
     function logout() {
       localStorage.clear();
       window.location.href = '/';
     }
-
-    // ============ 初始化 ============
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadUserInfo();
-      await loadStats();
-      
-      // 星期选择器事件
-      document.querySelectorAll('#weekdaySelector .weekday-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          this.classList.toggle('selected');
-        });
-      });
-      
-      // 订阅类型切换
-      document.getElementById('subScheduleType').addEventListener('change', function() {
-        document.getElementById('customDaysGroup').style.display = 
-          this.value === 'custom' ? 'block' : 'none';
-      });
-      
-      document.getElementById('editSubScheduleType').addEventListener('change', function() {
-        document.getElementById('editCustomDaysGroup').style.display = 
-          this.value === 'custom' ? 'block' : 'none';
-      });
-      
-      // 点击模态框外部关闭
-      document.getElementById('editSubModal').addEventListener('click', function(e) {
-        if (e.target === this) closeEditModal();
-      });
-    });
+    
+    // 初始化
+    loadUserInfo();
+    loadStats();
+    loadActiveSubscriptions();
+    loadNotice();
   </script>
 </body>
 </html>
