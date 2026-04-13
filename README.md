@@ -31,7 +31,7 @@
 ### 安装运行
 \`\`\`bash
 # 克隆项目
-git clone https://github.com/AG521521/attendance-api.git
+git clone https://github.com/AG521521/attendance-frontend.git
 cd attendance-api
 
 # 安装依赖
