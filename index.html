@@ -93,38 +93,62 @@
     .tips p {
       margin-bottom: 5px;
     }
+    .tips i {
+      color: #667eea;
+      margin-right: 5px;
+    }
     .footer {
       text-align: center;
       margin-top: 20px;
       color: #aaa;
       font-size: 12px;
     }
+    .invite-badge {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .invite-badge i {
+      margin-right: 5px;
+    }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div class="login-container">
     <div class="logo">
-      <h1>📋 智能考勤</h1>
+      <h1><i class="fas fa-robot"></i> 智能考勤</h1>
       <p>AG工作室 · 让签到更简单</p>
     </div>
     
+    <div id="inviteNotice" class="invite-badge" style="display: none;">
+      <i class="fas fa-gift"></i> 您正在通过邀请链接注册，绑定后双方各得 <span id="inviteRewardPreview">10</span> 天 VIP！
+    </div>
+    
     <div class="input-group">
-      <label>📱 学号</label>
+      <label><i class="fas fa-user-graduate"></i> 学号</label>
       <input type="text" id="studentId" placeholder="请输入学号" autocomplete="off">
     </div>
     
     <div class="input-group">
-      <label>🔐 考勤系统密码</label>
+      <label><i class="fas fa-lock"></i> 考勤系统密码</label>
       <input type="password" id="password" placeholder="考勤系统密码（默认 Ahgydx@920）" value="Ahgydx@920">
     </div>
     
-    <button class="btn" id="loginBtn" onclick="login()">登 录</button>
+    <button class="btn" id="loginBtn" onclick="login()">
+      <i class="fas fa-sign-in-alt"></i> 登 录
+    </button>
     
     <div class="tips">
-      <p>💡 提示：</p>
-      <p>• 输入学号即可登录，无需注册</p>
-      <p>• 密码用于自动签到，登录时不验证</p>
-      <p>• 登录后可在仪表盘订阅自动签到</p>
+      <p><i class="fas fa-lightbulb"></i> <strong>提示</strong></p>
+      <p><i class="fas fa-check-circle"></i> 输入学号即可登录，无需注册</p>
+      <p><i class="fas fa-key"></i> 密码用于自动签到，登录时不验证</p>
+      <p><i class="fas fa-gem"></i> 登录后绑定邮箱即送 30 天 VIP</p>
+      <p><i class="fas fa-gift"></i> 邀请好友注册，双方各得 10 天 VIP</p>
     </div>
     
     <div class="footer">
@@ -134,6 +158,24 @@
 
   <script>
     const API_BASE = 'https://api.agai.online/api';
+    
+    // 检查 URL 中的邀请码
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('invite');
+    
+    if (inviteCode) {
+      localStorage.setItem('pendingInviteCode', inviteCode.toUpperCase());
+      document.getElementById('inviteNotice').style.display = 'block';
+      
+      // 获取奖励天数
+      fetch(`${API_BASE}/admin/config`, {
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => res.json()).then(data => {
+        if (data.success && data.configs?.invite_reward_days) {
+          document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days;
+        }
+      }).catch(() => {});
+    }
     
     async function login() {
       const studentId = document.getElementById('studentId').value.trim();
@@ -146,7 +188,7 @@
       }
       
       btn.disabled = true;
-      btn.textContent = '登录中...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
       
       try {
         const res = await fetch(`${API_BASE}/login`, {
@@ -165,18 +207,50 @@
           localStorage.setItem('user', JSON.stringify(data.user));
           localStorage.setItem('attendancePassword', password || 'Ahgydx@920');
           
-          window.location.href = '/dashboard';
+          // 检查是否有待处理的邀请码
+          const pendingCode = localStorage.getItem('pendingInviteCode');
+          if (pendingCode) {
+            // 自动调用绑定接口
+            try {
+              const inviteRes = await fetch(`${API_BASE}/invite/apply`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${data.token}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ inviteCode: pendingCode })
+              });
+              
+              const inviteData = await inviteRes.json();
+              if (inviteData.success) {
+                console.log('✅ 邀请绑定成功:', inviteData.message);
+              }
+            } catch (e) {
+              console.error('邀请绑定失败:', e);
+            } finally {
+              localStorage.removeItem('pendingInviteCode');
+            }
+          }
+          
+          // 检查用户角色，管理员跳转到管理后台
+          if (data.user.role === 'admin') {
+            window.location.href = '/admin';
+          } else {
+            window.location.href = '/dashboard';
+          }
         } else {
           alert(data.message || '登录失败');
         }
       } catch (error) {
+        console.error('登录错误:', error);
         alert('网络错误，请重试');
       } finally {
         btn.disabled = false;
-        btn.textContent = '登 录';
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登 录';
       }
     }
     
+    // 回车登录
     document.getElementById('studentId').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') login();
     });
@@ -186,7 +260,7 @@
     });
     
     // 检查是否已登录
-    (function() {
+    (function checkLoginStatus() {
       const token = localStorage.getItem('token');
       if (token) {
         fetch(`${API_BASE}/user/profile`, {
@@ -195,10 +269,18 @@
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            window.location.href = '/dashboard';
+            if (data.user.role === 'admin') {
+              window.location.href = '/admin';
+            } else {
+              window.location.href = '/dashboard';
+            }
+          } else {
+            localStorage.clear();
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          localStorage.clear();
+        });
       }
     })();
   </script>
