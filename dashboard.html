@@ -244,7 +244,7 @@
             <i class="fas fa-tachometer-alt"></i> 仪表盘
           </li>
           <li class="menu-item" data-page="subscriptions">
-            <i class="fas fa-calendar-check"></i> 我的订阅
+            <i class="fas fa-calendar-check"></i> 签到模式
           </li>
           <li class="menu-item" data-page="email">
             <i class="fas fa-envelope"></i> 邮箱绑定
@@ -290,7 +290,7 @@
             </div>
             <div class="stat-card">
               <div class="stat-value" id="statActiveSubs">0</div>
-              <div class="stat-label">活跃订阅</div>
+              <div class="stat-label">我的签到</div>
             </div>
           </div>
 
@@ -304,20 +304,20 @@
           </div>
           
           <div class="card">
-            <h2><i class="fas fa-list-check"></i> 活跃订阅</h2>
+            <h2><i class="fas fa-list-check"></i> 我的签到</h2>
             <div id="activeSubscriptionsList">
               <p class="loading">加载中...</p>
             </div>
           </div>
         </div>
         
-        <!-- 订阅管理页面 -->
+        <!-- 签到管理页面 -->
         <div id="page-subscriptions" class="page hidden">
           <div class="card">
-            <h2><i class="fas fa-plus-circle"></i> 添加考勤订阅</h2>
+            <h2><i class="fas fa-plus-circle"></i> 添加考勤签到</h2>
             <div class="subscription-form">
               <div class="form-group">
-                <label>课程名称</label>
+                <label>任务名称</label>
                 <input type="text" id="courseName" placeholder="例如：晚寝签到" value="晚寝签到">
               </div>
               <div class="form-group">
@@ -352,11 +352,11 @@
               <label><input type="checkbox" id="notifyOnSuccess" checked> 签到成功时发送邮件通知</label>
               <label style="margin-left: 20px;"><input type="checkbox" id="notifyOnFailure" checked> 签到失败时发送邮件通知</label>
             </div>
-            <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加订阅</button>
+            <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加任务</button>
           </div>
           
           <div class="card">
-            <h2><i class="fas fa-list"></i> 我的订阅</h2>
+            <h2><i class="fas fa-list"></i> 我的签到</h2>
             <div id="subscriptionsList">
               <p class="loading">加载中...</p>
             </div>
@@ -662,7 +662,7 @@
           const container = document.getElementById('activeSubscriptionsList');
           
           if (activeSubs.length === 0) {
-            container.innerHTML = '<p class="empty">暂无活跃订阅</p>';
+            container.innerHTML = '<p class="empty">暂无活跃签到</p>';
             return;
           }
           
@@ -681,7 +681,7 @@
             `;
           }).join('');
         }
-      } catch (e) { console.error('加载活跃订阅失败', e); }
+      } catch (e) { console.error('加载签到任务失败', e); }
     }
     
     async function loadSubscriptions() {
@@ -693,7 +693,7 @@
         const container = document.getElementById('subscriptionsList');
         
         if (!data.subscriptions || data.subscriptions.length === 0) {
-          container.innerHTML = '<p class="empty">暂无订阅，请添加考勤订阅</p>';
+          container.innerHTML = '<p class="empty">暂无任务，请添加考勤签到任务</p>';
           return;
         }
         
@@ -723,7 +723,7 @@
             </div>
           `;
         }).join('');
-      } catch (e) { console.error('加载订阅失败', e); }
+      } catch (e) { console.error('加载任务失败', e); }
     }
     
     async function quickSign() {
@@ -792,7 +792,7 @@
         
         const data = await res.json();
         if (data.success) {
-          alert('订阅添加成功！');
+          alert('任务添加成功！');
           loadSubscriptions();
           loadStats();
         } else {
@@ -813,7 +813,7 @@
     }
     
     async function deleteSubscription(id) {
-      if (!confirm('确定删除这个订阅吗？')) return;
+      if (!confirm('确定删除这个任务吗？')) return;
       try {
         await fetch(`${API_BASE}/subscriptions/${id}`, {
           method: 'DELETE',
