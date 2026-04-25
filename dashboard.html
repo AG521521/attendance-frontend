@@ -621,13 +621,14 @@
         document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
         item.classList.add('active');
         
-        if (page === 'dashboard') { loadStats(); loadActiveSubscriptions(); loadNotice(); }
-        else if (page === 'subscriptions') loadSubscriptions();
-        else if (page === 'email') loadEmailStatus();
-        else if (page === 'invite') loadInviteInfo();
-        else if (page === 'feedback') loadMyFeedback();
-        else if (page === 'logs') loadLogs();
-        else if (page === 'profile') loadProfile();
+      if (page === 'dashboard') { loadStats(); loadActiveSubscriptions(); loadNotice(); }
+      else if (page === 'subscriptions') loadSubscriptions();
+      else if (page === 'email') loadEmailStatus();
+      else if (page === 'invite') loadInviteInfo();
+      else if (page === 'feedback') loadMyFeedback();
+      else if (page === 'buy') loadPackages();
+      else if (page === 'logs') loadLogs();
+      else if (page === 'profile') loadProfile();
       });
     });
     
@@ -1190,6 +1191,140 @@
     function closeFeedbackModal() {
       document.getElementById('feedbackDetailModal').classList.remove('show');
     }
+
+    // ============ 购买卡密功能 ============
+    let currentOrder = null;
+    let pollingTimer = null;
+    
+    async function loadPackages() {
+      try {
+        const res = await fetch(`${API_BASE}/payment/packages`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          const container = document.getElementById('packagesList');
+          container.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+              ${data.packages.map(pkg => `
+                <div style="border: 2px solid #e0e0e0; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s;" 
+                     onmouseover="this.style.borderColor='#667eea'; this.style.boxShadow='0 4px 12px rgba(102,126,234,0.2)'"
+                     onmouseout="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'"
+                     onclick="selectPackage(${pkg.days || 0}, ${pkg.times || 0}, ${pkg.price}, '${pkg.cardCategory || 'days'}')">
+                  <h3 style="margin-bottom: 10px;">${pkg.name}</h3>
+                  <p style="font-size: 28px; font-weight: 700; color: #f39c12; margin-bottom: 10px;">¥${pkg.price}</p>
+                  <p style="color: #888; font-size: 13px;">${pkg.description}</p>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      } catch (e) { console.error('加载套餐失败', e); }
+    }
+    
+    async function selectPackage(days, times, price, cardCategory) {
+      const label = cardCategory === 'times' ? `${times}次签到卡` : `${days}天VIP卡`;
+      if (!confirm(`确定购买 ${label}，支付 ¥${price} 吗？`)) return;
+      
+      try {
+        const body = cardCategory === 'times' 
+          ? { times, cardCategory }
+          : { days, cardCategory };
+        
+        const res = await fetch(`${API_BASE}/payment/create-order`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          currentOrder = data.order;
+          
+          document.getElementById('paymentArea').style.display = 'block';
+          document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
+          document.getElementById('qrCodeImage').src = data.order.qrCodeUrl;
+          document.getElementById('paymentResult').style.display = 'none';
+          
+          alert(`请使用微信/支付宝扫一扫支付 ¥${data.order.amount}。\n订单号：${data.order.orderNo}`);
+          
+          startPolling(data.order.orderNo);
+        } else {
+          alert(data.message || '创建订单失败');
+        }
+      } catch (e) { alert('网络错误'); }
+    }
+    
+    function startPolling(orderNo) {
+      if (pollingTimer) clearInterval(pollingTimer);
+      
+      pollingTimer = setInterval(async () => {
+        await checkPaymentStatus(orderNo);
+      }, 5000);
+    }
+    
+    async function checkPaymentStatus(orderNo) {
+      const orderNoToCheck = orderNo || currentOrder?.orderNo;
+      if (!orderNoToCheck) return;
+      
+      try {
+        const res = await fetch(`${API_BASE}/payment/order/${orderNoToCheck}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (data.success && data.order.status === 'paid') {
+          clearInterval(pollingTimer);
+          pollingTimer = null;
+          
+          document.getElementById('paymentResult').style.display = 'block';
+          
+          const label = data.order.cardCategory === 'times' 
+            ? `${data.order.times}次签到卡` 
+            : `${data.order.days}天VIP卡`;
+          
+          document.getElementById('paymentResult').innerHTML = `
+            <div style="background: #d4edda; padding: 30px; border-radius: 16px; text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 15px;">🎉</div>
+              <h3 style="color: #155724; margin-bottom: 15px;">支付成功！</h3>
+              <p style="margin-bottom: 20px;">您的卡密是：</p>
+              <div style="background: #fff; display: inline-block; padding: 15px 30px; border-radius: 12px; 
+                          font-size: 28px; font-weight: 700; color: #667eea; letter-spacing: 3px; 
+                          border: 2px dashed #667eea;">
+                ${data.cardCode || '加载中...'}
+              </div>
+              <p style="margin-top: 20px; color: #666;">
+                购买：${label} | 金额：¥${data.order.amount.toFixed(2)}
+              </p>
+              ${data.cardCode ? `
+              <button class="btn btn-primary" onclick="copyCardCode('${data.cardCode}')" style="margin-top: 15px;">
+                <i class="fas fa-copy"></i> 复制卡密
+              </button>` : ''}
+              <p style="margin-top: 10px; color: #888; font-size: 13px;">
+                卡密也可在个人中心手动兑换使用
+              </p>
+            </div>
+          `;
+          
+          document.getElementById('paymentArea').style.display = 'none';
+        }
+      } catch (e) { console.error('查询订单失败', e); }
+    }
+    
+    function copyCardCode(code) {
+      if (!code) return;
+      const input = document.createElement('input');
+      input.value = code;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      alert('卡密已复制到剪贴板！\n' + code);
+    }    
     
     async function loadProfile() {
       await loadUserInfo();
