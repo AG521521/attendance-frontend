@@ -256,6 +256,9 @@
           <li class="menu-item" data-page="feedback">
             <i class="fas fa-comment-dots"></i> 留言反馈
           </li>
+          <li class="menu-item" data-page="buy">
+            <i class="fas fa-shopping-cart"></i> 购买卡密
+          </li>          
           <li class="menu-item" data-page="logs">
             <i class="fas fa-history"></i> 签到日志
           </li>
@@ -484,7 +487,35 @@
             </div>
           </div>
         </div>
-        
+        <!-- 购买卡密页面 -->
+        <div id="page-buy" class="page hidden">
+          <div class="card">
+            <h2><i class="fas fa-shopping-cart"></i> 购买 VIP 卡密</h2>
+            <p style="color: #888; margin-bottom: 20px;">选择套餐，扫码支付后自动获得卡密</p>
+            
+            <div id="packagesList" class="loading">加载中...</div>
+            
+            <div id="paymentArea" style="display: none; text-align: center; margin-top: 30px;">
+              <h3 style="margin-bottom: 20px;">请扫码支付</h3>
+              <div style="border: 2px solid #667eea; border-radius: 16px; padding: 20px; display: inline-block;">
+                <img id="qrCodeImage" src="" alt="收款码" style="width: 250px; height: 250px; object-fit: contain;">
+              </div>
+              <p style="margin-top: 15px; font-size: 18px; font-weight: 600;">
+                支付金额：<span style="color: #f39c12;" id="paymentAmount">¥0.00</span>
+              </p>
+              <p style="color: #888; font-size: 13px; margin-top: 10px;">
+                <i class="fas fa-info-circle"></i> 支付完成后，卡密将自动显示在下方
+              </p>
+              <button class="btn btn-primary" onclick="checkPaymentStatus()" id="checkPaymentBtn" style="margin-top: 15px;">
+                <i class="fas fa-sync-alt"></i> 查询支付状态
+              </button>
+            </div>
+            
+            <div id="paymentResult" style="display: none; margin-top: 30px;">
+              <!-- 支付成功后显示卡密 -->
+            </div>
+          </div>
+        </div>        
         <!-- 签到日志页面 -->
         <div id="page-logs" class="page hidden">
           <div class="card">
@@ -494,7 +525,7 @@
             </div>
           </div>
         </div>
-        
+      
         <!-- 个人中心页面 -->
         <div id="page-profile" class="page hidden">
           <div class="card">
