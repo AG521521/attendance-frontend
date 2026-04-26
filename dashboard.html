@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>考勤控制面板 - agai.online</title>
@@ -605,6 +606,77 @@
   <script>
     const API_BASE = 'https://api.agai.online/api';
     const token = localStorage.getItem('token');
+    
+    // ============ WebSocket 实时推送 ============
+    let socket = null;
+    
+    function initWebSocket() {
+      if (socket) return;
+      
+      try {
+        socket = io(API_BASE.replace('/api', ''), {
+          transports: ['websocket', 'polling']
+        });
+        
+        socket.on('connect', () => {
+          console.log('🔌 WebSocket 已连接');
+          if (currentUser && currentUser.id) {
+            socket.emit('bindUser', currentUser.id);
+          }
+        });
+        
+        socket.on('paymentSuccess', (data) => {
+          console.log('💰 收到支付成功推送:', data);
+          
+          // 清除轮询
+          if (pollingTimer) {
+            clearInterval(pollingTimer);
+            pollingTimer = null;
+          }
+          
+          // 显示支付结果
+          document.getElementById('paymentResult').style.display = 'block';
+          
+          const label = data.cardCategory === 'times' 
+            ? `${data.times}次签到卡` 
+            : `${data.days}天VIP卡`;
+          
+          document.getElementById('paymentResult').innerHTML = `
+            <div style="background: #d4edda; padding: 30px; border-radius: 16px; text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 15px;">🎉</div>
+              <h3 style="color: #155724; margin-bottom: 15px;">支付成功！</h3>
+              <p style="margin-bottom: 20px;">您的卡密是：</p>
+              <div style="background: #fff; display: inline-block; padding: 15px 30px; border-radius: 12px; 
+                          font-size: 28px; font-weight: 700; color: #667eea; letter-spacing: 3px; 
+                          border: 2px dashed #667eea;">
+                ${data.cardCode}
+              </div>
+              <p style="margin-top: 20px; color: #666;">
+                购买：${label} | 金额：¥${data.amount.toFixed(2)}
+              </p>
+              <button class="btn btn-primary" onclick="copyCardCode('${data.cardCode}')" style="margin-top: 15px;">
+                <i class="fas fa-copy"></i> 复制卡密
+              </button>
+              <p style="margin-top: 10px; color: #888; font-size: 13px;">
+                卡密也可在个人中心手动兑换使用
+              </p>
+            </div>
+          `;
+          
+          document.getElementById('paymentArea').style.display = 'none';
+        });
+        
+        socket.on('disconnect', () => {
+          console.log('🔌 WebSocket 已断开');
+        });
+      } catch (e) {
+        console.error('WebSocket 连接失败:', e);
+      }
+    }
+    
+    // 页面加载时初始化 WebSocket
+    initWebSocket();
+    
     let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
     const attendancePassword = localStorage.getItem('attendancePassword') || 'Ahgydx@920';
     
@@ -1223,41 +1295,69 @@
       } catch (e) { console.error('加载套餐失败', e); }
     }
     
-    async function selectPackage(days, times, price, cardCategory) {
-      const label = cardCategory === 'times' ? `${times}次签到卡` : `${days}天VIP卡`;
-      if (!confirm(`确定购买 ${label}，支付 ¥${price} 吗？`)) return;
+  async function selectPackage(days, times, price, cardCategory) {
+    const label = cardCategory === 'times' ? `${times}次签到卡` : `${days}天VIP卡`;
+    
+    // 显示支付方式选择
+    showPaymentMethodModal(days, times, price, cardCategory, label);
+  }
+  
+  // 显示支付方式选择弹窗
+  function showPaymentMethodModal(days, times, price, cardCategory, label) {
+    const payMethod = confirm(
+      `【购买 ${label}】\n金额：¥${price.toFixed(2)}（实际金额会有微小浮动）\n\n点击"确定"使用微信支付\n点击"取消"使用支付宝支付`
+    );
+    
+    const method = payMethod ? 'wechat' : 'alipay';
+    const methodName = method === 'wechat' ? '微信' : '支付宝';
+    
+    if (!confirm(`确认使用【${methodName}】支付？\n金额：¥${price.toFixed(2)}（实际金额以二维码为准）`)) return;
+    
+    createPaymentOrder(days, times, cardCategory, method);
+  }
+  
+  // 创建支付订单
+  async function createPaymentOrder(days, times, cardCategory, payMethod) {
+    try {
+      const body = cardCategory === 'times' 
+        ? { times, cardCategory, payMethod }
+        : { days, cardCategory, payMethod };
       
-      try {
-        const body = cardCategory === 'times' 
-          ? { times, cardCategory }
-          : { days, cardCategory };
+      const res = await fetch(`${API_BASE}/payment/create-order`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        currentOrder = data.order;
         
-        const res = await fetch(`${API_BASE}/payment/create-order`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(body)
-        });
+        const methodName = payMethod === 'wechat' ? '微信' : '支付宝';
+        const qrUrl = payMethod === 'wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
         
-        const data = await res.json();
-        if (data.success) {
-          currentOrder = data.order;
-          
-          document.getElementById('paymentArea').style.display = 'block';
-          document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
-          document.getElementById('qrCodeImage').src = data.order.qrCodeUrl;
-          document.getElementById('paymentResult').style.display = 'none';
-          
-          alert(`请使用微信/支付宝扫一扫支付 ¥${data.order.amount}。\n订单号：${data.order.orderNo}`);
-          
-          startPolling(data.order.orderNo);
-        } else {
-          alert(data.message || '创建订单失败');
-        }
-      } catch (e) { alert('网络错误'); }
-    }
+        document.getElementById('paymentArea').style.display = 'block';
+        document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
+        document.getElementById('qrCodeImage').src = qrUrl;
+        document.getElementById('paymentResult').style.display = 'none';
+        
+        document.getElementById('paymentArea').querySelector('h3').textContent = 
+          `请使用【${methodName}】扫码支付`;
+        
+        alert(
+          `请使用【${methodName}】扫一扫支付\n` +
+          `金额：¥${data.order.amount.toFixed(2)}\n` +
+          `订单号：${data.order.orderNo}\n\n` +
+          `⚠️ 注意：实际支付金额必须为 ¥${data.order.amount.toFixed(2)}，否则无法自动匹配！`
+        );
+      } else {
+        alert(data.message || '创建订单失败');
+      }
+    } catch (e) { alert('网络错误'); }
+  }
     
     function startPolling(orderNo) {
       if (pollingTimer) clearInterval(pollingTimer);
@@ -1407,6 +1507,10 @@
         const data = await res.json();
         if (data.success) {
           currentUser = data.user;
+          // 绑定 WebSocket 用户
+          if (socket && socket.connected && currentUser.id) {
+            socket.emit('bindUser', currentUser.id);
+          }
           localStorage.setItem('user', JSON.stringify(currentUser));
           document.getElementById('userName').textContent = `${currentUser.name || currentUser.studentId} (${currentUser.studentId})`;
           
