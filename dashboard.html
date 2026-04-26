@@ -1279,16 +1279,26 @@
           const container = document.getElementById('packagesList');
           container.innerHTML = `
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-              ${data.packages.map(pkg => `
+              ${data.packages.map(pkg => {
+                // 判断是天数卡还是次数卡
+                const isTimesCard = pkg.cardCategory === 'times';
+                const label = isTimesCard ? `${pkg.times}次签到卡` : `${pkg.days}天VIP卡`;
+                const badge = isTimesCard 
+                  ? '<span style="background:#17a2b8;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">次数卡</span>'
+                  : '<span style="background:#667eea;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">天数卡</span>';
+                
+                return `
                 <div style="border: 2px solid #e0e0e0; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s;" 
                      onmouseover="this.style.borderColor='#667eea'; this.style.boxShadow='0 4px 12px rgba(102,126,234,0.2)'"
                      onmouseout="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'"
                      onclick="selectPackage(${pkg.days || 0}, ${pkg.times || 0}, ${pkg.price}, '${pkg.cardCategory || 'days'}')">
+                  <div style="margin-bottom: 10px;">${badge}</div>
                   <h3 style="margin-bottom: 10px;">${pkg.name}</h3>
                   <p style="font-size: 28px; font-weight: 700; color: #f39c12; margin-bottom: 10px;">¥${pkg.price}</p>
                   <p style="color: #888; font-size: 13px;">${pkg.description}</p>
                 </div>
-              `).join('')}
+                `;
+              }).join('')}
             </div>
           `;
         }
@@ -1303,18 +1313,21 @@
   }
   
   // 显示支付方式选择弹窗
-  function showPaymentMethodModal(days, times, price, cardCategory, label) {
-    const payMethod = confirm(
-      `【购买 ${label}】\n金额：¥${price.toFixed(2)}（实际金额会有微小浮动）\n\n点击"确定"使用微信支付\n点击"取消"使用支付宝支付`
-    );
-    
-    const method = payMethod ? 'wechat' : 'alipay';
-    const methodName = method === 'wechat' ? '微信' : '支付宝';
-    
-    if (!confirm(`确认使用【${methodName}】支付？\n金额：¥${price.toFixed(2)}（实际金额以二维码为准）`)) return;
-    
-    createPaymentOrder(days, times, cardCategory, method);
-  }
+function showPaymentMethodModal(days, times, price, cardCategory, label) {
+  // 根据类别显示不同的标签
+  const cardLabel = cardCategory === 'times' ? `${times}次签到卡` : `${days}天VIP卡`;
+  
+  const payMethod = confirm(
+    `【购买 ${cardLabel}】\n金额：¥${price}（实际金额会有微小浮动）\n\n点击"确定"使用微信支付\n点击"取消"使用支付宝支付`
+  );
+  
+  const method = payMethod ? 'wechat' : 'alipay';
+  const methodName = method === 'wechat' ? '微信' : '支付宝';
+  
+  if (!confirm(`确认使用【${methodName}】支付 ¥${price}？\n\n实际金额以二维码为准`)) return;
+  
+  createPaymentOrder(days, times, cardCategory, method);
+}
   
   // 创建支付订单
   async function createPaymentOrder(days, times, cardCategory, payMethod) {
@@ -1339,6 +1352,11 @@
         const methodName = payMethod === 'wechat' ? '微信' : '支付宝';
         const qrUrl = payMethod === 'wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
         
+        // 判断是天数卡还是次数卡
+        const cardLabel = data.order.cardCategory === 'times' 
+          ? `${data.order.times}次签到卡` 
+          : `${data.order.days}天VIP卡`;
+        
         document.getElementById('paymentArea').style.display = 'block';
         document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
         document.getElementById('qrCodeImage').src = qrUrl;
@@ -1348,10 +1366,16 @@
           `请使用【${methodName}】扫码支付`;
         
         alert(
-          `请使用【${methodName}】扫一扫支付\n` +
-          `金额：¥${data.order.amount.toFixed(2)}\n` +
-          `订单号：${data.order.orderNo}\n\n` +
-          `⚠️ 注意：实际支付金额必须为 ¥${data.order.amount.toFixed(2)}，否则无法自动匹配！`
+          `【支付说明】\n\n` +
+          `套餐：${cardLabel}\n` +
+          `支付方式：${methodName}\n` +
+          `应付金额：¥${data.order.amount.toFixed(2)}\n\n` +
+          `1. 使用【${methodName}】扫描二维码\n` +
+          `2. 输入金额：¥${data.order.amount.toFixed(2)}\n` +
+          `3. 确认支付\n\n` +
+          `⚠️ 重要：金额必须精确为 ¥${data.order.amount.toFixed(2)}\n` +
+          `如果金额不对，系统无法自动匹配！\n\n` +
+          `订单号：${data.order.orderNo}`
         );
       } else {
         alert(data.message || '创建订单失败');
