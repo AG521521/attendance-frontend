@@ -392,6 +392,29 @@
                 <i class="fas fa-gem"></i> 绑定邮箱后自动获得 30 天 VIP，享受签到邮件通知特权
               </p>
             </div>
+            <!-- 换绑邮箱区域（已绑定邮箱时显示） -->
+        <div id="rebindArea" style="display: none; margin-top: 30px;">
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+          <h3 style="margin-bottom: 15px; color: #555;">
+            <i class="fas fa-exchange-alt"></i> 更换绑定邮箱
+          </h3>
+          <div class="form-group">
+            <label>新邮箱地址</label>
+            <input type="email" id="rebindEmail" placeholder="请输入新的邮箱地址" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="rebindCode" placeholder="验证码" style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
+            <button id="rebindSendBtn" onclick="sendRebindCode()" style="padding: 12px 24px; background: #667eea; color: #fff; border: none; border-radius: 10px; cursor: pointer;">
+              发送验证码
+            </button>
+          </div>
+          <button onclick="rebindEmail()" style="margin-top: 15px; padding: 12px 24px; background: #f39c12; color: #fff; border: none; border-radius: 10px; cursor: pointer; width: 100%;">
+            <i class="fas fa-exchange-alt"></i> 确认换绑
+          </button>
+          <p style="margin-top: 16px; color: #888; font-size: 13px;">
+            <i class="fas fa-info-circle"></i> 换绑后，签到通知将发送到新邮箱
+          </p>
+        </div>
           </div>
         </div>
         
@@ -966,15 +989,17 @@
       await loadUserInfo();
       const container = document.getElementById('emailStatus');
       const form = document.getElementById('emailBindForm');
+      const rebindArea = document.getElementById('rebindArea');
       
       if (currentUser.emailVerified) {
         container.innerHTML = `
           <div style="background: #d4edda; padding: 20px; border-radius: 14px; margin-bottom: 20px;">
             <p><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>邮箱已绑定</strong></p>
-            <p style="margin-top: 8px;">${currentUser.email}</p>
+            <p style="margin-top: 8px;">当前邮箱：${currentUser.email}</p>
           </div>
         `;
         form.style.display = 'none';
+        rebindArea.style.display = 'block';  // ← 显示换绑区域
       } else {
         container.innerHTML = `
           <div style="background: #fff3cd; padding: 20px; border-radius: 14px; margin-bottom: 20px;">
@@ -983,14 +1008,22 @@
           </div>
         `;
         form.style.display = 'block';
+        rebindArea.style.display = 'none';  // ← 隐藏换绑区域
       }
     }
     
-    async function sendEmailCode() {
-      const email = document.getElementById('bindEmail').value;
-      if (!email) { alert('请输入邮箱'); return; }
+       // 发送换绑验证码
+    async function sendRebindCode() {
+      const email = document.getElementById('rebindEmail').value;
+      if (!email) { alert('请输入新邮箱地址'); return; }
       
-      const btn = document.getElementById('sendCodeBtn');
+      // 检查是否和当前邮箱相同
+      if (email === currentUser.email) {
+        alert('新邮箱不能和当前邮箱相同');
+        return;
+      }
+      
+      const btn = document.getElementById('rebindSendBtn');
       btn.disabled = true;
       
       try {
@@ -1005,9 +1038,9 @@
         
         const data = await res.json();
         if (data.success) {
-          alert('验证码已发送');
+          alert('验证码已发送到新邮箱');
           if (data.debugCode) {
-            document.getElementById('emailCode').value = data.debugCode;
+            document.getElementById('rebindCode').value = data.debugCode;
           }
           
           let countdown = 60;
@@ -1028,6 +1061,36 @@
         alert('网络错误');
         btn.disabled = false;
       }
+    }
+    
+    // 确认换绑
+    async function rebindEmail() {
+      const email = document.getElementById('rebindEmail').value;
+      const code = document.getElementById('rebindCode').value;
+      
+      if (!email || !code) { alert('请填写新邮箱和验证码'); return; }
+      
+      try {
+        const res = await fetch(`${API_BASE}/email/rebind`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, code })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          alert('邮箱换绑成功！');
+          document.getElementById('rebindEmail').value = '';
+          document.getElementById('rebindCode').value = '';
+          await loadUserInfo();
+          loadEmailStatus();
+        } else {
+          alert(data.message || '换绑失败');
+        }
+      } catch (e) { alert('网络错误'); }
     }
     
     async function verifyEmail() {
@@ -1055,6 +1118,7 @@
           alert(data.message || '验证失败');
         }
       } catch (e) { alert('网络错误'); }
+      
     }
     
     async function loadInviteInfo() {
