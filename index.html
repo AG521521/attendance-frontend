@@ -328,14 +328,17 @@
           建议金额：<strong>¥9.99</strong> 随缘赞助，多少都是心意 ❤️）
         </div>
         
+        <!-- ========== 收款码（点击放大） ========== -->
         <div class="qr-codes">
-          <div class="qr-item">
+          <div class="qr-item" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信收款码')">
             <img src="https://login.agai.online/vxcode.png" alt="微信收款码">
             <p>微信支付</p>
+            <small style="color: #aaa;">点击放大</small>
           </div>
-          <div class="qr-item">
+          <div class="qr-item" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝收款码')">
             <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码">
             <p>支付宝支付</p>
+            <small style="color: #aaa;">点击放大</small>
           </div>
         </div>
         
@@ -377,6 +380,25 @@
         arrow.classList.add('fa-chevron-up');
       }
     }
+          // ========== 收款码放大 ==========
+      function openQRModal(imgSrc, title) {
+        document.getElementById('qrModalImage').src = imgSrc;
+        document.getElementById('qrModalTitle').textContent = title;
+        document.getElementById('qrModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeQRModal() {
+        document.getElementById('qrModal').style.display = 'none';
+        document.body.style.overflow = '';
+      }
+      
+      // 点击 ESC 关闭弹窗
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeQRModal();
+        }
+      });
     
     // 检查 URL 中的邀请码
     const urlParams = new URLSearchParams(window.location.search);
@@ -494,5 +516,12 @@
       }
     })();
   </script>
+  <!-- ========== 收款码放大弹窗 ========== -->
+<div id="qrModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;" onclick="closeQRModal()">
+  <span style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 36px; cursor: pointer;" onclick="closeQRModal()">&times;</span>
+  <h3 id="qrModalTitle" style="color: #fff; margin-bottom: 20px; font-size: 18px;"></h3>
+  <img id="qrModalImage" src="" alt="" style="max-width: 90%; max-height: 70vh; border-radius: 16px; background: #fff; padding: 12px; cursor: pointer;" onclick="event.stopPropagation()">
+  <p style="color: #aaa; margin-top: 15px; font-size: 13px;">💡 长按图片即可保存到相册</p>
+</div>
 </body>
 </html>
