@@ -714,7 +714,7 @@
                 ${data.users.map(u => `
                   <tr>
                     <td>${u.studentId}</td>
-                    <td>${u.name || '-'}</td>
+                    <td>${(u.name && u.name !== u.studentId) ? u.name : '未实名'}</td>
                     <td>${u.email || '-'} ${u.emailVerified ? '✓' : ''}</td>
                     <td>
                       ${u.isVip ? 
