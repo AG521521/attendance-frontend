@@ -2,430 +2,425 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AG工作室 - 考勤控制面板</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AG工作室 - 控制面板</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    :root {
+      --brand: #667eea;
+      --brand-dark: #5a6fd6;
+      --bg: #f5f7fa;
+      --card: #fff;
+      --text: #333;
+      --text-secondary: #888;
+      --border: #e8ecf1;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #f39c12;
+      --info: #17a2b8;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.06);
+      --transition: 0.2s;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f7fa;
+      background: var(--bg);
       min-height: 100vh;
+      color: var(--text);
     }
     .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px 30px;
+      background: var(--brand);
+      color: #fff;
+      padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .header h1 { font-size: 24px; }
-    .user-info { display: flex; align-items: center; gap: 15px; }
-    .logout-btn {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .logout-btn:hover { background: rgba(255,255,255,0.3); }
-    .container {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    .card h2 {
-      margin-bottom: 20px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .header h1 { font-size: 22px; }
+    .user-info { display: flex; align-items: center; gap: 12px; }
+    .user-info span { font-size: 14px; opacity: 0.9; }
     .btn {
-      padding: 12px 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition);
+      white-space: nowrap;
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
     }
-    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-    .btn-success { background: #28a745; color: white; }
-    .btn-danger { background: #dc3545; color: white; }
-    .btn-outline { background: white; border: 1px solid #ddd; color: #666; }
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-    .subscription-form {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-group label { font-weight: 500; color: #666; font-size: 14px; }
-    .form-group input, .form-group select {
-      padding: 10px 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-    .subscription-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      border: 1px solid #eee;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    .subscription-info h4 { margin-bottom: 5px; }
-    .subscription-info p { color: #888; font-size: 13px; }
-    .subscription-actions { display: flex; gap: 8px; }
-    .status-badge {
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-    .status-enabled { background: #d4edda; color: #155724; }
-    .status-disabled { background: #f8d7da; color: #721c24; }
-    .log-item {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .log-success { color: #28a745; }
-    .log-failed { color: #dc3545; }
-    .weekday-selector { display: flex; gap: 5px; flex-wrap: wrap; }
-    .weekday-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid #ddd;
-      background: white;
-      cursor: pointer;
-    }
-    .weekday-btn.selected {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
-    }
-    .loading { color: #999; text-align: center; padding: 20px; }
-    .empty { color: #999; text-align: center; padding: 30px; }
-    .dashboard-layout { display: flex; min-height: calc(100vh - 80px); }
+    .btn-primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
+    .btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .btn-outline { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+    .layout { display: flex; gap: 24px; }
     .sidebar {
-      width: 260px;
-      background: white;
-      border-radius: 16px;
-      padding: 20px 0;
-      margin-right: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      width: 240px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 8px 0;
       height: fit-content;
+      position: sticky;
+      top: 24px;
+      flex-shrink: 0;
     }
     .sidebar-menu { list-style: none; }
     .menu-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 24px;
-      color: #666;
+      gap: 10px;
+      padding: 12px 20px;
+      color: var(--text-secondary);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition);
       border-left: 3px solid transparent;
+      font-size: 14px;
     }
-    .menu-item i { width: 24px; font-size: 18px; }
-    .menu-item:hover { background: #f5f7fa; color: #667eea; }
+    .menu-item i { width: 20px; font-size: 16px; text-align: center; }
+    .menu-item:hover { background: var(--bg); color: var(--brand); }
     .menu-item.active {
-      background: linear-gradient(90deg, #667eea10 0%, transparent 100%);
-      color: #667eea;
-      border-left-color: #667eea;
+      background: linear-gradient(90deg, rgba(102,126,234,0.08) 0%, transparent 100%);
+      color: var(--brand);
+      border-left-color: var(--brand);
+      font-weight: 500;
     }
-    .content-area { flex: 1; }
-    .page { display: block; }
-    .page.hidden { display: none; }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+    .content { flex: 1; min-width: 0; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
     }
-    .stat-card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .stat-value { font-size: 28px; font-weight: 700; color: #1a1a2e; }
-    .stat-label { color: #888; font-size: 13px; margin-top: 4px; }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal.show { display: flex; }
-    .modal-content {
-      background: #fff;
-      border-radius: 24px;
-      padding: 32px;
+    .card h2 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .card h3 { font-size: 16px; margin-bottom: 12px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .stat-card { background: var(--card); padding: 18px; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; }
+    .stat-value { font-size: 26px; font-weight: 700; }
+    .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px; color: var(--text); }
+    .form-group input, .form-group select, .form-group textarea {
       width: 100%;
-      max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border var(--transition);
+      background: #fff;
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
     }
-    .modal-close { font-size: 28px; cursor: pointer; color: #aaa; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .weekday-selector { display: flex; gap: 6px; flex-wrap: wrap; }
+    .weekday-btn {
+      width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--border);
+      background: #fff; cursor: pointer; font-size: 13px; transition: var(--transition);
+    }
+    .weekday-btn.selected { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+    .list-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .list-item h4 { font-size: 15px; margin-bottom: 4px; }
+    .list-item p { font-size: 13px; color: var(--text-secondary); }
+    .badge {
+      display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    }
+    .badge-success { background: #d4edda; color: #155724; }
+    .badge-danger { background: #f8d7da; color: #721c24; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .badge-info { background: #d1ecf1; color: #0c5460; }
+
+    .log-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .log-row .status { font-size: 18px; width: 30px; }
+    .log-row .detail { flex: 1; }
+    .log-row .detail .title { font-weight: 500; }
+    .log-row .detail .time { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .log-row .msg { font-size: 13px; color: var(--text-secondary); max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
     .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #1a1a2e;
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: 12px;
-      z-index: 2000;
-      display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a1a2e; color: #fff; padding: 12px 24px; border-radius: 10px;
+      z-index: 2000; font-size: 14px; display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      white-space: nowrap;
     }
-    .toast.success { background: #28a745; }
-    .toast.error { background: #dc3545; }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
     .toast.info { background: #1a1a2e; }
-    @media (max-width: 900px) {
-      .header { padding: 16px 18px; align-items: flex-start; gap: 12px; flex-direction: column; }
-      .header h1 { font-size: 20px; }
-      .container { margin: 18px auto; padding: 0 14px; }
-      .dashboard-layout { display: block; min-height: auto; }
-      .sidebar { width: 100%; margin: 0 0 16px; padding: 8px; overflow-x: auto; border-radius: 12px; }
-      .sidebar-menu { display: flex; min-width: max-content; }
-      .menu-item { border-left: 0; border-bottom: 3px solid transparent; padding: 12px 14px; white-space: nowrap; }
-      .menu-item.active { border-left-color: transparent; border-bottom-color: #667eea; }
-      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .subscription-item { align-items: flex-start; flex-direction: column; gap: 12px; }
-      .subscription-actions { width: 100%; flex-wrap: wrap; }
-      .card { padding: 18px; border-radius: 12px; }
-      .modal-content { max-width: calc(100vw - 28px); padding: 22px; border-radius: 16px; }
-      .toast { left: 16px; right: 16px; bottom: 18px; text-align: center; }
+    .toast.show { display: block; animation: toastIn 0.3s; }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+    .invite-box { text-align: center; padding: 10px 0; }
+    .invite-code-display {
+      font-size: 28px; font-weight: 700; letter-spacing: 6px; background: var(--bg);
+      padding: 14px 24px; border-radius: 10px; display: inline-block; margin: 8px 0;
+      user-select: all; cursor: pointer;
     }
-    @media (max-width: 520px) {
+    .copy-btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+
+    .empty { text-align: center; padding: 30px; color: var(--text-secondary); }
+    .loading { text-align: center; padding: 20px; color: var(--text-secondary); }
+
+    .hidden { display: none !important; }
+
+    /* 移动端 */
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar {
+        width: 100%; position: static; border-radius: var(--radius);
+        padding: 4px 0; overflow-x: auto;
+      }
+      .sidebar-menu { display: flex; min-width: max-content; }
+      .menu-item {
+        border-left: none; border-bottom: 3px solid transparent;
+        padding: 10px 14px; white-space: nowrap; font-size: 13px;
+      }
+      .menu-item.active { border-left-color: transparent; border-bottom-color: var(--brand); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+      .card { padding: 14px 16px; }
+      .header { padding: 12px 16px; }
+      .header h1 { font-size: 18px; }
+      .list-item { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 400px) {
       .stats-grid { grid-template-columns: 1fr; }
-      .subscription-form { grid-template-columns: 1fr; }
-      .user-info { width: 100%; justify-content: space-between; }
-      .btn { width: 100%; justify-content: center; }
-      #signResult { display: block; margin: 12px 0 0 !important; }
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div class="header">
-    <h1><i class="fas fa-robot"></i> 智能考勤控制面板</h1>
+    <h1><i class="fas fa-robot"></i> 控制面板</h1>
     <div class="user-info">
       <span id="userName">加载中...</span>
-      <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
+      <button class="btn btn-sm" onclick="logout()" style="background:rgba(255,255,255,0.15);color:#fff;border:none;"><i class="fas fa-sign-out-alt"></i> 退出</button>
     </div>
   </div>
+
   <div class="container">
-    <div class="dashboard-layout">
+    <div class="layout">
+      <!-- 侧栏 -->
       <div class="sidebar">
         <ul class="sidebar-menu">
-          <li class="menu-item active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</li>
-          <li class="menu-item" data-page="subscriptions"><i class="fas fa-calendar-check"></i> 签到模式</li>
-          <li class="menu-item" data-page="email"><i class="fas fa-envelope"></i> 邮箱绑定 <span id="emailBadge" style="margin-left: auto; font-size: 10px; background: #f39c12; padding: 2px 6px; border-radius: 10px; color: white;">VIP</span></li>
-          <li class="menu-item" data-page="invite"><i class="fas fa-gift"></i> 邀请好友</li>
-          <li class="menu-item" data-page="feedback"><i class="fas fa-comment-dots"></i> 留言反馈</li>
-          <li class="menu-item" data-page="buy"><i class="fas fa-shopping-cart"></i> 购买卡密</li>
-          <li class="menu-item" data-page="logs"><i class="fas fa-history"></i> 签到日志</li>
-          <li class="menu-item" data-page="profile"><i class="fas fa-user-cog"></i> 个人中心</li>
+          <li class="menu-item active" data-page="dashboard"><i class="fas fa-home"></i> 首页</li>
+          <li class="menu-item" data-page="subscriptions"><i class="fas fa-calendar-check"></i> 签到任务</li>
+          <li class="menu-item" data-page="email"><i class="fas fa-envelope"></i> 邮箱</li>
+          <li class="menu-item" data-page="invite"><i class="fas fa-gift"></i> 邀请</li>
+          <li class="menu-item" data-page="feedback"><i class="fas fa-comment"></i> 留言</li>
+          <li class="menu-item" data-page="buy"><i class="fas fa-shopping-cart"></i> 购买</li>
+          <li class="menu-item" data-page="logs"><i class="fas fa-history"></i> 记录</li>
+          <li class="menu-item" data-page="profile"><i class="fas fa-user"></i> 我的</li>
         </ul>
       </div>
-      <div class="content-area">
-        <!-- 仪表盘 -->
-        <div id="page-dashboard" class="page">
-          <div class="card" id="noticeCard" style="display: none;">
-            <h2 id="noticeTitle"><i class="fas fa-bullhorn"></i> 系统公告</h2>
-            <div id="noticeContent"></div>
-          </div>
+      <!-- 内容 -->
+      <div class="content">
+        <!-- 首页 -->
+        <div id="page-dashboard" class="page active">
+          <div id="noticeCard" class="card hidden"><h2 id="noticeTitle"></h2><div id="noticeContent"></div></div>
           <div class="stats-grid">
-            <div class="stat-card"><div class="stat-value" id="statTotalSigns">0</div><div class="stat-label">累计签到</div></div>
-            <div class="stat-card"><div class="stat-value" id="statSuccessSigns">0</div><div class="stat-label">成功签到</div></div>
-            <div class="stat-card"><div class="stat-value" id="statTodaySigns">0</div><div class="stat-label">今日签到</div></div>
-            <div class="stat-card"><div class="stat-value" id="statActiveSubs">0</div><div class="stat-label">我的签到</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTotalSigns">0</div><div class="stat-label">累计</div></div>
+            <div class="stat-card"><div class="stat-value" id="statSuccessSigns">0</div><div class="stat-label">成功</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTodaySigns">0</div><div class="stat-label">今日</div></div>
+            <div class="stat-card"><div class="stat-value" id="statActiveSubs">0</div><div class="stat-label">任务</div></div>
           </div>
           <div class="card">
-            <h2><i class="fas fa-bolt" style="color: #f39c12;"></i> 快速签到</h2>
+            <h2><i class="fas fa-bolt" style="color:var(--warning);"></i> 快速签到</h2>
             <button class="btn btn-success" onclick="quickSign()" id="quickSignBtn"><i class="fas fa-pen"></i> 立即签到</button>
-            <span id="signResult" style="margin-left: 15px;"></span>
+            <span id="signResult" style="margin-left:12px;"></span>
           </div>
-          <div class="card">
-            <h2><i class="fas fa-list-check"></i> 我的签到</h2>
-            <div id="activeSubscriptionsList"><p class="loading">加载中...</p></div>
-          </div>
+          <div class="card"><h2><i class="fas fa-list-check"></i> 活跃任务</h2><div id="activeSubscriptionsList"><p class="loading">加载中...</p></div></div>
         </div>
-        <!-- 签到管理 -->
-        <div id="page-subscriptions" class="page hidden">
+
+        <!-- 签到任务 -->
+        <div id="page-subscriptions" class="page">
           <div class="card">
-            <h2><i class="fas fa-plus-circle"></i> 添加考勤签到</h2>
-            <div class="subscription-form">
-              <div class="form-group"><label>任务名称</label><input type="text" id="courseName" value="晚寝签到"></div>
-              <div class="form-group"><label>签到时间</label><input type="time" id="signTime" value="21:25"></div>
-              <div class="form-group"><label>最大重试次数</label><input type="number" id="maxRetries" value="3" min="1" max="5"></div>
+            <h2><i class="fas fa-plus-circle"></i> 新建任务</h2>
+            <div class="form-row">
+              <div class="form-group"><label>名称</label><input type="text" id="courseName" value="晚寝签到"></div>
+              <div class="form-group"><label>时间</label><input type="time" id="signTime" value="21:25"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>重试次数</label><input type="number" id="maxRetries" value="3" min="1" max="5"></div>
               <div class="form-group"><label>自动签到</label><select id="autoSign"><option value="true">✅ 开启</option><option value="false">❌ 关闭</option></select></div>
             </div>
-            <div class="form-group" style="margin-bottom:15px;">
-              <label>签到日期（可多选）</label>
-              <div class="weekday-selector" id="weekdaySelector">
-                <button class="weekday-btn selected" data-day="1">一</button>
-                <button class="weekday-btn selected" data-day="2">二</button>
-                <button class="weekday-btn selected" data-day="3">三</button>
-                <button class="weekday-btn selected" data-day="4">四</button>
-                <button class="weekday-btn selected" data-day="5">五</button>
-                <button class="weekday-btn" data-day="6">六</button>
-                <button class="weekday-btn" data-day="0">日</button>
-              </div>
-            </div>
-            <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加任务</button>
+            <div class="form-group"><label>重复日期</label><div class="weekday-selector" id="weekdaySelector"><button class="weekday-btn selected" data-day="1">一</button><button class="weekday-btn selected" data-day="2">二</button><button class="weekday-btn selected" data-day="3">三</button><button class="weekday-btn selected" data-day="4">四</button><button class="weekday-btn selected" data-day="5">五</button><button class="weekday-btn" data-day="6">六</button><button class="weekday-btn" data-day="0">日</button></div></div>
+            <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加</button>
           </div>
-          <div class="card">
-            <h2><i class="fas fa-list"></i> 我的签到</h2>
-            <div id="subscriptionsList"><p class="loading">加载中...</p></div>
-          </div>
+          <div class="card"><h2><i class="fas fa-list"></i> 任务列表</h2><div id="subscriptionsList"><p class="loading">加载中...</p></div></div>
         </div>
-        <!-- 邮箱绑定 -->
-        <div id="page-email" class="page hidden">
+
+        <!-- 邮箱 -->
+        <div id="page-email" class="page">
           <div class="card">
-            <h2><i class="fas fa-crown" style="color:#f39c12;"></i> VIP 邮箱绑定</h2>
+            <h2><i class="fas fa-envelope"></i> 邮箱绑定</h2>
             <div id="emailStatus"></div>
             <div id="emailBindForm">
-              <div class="form-group"><label>邮箱地址</label><input type="email" id="bindEmail" placeholder="your@email.com" style="width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:10px;"></div>
-              <div style="display:flex;gap:10px;">
-                <input type="text" id="emailCode" placeholder="验证码" style="flex:1;padding:12px;border:2px solid #e0e0e0;border-radius:10px;">
-                <button id="sendCodeBtn" onclick="sendEmailCode()" style="padding:12px 24px;background:#667eea;color:#fff;border:none;border-radius:10px;cursor:pointer;">发送验证码</button>
-              </div>
-              <button onclick="verifyEmail()" style="margin-top:15px;padding:12px 24px;background:#28a745;color:#fff;border:none;border-radius:10px;cursor:pointer;width:100%;"><i class="fas fa-check"></i> 验证并绑定</button>
+              <div class="form-group"><label>邮箱</label><input type="email" id="bindEmail" placeholder="your@email.com"></div>
+              <div style="display:flex;gap:10px;"><input type="text" id="emailCode" placeholder="验证码" style="flex:1;"><button class="btn btn-primary" id="sendCodeBtn" onclick="sendEmailCode()">发送验证码</button></div>
+              <button class="btn btn-success" onclick="verifyEmail()" style="margin-top:12px;width:100%;"><i class="fas fa-check"></i> 验证绑定</button>
+            </div>
+            <div id="rebindArea" class="hidden" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+              <h3>更换邮箱</h3>
+              <div class="form-group"><label>新邮箱</label><input type="email" id="rebindEmail"></div>
+              <div style="display:flex;gap:10px;"><input type="text" id="rebindCode" placeholder="验证码" style="flex:1;"><button class="btn btn-primary" id="rebindSendBtn" onclick="sendRebindCode()">发送验证码</button></div>
+              <button class="btn btn-warning" onclick="rebindEmail()" style="margin-top:12px;width:100%;">确认换绑</button>
+              <button class="btn btn-danger" onclick="unbindEmail()" style="margin-top:8px;width:100%;"><i class="fas fa-unlink"></i> 解绑邮箱</button>
             </div>
           </div>
         </div>
-        <!-- 邀请好友 -->
-        <div id="page-invite" class="page hidden">
-          <div class="card">
-            <h2><i class="fas fa-gift" style="color:#f39c12;"></i> 邀请好友，双方各得 VIP</h2>
-            <div style="text-align:center;padding:20px;">
-              <div style="font-size:48px;">🎁</div>
-              <p style="font-size:24px;color:#f39c12;font-weight:700;">双方各得 <span id="rewardDays">10</span> 天 VIP</p>
+
+        <!-- 邀请 -->
+        <div id="page-invite" class="page">
+          <div class="card invite-box">
+            <h2><i class="fas fa-gift" style="color:var(--warning);"></i> 邀请好友</h2>
+            <p style="margin:8px 0;font-size:18px;">双方各得 <strong style="color:var(--warning);"><span id="rewardDays">10</span> 天 VIP</strong></p>
+            <p style="color:var(--text-secondary);font-size:13px;">复制链接或邀请码发给好友</p>
+            <div style="margin:16px 0;">
+              <p style="font-weight:500;margin-bottom:6px;">邀请码（点击复制）</p>
+              <div class="invite-code-display" id="inviteCode" onclick="copyInviteCode()" title="点击复制">----</div>
             </div>
-            <div class="form-group"><label>邀请链接</label><input type="text" id="inviteUrl" readonly style="background:#f5f5f5;padding:12px;border-radius:8px;width:100%;"></div>
-            <div class="form-group"><label>邀请码</label><input type="text" id="inviteCode" readonly style="background:#f5f5f5;font-size:24px;font-weight:700;text-align:center;letter-spacing:4px;padding:12px;border-radius:8px;width:100%;"></div>
-            <div style="margin-top:30px;"><h4>已邀请 (<span id="inviteCount">0</span>人)</h4><div id="invitedList"><p class="loading">加载中...</p></div></div>
+            <div class="copy-btn-group">
+              <button class="btn btn-primary" onclick="copyInviteUrl()"><i class="fas fa-link"></i> 复制邀请链接</button>
+              <button class="btn btn-outline" onclick="copyInviteCode()"><i class="fas fa-copy"></i> 复制邀请码</button>
+            </div>
+            <input type="text" id="inviteUrl" readonly class="hidden">
+            <div style="margin-top:20px;"><strong>已邀请 <span id="inviteCount">0</span> 人</strong></div>
+            <div id="invitedList" style="margin-top:8px;max-height:200px;overflow-y:auto;"></div>
           </div>
           <div class="card" id="bindInviteCard">
             <h2>我有邀请码</h2>
             <div id="bindInviteArea"></div>
-            <div class="form-group"><label>输入邀请码</label><input type="text" id="inputInviteCode" placeholder="8位邀请码" style="text-transform:uppercase;padding:12px;border-radius:8px;width:100%;"></div>
+            <div class="form-group"><input type="text" id="inputInviteCode" placeholder="输入8位邀请码" style="text-transform:uppercase;"></div>
             <button class="btn btn-success" onclick="applyInviteCode()" style="width:100%;">绑定邀请人</button>
           </div>
         </div>
-        <!-- 留言反馈 -->
-        <div id="page-feedback" class="page hidden">
+
+        <!-- 留言 -->
+        <div id="page-feedback" class="page">
           <div class="card">
             <h2>提交反馈</h2>
-            <div class="form-group"><label>类型</label><select id="feedbackType"><option value="suggestion">💡 建议</option><option value="bug">🐛 问题</option><option value="question">❓ 疑问</option><option value="other">📝 其他</option></select></div>
-            <div class="form-group"><label>标题</label><input type="text" id="feedbackTitle" style="width:100%;padding:12px;border-radius:8px;"></div>
-            <div class="form-group"><label>内容</label><textarea id="feedbackContent" rows="6" style="width:100%;padding:12px;border-radius:8px;"></textarea></div>
-            <button class="btn btn-primary" onclick="submitFeedback()">提交反馈</button>
+            <div class="form-group"><select id="feedbackType"><option value="suggestion">💡 建议</option><option value="bug">🐛 问题</option><option value="question">❓ 疑问</option><option value="other">📝 其他</option></select></div>
+            <div class="form-group"><input type="text" id="feedbackTitle" placeholder="标题"></div>
+            <div class="form-group"><textarea id="feedbackContent" rows="4" placeholder="详细描述"></textarea></div>
+            <button class="btn btn-primary" onclick="submitFeedback()">提交</button>
           </div>
-          <div class="card"><h2>我的留言</h2><div id="myFeedbackList"><p class="loading">加载中...</p></div></div>
+          <div class="card"><h2>我的留言</h2><div id="myFeedbackList"></div></div>
         </div>
-        <!-- 购买卡密 -->
-        <div id="page-buy" class="page hidden">
+
+        <!-- 购买 -->
+        <div id="page-buy" class="page">
           <div class="card">
-            <h2>购买 VIP 卡密</h2>
+            <h2>购买卡密</h2>
             <div id="packagesList" class="loading">加载中...</div>
-            <div id="paymentArea" style="display:none;text-align:center;margin-top:30px;">
-              <h3>请扫码支付</h3>
-              <img id="qrCodeImage" src="" alt="收款码" style="width:250px;height:250px;object-fit:contain;border-radius:16px;">
-              <p style="font-size:18px;font-weight:600;">支付金额：<span style="color:#f39c12;" id="paymentAmount">¥0.00</span></p>
+            <div id="paymentArea" class="hidden" style="text-align:center;margin-top:20px;">
+              <h3 id="paymentMethodTitle">扫码支付</h3>
+              <img id="qrCodeImage" src="" alt="收款码" style="width:220px;height:220px;object-fit:contain;border-radius:12px;border:2px solid var(--border);">
+              <p style="font-size:16px;margin-top:10px;">金额：<strong style="color:var(--danger);" id="paymentAmount">¥0.00</strong></p>
+              <p style="color:var(--danger);font-size:13px;">⚠️ 请精确支付此金额</p>
               <button class="btn btn-primary" onclick="checkPaymentStatus()">查询支付状态</button>
             </div>
-            <div id="paymentResult" style="display:none;margin-top:30px;"></div>
+            <div id="paymentResult" class="hidden" style="margin-top:20px;"></div>
           </div>
         </div>
-        <!-- 签到日志 -->
-        <div id="page-logs" class="page hidden">
+
+        <!-- 记录 -->
+        <div id="page-logs" class="page">
           <div class="card"><h2>签到记录</h2><div id="logsList"><p class="loading">加载中...</p></div></div>
         </div>
-        <!-- 个人中心 -->
-        <div id="page-profile" class="page hidden">
+
+        <!-- 我的 -->
+        <div id="page-profile" class="page">
           <div class="card">
-            <h2>个人资料</h2>
-            <div class="form-group"><label>学号</label><input type="text" id="profileStudentId" disabled style="background:#f5f5f5;width:100%;"></div>
-            <div class="form-group"><label>姓名</label><input type="text" id="profileName" style="width:100%;"></div>
-            <div class="form-group"><label>考勤密码</label><input type="password" id="profileAttendancePassword" placeholder="留空则不修改" autocomplete="new-password" style="width:100%;"></div>
-            <div class="form-group"><label>邮箱</label><input type="text" id="profileEmail" disabled style="background:#f5f5f5;width:100%;"></div>
-            <div class="form-group"><label>VIP</label><input type="text" id="profileVip" disabled style="background:#f5f5f5;width:100%;"></div>
-            <button class="btn btn-primary" onclick="updateProfile()">保存修改</button>
+            <h2>个人信息</h2>
+            <div class="form-group"><label>学号</label><input type="text" id="profileStudentId" disabled></div>
+            <div class="form-group"><label>姓名</label><input type="text" id="profileName"></div>
+            <div class="form-group"><label>考勤密码</label><input type="password" id="profileAttendancePassword" placeholder="留空则不修改"></div>
+            <div class="form-group"><label>邮箱</label><input type="text" id="profileEmail" disabled></div>
+            <div class="form-group"><label>VIP</label><input type="text" id="profileVip" disabled></div>
+            <button class="btn btn-primary" onclick="updateProfile()">保存</button>
           </div>
-          <div class="card"><h2>卡密兑换</h2><input type="text" id="redeemCode" placeholder="VIP卡密" style="text-transform:uppercase;width:100%;padding:12px;border-radius:8px;"><button class="btn btn-primary" onclick="redeemCode()" style="margin-top:10px;width:100%;">兑换</button></div>
+          <div class="card">
+            <h2>兑换卡密</h2>
+            <div class="form-group"><input type="text" id="redeemCode" placeholder="输入卡密" style="text-transform:uppercase;"></div>
+            <button class="btn btn-primary" onclick="redeemCode()" style="width:100%;">兑换</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal" id="feedbackDetailModal">
-    <div class="modal-content">
-      <div class="modal-header"><h3>留言详情</h3><span class="modal-close" onclick="closeFeedbackModal()">&times;</span></div>
-      <div id="feedbackDetailContent"></div>
-    </div>
-  </div>
+
+  <!-- Toast -->
   <div class="toast" id="toast"></div>
+
   <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
   <script>
     const API_BASE = 'https://api.agai.online/api';
     const token = localStorage.getItem('token');
     if (!token) window.location.href = '/';
     let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-    document.getElementById('userName').textContent = `${currentUser.name || currentUser.studentId} (${currentUser.studentId})`;
-    let currentOrder = null;
-    let pollingTimer = null;
+    document.getElementById('userName').textContent = (currentUser.name || currentUser.studentId) + ' (' + currentUser.studentId + ')';
+    let currentOrder = null, pollingTimer = null;
+    const days = ['日','一','二','三','四','五','六'];
+
+    // ========== 工具函数 ==========
     function showToast(msg, type) {
       const t = document.getElementById('toast');
-      t.textContent = msg; t.className = 'toast ' + (type || 'info');
-      t.style.display = 'block';
-      setTimeout(() => t.style.display = 'none', 3000);
+      t.textContent = msg; t.className = 'toast ' + (type || 'info') + ' show';
+      clearTimeout(t._tid); t._tid = setTimeout(() => t.classList.remove('show'), 2500);
     }
-    function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    function escapeHTML(s) {
+      if (!s) return ''; s = String(s);
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
-    function escapeAttr(str) { return escapeHTML(str).replace(/'/g, '&#39;'); }
+    function escapeAttr(s) { return escapeHTML(s).replace(/'/g,'&#39;'); }
+    async function api(url, opts) {
+      opts = opts || {}; opts.headers = opts.headers || {};
+      opts.headers['Authorization'] = 'Bearer ' + token;
+      if (opts.body && typeof opts.body === 'object') { opts.body = JSON.stringify(opts.body); opts.headers['Content-Type'] = 'application/json'; }
+      const res = await fetch(API_BASE + url, opts);
+      return res.json();
+    }
+
+    // ========== 页面切换 ==========
     document.querySelectorAll('.menu-item').forEach(item => {
       item.addEventListener('click', () => {
         const page = item.dataset.page;
-        document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-        document.getElementById('page-' + page).classList.remove('hidden');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + page).classList.add('active');
         document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
         item.classList.add('active');
-        if (page === 'dashboard') { loadStats(); loadActiveSubscriptions(); loadNotice(); }
+        if (page === 'dashboard') { loadStats(); loadActiveSubs(); loadNotice(); }
         else if (page === 'subscriptions') loadSubscriptions();
         else if (page === 'email') loadEmailStatus();
         else if (page === 'invite') loadInviteInfo();
@@ -435,146 +430,102 @@
         else if (page === 'profile') loadProfile();
       });
     });
-    document.querySelectorAll('.weekday-btn').forEach(btn => {
-      btn.addEventListener('click', function() { this.classList.toggle('selected'); });
-    });
+    document.querySelectorAll('.weekday-btn').forEach(b => b.addEventListener('click', function(){ this.classList.toggle('selected'); }));
+
+    // ========== 首页 ==========
     async function loadNotice() {
       try {
-        const res = await fetch(API_BASE + '/notice', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/notice');
         if (data.success && data.notice && data.notice.enabled) {
-          const notice = data.notice;
-          const styles = {
-            info: { bg: '#d1ecf1', border: '#bee5eb', color: '#0c5460', icon: '📢' },
-            success: { bg: '#d4edda', border: '#c3e6cb', color: '#155724', icon: '✅' },
-            warning: { bg: '#fff3cd', border: '#ffeeba', color: '#856404', icon: '⚠️' },
-            error: { bg: '#f8d7da', border: '#f5c6cb', color: '#721c24', icon: '❌' }
-          };
-          const style = styles[notice.style] || styles.info;
-          document.getElementById('noticeTitle').innerHTML = '<i class="fas fa-bullhorn"></i> ' + style.icon + ' ' + escapeHTML(notice.title);
-          document.getElementById('noticeContent').innerHTML = '<div style="background:' + style.bg + ';border-left:4px solid ' + style.border + ';padding:16px;border-radius:8px;color:' + style.color + ';">' + escapeHTML(notice.content) + '</div>';
-          document.getElementById('noticeCard').style.display = 'block';
+          const n = data.notice;
+          const styles = { info:{bg:'#d1ecf1',border:'#bee5eb',color:'#0c5460',icon:'📢'}, success:{bg:'#d4edda',border:'#c3e6cb',color:'#155724',icon:'✅'}, warning:{bg:'#fff3cd',border:'#ffeeba',color:'#856404',icon:'⚠️'}, error:{bg:'#f8d7da',border:'#f5c6cb',color:'#721c24',icon:'❌'} };
+          const s = styles[n.style] || styles.info;
+          document.getElementById('noticeTitle').innerHTML = '<i class="fas fa-bullhorn"></i> ' + s.icon + ' ' + escapeHTML(n.title);
+          document.getElementById('noticeContent').innerHTML = '<div style="background:'+s.bg+';border-left:4px solid '+s.border+';padding:14px;border-radius:8px;color:'+s.color+';">'+escapeHTML(n.content)+'</div>';
+          document.getElementById('noticeCard').classList.remove('hidden');
         }
-      } catch (e) { console.error(e); }
+      } catch(e) {}
     }
     async function loadStats() {
       try {
-        const res = await fetch(API_BASE + '/stats', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/stats');
         if (data.success) {
           document.getElementById('statTotalSigns').textContent = data.stats.totalSigns || 0;
           document.getElementById('statSuccessSigns').textContent = data.stats.successSigns || 0;
           document.getElementById('statTodaySigns').textContent = data.stats.todaySigns || 0;
           document.getElementById('statActiveSubs').textContent = data.stats.activeSubscriptions || 0;
         }
-      } catch (e) { console.error(e); }
+      } catch(e) {}
     }
-    async function loadActiveSubscriptions() {
+    async function loadActiveSubs() {
       try {
-        const res = await fetch(API_BASE + '/subscriptions', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/subscriptions');
         const container = document.getElementById('activeSubscriptionsList');
         if (data.success) {
           const active = data.subscriptions.filter(s => s.enabled);
-          if (active.length === 0) { container.innerHTML = '<p class="empty">暂无活跃签到</p>'; return; }
-          const days = ['日','一','二','三','四','五','六'];
-          container.innerHTML = active.slice(0,3).map(sub => {
-            const scheduleText = sub.scheduleType === 'daily' ? '每天' : (sub.scheduleType === 'weekdays' ? '工作日' : (sub.customDays || []).map(d => days[d]).join('、'));
-            return '<div class="subscription-item"><div class="subscription-info"><h4>' + escapeHTML(sub.name) + '</h4><p>⏰ ' + escapeHTML(sub.signTime) + ' | 📅 ' + escapeHTML(scheduleText) + '</p></div></div>';
-          }).join('');
+          if (active.length === 0) { container.innerHTML = '<p class="empty">暂无活跃任务</p>'; return; }
+          container.innerHTML = active.slice(0,3).map(s => '<div class="list-item"><div><h4>'+escapeHTML(s.name)+'</h4><p>⏰ '+escapeHTML(s.signTime)+' | 📅 '+(s.scheduleType==='daily'?'每天':(s.scheduleType==='weekdays'?'工作日':(s.customDays||[]).map(d=>days[d]).join('、')))+'</p></div></div>').join('');
         }
-      } catch (e) { console.error(e); }
-    }
-    async function loadSubscriptions() {
-      try {
-        const res = await fetch(API_BASE + '/subscriptions', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
-        const container = document.getElementById('subscriptionsList');
-        if (!data.subscriptions || data.subscriptions.length === 0) { container.innerHTML = '<p class="empty">暂无任务</p>'; return; }
-        const days = ['日','一','二','三','四','五','六'];
-        container.innerHTML = data.subscriptions.map(sub => {
-          const scheduleText = sub.scheduleType === 'daily' ? '每天' : (sub.scheduleType === 'weekdays' ? '工作日' : (sub.customDays || []).map(d => days[d]).join('、'));
-          return '<div class="subscription-item"><div class="subscription-info"><h4>' + escapeHTML(sub.name) + '</h4><p>⏰ ' + escapeHTML(sub.signTime) + ' | 📅 ' + escapeHTML(scheduleText) + ' | 🔄 重试 ' + escapeHTML(sub.maxRetries) + ' 次</p></div><div class="subscription-actions"><span class="status-badge ' + (sub.enabled ? 'status-enabled' : 'status-disabled') + '">' + (sub.enabled ? '已启用' : '已禁用') + '</span><button class="btn btn-outline" onclick="toggleSubscription(\'' + escapeAttr(sub._id) + '\', ' + !sub.enabled + ')">' + (sub.enabled ? '禁用' : '启用') + '</button><button class="btn btn-outline" onclick="editSubscription(\'' + escapeAttr(sub._id) + '\')"><i class="fas fa-edit"></i></button><button class="btn btn-danger" onclick="deleteSubscription(\'' + escapeAttr(sub._id) + '\')">删除</button></div></div>';
-        }).join('');
-      } catch (e) { console.error(e); }
+      } catch(e) {}
     }
     async function quickSign() {
-      const btn = document.getElementById('quickSignBtn');
-      const result = document.getElementById('signResult');
+      const btn = document.getElementById('quickSignBtn'), result = document.getElementById('signResult');
       btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 签到中...';
       try {
-        const res = await fetch(API_BASE + '/sign/manual', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } });
-        const data = await res.json();
+        const data = await api('/sign/manual', { method: 'POST' });
         if (data.success && data.result) {
-          result.innerHTML = data.result.success ? '<span style="color:#28a745;"><i class="fas fa-check-circle"></i> 签到成功！</span>' : '<span style="color:#dc3545;"><i class="fas fa-times-circle"></i> ' + escapeHTML(data.result.message || '签到失败') + '</span>';
+          result.innerHTML = data.result.success ? '<span style="color:var(--success);">✅ 签到成功</span>' : '<span style="color:var(--danger);">❌ '+escapeHTML(data.result.message||'失败')+'</span>';
           loadStats();
         }
-      } catch (e) { result.innerHTML = '<span style="color:#dc3545;">网络错误</span>'; }
+      } catch(e) { result.innerHTML = '<span style="color:var(--danger);">网络错误</span>'; }
       finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-pen"></i> 立即签到'; }
+    }
+
+    // ========== 任务管理 ==========
+    async function loadSubscriptions() {
+      try {
+        const data = await api('/subscriptions');
+        const container = document.getElementById('subscriptionsList');
+        if (!data.subscriptions || data.subscriptions.length === 0) { container.innerHTML = '<p class="empty">暂无任务</p>'; return; }
+        container.innerHTML = data.subscriptions.map(s => '<div class="list-item"><div><h4>'+escapeHTML(s.name)+'</h4><p>⏰ '+escapeHTML(s.signTime)+' | 📅 '+(s.scheduleType==='daily'?'每天':(s.scheduleType==='weekdays'?'工作日':(s.customDays||[]).map(d=>days[d]).join('、')))+' | 🔄 重试'+escapeHTML(s.maxRetries)+'次</p></div><div style="display:flex;align-items:center;gap:8px;"><span class="badge '+(s.enabled?'badge-success':'badge-danger')+'">'+(s.enabled?'启用':'禁用')+'</span><button class="btn btn-sm btn-outline" onclick="toggleSub(\''+escapeAttr(s._id)+'\','+!s.enabled+')">'+(s.enabled?'禁用':'启用')+'</button><button class="btn btn-sm btn-danger" onclick="deleteSub(\''+escapeAttr(s._id)+'\')"><i class="fas fa-trash"></i></button></div></div>').join('');
+      } catch(e) {}
     }
     async function addSubscription() {
       const name = document.getElementById('courseName').value || '晚寝签到';
       const signTime = document.getElementById('signTime').value || '21:25';
       const maxRetries = parseInt(document.getElementById('maxRetries').value) || 3;
-      const autoSign = document.getElementById('autoSign').value === 'true';
-      const selectedDays = [];
-      document.querySelectorAll('.weekday-btn.selected').forEach(b => selectedDays.push(parseInt(b.dataset.day)));
+      const selectedDays = []; document.querySelectorAll('.weekday-btn.selected').forEach(b => selectedDays.push(parseInt(b.dataset.day)));
       let scheduleType = 'custom';
       if (selectedDays.length === 7) scheduleType = 'daily';
       else if (selectedDays.length === 5 && selectedDays.every(d => d >= 1 && d <= 5)) scheduleType = 'weekdays';
       try {
-        const res = await fetch(API_BASE + '/subscriptions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ name, scheduleType, customDays: selectedDays, signTime, maxRetries, autoSign, notifyOnSuccess: true, notifyOnFailure: true }) });
-        const data = await res.json();
-        if (data.success) { showToast('任务添加成功', 'success'); loadSubscriptions(); loadStats(); }
-        else showToast('添加失败：' + (data.message || '请稍后重试'), 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
+        const data = await api('/subscriptions', { method: 'POST', body: { name, scheduleType, customDays: selectedDays, signTime, maxRetries, autoSign: true, notifyOnSuccess: true, notifyOnFailure: true } });
+        if (data.success) { showToast('添加成功', 'success'); loadSubscriptions(); loadStats(); }
+        else showToast(data.message || '添加失败', 'error');
+      } catch(e) { showToast('网络错误', 'error'); }
     }
-    async function toggleSubscription(id, enabled) {
-      try {
-        await fetch(API_BASE + '/subscriptions/' + id + '/toggle', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
-        loadSubscriptions(); loadStats();
-      } catch (e) { showToast('操作失败', 'error'); }
+    async function toggleSub(id, enabled) {
+      try { await api('/subscriptions/' + id + '/toggle', { method: 'POST' }); loadSubscriptions(); loadStats(); }
+      catch(e) { showToast('操作失败', 'error'); }
     }
-    async function deleteSubscription(id) {
+    async function deleteSub(id) {
       if (!confirm('确定删除？')) return;
-      try {
-        await fetch(API_BASE + '/subscriptions/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
-        loadSubscriptions(); loadStats();
-      } catch (e) { showToast('删除失败', 'error'); }
+      try { await api('/subscriptions/' + id, { method: 'DELETE' }); loadSubscriptions(); loadStats(); }
+      catch(e) { showToast('删除失败', 'error'); }
     }
-    function editSubscription(id) { showToast('编辑功能开发中', 'info'); }
-    async function loadLogs() {
-      try {
-        const res = await fetch(API_BASE + '/sign/logs?limit=50', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
-        const container = document.getElementById('logsList');
-        if (!data.logs || data.logs.length === 0) { container.innerHTML = '<p class="empty">暂无记录</p>'; return; }
-        container.innerHTML = data.logs.map(log => '<div class="log-item"><span class="' + (log.status === 'success' ? 'log-success' : 'log-failed') + '">' + (log.status === 'success' ? '✅' : '❌') + '</span><div style="flex:1;"><strong>' + escapeHTML(log.subscriptionName || '手动签到') + '</strong><span style="color:#999;margin-left:10px;">' + new Date(log.executedAt || log.signTime).toLocaleString('zh-CN') + '</span></div><span style="color:#666;font-size:13px;">' + escapeHTML(log.message || '') + '</span></div>').join('');
-      } catch (e) { console.error(e); }
-    }
-    async function loadUserInfo() {
-      try {
-        const res = await fetch(API_BASE + '/user/profile', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
-        if (data.success) {
-          currentUser = data.user;
-          localStorage.setItem('user', JSON.stringify(currentUser));
-          document.getElementById('userName').textContent = (currentUser.name || currentUser.studentId) + ' (' + currentUser.studentId + ')';
-          const badge = document.getElementById('emailBadge');
-          if (currentUser.emailVerified) { badge.style.background = '#28a745'; badge.textContent = '✓'; }
-        }
-      } catch (e) { console.error(e); }
-    }
+
+    // ========== 邮箱 ==========
     async function loadEmailStatus() {
       await loadUserInfo();
       const container = document.getElementById('emailStatus');
       const form = document.getElementById('emailBindForm');
+      const rebind = document.getElementById('rebindArea');
       if (currentUser.emailVerified) {
-        container.innerHTML = '<div style="background:#d4edda;padding:20px;border-radius:14px;margin-bottom:20px;"><p><i class="fas fa-check-circle" style="color:#28a745;"></i> <strong>邮箱已绑定</strong></p><p style="margin-top:8px;">当前邮箱：' + escapeHTML(currentUser.email) + '</p></div>';
-        form.style.display = 'none';
+        container.innerHTML = '<div style="background:#d4edda;padding:14px;border-radius:10px;"><i class="fas fa-check-circle" style="color:var(--success);"></i> 已绑定：'+escapeHTML(currentUser.email)+'</div>';
+        form.classList.add('hidden'); rebind.classList.remove('hidden');
       } else {
-        container.innerHTML = '<div style="background:#fff3cd;padding:20px;border-radius:14px;margin-bottom:20px;"><p><i class="fas fa-info-circle" style="color:#f39c12;"></i> <strong>未绑定邮箱</strong></p><p>绑定后自动获得 30 天 VIP</p></div>';
-        form.style.display = 'block';
+        container.innerHTML = '<div style="background:#fff3cd;padding:14px;border-radius:10px;"><i class="fas fa-info-circle" style="color:var(--warning);"></i> 未绑定邮箱</div>';
+        form.classList.remove('hidden'); rebind.classList.add('hidden');
       }
     }
     async function sendEmailCode() {
@@ -582,156 +533,144 @@
       if (!email) { showToast('请输入邮箱', 'error'); return; }
       const btn = document.getElementById('sendCodeBtn'); btn.disabled = true;
       try {
-        const res = await fetch(API_BASE + '/email/send-code', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-        const data = await res.json();
-        if (data.success) {
-          showToast('验证码已发送', 'success');
-          if (data.debugCode) document.getElementById('emailCode').value = data.debugCode;
-          let cd = 60;
-          const timer = setInterval(() => { cd--; btn.textContent = cd + '秒后重试'; if (cd <= 0) { clearInterval(timer); btn.disabled = false; btn.textContent = '发送验证码'; } }, 1000);
-        } else { showToast(data.message || '发送失败', 'error'); btn.disabled = false; }
-      } catch (e) { showToast('网络错误', 'error'); btn.disabled = false; }
+        const data = await api('/email/send-code', { method: 'POST', body: { email } });
+        if (data.success) { showToast('验证码已发送', 'success'); if (data.debugCode) document.getElementById('emailCode').value = data.debugCode; countdownBtn(btn); }
+        else { showToast(data.message || '发送失败', 'error'); btn.disabled = false; }
+      } catch(e) { showToast('网络错误', 'error'); btn.disabled = false; }
     }
     async function verifyEmail() {
-      const email = document.getElementById('bindEmail').value;
-      const code = document.getElementById('emailCode').value;
+      const email = document.getElementById('bindEmail').value, code = document.getElementById('emailCode').value;
       if (!email || !code) { showToast('请填写完整', 'error'); return; }
       try {
-        const res = await fetch(API_BASE + '/email/verify', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, code }) });
-        const data = await res.json();
+        const data = await api('/email/verify', { method: 'POST', body: { email, code } });
         if (data.success) { showToast('绑定成功', 'success'); await loadUserInfo(); loadEmailStatus(); }
         else showToast(data.message || '验证失败', 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
+      } catch(e) { showToast('网络错误', 'error'); }
     }
+    async function sendRebindCode() {
+      const email = document.getElementById('rebindEmail').value;
+      if (!email) { showToast('请输入新邮箱', 'error'); return; }
+      const btn = document.getElementById('rebindSendBtn'); btn.disabled = true;
+      try {
+        const data = await api('/email/send-code', { method: 'POST', body: { email } });
+        if (data.success) { showToast('验证码已发送', 'success'); if (data.debugCode) document.getElementById('rebindCode').value = data.debugCode; countdownBtn(btn); }
+        else { showToast(data.message || '发送失败', 'error'); btn.disabled = false; }
+      } catch(e) { showToast('网络错误', 'error'); btn.disabled = false; }
+    }
+    async function rebindEmail() {
+      const email = document.getElementById('rebindEmail').value, code = document.getElementById('rebindCode').value;
+      if (!email || !code) { showToast('请填写完整', 'error'); return; }
+      try {
+        const data = await api('/email/rebind', { method: 'POST', body: { email, code } });
+        if (data.success) { showToast('换绑成功', 'success'); await loadUserInfo(); loadEmailStatus(); }
+        else showToast(data.message || '换绑失败', 'error');
+      } catch(e) { showToast('网络错误', 'error'); }
+    }
+    async function unbindEmail() {
+      if (!confirm('确定解绑？VIP将失效。')) return;
+      try {
+        const data = await api('/email/unbind', { method: 'POST' });
+        if (data.success) { showToast('已解绑', 'success'); await loadUserInfo(); loadEmailStatus(); }
+        else showToast(data.message || '解绑失败', 'error');
+      } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    // ========== 邀请 ==========
     async function loadInviteInfo() {
       try {
-        const res = await fetch(API_BASE + '/invite/info', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/invite/info');
         if (data.success) {
+          document.getElementById('inviteCode').textContent = data.inviteCode || '----';
           document.getElementById('inviteUrl').value = data.inviteUrl || '';
-          document.getElementById('inviteCode').value = data.inviteCode || '';
           document.getElementById('inviteCount').textContent = data.inviteCount || 0;
           document.getElementById('rewardDays').textContent = data.rewardDays || 10;
-          if (currentUser.invitedBy) {
-            document.getElementById('bindInviteArea').innerHTML = '<div style="background:#d4edda;padding:15px;border-radius:10px;color:#155724;"><i class="fas fa-check-circle"></i> 您已绑定邀请人</div>';
-          }
+          if (currentUser.invitedBy) document.getElementById('bindInviteArea').innerHTML = '<div style="background:#d4edda;padding:10px;border-radius:8px;margin-bottom:10px;"><i class="fas fa-check-circle"></i> 已绑定邀请人</div>';
           const list = document.getElementById('invitedList');
-          if (data.invitedUsers && data.invitedUsers.length > 0) {
-            list.innerHTML = data.invitedUsers.map(u => '<div style="padding:12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;"><span><i class="fas fa-user" style="color:#667eea;margin-right:8px;"></i>' + escapeHTML(u.name || u.studentId) + '</span><span style="color:#999;font-size:12px;">' + new Date(u.createdAt).toLocaleDateString() + '</span></div>').join('');
-          } else list.innerHTML = '<p style="color:#999;text-align:center;padding:20px;">暂无邀请记录</p>';
+          if (data.invitedUsers && data.invitedUsers.length) list.innerHTML = data.invitedUsers.map(u => '<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>'+escapeHTML(u.name||u.studentId)+'</span><span style="color:var(--text-secondary);font-size:12px;">'+new Date(u.createdAt).toLocaleDateString()+'</span></div>').join('');
+          else list.innerHTML = '<p class="empty">暂无</p>';
         }
-      } catch (e) { console.error(e); }
+      } catch(e) {}
     }
-    function copyInviteUrl() { document.getElementById('inviteUrl').select(); document.execCommand('copy'); showToast('已复制', 'success'); }
-    function copyInviteCode() { document.getElementById('inviteCode').select(); document.execCommand('copy'); showToast('已复制', 'success'); }
+    function copyInviteUrl() {
+      const input = document.getElementById('inviteUrl');
+      input.classList.remove('hidden'); input.select(); document.execCommand('copy'); input.classList.add('hidden');
+      showToast('链接已复制', 'success');
+    }
+    function copyInviteCode() {
+      const code = document.getElementById('inviteCode').textContent;
+      if (!code || code === '----') return;
+      const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      showToast('邀请码已复制', 'success');
+    }
     async function applyInviteCode() {
       const code = document.getElementById('inputInviteCode').value.trim().toUpperCase();
       if (!code) { showToast('请输入邀请码', 'error'); return; }
       try {
-        const res = await fetch(API_BASE + '/invite/apply', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ inviteCode: code }) });
-        const data = await res.json();
-        if (data.success) { showToast(data.message, 'success'); await loadUserInfo(); loadInviteInfo(); loadStats(); }
+        const data = await api('/invite/apply', { method: 'POST', body: { inviteCode: code } });
+        if (data.success) { showToast(data.message, 'success'); await loadUserInfo(); loadInviteInfo(); }
         else showToast(data.message || '绑定失败', 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
+      } catch(e) { showToast('网络错误', 'error'); }
     }
+
+    // ========== 留言 ==========
     async function submitFeedback() {
-      const title = document.getElementById('feedbackTitle').value.trim();
-      const content = document.getElementById('feedbackContent').value.trim();
-      const type = document.getElementById('feedbackType').value;
+      const title = document.getElementById('feedbackTitle').value.trim(), content = document.getElementById('feedbackContent').value.trim(), type = document.getElementById('feedbackType').value;
       if (!title || !content) { showToast('请填写完整', 'error'); return; }
       try {
-        const res = await fetch(API_BASE + '/feedback', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ title, content, type }) });
-        const data = await res.json();
+        const data = await api('/feedback', { method: 'POST', body: { title, content, type } });
         if (data.success) { showToast('提交成功', 'success'); document.getElementById('feedbackTitle').value = ''; document.getElementById('feedbackContent').value = ''; loadMyFeedback(); }
         else showToast(data.message || '提交失败', 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
+      } catch(e) { showToast('网络错误', 'error'); }
     }
     async function loadMyFeedback() {
       try {
-        const res = await fetch(API_BASE + '/feedback/my', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/feedback/my');
         const container = document.getElementById('myFeedbackList');
-        if (!data.feedbacks || data.feedbacks.length === 0) { container.innerHTML = '<p class="empty">暂无留言</p>'; return; }
-        const typeMap = { bug: '🐛', suggestion: '💡', question: '❓', other: '📝' };
-        const statusMap = { pending: '<span class="status-badge" style="background:#fff3cd;color:#856404;">⏳ 待处理</span>', read: '<span class="status-badge" style="background:#d1ecf1;color:#0c5460;">👀 已读</span>', replied: '<span class="status-badge status-enabled">✅ 已回复</span>', closed: '<span class="status-badge status-disabled">🔒 已关闭</span>' };
-        container.innerHTML = data.feedbacks.map(f => '<div class="subscription-item" style="cursor:pointer;" onclick="viewFeedback(\'' + escapeAttr(f._id) + '\')"><div class="subscription-info"><h4>' + (typeMap[f.type] || '📝') + ' · ' + escapeHTML(f.title) + '</h4><p style="margin-top:5px;">' + escapeHTML(f.content.substring(0, 50)) + (f.content.length > 50 ? '...' : '') + '</p><p style="margin-top:8px;font-size:12px;color:#999;">' + new Date(f.createdAt).toLocaleString() + ' · ' + statusMap[f.status] + (f.adminReply ? ' <i class="fas fa-reply"></i> 已回复' : '') + '</p></div><i class="fas fa-chevron-right" style="color:#ccc;"></i></div>').join('');
-      } catch (e) { console.error(e); }
+        if (!data.feedbacks || !data.feedbacks.length) { container.innerHTML = '<p class="empty">暂无留言</p>'; return; }
+        const tm = { bug:'🐛', suggestion:'💡', question:'❓', other:'📝' };
+        const sm = { pending:'⏳待处理', read:'👀已读', replied:'✅已回复', closed:'🔒已关闭' };
+        container.innerHTML = data.feedbacks.map(f => '<div class="list-item" style="cursor:pointer;" onclick="viewFeedback(\''+escapeAttr(f._id)+'\')"><div><h4>'+tm[f.type]+' '+escapeHTML(f.title)+'</h4><p style="font-size:12px;">'+sm[f.status]+' · '+new Date(f.createdAt).toLocaleString()+'</p></div><i class="fas fa-chevron-right" style="color:#ccc;"></i></div>').join('');
+      } catch(e) {}
     }
     async function viewFeedback(id) {
       try {
-        const res = await fetch(API_BASE + '/feedback/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/feedback/' + id);
         if (data.success) {
           const f = data.feedback;
-          const typeMap = { bug: '🐛 问题', suggestion: '💡 建议', question: '❓ 疑问', other: '📝 其他' };
-          document.getElementById('feedbackDetailContent').innerHTML = '<div style="margin-bottom:20px;"><span class="badge badge-info">' + (typeMap[f.type] || '📝') + '</span></div><h3>' + escapeHTML(f.title) + '</h3><div style="background:#f5f7fa;padding:16px;border-radius:12px;margin:20px 0;">' + escapeHTML(f.content).replace(/\n/g, '<br>') + '</div><p style="color:#999;font-size:13px;">提交时间：' + new Date(f.createdAt).toLocaleString() + '</p>' + (f.adminReply ? '<div style="background:#d4edda;padding:16px;border-radius:12px;border-left:4px solid #28a745;"><p style="font-weight:600;"><i class="fas fa-reply"></i> 管理员回复：</p><p>' + escapeHTML(f.adminReply).replace(/\n/g, '<br>') + '</p><p style="color:#999;font-size:12px;margin-top:10px;">回复时间：' + new Date(f.repliedAt).toLocaleString() + '</p></div>' : '<p style="color:#999;text-align:center;padding:20px;">暂无回复</p>');
-          document.getElementById('feedbackDetailModal').classList.add('show');
+          const detail = '<div style="margin:16px 0;">'+escapeHTML(f.content).replace(/\n/g,'<br>')+'</div>' + (f.adminReply ? '<div style="background:#d4edda;padding:12px;border-radius:8px;border-left:4px solid var(--success);"><strong>回复：</strong>'+escapeHTML(f.adminReply).replace(/\n/g,'<br>')+'</div>' : '<p class="empty">暂无回复</p>');
+          alert('标题：'+f.title+'\n\n内容：'+f.content+'\n\n'+(f.adminReply?'回复：'+f.adminReply:'暂无回复'));
         }
-      } catch (e) { showToast('加载失败', 'error'); }
+      } catch(e) {}
     }
-    function closeFeedbackModal() { document.getElementById('feedbackDetailModal').classList.remove('show'); }
-    async function loadProfile() {
-      await loadUserInfo();
-      document.getElementById('profileStudentId').value = currentUser.studentId || '';
-      document.getElementById('profileName').value = currentUser.name || '';
-      document.getElementById('profileAttendancePassword').value = '';
-      document.getElementById('profileEmail').value = currentUser.email || '未绑定';
-      document.getElementById('profileVip').value = currentUser.isVip ? (currentUser.vipExpireAt && new Date(currentUser.vipExpireAt) > new Date() ? 'VIP 至 ' + new Date(currentUser.vipExpireAt).toLocaleDateString() : 'VIP 已过期') : '免费用户';
-    }
-    async function updateProfile() {
-      const name = document.getElementById('profileName').value;
-      const pwd = document.getElementById('profileAttendancePassword').value.trim();
-      const payload = { name };
-      if (pwd) payload.attendancePassword = pwd;
-      try {
-        const res = await fetch(API_BASE + '/user/profile', { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        const data = await res.json();
-        if (data.success) { showToast('保存成功', 'success'); document.getElementById('profileAttendancePassword').value = ''; await loadUserInfo(); }
-        else showToast(data.message || '保存失败', 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
-    }
-    async function redeemCode() {
-      const code = document.getElementById('redeemCode').value.trim().toUpperCase();
-      if (!code) { showToast('请输入卡密', 'error'); return; }
-      try {
-        const res = await fetch(API_BASE + '/vip/redeem', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
-        const data = await res.json();
-        if (data.success) { showToast(data.message, 'success'); document.getElementById('redeemCode').value = ''; await loadUserInfo(); loadStats(); }
-        else showToast(data.message || '兑换失败', 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
-    }
-    // 购买卡密
+
+    // ========== 购买 ==========
     async function loadPackages() {
       try {
-        const res = await fetch(API_BASE + '/payment/packages', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/payment/packages');
         if (data.success) {
-          document.getElementById('packagesList').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">' + data.packages.map(pkg => {
-            const badge = pkg.cardCategory === 'times' ? '<span style="background:#17a2b8;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">次数卡</span>' : '<span style="background:#667eea;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">天数卡</span>';
-            return '<div style="background:#fff;border:2px solid #e0e0e0;border-radius:16px;padding:20px;cursor:pointer;transition:all 0.2s;" onclick="selectPackage(' + (pkg.days || 0) + ', ' + (pkg.times || 0) + ', ' + pkg.price + ', \'' + (pkg.cardCategory || 'days') + '\')"><div style="margin-bottom:10px;">' + badge + '</div><h3>' + escapeHTML(pkg.name) + '</h3><p style="font-size:28px;font-weight:700;color:#f39c12;">¥' + pkg.price + '</p><p style="color:#888;font-size:13px;">' + escapeHTML(pkg.description) + '</p></div>';
-          }).join('') + '</div>';
+          document.getElementById('packagesList').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">' + data.packages.map(p => '<div class="card" style="text-align:center;cursor:pointer;padding:16px;" onclick="selectPackage('+(p.days||0)+','+(p.times||0)+','+p.price+',\''+(p.cardCategory||'days')+'\')"><h3>'+escapeHTML(p.name)+'</h3><p style="font-size:24px;font-weight:700;color:var(--warning);">¥'+p.price+'</p><p style="color:var(--text-secondary);font-size:12px;">'+escapeHTML(p.description)+'</p></div>').join('') + '</div>';
         }
-      } catch (e) { console.error(e); }
+      } catch(e) {}
     }
-    async function selectPackage(days, times, price, cardCategory) {
-      const label = cardCategory === 'times' ? times + '次签到卡' : days + '天VIP卡';
-      const method = confirm('【购买 ' + label + '】\n¥' + price + '\n\n确定=微信 | 取消=支付宝') ? 'wechat' : 'alipay';
-      if (!confirm('确认使用【' + (method === 'wechat' ? '微信' : '支付宝') + '】支付 ¥' + price + '？')) return;
+    async function selectPackage(days, times, price, cat) {
+      const label = cat === 'times' ? times+'次' : days+'天';
+      const method = confirm('【'+label+'】¥'+price+'\n确定=微信 | 取消=支付宝') ? 'wechat' : 'alipay';
+      const mn = method === 'wechat' ? '微信' : '支付宝';
+      if (!confirm('使用【'+mn+'】支付 ¥'+price+'？')) return;
       try {
-        const body = cardCategory === 'times' ? { times, cardCategory, payMethod: method } : { days, cardCategory, payMethod: method };
-        const res = await fetch(API_BASE + '/payment/create-order', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        const data = await res.json();
+        const body = cat === 'times' ? { times, cardCategory: cat, payMethod: method } : { days, cardCategory: cat, payMethod: method };
+        const data = await api('/payment/create-order', { method: 'POST', body });
         if (data.success) {
           currentOrder = data.order;
-          document.getElementById('paymentArea').style.display = 'block';
-          document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
-          document.getElementById('qrCodeImage').src = method === 'wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
-          document.getElementById('paymentResult').style.display = 'none';
-          document.getElementById('paymentArea').querySelector('h3').textContent = '请使用【' + (method === 'wechat' ? '微信' : '支付宝') + '】扫码支付';
-          showToast('金额：¥' + data.order.amount.toFixed(2) + '，请精确支付', 'info');
+          document.getElementById('paymentArea').classList.remove('hidden');
+          document.getElementById('paymentMethodTitle').textContent = '【'+mn+'】扫码支付';
+          document.getElementById('paymentAmount').textContent = '¥'+data.order.amount.toFixed(2);
+          document.getElementById('qrCodeImage').src = method==='wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
+          document.getElementById('paymentResult').classList.add('hidden');
+          showToast('请精确支付 ¥'+data.order.amount.toFixed(2), 'info');
           startPolling(data.order.orderNo);
-        } else showToast(data.message || '创建订单失败', 'error');
-      } catch (e) { showToast('网络错误', 'error'); }
+        } else showToast(data.message || '失败', 'error');
+      } catch(e) { showToast('网络错误', 'error'); }
     }
     function startPolling(orderNo) {
       if (pollingTimer) clearInterval(pollingTimer);
@@ -741,38 +680,75 @@
       const id = orderNo || (currentOrder && currentOrder.orderNo);
       if (!id) return;
       try {
-        const res = await fetch(API_BASE + '/payment/order/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/payment/order/' + id);
         if (data.success && data.order.status === 'paid') {
           clearInterval(pollingTimer); pollingTimer = null;
-          document.getElementById('paymentResult').style.display = 'block';
-          const label = data.order.cardCategory === 'times' ? data.order.times + '次签到卡' : data.order.days + '天VIP卡';
-          document.getElementById('paymentResult').innerHTML = '<div style="background:#d4edda;padding:30px;border-radius:16px;text-align:center;"><div style="font-size:48px;">🎉</div><h3>支付成功！</h3><p>卡密：</p><div style="background:#fff;display:inline-block;padding:15px 30px;border-radius:12px;font-size:28px;font-weight:700;color:#667eea;letter-spacing:3px;border:2px dashed #667eea;">' + escapeHTML(data.cardCode || '') + '</div><p style="margin-top:20px;">' + escapeHTML(label) + ' | ¥' + Number(data.order.amount || 0).toFixed(2) + '</p>' + (data.cardCode ? '<button class="btn btn-primary" onclick="copyCardCode(\'' + escapeAttr(data.cardCode) + '\')"><i class="fas fa-copy"></i> 复制卡密</button>' : '') + '</div>';
-          document.getElementById('paymentArea').style.display = 'none';
+          const label = data.order.cardCategory==='times'?data.order.times+'次':data.order.days+'天';
+          document.getElementById('paymentResult').innerHTML = '<div style="background:#d4edda;padding:20px;border-radius:10px;text-align:center;"><p style="font-size:20px;">🎉 支付成功</p><p>卡密：<strong style="font-size:22px;letter-spacing:3px;">'+escapeHTML(data.cardCode||'')+'</strong></p><p>'+escapeHTML(label)+' | ¥'+Number(data.order.amount||0).toFixed(2)+'</p>'+(data.cardCode?'<button class="btn btn-primary btn-sm" onclick="copyCardCode(\''+escapeAttr(data.cardCode)+'\')"><i class="fas fa-copy"></i> 复制卡密</button>':'')+'</div>';
+          document.getElementById('paymentResult').classList.remove('hidden');
+          document.getElementById('paymentArea').classList.add('hidden');
         }
-      } catch (e) { console.error(e); }
+      } catch(e) {}
     }
     function copyCardCode(code) {
-      const input = document.createElement('input'); input.value = code; document.body.appendChild(input); input.select(); document.execCommand('copy'); document.body.removeChild(input);
+      const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       showToast('卡密已复制', 'success');
     }
-    // Socket.io
-    let socket = null;
-    function initWebSocket() {
-      if (socket) return;
-      socket = io(API_BASE.replace('/api', ''), { transports: ['websocket', 'polling'] });
-      socket.on('connect', () => { if (currentUser.id) socket.emit('bindUser', currentUser.id); });
-      socket.on('paymentSuccess', data => {
-        if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
-        document.getElementById('paymentResult').style.display = 'block';
-        const label = data.cardCategory === 'times' ? data.times + '次签到卡' : data.days + '天VIP卡';
-        document.getElementById('paymentResult').innerHTML = '<div style="background:#d4edda;padding:30px;border-radius:16px;text-align:center;"><div style="font-size:48px;">🎉</div><h3>支付成功！</h3><p>卡密：</p><div style="background:#fff;display:inline-block;padding:15px 30px;border-radius:12px;font-size:28px;font-weight:700;color:#667eea;letter-spacing:3px;border:2px dashed #667eea;">' + escapeHTML(data.cardCode) + '</div><p>购买：' + escapeHTML(label) + ' | ¥' + data.amount.toFixed(2) + '</p><button class="btn btn-primary" onclick="copyCardCode(\'' + escapeAttr(data.cardCode) + '\')"><i class="fas fa-copy"></i> 复制卡密</button></div>';
-        document.getElementById('paymentArea').style.display = 'none';
-      });
+
+    // ========== 记录 ==========
+    async function loadLogs() {
+      try {
+        const data = await api('/sign/logs?limit=50');
+        const container = document.getElementById('logsList');
+        if (!data.logs || !data.logs.length) { container.innerHTML = '<p class="empty">暂无记录</p>'; return; }
+        container.innerHTML = data.logs.map(l => '<div class="log-row"><span class="status">'+(l.status==='success'?'✅':'❌')+'</span><div class="detail"><div class="title">'+escapeHTML(l.subscriptionName||'手动')+'</div><div class="time">'+new Date(l.executedAt||l.signTime).toLocaleString('zh-CN')+'</div></div><span class="msg">'+escapeHTML(l.message||'')+'</span></div>').join('');
+      } catch(e) {}
     }
-    initWebSocket();
+
+    // ========== 我的 ==========
+    async function loadProfile() {
+      await loadUserInfo();
+      document.getElementById('profileStudentId').value = currentUser.studentId || '';
+      document.getElementById('profileName').value = currentUser.name || '';
+      document.getElementById('profileAttendancePassword').value = '';
+      document.getElementById('profileEmail').value = currentUser.email || '未绑定';
+      let vt = '免费用户';
+      if (currentUser.isVip) { const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null; vt = d && d > new Date() ? 'VIP 至 '+d.toLocaleDateString() : 'VIP 已过期'; }
+      document.getElementById('profileVip').value = vt;
+    }
+    async function updateProfile() {
+      const body = { name: document.getElementById('profileName').value };
+      const pwd = document.getElementById('profileAttendancePassword').value.trim();
+      if (pwd) body.attendancePassword = pwd;
+      try {
+        const data = await api('/user/profile', { method: 'PUT', body });
+        if (data.success) { showToast('已保存', 'success'); document.getElementById('profileAttendancePassword').value = ''; await loadUserInfo(); }
+        else showToast(data.message || '保存失败', 'error');
+      } catch(e) { showToast('网络错误', 'error'); }
+    }
+    async function redeemCode() {
+      const code = document.getElementById('redeemCode').value.trim().toUpperCase();
+      if (!code) { showToast('请输入卡密', 'error'); return; }
+      try {
+        const data = await api('/vip/redeem', { method: 'POST', body: { code } });
+        if (data.success) { showToast(data.message, 'success'); document.getElementById('redeemCode').value = ''; await loadUserInfo(); loadStats(); }
+        else showToast(data.message || '兑换失败', 'error');
+      } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    // ========== 通用 ==========
+    async function loadUserInfo() {
+      try {
+        const data = await api('/user/profile');
+        if (data.success) { currentUser = data.user; localStorage.setItem('user', JSON.stringify(currentUser)); document.getElementById('userName').textContent = (currentUser.name||currentUser.studentId)+' ('+currentUser.studentId+')'; }
+      } catch(e) {}
+    }
+    function countdownBtn(btn) {
+      let cd = 60; btn.textContent = cd + 's';
+      const t = setInterval(() => { cd--; btn.textContent = cd + 's'; if (cd <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = '发送验证码'; } }, 1000);
+    }
     function logout() { localStorage.clear(); window.location.href = '/'; }
-    loadUserInfo(); loadStats(); loadActiveSubscriptions(); loadNotice();
+    loadUserInfo(); loadStats(); loadActiveSubs(); loadNotice();
   </script>
 </body>
 </html>
