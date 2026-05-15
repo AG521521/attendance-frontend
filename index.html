@@ -397,6 +397,39 @@
   </div>
 
   <script>
+        window.APP_CONFIG = window.APP_CONFIG || {
+      API_BASE: ''
+    };
+    
+    function showToast(message, type = 'info') {
+    
+      const toast = document.createElement('div');
+    
+      toast.className = `toast ${type}`;
+    
+      toast.textContent = message;
+    
+      document.body.appendChild(toast);
+    
+      toast.style.display = 'block';
+    
+      setTimeout(() => {
+    
+        toast.style.opacity = '0';
+    
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+    
+      }, 2500);
+    }
+    
+    function clearSession() {
+    
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    
+    }
     const API_BASE = window.APP_CONFIG.API_BASE;
     
     // ========== 赞助区域折叠 ==========
@@ -475,38 +508,55 @@
         
         const data = await res.json();
         
-        if (data.success) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
-          
-          const pendingCode = localStorage.getItem('pendingInviteCode');
-          if (pendingCode) {
-            try {
-              const inviteRes = await fetch(`${API_BASE}/invite/apply`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${data.token}`,
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ inviteCode: pendingCode })
-              });
-              await inviteRes.json();
-            } catch (e) {
-              // ignore
-            } finally {
-              localStorage.removeItem('pendingInviteCode');
-            }
-          }
-          
-          if (data.user.role === 'admin') {
-            window.location.href = '/admin';
-          } else {
-            window.location.href = '/dashboard';
-          }
-        } else {
-        } else {
-          showToast(data.message || '登录失败', 'error');
+    if (data.success) {
+    
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+    
+      const pendingCode = localStorage.getItem('pendingInviteCode');
+    
+      if (pendingCode) {
+    
+        try {
+    
+          const inviteRes = await fetch(`${API_BASE}/invite/apply`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${data.token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              inviteCode: pendingCode
+            })
+          });
+    
+          await inviteRes.json();
+    
+        } catch (e) {
+          console.error('邀请码绑定失败:', e);
+    
+        } finally {
+          localStorage.removeItem('pendingInviteCode');
         }
+      }
+    
+      showToast('登录成功', 'success');
+    
+      setTimeout(() => {
+    
+        if (data.user.role === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/dashboard';
+        }
+    
+      }, 800);
+    
+    } else {
+    
+      showToast(data.message || '登录失败', 'error');
+    
+    }
       } catch (error) {
         console.error('登录错误:', error);
         showToast('网络错误，请重试', 'error');
