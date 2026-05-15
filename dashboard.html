@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AG工作室 - 考勤控制面板</title>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+  <title>AG工作室 - 考勤控制面板</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -63,15 +62,11 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-    }
+    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
     .btn-success { background: #28a745; color: white; }
     .btn-danger { background: #dc3545; color: white; }
     .btn-outline { background: white; border: 1px solid #ddd; color: #666; }
     .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-    
     .subscription-form {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,7 +81,6 @@
       border-radius: 8px;
       font-size: 14px;
     }
-    
     .subscription-item {
       display: flex;
       justify-content: space-between;
@@ -99,7 +93,6 @@
     .subscription-info h4 { margin-bottom: 5px; }
     .subscription-info p { color: #888; font-size: 13px; }
     .subscription-actions { display: flex; gap: 8px; }
-    
     .status-badge {
       padding: 4px 10px;
       border-radius: 20px;
@@ -108,7 +101,6 @@
     }
     .status-enabled { background: #d4edda; color: #155724; }
     .status-disabled { background: #f8d7da; color: #721c24; }
-    
     .log-item {
       padding: 12px;
       border-bottom: 1px solid #eee;
@@ -118,7 +110,6 @@
     }
     .log-success { color: #28a745; }
     .log-failed { color: #dc3545; }
-    
     .weekday-selector { display: flex; gap: 5px; flex-wrap: wrap; }
     .weekday-btn {
       width: 36px;
@@ -133,10 +124,8 @@
       color: white;
       border-color: #667eea;
     }
-    
     .loading { color: #999; text-align: center; padding: 20px; }
     .empty { color: #999; text-align: center; padding: 30px; }
-
     .dashboard-layout { display: flex; min-height: calc(100vh - 80px); }
     .sidebar {
       width: 260px;
@@ -168,7 +157,6 @@
     .content-area { flex: 1; }
     .page { display: block; }
     .page.hidden { display: none; }
-
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -183,22 +171,6 @@
     }
     .stat-value { font-size: 28px; font-weight: 700; color: #1a1a2e; }
     .stat-label { color: #888; font-size: 13px; margin-top: 4px; }
-
-    .invite-box {
-      text-align: center;
-      padding: 30px;
-    }
-    .invite-code {
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      background: #f5f7fa;
-      padding: 15px 30px;
-      border-radius: 12px;
-      display: inline-block;
-      margin: 20px 0;
-    }
-
     .modal {
       display: none;
       position: fixed;
@@ -224,10 +196,44 @@
       align-items: center;
       margin-bottom: 24px;
     }
-    .modal-close {
-      font-size: 28px;
-      cursor: pointer;
-      color: #aaa;
+    .modal-close { font-size: 28px; cursor: pointer; color: #aaa; }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      z-index: 2000;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+    .toast.success { background: #28a745; }
+    .toast.error { background: #dc3545; }
+    .toast.info { background: #1a1a2e; }
+    @media (max-width: 900px) {
+      .header { padding: 16px 18px; align-items: flex-start; gap: 12px; flex-direction: column; }
+      .header h1 { font-size: 20px; }
+      .container { margin: 18px auto; padding: 0 14px; }
+      .dashboard-layout { display: block; min-height: auto; }
+      .sidebar { width: 100%; margin: 0 0 16px; padding: 8px; overflow-x: auto; border-radius: 12px; }
+      .sidebar-menu { display: flex; min-width: max-content; }
+      .menu-item { border-left: 0; border-bottom: 3px solid transparent; padding: 12px 14px; white-space: nowrap; }
+      .menu-item.active { border-left-color: transparent; border-bottom-color: #667eea; }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .subscription-item { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .subscription-actions { width: 100%; flex-wrap: wrap; }
+      .card { padding: 18px; border-radius: 12px; }
+      .modal-content { max-width: calc(100vw - 28px); padding: 22px; border-radius: 16px; }
+      .toast { left: 16px; right: 16px; bottom: 18px; text-align: center; }
+    }
+    @media (max-width: 520px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .subscription-form { grid-template-columns: 1fr; }
+      .user-info { width: 100%; justify-content: space-between; }
+      .btn { width: 100%; justify-content: center; }
+      #signResult { display: block; margin: 12px 0 0 !important; }
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -240,111 +246,54 @@
       <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
     </div>
   </div>
-  
   <div class="container">
     <div class="dashboard-layout">
       <div class="sidebar">
         <ul class="sidebar-menu">
-          <li class="menu-item active" data-page="dashboard">
-            <i class="fas fa-tachometer-alt"></i> 仪表盘
-          </li>
-          <li class="menu-item" data-page="subscriptions">
-            <i class="fas fa-calendar-check"></i> 签到模式
-          </li>
-          <li class="menu-item" data-page="email">
-            <i class="fas fa-envelope"></i> 邮箱绑定
-            <span id="emailBadge" style="margin-left: auto; font-size: 10px; background: #f39c12; padding: 2px 6px; border-radius: 10px; color: white;">VIP</span>
-          </li>
-          <li class="menu-item" data-page="invite">
-            <i class="fas fa-gift"></i> 邀请好友
-          </li>
-          <li class="menu-item" data-page="feedback">
-            <i class="fas fa-comment-dots"></i> 留言反馈
-          </li>
-          <li class="menu-item" data-page="buy">
-            <i class="fas fa-shopping-cart"></i> 购买卡密
-          </li>          
-          <li class="menu-item" data-page="logs">
-            <i class="fas fa-history"></i> 签到日志
-          </li>
-          <li class="menu-item" data-page="profile">
-            <i class="fas fa-user-cog"></i> 个人中心
-          </li>
+          <li class="menu-item active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</li>
+          <li class="menu-item" data-page="subscriptions"><i class="fas fa-calendar-check"></i> 签到模式</li>
+          <li class="menu-item" data-page="email"><i class="fas fa-envelope"></i> 邮箱绑定 <span id="emailBadge" style="margin-left: auto; font-size: 10px; background: #f39c12; padding: 2px 6px; border-radius: 10px; color: white;">VIP</span></li>
+          <li class="menu-item" data-page="invite"><i class="fas fa-gift"></i> 邀请好友</li>
+          <li class="menu-item" data-page="feedback"><i class="fas fa-comment-dots"></i> 留言反馈</li>
+          <li class="menu-item" data-page="buy"><i class="fas fa-shopping-cart"></i> 购买卡密</li>
+          <li class="menu-item" data-page="logs"><i class="fas fa-history"></i> 签到日志</li>
+          <li class="menu-item" data-page="profile"><i class="fas fa-user-cog"></i> 个人中心</li>
         </ul>
       </div>
-      
       <div class="content-area">
-        <!-- 仪表盘页面 -->
+        <!-- 仪表盘 -->
         <div id="page-dashboard" class="page">
           <div class="card" id="noticeCard" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <h2 id="noticeTitle" style="margin-bottom: 0;"><i class="fas fa-bullhorn"></i> 系统公告</h2>
-            </div>
-            <div id="noticeContent" style="padding: 10px 0;"></div>
+            <h2 id="noticeTitle"><i class="fas fa-bullhorn"></i> 系统公告</h2>
+            <div id="noticeContent"></div>
           </div>
-
           <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-value" id="statTotalSigns">0</div>
-              <div class="stat-label">累计签到</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statSuccessSigns">0</div>
-              <div class="stat-label">成功签到</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statTodaySigns">0</div>
-              <div class="stat-label">今日签到</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value" id="statActiveSubs">0</div>
-              <div class="stat-label">我的签到</div>
-            </div>
+            <div class="stat-card"><div class="stat-value" id="statTotalSigns">0</div><div class="stat-label">累计签到</div></div>
+            <div class="stat-card"><div class="stat-value" id="statSuccessSigns">0</div><div class="stat-label">成功签到</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTodaySigns">0</div><div class="stat-label">今日签到</div></div>
+            <div class="stat-card"><div class="stat-value" id="statActiveSubs">0</div><div class="stat-label">我的签到</div></div>
           </div>
-
           <div class="card">
             <h2><i class="fas fa-bolt" style="color: #f39c12;"></i> 快速签到</h2>
-            <p style="margin-bottom: 15px; color: #666;">点击按钮立即执行一次签到</p>
-            <button class="btn btn-success" onclick="quickSign()" id="quickSignBtn">
-              <i class="fas fa-pen"></i> 立即签到
-            </button>
+            <button class="btn btn-success" onclick="quickSign()" id="quickSignBtn"><i class="fas fa-pen"></i> 立即签到</button>
             <span id="signResult" style="margin-left: 15px;"></span>
           </div>
-          
           <div class="card">
             <h2><i class="fas fa-list-check"></i> 我的签到</h2>
-            <div id="activeSubscriptionsList">
-              <p class="loading">加载中...</p>
-            </div>
+            <div id="activeSubscriptionsList"><p class="loading">加载中...</p></div>
           </div>
         </div>
-        
-        <!-- 签到管理页面 -->
+        <!-- 签到管理 -->
         <div id="page-subscriptions" class="page hidden">
           <div class="card">
             <h2><i class="fas fa-plus-circle"></i> 添加考勤签到</h2>
             <div class="subscription-form">
-              <div class="form-group">
-                <label>任务名称</label>
-                <input type="text" id="courseName" placeholder="例如：晚寝签到" value="晚寝签到">
-              </div>
-              <div class="form-group">
-                <label>签到时间</label>
-                <input type="time" id="signTime" value="21:25">
-              </div>
-              <div class="form-group">
-                <label>最大重试次数</label>
-                <input type="number" id="maxRetries" value="3" min="1" max="5">
-              </div>
-              <div class="form-group">
-                <label>自动签到</label>
-                <select id="autoSign">
-                  <option value="true">✅ 开启</option>
-                  <option value="false">❌ 关闭</option>
-                </select>
-              </div>
+              <div class="form-group"><label>任务名称</label><input type="text" id="courseName" value="晚寝签到"></div>
+              <div class="form-group"><label>签到时间</label><input type="time" id="signTime" value="21:25"></div>
+              <div class="form-group"><label>最大重试次数</label><input type="number" id="maxRetries" value="3" min="1" max="5"></div>
+              <div class="form-group"><label>自动签到</label><select id="autoSign"><option value="true">✅ 开启</option><option value="false">❌ 关闭</option></select></div>
             </div>
-            <div class="form-group" style="margin-bottom: 15px;">
+            <div class="form-group" style="margin-bottom:15px;">
               <label>签到日期（可多选）</label>
               <div class="weekday-selector" id="weekdaySelector">
                 <button class="weekday-btn selected" data-day="1">一</button>
@@ -356,422 +305,161 @@
                 <button class="weekday-btn" data-day="0">日</button>
               </div>
             </div>
-            <div class="form-group" style="margin-bottom: 15px;">
-              <label><input type="checkbox" id="notifyOnSuccess" checked> 签到成功时发送邮件通知</label>
-              <label style="margin-left: 20px;"><input type="checkbox" id="notifyOnFailure" checked> 签到失败时发送邮件通知</label>
-            </div>
             <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加任务</button>
           </div>
-          
           <div class="card">
             <h2><i class="fas fa-list"></i> 我的签到</h2>
-            <div id="subscriptionsList">
-              <p class="loading">加载中...</p>
-            </div>
+            <div id="subscriptionsList"><p class="loading">加载中...</p></div>
           </div>
         </div>
-        
-        <!-- 邮箱绑定页面 -->
+        <!-- 邮箱绑定 -->
         <div id="page-email" class="page hidden">
           <div class="card">
-            <h2><i class="fas fa-crown" style="color: #f39c12;"></i> VIP 邮箱绑定</h2>
+            <h2><i class="fas fa-crown" style="color:#f39c12;"></i> VIP 邮箱绑定</h2>
             <div id="emailStatus"></div>
             <div id="emailBindForm">
-              <div class="form-group">
-                <label>邮箱地址</label>
-                <input type="email" id="bindEmail" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
+              <div class="form-group"><label>邮箱地址</label><input type="email" id="bindEmail" placeholder="your@email.com" style="width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:10px;"></div>
+              <div style="display:flex;gap:10px;">
+                <input type="text" id="emailCode" placeholder="验证码" style="flex:1;padding:12px;border:2px solid #e0e0e0;border-radius:10px;">
+                <button id="sendCodeBtn" onclick="sendEmailCode()" style="padding:12px 24px;background:#667eea;color:#fff;border:none;border-radius:10px;cursor:pointer;">发送验证码</button>
               </div>
-              <div style="display: flex; gap: 10px;">
-                <input type="text" id="emailCode" placeholder="验证码" style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
-                <button id="sendCodeBtn" onclick="sendEmailCode()" style="padding: 12px 24px; background: #667eea; color: #fff; border: none; border-radius: 10px; cursor: pointer;">
-                  发送验证码
-                </button>
-              </div>
-              <button onclick="verifyEmail()" style="margin-top: 15px; padding: 12px 24px; background: #28a745; color: #fff; border: none; border-radius: 10px; cursor: pointer; width: 100%;">
-                <i class="fas fa-check"></i> 验证并绑定
-              </button>
-              <p style="margin-top: 16px; color: #888; font-size: 13px;">
-                <i class="fas fa-gem"></i> 绑定邮箱后自动获得 30 天 VIP，享受签到邮件通知特权
-              </p>
+              <button onclick="verifyEmail()" style="margin-top:15px;padding:12px 24px;background:#28a745;color:#fff;border:none;border-radius:10px;cursor:pointer;width:100%;"><i class="fas fa-check"></i> 验证并绑定</button>
             </div>
-            <!-- 换绑邮箱区域（已绑定邮箱时显示） -->
-        <div id="rebindArea" style="display: none; margin-top: 30px;">
-          <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
-          <h3 style="margin-bottom: 15px; color: #555;">
-            <i class="fas fa-exchange-alt"></i> 更换绑定邮箱
-          </h3>
-          <div class="form-group">
-            <label>新邮箱地址</label>
-            <input type="email" id="rebindEmail" placeholder="请输入新的邮箱地址" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
-          </div>
-          <div style="display: flex; gap: 10px;">
-            <input type="text" id="rebindCode" placeholder="验证码" style="flex: 1; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
-            <button id="rebindSendBtn" onclick="sendRebindCode()" style="padding: 12px 24px; background: #667eea; color: #fff; border: none; border-radius: 10px; cursor: pointer;">
-              发送验证码
-            </button>
-          </div>
-          <button onclick="rebindEmail()" style="margin-top: 15px; padding: 12px 24px; background: #f39c12; color: #fff; border: none; border-radius: 10px; cursor: pointer; width: 100%;">
-            <i class="fas fa-exchange-alt"></i> 确认换绑
-          </button>
-          <p style="margin-top: 16px; color: #888; font-size: 13px;">
-            <i class="fas fa-info-circle"></i> 换绑后，签到通知将发送到新邮箱
-          </p>
-        </div>
           </div>
         </div>
-        
-        <!-- 邀请好友页面 -->
+        <!-- 邀请好友 -->
         <div id="page-invite" class="page hidden">
           <div class="card">
-            <h2><i class="fas fa-gift" style="color: #f39c12;"></i> 邀请好友，双方各得 VIP</h2>
-            
-            <div style="text-align: center; padding: 20px;">
-              <div style="font-size: 48px; margin-bottom: 20px;">🎁</div>
-              <h2 style="margin-bottom: 10px;">每邀请 1 人注册</h2>
-              <p style="font-size: 24px; color: #f39c12; font-weight: 700; margin-bottom: 20px;">
-                双方各得 <span id="rewardDays">10</span> 天 VIP
-              </p>
+            <h2><i class="fas fa-gift" style="color:#f39c12;"></i> 邀请好友，双方各得 VIP</h2>
+            <div style="text-align:center;padding:20px;">
+              <div style="font-size:48px;">🎁</div>
+              <p style="font-size:24px;color:#f39c12;font-weight:700;">双方各得 <span id="rewardDays">10</span> 天 VIP</p>
             </div>
-            
-            <div class="form-group">
-              <label>您的专属邀请链接</label>
-              <div style="display: flex; gap: 10px;">
-                <input type="text" id="inviteUrl" readonly style="flex: 1; background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                <button class="btn btn-primary" onclick="copyInviteUrl()">
-                  <i class="fas fa-copy"></i> 复制
-                </button>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label>您的邀请码</label>
-              <div style="display: flex; gap: 10px;">
-                <input type="text" id="inviteCode" readonly style="flex: 1; background: #f5f5f5; font-size: 24px; font-weight: 700; text-align: center; letter-spacing: 4px; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                <button class="btn btn-primary" onclick="copyInviteCode()">
-                  <i class="fas fa-copy"></i> 复制
-                </button>
-              </div>
-            </div>
-            
-            <div style="margin-top: 30px;">
-              <h4><i class="fas fa-users"></i> 已邀请用户 (<span id="inviteCount">0</span>人)</h4>
-              <div id="invitedList" style="margin-top: 15px; max-height: 300px; overflow-y: auto;">
-                <p class="loading">加载中...</p>
-              </div>
-            </div>
+            <div class="form-group"><label>邀请链接</label><input type="text" id="inviteUrl" readonly style="background:#f5f5f5;padding:12px;border-radius:8px;width:100%;"></div>
+            <div class="form-group"><label>邀请码</label><input type="text" id="inviteCode" readonly style="background:#f5f5f5;font-size:24px;font-weight:700;text-align:center;letter-spacing:4px;padding:12px;border-radius:8px;width:100%;"></div>
+            <div style="margin-top:30px;"><h4>已邀请 (<span id="inviteCount">0</span>人)</h4><div id="invitedList"><p class="loading">加载中...</p></div></div>
           </div>
-          
           <div class="card" id="bindInviteCard">
-            <h2><i class="fas fa-user-plus"></i> 我有邀请码</h2>
+            <h2>我有邀请码</h2>
             <div id="bindInviteArea"></div>
-            <div class="form-group">
-              <label>输入邀请码</label>
-              <div style="display: flex; gap: 10px;">
-                <input type="text" id="inputInviteCode" placeholder="请输入 8 位邀请码" style="flex: 1; text-transform: uppercase; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                <button class="btn btn-success" onclick="applyInviteCode()">
-                  绑定邀请人
-                </button>
-              </div>
-            </div>
-            <p style="color: #888; font-size: 13px;">
-              <i class="fas fa-info-circle"></i> 绑定后双方各得 <span id="bindRewardDays">10</span> 天 VIP
-            </p>
+            <div class="form-group"><label>输入邀请码</label><input type="text" id="inputInviteCode" placeholder="8位邀请码" style="text-transform:uppercase;padding:12px;border-radius:8px;width:100%;"></div>
+            <button class="btn btn-success" onclick="applyInviteCode()" style="width:100%;">绑定邀请人</button>
           </div>
         </div>
-        
-        <!-- 留言反馈页面 -->
+        <!-- 留言反馈 -->
         <div id="page-feedback" class="page hidden">
           <div class="card">
-            <h2><i class="fas fa-paper-plane"></i> 提交反馈</h2>
-            <div class="form-group">
-              <label>反馈类型</label>
-              <select id="feedbackType" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;">
-                <option value="suggestion">💡 功能建议</option>
-                <option value="bug">🐛 问题反馈</option>
-                <option value="question">❓ 使用疑问</option>
-                <option value="other">📝 其他</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>标题</label>
-              <input type="text" id="feedbackTitle" placeholder="简要描述您的问题或建议" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;">
-            </div>
-            <div class="form-group">
-              <label>详细内容</label>
-              <textarea id="feedbackContent" rows="6" placeholder="请详细描述..." style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></textarea>
-            </div>
-            <button class="btn btn-primary" onclick="submitFeedback()">
-              <i class="fas fa-paper-plane"></i> 提交反馈
-            </button>
-            <p style="margin-top:16px; color:#888; font-size:13px;">
-              <i class="fas fa-info-circle"></i> 我们会尽快回复您的反馈，请留意留言记录
-            </p>
+            <h2>提交反馈</h2>
+            <div class="form-group"><label>类型</label><select id="feedbackType"><option value="suggestion">💡 建议</option><option value="bug">🐛 问题</option><option value="question">❓ 疑问</option><option value="other">📝 其他</option></select></div>
+            <div class="form-group"><label>标题</label><input type="text" id="feedbackTitle" style="width:100%;padding:12px;border-radius:8px;"></div>
+            <div class="form-group"><label>内容</label><textarea id="feedbackContent" rows="6" style="width:100%;padding:12px;border-radius:8px;"></textarea></div>
+            <button class="btn btn-primary" onclick="submitFeedback()">提交反馈</button>
           </div>
-          
-          <div class="card">
-            <h2><i class="fas fa-history"></i> 我的留言记录</h2>
-            <div id="myFeedbackList">
-              <p class="loading">加载中...</p>
-            </div>
-          </div>
+          <div class="card"><h2>我的留言</h2><div id="myFeedbackList"><p class="loading">加载中...</p></div></div>
         </div>
-        <!-- 购买卡密页面 -->
+        <!-- 购买卡密 -->
         <div id="page-buy" class="page hidden">
           <div class="card">
-            <h2><i class="fas fa-shopping-cart"></i> 购买 VIP 卡密</h2>
-            <p style="color: #888; margin-bottom: 20px;">选择套餐，扫码支付后自动获得卡密</p>
-            
+            <h2>购买 VIP 卡密</h2>
             <div id="packagesList" class="loading">加载中...</div>
-            
-            <div id="paymentArea" style="display: none; text-align: center; margin-top: 30px;">
-              <h3 style="margin-bottom: 20px;">请扫码支付</h3>
-              <div style="border: 2px solid #667eea; border-radius: 16px; padding: 20px; display: inline-block;">
-                <img id="qrCodeImage" src="" alt="收款码" style="width: 250px; height: 250px; object-fit: contain;">
-              </div>
-              <p style="margin-top: 15px; font-size: 18px; font-weight: 600;">
-                支付金额：<span style="color: #f39c12;" id="paymentAmount">¥0.00</span>
-              </p>
-              <p style="color: #888; font-size: 13px; margin-top: 10px;">
-                <i class="fas fa-info-circle"></i> 支付完成后，卡密将自动显示在下方
-              </p>
-              <button class="btn btn-primary" onclick="checkPaymentStatus()" id="checkPaymentBtn" style="margin-top: 15px;">
-                <i class="fas fa-sync-alt"></i> 查询支付状态
-              </button>
+            <div id="paymentArea" style="display:none;text-align:center;margin-top:30px;">
+              <h3>请扫码支付</h3>
+              <img id="qrCodeImage" src="" alt="收款码" style="width:250px;height:250px;object-fit:contain;border-radius:16px;">
+              <p style="font-size:18px;font-weight:600;">支付金额：<span style="color:#f39c12;" id="paymentAmount">¥0.00</span></p>
+              <button class="btn btn-primary" onclick="checkPaymentStatus()">查询支付状态</button>
             </div>
-            
-            <div id="paymentResult" style="display: none; margin-top: 30px;">
-              <!-- 支付成功后显示卡密 -->
-            </div>
-          </div>
-        </div>        
-        <!-- 签到日志页面 -->
-        <div id="page-logs" class="page hidden">
-          <div class="card">
-            <h2><i class="fas fa-history"></i> 签到记录</h2>
-            <div id="logsList">
-              <p class="loading">加载中...</p>
-            </div>
+            <div id="paymentResult" style="display:none;margin-top:30px;"></div>
           </div>
         </div>
-      
-        <!-- 个人中心页面 -->
+        <!-- 签到日志 -->
+        <div id="page-logs" class="page hidden">
+          <div class="card"><h2>签到记录</h2><div id="logsList"><p class="loading">加载中...</p></div></div>
+        </div>
+        <!-- 个人中心 -->
         <div id="page-profile" class="page hidden">
           <div class="card">
-            <h2><i class="fas fa-user"></i> 个人资料</h2>
-            <div class="form-group">
-              <label>学号</label>
-              <input type="text" id="profileStudentId" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-              <label>姓名</label>
-              <input type="text" id="profileName" placeholder="设置你的姓名" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-              <label>考勤密码</label>
-              <input type="text" id="profileAttendancePassword" placeholder="考勤系统密码" value="Ahgydx@920" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-              <label>绑定邮箱</label>
-              <input type="text" id="profileEmail" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-              <label>VIP 状态</label>
-              <input type="text" id="profileVip" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-            </div>
-            <div class="form-group">
-              <label>邀请码</label>
-              <input type="text" id="profileInviteCode" disabled style="background: #f5f5f5; padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-            </div>
-            <button class="btn btn-primary" onclick="updateProfile()">
-              <i class="fas fa-save"></i> 保存修改
-            </button>
+            <h2>个人资料</h2>
+            <div class="form-group"><label>学号</label><input type="text" id="profileStudentId" disabled style="background:#f5f5f5;width:100%;"></div>
+            <div class="form-group"><label>姓名</label><input type="text" id="profileName" style="width:100%;"></div>
+            <div class="form-group"><label>考勤密码</label><input type="password" id="profileAttendancePassword" placeholder="留空则不修改" autocomplete="new-password" style="width:100%;"></div>
+            <div class="form-group"><label>邮箱</label><input type="text" id="profileEmail" disabled style="background:#f5f5f5;width:100%;"></div>
+            <div class="form-group"><label>VIP</label><input type="text" id="profileVip" disabled style="background:#f5f5f5;width:100%;"></div>
+            <button class="btn btn-primary" onclick="updateProfile()">保存修改</button>
           </div>
-
-          <div class="card">
-            <h2><i class="fas fa-ticket-alt"></i> 卡密兑换</h2>
-            <div class="form-group">
-              <label>输入卡密</label>
-              <div style="display: flex; gap: 10px;">
-                <input type="text" id="redeemCode" placeholder="VIP卡密" style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-transform: uppercase;">
-                <button class="btn btn-primary" onclick="redeemCode()">兑换</button>
-              </div>
-            </div>
-            <p style="color: #888; font-size: 13px;">
-              <i class="fas fa-info-circle"></i> 购买卡密请联系管理员
-            </p>
-          </div>
-
-          <div class="card">
-            <h2><i class="fas fa-chart-bar"></i> 签到统计</h2>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center;">
-              <div>
-                <div style="font-size: 36px; font-weight: 700; color: #667eea;" id="profileTotalSigns">0</div>
-                <div style="color: #888;">累计签到</div>
-              </div>
-              <div>
-                <div style="font-size: 36px; font-weight: 700; color: #28a745;" id="profileSuccessSigns">0</div>
-                <div style="color: #888;">成功签到</div>
-              </div>
-            </div>
-          </div>
+          <div class="card"><h2>卡密兑换</h2><input type="text" id="redeemCode" placeholder="VIP卡密" style="text-transform:uppercase;width:100%;padding:12px;border-radius:8px;"><button class="btn btn-primary" onclick="redeemCode()" style="margin-top:10px;width:100%;">兑换</button></div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- 留言详情弹窗 -->
   <div class="modal" id="feedbackDetailModal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3>留言详情</h3>
-        <span class="modal-close" onclick="closeFeedbackModal()">&times;</span>
-      </div>
-      <div id="feedbackDetailContent">加载中...</div>
+      <div class="modal-header"><h3>留言详情</h3><span class="modal-close" onclick="closeFeedbackModal()">&times;</span></div>
+      <div id="feedbackDetailContent"></div>
     </div>
   </div>
-
+  <div class="toast" id="toast"></div>
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
   <script>
     const API_BASE = 'https://api.agai.online/api';
     const token = localStorage.getItem('token');
-    
-    // ============ WebSocket 实时推送 ============
-    let socket = null;
-    
-    function initWebSocket() {
-      if (socket) return;
-      
-      try {
-        socket = io(API_BASE.replace('/api', ''), {
-          transports: ['websocket', 'polling']
-        });
-        
-        socket.on('connect', () => {
-          console.log('🔌 WebSocket 已连接');
-          if (currentUser && currentUser.id) {
-            socket.emit('bindUser', currentUser.id);
-          }
-        });
-        
-        socket.on('paymentSuccess', (data) => {
-          console.log('💰 收到支付成功推送:', data);
-          
-          // 清除轮询
-          if (pollingTimer) {
-            clearInterval(pollingTimer);
-            pollingTimer = null;
-          }
-          
-          // 显示支付结果
-          document.getElementById('paymentResult').style.display = 'block';
-          
-          const label = data.cardCategory === 'times' 
-            ? `${data.times}次签到卡` 
-            : `${data.days}天VIP卡`;
-          
-          document.getElementById('paymentResult').innerHTML = `
-            <div style="background: #d4edda; padding: 30px; border-radius: 16px; text-align: center;">
-              <div style="font-size: 48px; margin-bottom: 15px;">🎉</div>
-              <h3 style="color: #155724; margin-bottom: 15px;">支付成功！</h3>
-              <p style="margin-bottom: 20px;">您的卡密是：</p>
-              <div style="background: #fff; display: inline-block; padding: 15px 30px; border-radius: 12px; 
-                          font-size: 28px; font-weight: 700; color: #667eea; letter-spacing: 3px; 
-                          border: 2px dashed #667eea;">
-                ${data.cardCode}
-              </div>
-              <p style="margin-top: 20px; color: #666;">
-                购买：${label} | 金额：¥${data.amount.toFixed(2)}
-              </p>
-              <button class="btn btn-primary" onclick="copyCardCode('${data.cardCode}')" style="margin-top: 15px;">
-                <i class="fas fa-copy"></i> 复制卡密
-              </button>
-              <p style="margin-top: 10px; color: #888; font-size: 13px;">
-                卡密也可在个人中心手动兑换使用
-              </p>
-            </div>
-          `;
-          
-          document.getElementById('paymentArea').style.display = 'none';
-        });
-        
-        socket.on('disconnect', () => {
-          console.log('🔌 WebSocket 已断开');
-        });
-      } catch (e) {
-        console.error('WebSocket 连接失败:', e);
-      }
-    }
-    
-    // 页面加载时初始化 WebSocket
-    initWebSocket();
-    
+    if (!token) window.location.href = '/';
     let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-    const attendancePassword = localStorage.getItem('attendancePassword') || 'Ahgydx@920';
-    
-    if (!token) { window.location.href = '/'; }
-    
     document.getElementById('userName').textContent = `${currentUser.name || currentUser.studentId} (${currentUser.studentId})`;
-    
-    // 页面切换
+    let currentOrder = null;
+    let pollingTimer = null;
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast ' + (type || 'info');
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3000);
+    }
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function escapeAttr(str) { return escapeHTML(str).replace(/'/g, '&#39;'); }
     document.querySelectorAll('.menu-item').forEach(item => {
       item.addEventListener('click', () => {
         const page = item.dataset.page;
         document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-        document.getElementById(`page-${page}`).classList.remove('hidden');
+        document.getElementById('page-' + page).classList.remove('hidden');
         document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
         item.classList.add('active');
-        
-      if (page === 'dashboard') { loadStats(); loadActiveSubscriptions(); loadNotice(); }
-      else if (page === 'subscriptions') loadSubscriptions();
-      else if (page === 'email') loadEmailStatus();
-      else if (page === 'invite') loadInviteInfo();
-      else if (page === 'feedback') loadMyFeedback();
-      else if (page === 'buy') loadPackages();
-      else if (page === 'logs') loadLogs();
-      else if (page === 'profile') loadProfile();
+        if (page === 'dashboard') { loadStats(); loadActiveSubscriptions(); loadNotice(); }
+        else if (page === 'subscriptions') loadSubscriptions();
+        else if (page === 'email') loadEmailStatus();
+        else if (page === 'invite') loadInviteInfo();
+        else if (page === 'feedback') loadMyFeedback();
+        else if (page === 'buy') loadPackages();
+        else if (page === 'logs') loadLogs();
+        else if (page === 'profile') loadProfile();
       });
     });
-    
     document.querySelectorAll('.weekday-btn').forEach(btn => {
       btn.addEventListener('click', function() { this.classList.toggle('selected'); });
     });
-    
     async function loadNotice() {
       try {
-        const res = await fetch(`${API_BASE}/notice`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/notice', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
-        
         if (data.success && data.notice && data.notice.enabled) {
           const notice = data.notice;
-          const card = document.getElementById('noticeCard');
-          const titleEl = document.getElementById('noticeTitle');
-          const contentEl = document.getElementById('noticeContent');
-          
           const styles = {
             info: { bg: '#d1ecf1', border: '#bee5eb', color: '#0c5460', icon: '📢' },
             success: { bg: '#d4edda', border: '#c3e6cb', color: '#155724', icon: '✅' },
             warning: { bg: '#fff3cd', border: '#ffeeba', color: '#856404', icon: '⚠️' },
             error: { bg: '#f8d7da', border: '#f5c6cb', color: '#721c24', icon: '❌' }
           };
-          
           const style = styles[notice.style] || styles.info;
-          titleEl.innerHTML = `<i class="fas fa-bullhorn"></i> ${style.icon} ${notice.title}`;
-          contentEl.innerHTML = `
-            <div style="background: ${style.bg}; border-left: 4px solid ${style.border}; padding: 16px; border-radius: 8px; color: ${style.color};">
-              ${notice.content}
-            </div>
-          `;
-          card.style.display = 'block';
+          document.getElementById('noticeTitle').innerHTML = '<i class="fas fa-bullhorn"></i> ' + style.icon + ' ' + escapeHTML(notice.title);
+          document.getElementById('noticeContent').innerHTML = '<div style="background:' + style.bg + ';border-left:4px solid ' + style.border + ';padding:16px;border-radius:8px;color:' + style.color + ';">' + escapeHTML(notice.content) + '</div>';
+          document.getElementById('noticeCard').style.display = 'block';
         }
-      } catch (e) { console.error('加载通知失败', e); }
+      } catch (e) { console.error(e); }
     }
-    
     async function loadStats() {
       try {
-        const res = await fetch(`${API_BASE}/stats`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/stats', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
         if (data.success) {
           document.getElementById('statTotalSigns').textContent = data.stats.totalSigns || 0;
@@ -779,851 +467,312 @@
           document.getElementById('statTodaySigns').textContent = data.stats.todaySigns || 0;
           document.getElementById('statActiveSubs').textContent = data.stats.activeSubscriptions || 0;
         }
-      } catch (e) { console.error('加载统计失败', e); }
+      } catch (e) { console.error(e); }
     }
-    
     async function loadActiveSubscriptions() {
       try {
-        const res = await fetch(`${API_BASE}/subscriptions`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/subscriptions', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
+        const container = document.getElementById('activeSubscriptionsList');
         if (data.success) {
-          const activeSubs = data.subscriptions.filter(s => s.enabled);
-          const container = document.getElementById('activeSubscriptionsList');
-          
-          if (activeSubs.length === 0) {
-            container.innerHTML = '<p class="empty">暂无活跃签到</p>';
-            return;
-          }
-          
-          const days = ['日', '一', '二', '三', '四', '五', '六'];
-          container.innerHTML = activeSubs.slice(0, 3).map(sub => {
-            let scheduleText = sub.scheduleType === 'daily' ? '每天' : 
-              (sub.scheduleType === 'weekdays' ? '工作日' : 
-                (sub.customDays || []).map(d => days[d]).join('、'));
-            return `
-              <div class="subscription-item">
-                <div class="subscription-info">
-                  <h4>${sub.name}</h4>
-                  <p>⏰ ${sub.signTime} | 📅 ${scheduleText}</p>
-                </div>
-              </div>
-            `;
+          const active = data.subscriptions.filter(s => s.enabled);
+          if (active.length === 0) { container.innerHTML = '<p class="empty">暂无活跃签到</p>'; return; }
+          const days = ['日','一','二','三','四','五','六'];
+          container.innerHTML = active.slice(0,3).map(sub => {
+            const scheduleText = sub.scheduleType === 'daily' ? '每天' : (sub.scheduleType === 'weekdays' ? '工作日' : (sub.customDays || []).map(d => days[d]).join('、'));
+            return '<div class="subscription-item"><div class="subscription-info"><h4>' + escapeHTML(sub.name) + '</h4><p>⏰ ' + escapeHTML(sub.signTime) + ' | 📅 ' + escapeHTML(scheduleText) + '</p></div></div>';
           }).join('');
         }
-      } catch (e) { console.error('加载签到任务失败', e); }
+      } catch (e) { console.error(e); }
     }
-    
     async function loadSubscriptions() {
       try {
-        const res = await fetch(`${API_BASE}/subscriptions`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/subscriptions', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
         const container = document.getElementById('subscriptionsList');
-        
-        if (!data.subscriptions || data.subscriptions.length === 0) {
-          container.innerHTML = '<p class="empty">暂无任务，请添加考勤签到任务</p>';
-          return;
-        }
-        
-        const days = ['日', '一', '二', '三', '四', '五', '六'];
+        if (!data.subscriptions || data.subscriptions.length === 0) { container.innerHTML = '<p class="empty">暂无任务</p>'; return; }
+        const days = ['日','一','二','三','四','五','六'];
         container.innerHTML = data.subscriptions.map(sub => {
-          let scheduleText = sub.scheduleType === 'daily' ? '每天' : 
-            (sub.scheduleType === 'weekdays' ? '工作日' : 
-              (sub.customDays || []).map(d => days[d]).join('、'));
-          return `
-            <div class="subscription-item">
-              <div class="subscription-info">
-                <h4>${sub.name}</h4>
-                <p>⏰ ${sub.signTime} | 📅 ${scheduleText} | 🔄 重试 ${sub.maxRetries} 次</p>
-              </div>
-              <div class="subscription-actions">
-                <span class="status-badge ${sub.enabled ? 'status-enabled' : 'status-disabled'}">
-                  ${sub.enabled ? '已启用' : '已禁用'}
-                </span>
-                <button class="btn btn-outline" onclick="toggleSubscription('${sub._id}', ${!sub.enabled})">
-                  ${sub.enabled ? '禁用' : '启用'}
-                </button>
-                <button class="btn btn-outline" onclick="editSubscription('${sub._id}')">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger" onclick="deleteSubscription('${sub._id}')">删除</button>
-              </div>
-            </div>
-          `;
+          const scheduleText = sub.scheduleType === 'daily' ? '每天' : (sub.scheduleType === 'weekdays' ? '工作日' : (sub.customDays || []).map(d => days[d]).join('、'));
+          return '<div class="subscription-item"><div class="subscription-info"><h4>' + escapeHTML(sub.name) + '</h4><p>⏰ ' + escapeHTML(sub.signTime) + ' | 📅 ' + escapeHTML(scheduleText) + ' | 🔄 重试 ' + escapeHTML(sub.maxRetries) + ' 次</p></div><div class="subscription-actions"><span class="status-badge ' + (sub.enabled ? 'status-enabled' : 'status-disabled') + '">' + (sub.enabled ? '已启用' : '已禁用') + '</span><button class="btn btn-outline" onclick="toggleSubscription(\'' + escapeAttr(sub._id) + '\', ' + !sub.enabled + ')">' + (sub.enabled ? '禁用' : '启用') + '</button><button class="btn btn-outline" onclick="editSubscription(\'' + escapeAttr(sub._id) + '\')"><i class="fas fa-edit"></i></button><button class="btn btn-danger" onclick="deleteSubscription(\'' + escapeAttr(sub._id) + '\')">删除</button></div></div>';
         }).join('');
-      } catch (e) { console.error('加载任务失败', e); }
+      } catch (e) { console.error(e); }
     }
-    
     async function quickSign() {
       const btn = document.getElementById('quickSignBtn');
-      const resultSpan = document.getElementById('signResult');
-      
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 签到中...';
-      
+      const result = document.getElementById('signResult');
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 签到中...';
       try {
-        const res = await fetch(`${API_BASE}/sign/manual`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ attendancePassword })
-        });
+        const res = await fetch(API_BASE + '/sign/manual', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } });
         const data = await res.json();
-        
-        if (data.success) {
-          if (data.result.success) {
-            resultSpan.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle"></i> 签到成功！</span>';
-          } else {
-            resultSpan.innerHTML = `<span style="color: #dc3545;"><i class="fas fa-times-circle"></i> ${data.result.message || '签到失败'}</span>`;
-          }
+        if (data.success && data.result) {
+          result.innerHTML = data.result.success ? '<span style="color:#28a745;"><i class="fas fa-check-circle"></i> 签到成功！</span>' : '<span style="color:#dc3545;"><i class="fas fa-times-circle"></i> ' + escapeHTML(data.result.message || '签到失败') + '</span>';
           loadStats();
         }
-      } catch (e) {
-        resultSpan.innerHTML = '<span style="color: #dc3545;"><i class="fas fa-times-circle"></i> 网络错误</span>';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-pen"></i> 立即签到';
-      }
+      } catch (e) { result.innerHTML = '<span style="color:#dc3545;">网络错误</span>'; }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-pen"></i> 立即签到'; }
     }
-    
     async function addSubscription() {
       const name = document.getElementById('courseName').value || '晚寝签到';
       const signTime = document.getElementById('signTime').value || '21:25';
       const maxRetries = parseInt(document.getElementById('maxRetries').value) || 3;
       const autoSign = document.getElementById('autoSign').value === 'true';
-      const notifyOnSuccess = document.getElementById('notifyOnSuccess').checked;
-      const notifyOnFailure = document.getElementById('notifyOnFailure').checked;
-      
       const selectedDays = [];
-      document.querySelectorAll('.weekday-btn.selected').forEach(btn => {
-        selectedDays.push(parseInt(btn.dataset.day));
-      });
-      
+      document.querySelectorAll('.weekday-btn.selected').forEach(b => selectedDays.push(parseInt(b.dataset.day)));
       let scheduleType = 'custom';
       if (selectedDays.length === 7) scheduleType = 'daily';
       else if (selectedDays.length === 5 && selectedDays.every(d => d >= 1 && d <= 5)) scheduleType = 'weekdays';
-      
       try {
-        const res = await fetch(`${API_BASE}/subscriptions`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name, scheduleType, customDays: selectedDays, signTime,
-            maxRetries, autoSign, notifyOnSuccess, notifyOnFailure
-          })
-        });
-        
+        const res = await fetch(API_BASE + '/subscriptions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ name, scheduleType, customDays: selectedDays, signTime, maxRetries, autoSign, notifyOnSuccess: true, notifyOnFailure: true }) });
         const data = await res.json();
-        if (data.success) {
-          alert('任务添加成功！');
-          loadSubscriptions();
-          loadStats();
-        } else {
-          alert('添加失败：' + data.message);
-        }
-      } catch (e) { alert('网络错误'); }
+        if (data.success) { showToast('任务添加成功', 'success'); loadSubscriptions(); loadStats(); }
+        else showToast('添加失败：' + (data.message || '请稍后重试'), 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
-    
     async function toggleSubscription(id, enabled) {
       try {
-        await fetch(`${API_BASE}/subscriptions/${id}/toggle`, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        loadSubscriptions();
-        loadStats();
-      } catch (e) { alert('操作失败'); }
+        await fetch(API_BASE + '/subscriptions/' + id + '/toggle', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+        loadSubscriptions(); loadStats();
+      } catch (e) { showToast('操作失败', 'error'); }
     }
-    
     async function deleteSubscription(id) {
-      if (!confirm('确定删除这个任务吗？')) return;
+      if (!confirm('确定删除？')) return;
       try {
-        await fetch(`${API_BASE}/subscriptions/${id}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        loadSubscriptions();
-        loadStats();
-      } catch (e) { alert('删除失败'); }
+        await fetch(API_BASE + '/subscriptions/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+        loadSubscriptions(); loadStats();
+      } catch (e) { showToast('删除失败', 'error'); }
     }
-    
-    function editSubscription(id) {
-      alert('编辑功能开发中，请先删除后重新添加');
-    }
-    
+    function editSubscription(id) { showToast('编辑功能开发中', 'info'); }
     async function loadLogs() {
       try {
-        const res = await fetch(`${API_BASE}/sign/logs?limit=50`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/sign/logs?limit=50', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
         const container = document.getElementById('logsList');
-        
-        if (!data.logs || data.logs.length === 0) {
-          container.innerHTML = '<p class="empty">暂无签到记录</p>';
-          return;
-        }
-        
-        container.innerHTML = data.logs.map(log => `
-          <div class="log-item">
-            <span class="${log.status === 'success' ? 'log-success' : 'log-failed'}">
-              ${log.status === 'success' ? '✅' : '❌'}
-            </span>
-            <div style="flex: 1;">
-              <strong>${log.subscriptionName || '手动签到'}</strong>
-              <span style="color: #999; margin-left: 10px;">${new Date(log.executedAt || log.signTime).toLocaleString('zh-CN')}</span>
-            </div>
-            <span style="color: #666; font-size: 13px;">${log.message || ''}</span>
-          </div>
-        `).join('');
-      } catch (e) { console.error('加载日志失败', e); }
+        if (!data.logs || data.logs.length === 0) { container.innerHTML = '<p class="empty">暂无记录</p>'; return; }
+        container.innerHTML = data.logs.map(log => '<div class="log-item"><span class="' + (log.status === 'success' ? 'log-success' : 'log-failed') + '">' + (log.status === 'success' ? '✅' : '❌') + '</span><div style="flex:1;"><strong>' + escapeHTML(log.subscriptionName || '手动签到') + '</strong><span style="color:#999;margin-left:10px;">' + new Date(log.executedAt || log.signTime).toLocaleString('zh-CN') + '</span></div><span style="color:#666;font-size:13px;">' + escapeHTML(log.message || '') + '</span></div>').join('');
+      } catch (e) { console.error(e); }
     }
-    
+    async function loadUserInfo() {
+      try {
+        const res = await fetch(API_BASE + '/user/profile', { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        if (data.success) {
+          currentUser = data.user;
+          localStorage.setItem('user', JSON.stringify(currentUser));
+          document.getElementById('userName').textContent = (currentUser.name || currentUser.studentId) + ' (' + currentUser.studentId + ')';
+          const badge = document.getElementById('emailBadge');
+          if (currentUser.emailVerified) { badge.style.background = '#28a745'; badge.textContent = '✓'; }
+        }
+      } catch (e) { console.error(e); }
+    }
     async function loadEmailStatus() {
       await loadUserInfo();
       const container = document.getElementById('emailStatus');
       const form = document.getElementById('emailBindForm');
-      const rebindArea = document.getElementById('rebindArea');
-      
       if (currentUser.emailVerified) {
-        container.innerHTML = `
-          <div style="background: #d4edda; padding: 20px; border-radius: 14px; margin-bottom: 20px;">
-            <p><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>邮箱已绑定</strong></p>
-            <p style="margin-top: 8px;">当前邮箱：${currentUser.email}</p>
-          </div>
-        `;
+        container.innerHTML = '<div style="background:#d4edda;padding:20px;border-radius:14px;margin-bottom:20px;"><p><i class="fas fa-check-circle" style="color:#28a745;"></i> <strong>邮箱已绑定</strong></p><p style="margin-top:8px;">当前邮箱：' + escapeHTML(currentUser.email) + '</p></div>';
         form.style.display = 'none';
-        rebindArea.style.display = 'block';  // ← 显示换绑区域
       } else {
-        container.innerHTML = `
-          <div style="background: #fff3cd; padding: 20px; border-radius: 14px; margin-bottom: 20px;">
-            <p><i class="fas fa-info-circle" style="color: #f39c12;"></i> <strong>未绑定邮箱</strong></p>
-            <p style="margin-top: 8px;">绑定邮箱后自动获得 30 天 VIP，享受邮件通知特权</p>
-          </div>
-        `;
+        container.innerHTML = '<div style="background:#fff3cd;padding:20px;border-radius:14px;margin-bottom:20px;"><p><i class="fas fa-info-circle" style="color:#f39c12;"></i> <strong>未绑定邮箱</strong></p><p>绑定后自动获得 30 天 VIP</p></div>';
         form.style.display = 'block';
-        rebindArea.style.display = 'none';  // ← 隐藏换绑区域
       }
     }
-    
-       // 发送换绑验证码
-    async function sendRebindCode() {
-      const email = document.getElementById('rebindEmail').value;
-      if (!email) { alert('请输入新邮箱地址'); return; }
-      
-      // 检查是否和当前邮箱相同
-      if (email === currentUser.email) {
-        alert('新邮箱不能和当前邮箱相同');
-        return;
-      }
-      
-      const btn = document.getElementById('rebindSendBtn');
-      btn.disabled = true;
-      
+    async function sendEmailCode() {
+      const email = document.getElementById('bindEmail').value;
+      if (!email) { showToast('请输入邮箱', 'error'); return; }
+      const btn = document.getElementById('sendCodeBtn'); btn.disabled = true;
       try {
-        const res = await fetch(`${API_BASE}/email/send-code`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email })
-        });
-        
+        const res = await fetch(API_BASE + '/email/send-code', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
         const data = await res.json();
         if (data.success) {
-          alert('验证码已发送到新邮箱');
-          if (data.debugCode) {
-            document.getElementById('rebindCode').value = data.debugCode;
-          }
-          
-          let countdown = 60;
-          const timer = setInterval(() => {
-            countdown--;
-            btn.textContent = `${countdown}秒后重试`;
-            if (countdown <= 0) {
-              clearInterval(timer);
-              btn.disabled = false;
-              btn.textContent = '发送验证码';
-            }
-          }, 1000);
-        } else {
-          alert(data.message || '发送失败');
-          btn.disabled = false;
-        }
-      } catch (e) {
-        alert('网络错误');
-        btn.disabled = false;
-      }
+          showToast('验证码已发送', 'success');
+          if (data.debugCode) document.getElementById('emailCode').value = data.debugCode;
+          let cd = 60;
+          const timer = setInterval(() => { cd--; btn.textContent = cd + '秒后重试'; if (cd <= 0) { clearInterval(timer); btn.disabled = false; btn.textContent = '发送验证码'; } }, 1000);
+        } else { showToast(data.message || '发送失败', 'error'); btn.disabled = false; }
+      } catch (e) { showToast('网络错误', 'error'); btn.disabled = false; }
     }
-    
-    // 确认换绑
-    async function rebindEmail() {
-      const email = document.getElementById('rebindEmail').value;
-      const code = document.getElementById('rebindCode').value;
-      
-      if (!email || !code) { alert('请填写新邮箱和验证码'); return; }
-      
-      try {
-        const res = await fetch(`${API_BASE}/email/rebind`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, code })
-        });
-        
-        const data = await res.json();
-        if (data.success) {
-          alert('邮箱换绑成功！');
-          document.getElementById('rebindEmail').value = '';
-          document.getElementById('rebindCode').value = '';
-          await loadUserInfo();
-          loadEmailStatus();
-        } else {
-          alert(data.message || '换绑失败');
-        }
-      } catch (e) { alert('网络错误'); }
-    }
-    
     async function verifyEmail() {
       const email = document.getElementById('bindEmail').value;
       const code = document.getElementById('emailCode').value;
-      
-      if (!email || !code) { alert('请填写邮箱和验证码'); return; }
-      
+      if (!email || !code) { showToast('请填写完整', 'error'); return; }
       try {
-        const res = await fetch(`${API_BASE}/email/verify`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, code })
-        });
-        
+        const res = await fetch(API_BASE + '/email/verify', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, code }) });
         const data = await res.json();
-        if (data.success) {
-          alert('邮箱绑定成功！VIP 已激活');
-          await loadUserInfo();
-          loadEmailStatus();
-        } else {
-          alert(data.message || '验证失败');
-        }
-      } catch (e) { alert('网络错误'); }
-      
+        if (data.success) { showToast('绑定成功', 'success'); await loadUserInfo(); loadEmailStatus(); }
+        else showToast(data.message || '验证失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
-    
     async function loadInviteInfo() {
       try {
-        const res = await fetch(`${API_BASE}/invite/info`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/invite/info', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
-        
         if (data.success) {
           document.getElementById('inviteUrl').value = data.inviteUrl || '';
-          document.getElementById('inviteCode').value = data.inviteCode || '生成中...';
+          document.getElementById('inviteCode').value = data.inviteCode || '';
           document.getElementById('inviteCount').textContent = data.inviteCount || 0;
           document.getElementById('rewardDays').textContent = data.rewardDays || 10;
-          document.getElementById('bindRewardDays').textContent = data.rewardDays || 10;
-          
           if (currentUser.invitedBy) {
-            const area = document.getElementById('bindInviteArea');
-            if (area) {
-              area.innerHTML = `
-                <div style="background: #d4edda; padding: 15px; border-radius: 10px; color: #155724; margin-bottom: 15px;">
-                  <i class="fas fa-check-circle"></i> 您已绑定邀请人
-                </div>
-              `;
-            }
-            const inputGroup = document.querySelector('#bindInviteCard .form-group');
-            if (inputGroup) inputGroup.style.display = 'none';
+            document.getElementById('bindInviteArea').innerHTML = '<div style="background:#d4edda;padding:15px;border-radius:10px;color:#155724;"><i class="fas fa-check-circle"></i> 您已绑定邀请人</div>';
           }
-          
-          const listEl = document.getElementById('invitedList');
+          const list = document.getElementById('invitedList');
           if (data.invitedUsers && data.invitedUsers.length > 0) {
-            listEl.innerHTML = data.invitedUsers.map(u => `
-              <div style="padding: 12px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                <span><i class="fas fa-user" style="color: #667eea; margin-right: 8px;"></i>${u.name || u.studentId}</span>
-                <span style="color: #999; font-size: 12px;">${new Date(u.createdAt).toLocaleDateString()}</span>
-              </div>
-            `).join('');
-          } else {
-            listEl.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">暂无邀请记录，快去邀请好友吧！</p>';
-          }
+            list.innerHTML = data.invitedUsers.map(u => '<div style="padding:12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;"><span><i class="fas fa-user" style="color:#667eea;margin-right:8px;"></i>' + escapeHTML(u.name || u.studentId) + '</span><span style="color:#999;font-size:12px;">' + new Date(u.createdAt).toLocaleDateString() + '</span></div>').join('');
+          } else list.innerHTML = '<p style="color:#999;text-align:center;padding:20px;">暂无邀请记录</p>';
         }
-      } catch (e) { console.error('加载邀请信息失败', e); }
+      } catch (e) { console.error(e); }
     }
-    
-    function copyInviteUrl() {
-      document.getElementById('inviteUrl').select();
-      document.execCommand('copy');
-      alert('邀请链接已复制');
-    }
-    
-    function copyInviteCode() {
-      document.getElementById('inviteCode').select();
-      document.execCommand('copy');
-      alert('邀请码已复制');
-    }
-    
+    function copyInviteUrl() { document.getElementById('inviteUrl').select(); document.execCommand('copy'); showToast('已复制', 'success'); }
+    function copyInviteCode() { document.getElementById('inviteCode').select(); document.execCommand('copy'); showToast('已复制', 'success'); }
     async function applyInviteCode() {
       const code = document.getElementById('inputInviteCode').value.trim().toUpperCase();
-      if (!code) { alert('请输入邀请码'); return; }
-      if (code.length !== 8) { alert('邀请码应为 8 位字符'); return; }
-      
+      if (!code) { showToast('请输入邀请码', 'error'); return; }
       try {
-        const res = await fetch(`${API_BASE}/invite/apply`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ inviteCode: code })
-        });
-        
+        const res = await fetch(API_BASE + '/invite/apply', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ inviteCode: code }) });
         const data = await res.json();
-        if (data.success) {
-          alert(data.message);
-          await loadUserInfo();
-          loadInviteInfo();
-          loadStats();
-        } else {
-          alert(data.message);
-        }
-      } catch (e) { alert('绑定失败，请重试'); }
+        if (data.success) { showToast(data.message, 'success'); await loadUserInfo(); loadInviteInfo(); loadStats(); }
+        else showToast(data.message || '绑定失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
-    
-    // ============ 留言反馈功能 ============
     async function submitFeedback() {
       const title = document.getElementById('feedbackTitle').value.trim();
       const content = document.getElementById('feedbackContent').value.trim();
       const type = document.getElementById('feedbackType').value;
-      
-      if (!title || !content) {
-        alert('请填写标题和内容');
-        return;
-      }
-      
+      if (!title || !content) { showToast('请填写完整', 'error'); return; }
       try {
-        const res = await fetch(`${API_BASE}/feedback`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ title, content, type })
-        });
-        
+        const res = await fetch(API_BASE + '/feedback', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ title, content, type }) });
         const data = await res.json();
-        if (data.success) {
-          alert('反馈提交成功！');
-          document.getElementById('feedbackTitle').value = '';
-          document.getElementById('feedbackContent').value = '';
-          loadMyFeedback();
-        } else {
-          alert(data.message || '提交失败');
-        }
-      } catch (e) {
-        alert('网络错误');
-      }
+        if (data.success) { showToast('提交成功', 'success'); document.getElementById('feedbackTitle').value = ''; document.getElementById('feedbackContent').value = ''; loadMyFeedback(); }
+        else showToast(data.message || '提交失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
-    
     async function loadMyFeedback() {
       try {
-        const res = await fetch(`${API_BASE}/feedback/my`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/feedback/my', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
-        
         const container = document.getElementById('myFeedbackList');
-        
-        if (!data.feedbacks || data.feedbacks.length === 0) {
-          container.innerHTML = '<p class="empty">暂无留言记录</p>';
-          return;
-        }
-        
-        const typeMap = {
-          bug: '🐛 问题反馈',
-          suggestion: '💡 功能建议',
-          question: '❓ 使用疑问',
-          other: '📝 其他'
-        };
-        
-        const statusMap = {
-          pending: '<span class="status-badge" style="background:#fff3cd;color:#856404;">⏳ 待处理</span>',
-          read: '<span class="status-badge" style="background:#d1ecf1;color:#0c5460;">👀 已读</span>',
-          replied: '<span class="status-badge status-enabled">✅ 已回复</span>',
-          closed: '<span class="status-badge status-disabled">🔒 已关闭</span>'
-        };
-        
-        container.innerHTML = data.feedbacks.map(f => `
-          <div class="subscription-item" style="cursor:pointer;" onclick="viewFeedback('${f._id}')">
-            <div class="subscription-info">
-              <h4>${typeMap[f.type] || '📝 其他'} · ${f.title}</h4>
-              <p style="margin-top:5px;">${f.content.substring(0, 50)}${f.content.length > 50 ? '...' : ''}</p>
-              <p style="margin-top:8px; font-size:12px; color:#999;">
-                ${new Date(f.createdAt).toLocaleString()} · ${statusMap[f.status]}
-                ${f.adminReply ? '<i class="fas fa-reply" style="margin-left:10px;"></i> 已回复' : ''}
-              </p>
-            </div>
-            <i class="fas fa-chevron-right" style="color:#ccc;"></i>
-          </div>
-        `).join('');
-      } catch (e) {
-        console.error('加载留言失败', e);
-      }
+        if (!data.feedbacks || data.feedbacks.length === 0) { container.innerHTML = '<p class="empty">暂无留言</p>'; return; }
+        const typeMap = { bug: '🐛', suggestion: '💡', question: '❓', other: '📝' };
+        const statusMap = { pending: '<span class="status-badge" style="background:#fff3cd;color:#856404;">⏳ 待处理</span>', read: '<span class="status-badge" style="background:#d1ecf1;color:#0c5460;">👀 已读</span>', replied: '<span class="status-badge status-enabled">✅ 已回复</span>', closed: '<span class="status-badge status-disabled">🔒 已关闭</span>' };
+        container.innerHTML = data.feedbacks.map(f => '<div class="subscription-item" style="cursor:pointer;" onclick="viewFeedback(\'' + escapeAttr(f._id) + '\')"><div class="subscription-info"><h4>' + (typeMap[f.type] || '📝') + ' · ' + escapeHTML(f.title) + '</h4><p style="margin-top:5px;">' + escapeHTML(f.content.substring(0, 50)) + (f.content.length > 50 ? '...' : '') + '</p><p style="margin-top:8px;font-size:12px;color:#999;">' + new Date(f.createdAt).toLocaleString() + ' · ' + statusMap[f.status] + (f.adminReply ? ' <i class="fas fa-reply"></i> 已回复' : '') + '</p></div><i class="fas fa-chevron-right" style="color:#ccc;"></i></div>').join('');
+      } catch (e) { console.error(e); }
     }
-    
     async function viewFeedback(id) {
       try {
-        const res = await fetch(`${API_BASE}/feedback/${id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(API_BASE + '/feedback/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
-        
         if (data.success) {
           const f = data.feedback;
-          
-          const typeMap = { bug: '🐛 问题反馈', suggestion: '💡 功能建议', question: '❓ 使用疑问', other: '📝 其他' };
-          const statusMap = { pending: '⏳ 待处理', read: '👀 已读', replied: '✅ 已回复', closed: '🔒 已关闭' };
-          
-          document.getElementById('feedbackDetailContent').innerHTML = `
-            <div style="margin-bottom:20px;">
-              <span class="badge badge-info">${typeMap[f.type]}</span>
-              <span class="badge badge-warning">${statusMap[f.status]}</span>
-            </div>
-            <h3 style="margin-bottom:15px;">${f.title}</h3>
-            <div style="background:#f5f7fa; padding:16px; border-radius:12px; margin-bottom:20px;">
-              ${f.content.replace(/\n/g, '<br>')}
-            </div>
-            <p style="color:#999; font-size:13px; margin-bottom:20px;">
-              提交时间：${new Date(f.createdAt).toLocaleString()}
-            </p>
-            ${f.adminReply ? `
-              <div style="background:#d4edda; padding:16px; border-radius:12px; border-left:4px solid #28a745;">
-                <p style="font-weight:600; margin-bottom:10px;"><i class="fas fa-reply"></i> 管理员回复：</p>
-                <p>${f.adminReply.replace(/\n/g, '<br>')}</p>
-                <p style="color:#999; font-size:12px; margin-top:10px;">
-                  回复时间：${new Date(f.repliedAt).toLocaleString()}
-                </p>
-              </div>
-            ` : '<p style="color:#999; text-align:center; padding:20px;">暂无回复，请耐心等待</p>'}
-          `;
-          
+          const typeMap = { bug: '🐛 问题', suggestion: '💡 建议', question: '❓ 疑问', other: '📝 其他' };
+          document.getElementById('feedbackDetailContent').innerHTML = '<div style="margin-bottom:20px;"><span class="badge badge-info">' + (typeMap[f.type] || '📝') + '</span></div><h3>' + escapeHTML(f.title) + '</h3><div style="background:#f5f7fa;padding:16px;border-radius:12px;margin:20px 0;">' + escapeHTML(f.content).replace(/\n/g, '<br>') + '</div><p style="color:#999;font-size:13px;">提交时间：' + new Date(f.createdAt).toLocaleString() + '</p>' + (f.adminReply ? '<div style="background:#d4edda;padding:16px;border-radius:12px;border-left:4px solid #28a745;"><p style="font-weight:600;"><i class="fas fa-reply"></i> 管理员回复：</p><p>' + escapeHTML(f.adminReply).replace(/\n/g, '<br>') + '</p><p style="color:#999;font-size:12px;margin-top:10px;">回复时间：' + new Date(f.repliedAt).toLocaleString() + '</p></div>' : '<p style="color:#999;text-align:center;padding:20px;">暂无回复</p>');
           document.getElementById('feedbackDetailModal').classList.add('show');
         }
-      } catch (e) {
-        alert('加载失败');
-      }
+      } catch (e) { showToast('加载失败', 'error'); }
     }
-    
-    function closeFeedbackModal() {
-      document.getElementById('feedbackDetailModal').classList.remove('show');
-    }
-
-    // ============ 购买卡密功能 ============
-    let currentOrder = null;
-    let pollingTimer = null;
-    
-    async function loadPackages() {
-      try {
-        const res = await fetch(`${API_BASE}/payment/packages`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        
-        if (data.success) {
-          const container = document.getElementById('packagesList');
-          container.innerHTML = `
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-              ${data.packages.map(pkg => {
-                // 判断是天数卡还是次数卡
-                const isTimesCard = pkg.cardCategory === 'times';
-                const label = isTimesCard ? `${pkg.times}次签到卡` : `${pkg.days}天VIP卡`;
-                const badge = isTimesCard 
-                  ? '<span style="background:#17a2b8;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">次数卡</span>'
-                  : '<span style="background:#667eea;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">天数卡</span>';
-                
-                return `
-                <div style="border: 2px solid #e0e0e0; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s;" 
-                     onmouseover="this.style.borderColor='#667eea'; this.style.boxShadow='0 4px 12px rgba(102,126,234,0.2)'"
-                     onmouseout="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'"
-                     onclick="selectPackage(${pkg.days || 0}, ${pkg.times || 0}, ${pkg.price}, '${pkg.cardCategory || 'days'}')">
-                  <div style="margin-bottom: 10px;">${badge}</div>
-                  <h3 style="margin-bottom: 10px;">${pkg.name}</h3>
-                  <p style="font-size: 28px; font-weight: 700; color: #f39c12; margin-bottom: 10px;">¥${pkg.price}</p>
-                  <p style="color: #888; font-size: 13px;">${pkg.description}</p>
-                </div>
-                `;
-              }).join('')}
-            </div>
-          `;
-        }
-      } catch (e) { console.error('加载套餐失败', e); }
-    }
-    
-  async function selectPackage(days, times, price, cardCategory) {
-    const label = cardCategory === 'times' ? `${times}次签到卡` : `${days}天VIP卡`;
-    
-    // 显示支付方式选择
-    showPaymentMethodModal(days, times, price, cardCategory, label);
-  }
-  
-  // 显示支付方式选择弹窗
-function showPaymentMethodModal(days, times, price, cardCategory, label) {
-  // 根据类别显示不同的标签
-  const cardLabel = cardCategory === 'times' ? `${times}次签到卡` : `${days}天VIP卡`;
-  
-  const payMethod = confirm(
-    `【购买 ${cardLabel}】\n金额：¥${price}（实际金额会有微小浮动）\n\n点击"确定"使用微信支付\n点击"取消"使用支付宝支付`
-  );
-  
-  const method = payMethod ? 'wechat' : 'alipay';
-  const methodName = method === 'wechat' ? '微信' : '支付宝';
-  
-  if (!confirm(`确认使用【${methodName}】支付 ¥${price}？\n\n实际金额以二维码为准`)) return;
-  
-  createPaymentOrder(days, times, cardCategory, method);
-}
-  
-  // 创建支付订单
-  async function createPaymentOrder(days, times, cardCategory, payMethod) {
-    try {
-      const body = cardCategory === 'times' 
-        ? { times, cardCategory, payMethod }
-        : { days, cardCategory, payMethod };
-      
-      const res = await fetch(`${API_BASE}/payment/create-order`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
-      
-      const data = await res.json();
-      if (data.success) {
-        currentOrder = data.order;
-        
-        const methodName = payMethod === 'wechat' ? '微信' : '支付宝';
-        const qrUrl = payMethod === 'wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
-        
-        // 判断是天数卡还是次数卡
-        const cardLabel = data.order.cardCategory === 'times' 
-          ? `${data.order.times}次签到卡` 
-          : `${data.order.days}天VIP卡`;
-        
-        document.getElementById('paymentArea').style.display = 'block';
-        document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
-        document.getElementById('qrCodeImage').src = qrUrl;
-        document.getElementById('paymentResult').style.display = 'none';
-        
-        document.getElementById('paymentArea').querySelector('h3').textContent = 
-          `请使用【${methodName}】扫码支付`;
-        
-        alert(
-          `【支付说明】\n\n` +
-          `套餐：${cardLabel}\n` +
-          `支付方式：${methodName}\n` +
-          `应付金额：¥${data.order.amount.toFixed(2)}\n\n` +
-          `1. 使用【${methodName}】扫描二维码\n` +
-          `2. 输入金额：¥${data.order.amount.toFixed(2)}\n` +
-          `3. 确认支付\n\n` +
-          `⚠️ 重要：金额必须精确为 ¥${data.order.amount.toFixed(2)}\n` +
-          `如果金额不对，系统无法自动匹配！\n\n` +
-          `订单号：${data.order.orderNo}`
-        );
-      } else {
-        alert(data.message || '创建订单失败');
-      }
-    } catch (e) { alert('网络错误'); }
-  }
-    
-    function startPolling(orderNo) {
-      if (pollingTimer) clearInterval(pollingTimer);
-      
-      pollingTimer = setInterval(async () => {
-        await checkPaymentStatus(orderNo);
-      }, 5000);
-    }
-    
-    async function checkPaymentStatus(orderNo) {
-      const orderNoToCheck = orderNo || currentOrder?.orderNo;
-      if (!orderNoToCheck) return;
-      
-      try {
-        const res = await fetch(`${API_BASE}/payment/order/${orderNoToCheck}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        
-        if (data.success && data.order.status === 'paid') {
-          clearInterval(pollingTimer);
-          pollingTimer = null;
-          
-          document.getElementById('paymentResult').style.display = 'block';
-          
-          const label = data.order.cardCategory === 'times' 
-            ? `${data.order.times}次签到卡` 
-            : `${data.order.days}天VIP卡`;
-          
-          document.getElementById('paymentResult').innerHTML = `
-            <div style="background: #d4edda; padding: 30px; border-radius: 16px; text-align: center;">
-              <div style="font-size: 48px; margin-bottom: 15px;">🎉</div>
-              <h3 style="color: #155724; margin-bottom: 15px;">支付成功！</h3>
-              <p style="margin-bottom: 20px;">您的卡密是：</p>
-              <div style="background: #fff; display: inline-block; padding: 15px 30px; border-radius: 12px; 
-                          font-size: 28px; font-weight: 700; color: #667eea; letter-spacing: 3px; 
-                          border: 2px dashed #667eea;">
-                ${data.cardCode || '加载中...'}
-              </div>
-              <p style="margin-top: 20px; color: #666;">
-                购买：${label} | 金额：¥${data.order.amount.toFixed(2)}
-              </p>
-              ${data.cardCode ? `
-              <button class="btn btn-primary" onclick="copyCardCode('${data.cardCode}')" style="margin-top: 15px;">
-                <i class="fas fa-copy"></i> 复制卡密
-              </button>` : ''}
-              <p style="margin-top: 10px; color: #888; font-size: 13px;">
-                卡密也可在个人中心手动兑换使用
-              </p>
-            </div>
-          `;
-          
-          document.getElementById('paymentArea').style.display = 'none';
-        }
-      } catch (e) { console.error('查询订单失败', e); }
-    }
-    
-    function copyCardCode(code) {
-      if (!code) return;
-      const input = document.createElement('input');
-      input.value = code;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand('copy');
-      document.body.removeChild(input);
-      alert('卡密已复制到剪贴板！\n' + code);
-    }    
-    
+    function closeFeedbackModal() { document.getElementById('feedbackDetailModal').classList.remove('show'); }
     async function loadProfile() {
       await loadUserInfo();
       document.getElementById('profileStudentId').value = currentUser.studentId || '';
       document.getElementById('profileName').value = currentUser.name || '';
-      document.getElementById('profileAttendancePassword').value = currentUser.attendancePassword || attendancePassword;
+      document.getElementById('profileAttendancePassword').value = '';
       document.getElementById('profileEmail').value = currentUser.email || '未绑定';
-      document.getElementById('profileInviteCode').value = currentUser.inviteCode || '';
-      
-      let vipText = '免费用户';
-      if (currentUser.isVip) {
-        const expireDate = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null;
-        if (expireDate && expireDate > new Date()) {
-          vipText = `VIP 会员 (有效期至 ${expireDate.toLocaleDateString()})`;
-        } else {
-          vipText = 'VIP 已过期';
-        }
-      }
-      document.getElementById('profileVip').value = vipText;
-      
-      document.getElementById('profileTotalSigns').textContent = currentUser.totalSignCount || 0;
-      document.getElementById('profileSuccessSigns').textContent = currentUser.successSignCount || 0;
+      document.getElementById('profileVip').value = currentUser.isVip ? (currentUser.vipExpireAt && new Date(currentUser.vipExpireAt) > new Date() ? 'VIP 至 ' + new Date(currentUser.vipExpireAt).toLocaleDateString() : 'VIP 已过期') : '免费用户';
     }
-    
     async function updateProfile() {
       const name = document.getElementById('profileName').value;
-      const attendancePassword = document.getElementById('profileAttendancePassword').value;
-      
+      const pwd = document.getElementById('profileAttendancePassword').value.trim();
+      const payload = { name };
+      if (pwd) payload.attendancePassword = pwd;
       try {
-        const res = await fetch(`${API_BASE}/user/profile`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ name, attendancePassword })
-        });
-        
+        const res = await fetch(API_BASE + '/user/profile', { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         const data = await res.json();
-        if (data.success) {
-          alert('保存成功');
-          await loadUserInfo();
-        } else {
-          alert(data.message || '保存失败');
-        }
-      } catch (e) { alert('网络错误'); }
+        if (data.success) { showToast('保存成功', 'success'); document.getElementById('profileAttendancePassword').value = ''; await loadUserInfo(); }
+        else showToast(data.message || '保存失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
-    
     async function redeemCode() {
       const code = document.getElementById('redeemCode').value.trim().toUpperCase();
-      if (!code) { alert('请输入卡密'); return; }
-      
+      if (!code) { showToast('请输入卡密', 'error'); return; }
       try {
-        const res = await fetch(`${API_BASE}/vip/redeem`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ code })
-        });
-        
+        const res = await fetch(API_BASE + '/vip/redeem', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
+        const data = await res.json();
+        if (data.success) { showToast(data.message, 'success'); document.getElementById('redeemCode').value = ''; await loadUserInfo(); loadStats(); }
+        else showToast(data.message || '兑换失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
+    }
+    // 购买卡密
+    async function loadPackages() {
+      try {
+        const res = await fetch(API_BASE + '/payment/packages', { headers: { 'Authorization': 'Bearer ' + token } });
         const data = await res.json();
         if (data.success) {
-          alert(data.message);
-          document.getElementById('redeemCode').value = '';
-          await loadUserInfo();
-          loadStats();
-        } else {
-          alert(data.message || '兑换失败');
+          document.getElementById('packagesList').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">' + data.packages.map(pkg => {
+            const badge = pkg.cardCategory === 'times' ? '<span style="background:#17a2b8;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">次数卡</span>' : '<span style="background:#667eea;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">天数卡</span>';
+            return '<div style="background:#fff;border:2px solid #e0e0e0;border-radius:16px;padding:20px;cursor:pointer;transition:all 0.2s;" onclick="selectPackage(' + (pkg.days || 0) + ', ' + (pkg.times || 0) + ', ' + pkg.price + ', \'' + (pkg.cardCategory || 'days') + '\')"><div style="margin-bottom:10px;">' + badge + '</div><h3>' + escapeHTML(pkg.name) + '</h3><p style="font-size:28px;font-weight:700;color:#f39c12;">¥' + pkg.price + '</p><p style="color:#888;font-size:13px;">' + escapeHTML(pkg.description) + '</p></div>';
+          }).join('') + '</div>';
         }
-      } catch (e) { alert('网络错误'); }
+      } catch (e) { console.error(e); }
     }
-    
-    async function loadUserInfo() {
+    async function selectPackage(days, times, price, cardCategory) {
+      const label = cardCategory === 'times' ? times + '次签到卡' : days + '天VIP卡';
+      const method = confirm('【购买 ' + label + '】\n¥' + price + '\n\n确定=微信 | 取消=支付宝') ? 'wechat' : 'alipay';
+      if (!confirm('确认使用【' + (method === 'wechat' ? '微信' : '支付宝') + '】支付 ¥' + price + '？')) return;
       try {
-        const res = await fetch(`${API_BASE}/user/profile`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const body = cardCategory === 'times' ? { times, cardCategory, payMethod: method } : { days, cardCategory, payMethod: method };
+        const res = await fetch(API_BASE + '/payment/create-order', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         const data = await res.json();
         if (data.success) {
-          currentUser = data.user;
-          // 绑定 WebSocket 用户
-          if (socket && socket.connected && currentUser.id) {
-            socket.emit('bindUser', currentUser.id);
-          }
-          localStorage.setItem('user', JSON.stringify(currentUser));
-          document.getElementById('userName').textContent = `${currentUser.name || currentUser.studentId} (${currentUser.studentId})`;
-          
-          const emailBadge = document.getElementById('emailBadge');
-          if (currentUser.emailVerified) {
-            emailBadge.style.background = '#28a745';
-            emailBadge.textContent = '✓';
-          }
+          currentOrder = data.order;
+          document.getElementById('paymentArea').style.display = 'block';
+          document.getElementById('paymentAmount').textContent = '¥' + data.order.amount.toFixed(2);
+          document.getElementById('qrCodeImage').src = method === 'wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
+          document.getElementById('paymentResult').style.display = 'none';
+          document.getElementById('paymentArea').querySelector('h3').textContent = '请使用【' + (method === 'wechat' ? '微信' : '支付宝') + '】扫码支付';
+          showToast('金额：¥' + data.order.amount.toFixed(2) + '，请精确支付', 'info');
+          startPolling(data.order.orderNo);
+        } else showToast(data.message || '创建订单失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
+    }
+    function startPolling(orderNo) {
+      if (pollingTimer) clearInterval(pollingTimer);
+      pollingTimer = setInterval(() => checkPaymentStatus(orderNo), 5000);
+    }
+    async function checkPaymentStatus(orderNo) {
+      const id = orderNo || (currentOrder && currentOrder.orderNo);
+      if (!id) return;
+      try {
+        const res = await fetch(API_BASE + '/payment/order/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        if (data.success && data.order.status === 'paid') {
+          clearInterval(pollingTimer); pollingTimer = null;
+          document.getElementById('paymentResult').style.display = 'block';
+          const label = data.order.cardCategory === 'times' ? data.order.times + '次签到卡' : data.order.days + '天VIP卡';
+          document.getElementById('paymentResult').innerHTML = '<div style="background:#d4edda;padding:30px;border-radius:16px;text-align:center;"><div style="font-size:48px;">🎉</div><h3>支付成功！</h3><p>卡密：</p><div style="background:#fff;display:inline-block;padding:15px 30px;border-radius:12px;font-size:28px;font-weight:700;color:#667eea;letter-spacing:3px;border:2px dashed #667eea;">' + escapeHTML(data.cardCode || '') + '</div><p style="margin-top:20px;">' + escapeHTML(label) + ' | ¥' + Number(data.order.amount || 0).toFixed(2) + '</p>' + (data.cardCode ? '<button class="btn btn-primary" onclick="copyCardCode(\'' + escapeAttr(data.cardCode) + '\')"><i class="fas fa-copy"></i> 复制卡密</button>' : '') + '</div>';
+          document.getElementById('paymentArea').style.display = 'none';
         }
-      } catch (e) { console.error('加载用户信息失败', e); }
+      } catch (e) { console.error(e); }
     }
-    
-    function logout() {
-      localStorage.clear();
-      window.location.href = '/';
+    function copyCardCode(code) {
+      const input = document.createElement('input'); input.value = code; document.body.appendChild(input); input.select(); document.execCommand('copy'); document.body.removeChild(input);
+      showToast('卡密已复制', 'success');
     }
-    
-    loadUserInfo();
-    loadStats();
-    loadActiveSubscriptions();
-    loadNotice();
+    // Socket.io
+    let socket = null;
+    function initWebSocket() {
+      if (socket) return;
+      socket = io(API_BASE.replace('/api', ''), { transports: ['websocket', 'polling'] });
+      socket.on('connect', () => { if (currentUser.id) socket.emit('bindUser', currentUser.id); });
+      socket.on('paymentSuccess', data => {
+        if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
+        document.getElementById('paymentResult').style.display = 'block';
+        const label = data.cardCategory === 'times' ? data.times + '次签到卡' : data.days + '天VIP卡';
+        document.getElementById('paymentResult').innerHTML = '<div style="background:#d4edda;padding:30px;border-radius:16px;text-align:center;"><div style="font-size:48px;">🎉</div><h3>支付成功！</h3><p>卡密：</p><div style="background:#fff;display:inline-block;padding:15px 30px;border-radius:12px;font-size:28px;font-weight:700;color:#667eea;letter-spacing:3px;border:2px dashed #667eea;">' + escapeHTML(data.cardCode) + '</div><p>购买：' + escapeHTML(label) + ' | ¥' + data.amount.toFixed(2) + '</p><button class="btn btn-primary" onclick="copyCardCode(\'' + escapeAttr(data.cardCode) + '\')"><i class="fas fa-copy"></i> 复制卡密</button></div>';
+        document.getElementById('paymentArea').style.display = 'none';
+      });
+    }
+    initWebSocket();
+    function logout() { localStorage.clear(); window.location.href = '/'; }
+    loadUserInfo(); loadStats(); loadActiveSubscriptions(); loadNotice();
   </script>
 </body>
 </html>
