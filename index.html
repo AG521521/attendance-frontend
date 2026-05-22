@@ -3,55 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AG工作室 - 智能考勤</title>
+  <title>AG工作室 - 智能考勤签到</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
       --bg: #f4f7fb;
       --panel: #ffffff;
       --ink: #162033;
-      --muted: #657184;
-      --line: #dfe6ef;
-      --primary: #3267d6;
-      --primary-dark: #204da6;
-      --teal: #0f9f9a;
+      --muted: #667085;
+      --line: #dfe7f0;
+      --primary: #2f6fe4;
+      --primary-dark: #1e4fa9;
+      --green: #10956f;
       --amber: #d97706;
-      --green: #16855a;
-      --shadow: 0 24px 70px rgba(22, 32, 51, 0.16);
+      --rose: #e25063;
+      --shadow: 0 22px 70px rgba(22, 32, 51, 0.16);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       min-height: 100vh;
       background:
-        linear-gradient(135deg, rgba(50, 103, 214, 0.12), rgba(15, 159, 154, 0.12)),
-        var(--bg);
+        radial-gradient(circle at 12% 10%, rgba(47, 111, 228, 0.18), transparent 30%),
+        radial-gradient(circle at 88% 16%, rgba(16, 149, 111, 0.16), transparent 28%),
+        linear-gradient(135deg, #eef4ff 0%, #f8fafc 52%, #fff7ed 100%);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
       line-height: 1.5;
-      padding: 32px;
+      padding: 30px;
     }
 
-    .page {
-      width: min(1120px, 100%);
-      min-height: calc(100vh - 64px);
+    .shell {
+      width: min(1180px, 100%);
+      min-height: calc(100vh - 60px);
       margin: 0 auto;
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) 430px;
+      grid-template-columns: minmax(0, 1.05fr) 430px;
       align-items: center;
       gap: 28px;
     }
 
-    .story-panel,
-    .login-panel {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(223, 230, 239, 0.9);
+    .hero,
+    .login-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(223, 231, 240, 0.9);
       box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
 
-    .story-panel {
-      min-height: 640px;
-      border-radius: 28px;
+    .hero {
+      min-height: 650px;
+      border-radius: 30px;
       padding: 42px;
       display: flex;
       flex-direction: column;
@@ -59,20 +66,19 @@
       overflow: hidden;
     }
 
-    .brand-mark {
+    .brand {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       color: var(--primary-dark);
       font-weight: 800;
-      letter-spacing: 0;
-      margin-bottom: 28px;
+      margin-bottom: 30px;
     }
 
-    .brand-dot {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
+    .brand-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
       background: #e8f1ff;
@@ -80,131 +86,132 @@
       font-weight: 900;
     }
 
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #e9f8f3;
+      color: #08795c;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
     h1 {
-      max-width: 700px;
-      font-size: 52px;
-      line-height: 1.06;
+      max-width: 720px;
+      font-size: 54px;
+      line-height: 1.05;
       letter-spacing: 0;
       margin-bottom: 18px;
     }
 
     .lead {
-      max-width: 640px;
+      max-width: 670px;
       color: var(--muted);
       font-size: 18px;
     }
 
-    .trust-row {
+    .value-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin: 34px 0;
+      margin-top: 34px;
     }
 
-    .trust-item {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 14px;
+    .value-card {
       background: #fbfdff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
     }
 
-    .trust-value {
+    .value-card strong {
       display: block;
       font-size: 22px;
-      font-weight: 800;
-      color: var(--ink);
+      margin-bottom: 4px;
     }
 
-    .trust-label {
-      display: block;
-      margin-top: 4px;
+    .value-card span {
       color: var(--muted);
       font-size: 13px;
     }
 
-    .sponsor-box {
-      border: 1px solid #f3d7a8;
-      border-radius: 18px;
-      background: #fff8ec;
+    .support-card {
+      margin-top: 34px;
+      border-radius: 22px;
+      border: 1px solid #f1d29d;
+      background: linear-gradient(180deg, #fff8eb, #fff);
       padding: 22px;
     }
 
-    .sponsor-head {
+    .support-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
       gap: 20px;
+      align-items: flex-start;
     }
 
-    .sponsor-title {
-      font-size: 20px;
-      font-weight: 800;
+    .support-title {
+      font-size: 21px;
+      font-weight: 900;
       color: #7c3f00;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
 
-    .sponsor-copy {
+    .support-copy {
       color: #744a16;
       font-size: 14px;
     }
 
-    .sponsor-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-
-    .sponsor-btn,
-    .ghost-btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 11px 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
-      white-space: nowrap;
-    }
-
-    .sponsor-btn {
-      background: var(--amber);
-      color: #fff;
-      box-shadow: 0 12px 24px rgba(217, 119, 6, 0.22);
-    }
-
-    .ghost-btn {
+    .cost-pill {
+      flex: 0 0 auto;
+      padding: 10px 13px;
+      border-radius: 12px;
       background: #fff;
-      color: #744a16;
-      border: 1px solid #efc982;
+      border: 1px solid #efd29c;
+      color: #7c3f00;
+      font-weight: 900;
+      text-align: center;
+      min-width: 96px;
     }
 
-    .sponsor-btn:hover,
-    .ghost-btn:hover {
-      transform: translateY(-1px);
+    .cost-pill small {
+      display: block;
+      color: #9a6423;
+      font-weight: 700;
+      margin-top: 2px;
     }
 
-    .qr-grid {
-      display: none;
+    .qr-row {
+      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
       margin-top: 18px;
     }
 
-    .qr-grid.show { display: grid; }
-
     .qr-card {
+      border: 1px solid #efd29c;
+      border-radius: 16px;
       background: #fff;
-      border: 1px solid #f0d9ad;
-      border-radius: 14px;
       padding: 14px;
       text-align: center;
+      cursor: zoom-in;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+
+    .qr-card:hover {
+      transform: translateY(-2px);
+      border-color: #d97706;
+      box-shadow: 0 14px 34px rgba(217, 119, 6, 0.16);
     }
 
     .qr-card img {
-      width: 132px;
-      height: 132px;
+      width: 150px;
+      height: 150px;
       object-fit: contain;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #fff;
     }
 
@@ -214,20 +221,33 @@
       color: #7c3f00;
     }
 
-    .login-panel {
-      border-radius: 24px;
+    .qr-card span {
+      display: block;
+      margin-top: 4px;
+      color: #9a6423;
+      font-size: 12px;
+    }
+
+    .support-note {
+      margin-top: 14px;
+      color: #744a16;
+      font-size: 13px;
+    }
+
+    .login-card {
+      border-radius: 26px;
       padding: 34px;
     }
 
     .login-kicker {
-      color: var(--teal);
+      color: var(--green);
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       margin-bottom: 10px;
     }
 
-    .login-panel h2 {
-      font-size: 30px;
+    .login-card h2 {
+      font-size: 31px;
       letter-spacing: 0;
       margin-bottom: 8px;
     }
@@ -238,6 +258,18 @@
       margin-bottom: 24px;
     }
 
+    .invite-badge {
+      display: none;
+      background: #fff4d7;
+      border: 1px solid #f3d29a;
+      color: #8a4b00;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
     .input-group {
       margin-bottom: 18px;
     }
@@ -246,46 +278,46 @@
       display: block;
       margin-bottom: 8px;
       color: #334155;
-      font-weight: 700;
       font-size: 14px;
+      font-weight: 800;
     }
 
     .input-group input {
       width: 100%;
-      height: 50px;
+      height: 52px;
       padding: 0 15px;
       border: 1px solid #cfd9e6;
-      border-radius: 10px;
+      border-radius: 12px;
+      background: #fbfdff;
       color: var(--ink);
       font-size: 16px;
       outline: none;
       transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
-      background: #fbfdff;
     }
 
     .input-group input:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(50, 103, 214, 0.12);
+      box-shadow: 0 0 0 4px rgba(47, 111, 228, 0.12);
       background: #fff;
     }
 
     .login-btn {
       width: 100%;
-      min-height: 52px;
+      min-height: 54px;
       border: 0;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary), var(--teal));
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--green));
       color: white;
       font-size: 17px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
-      box-shadow: 0 16px 34px rgba(50, 103, 214, 0.26);
+      box-shadow: 0 16px 34px rgba(47, 111, 228, 0.26);
     }
 
     .login-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 20px 42px rgba(50, 103, 214, 0.3);
+      box-shadow: 0 20px 42px rgba(47, 111, 228, 0.3);
     }
 
     .login-btn:disabled {
@@ -295,13 +327,13 @@
       box-shadow: none;
     }
 
-    .benefit-list {
-      margin: 22px 0 0;
+    .micro-list {
+      margin-top: 22px;
       display: grid;
-      gap: 10px;
+      gap: 11px;
     }
 
-    .benefit-item {
+    .micro-item {
       display: flex;
       align-items: flex-start;
       gap: 10px;
@@ -310,9 +342,9 @@
     }
 
     .check {
-      flex: 0 0 20px;
-      width: 20px;
-      height: 20px;
+      flex: 0 0 21px;
+      width: 21px;
+      height: 21px;
       border-radius: 50%;
       display: grid;
       place-items: center;
@@ -323,18 +355,27 @@
       margin-top: 1px;
     }
 
-    .support-strip {
-      margin-top: 22px;
+    .mobile-support {
+      display: none;
+      margin-top: 20px;
       border-radius: 14px;
       padding: 14px;
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      color: var(--muted);
+      background: #fff8eb;
+      border: 1px solid #f1d29d;
+      color: #744a16;
       font-size: 13px;
     }
 
-    .support-strip strong {
-      color: var(--ink);
+    .mobile-support button {
+      margin-top: 10px;
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      background: var(--amber);
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
     }
 
     .toast {
@@ -346,7 +387,7 @@
       color: #fff;
       padding: 12px 18px;
       border-radius: 10px;
-      z-index: 100;
+      z-index: 10000;
       display: none;
       box-shadow: 0 14px 34px rgba(22, 32, 51, 0.22);
       font-size: 14px;
@@ -355,94 +396,159 @@
     .toast.show { display: block; }
     .toast.error { background: #b91c1c; }
 
+    .qr-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(8, 13, 24, 0.86);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .qr-modal.show { display: flex; }
+
+    .qr-modal-card {
+      width: min(420px, 100%);
+      border-radius: 22px;
+      background: #fff;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    }
+
+    .qr-modal-card img {
+      width: min(320px, 82vw);
+      height: min(320px, 82vw);
+      object-fit: contain;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+
+    .qr-modal-card h3 {
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .close-modal {
+      width: 100%;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
     @media (max-width: 980px) {
-      body { padding: 20px; }
-      .page {
+      body { padding: 18px; }
+      .shell {
         min-height: auto;
         grid-template-columns: 1fr;
       }
-      .story-panel { min-height: auto; padding: 30px; order: 2; }
-      .login-panel { order: 1; }
+      .login-card { order: 1; }
+      .hero { order: 2; min-height: auto; padding: 30px; }
       h1 { font-size: 38px; }
-      .trust-row { grid-template-columns: 1fr; }
+      .value-grid { grid-template-columns: 1fr; }
+      .mobile-support { display: block; }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 560px) {
       body { padding: 14px; }
-      .story-panel,
-      .login-panel {
-        border-radius: 18px;
+      .hero,
+      .login-card {
+        border-radius: 20px;
         padding: 22px;
       }
       h1 { font-size: 31px; }
       .lead { font-size: 16px; }
-      .login-panel h2 { font-size: 26px; }
-      .sponsor-head { display: block; }
-      .sponsor-actions { display: grid; grid-template-columns: 1fr; }
-      .qr-grid { grid-template-columns: 1fr; }
-      .qr-card img { width: 150px; height: 150px; }
+      .support-top { display: block; }
+      .cost-pill { margin-top: 14px; width: 100%; }
+      .qr-row { grid-template-columns: 1fr; }
+      .qr-card img { width: 168px; height: 168px; }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <section class="story-panel" aria-label="服务介绍与赞助">
+  <main class="shell">
+    <section class="hero" aria-label="智能考勤签到服务介绍">
       <div>
-        <div class="brand-mark">
-          <span class="brand-dot">AG</span>
+        <div class="brand">
+          <span class="brand-badge">AG</span>
           <span>AG工作室 出品</span>
         </div>
-        <h1>把晚点名和签到，交给一个更稳的提醒系统。</h1>
+
+        <div class="eyebrow">
+          <i class="fas fa-calendar-check"></i>
+          专注考勤签到，不做复杂噱头
+        </div>
+
+        <h1>把考勤签到这件小事，变成每天自动完成的安心感。</h1>
         <p class="lead">
-          智能考勤帮你保存签到任务、自动执行、记录结果。少一次临时慌张，多一点稳定和安心。
+          输入学号和考勤密码，创建你的签到任务。系统会按设定时间执行、记录结果，并在需要时提醒你处理异常。
         </p>
 
-        <div class="trust-row" aria-label="服务亮点">
-          <div class="trust-item">
-            <span class="trust-value">30 秒</span>
-            <span class="trust-label">学号登录，无需注册流程</span>
+        <div class="value-grid">
+          <div class="value-card">
+            <strong>快速登录</strong>
+            <span>无需复杂注册，学号加考勤密码即可进入。</span>
           </div>
-          <div class="trust-item">
-            <span class="trust-value">21:25</span>
-            <span class="trust-label">默认晚寝签到时间</span>
+          <div class="value-card">
+            <strong>自动任务</strong>
+            <span>支持每天、工作日、自定义日期的签到配置。</span>
           </div>
-          <div class="trust-item">
-            <span class="trust-value">邮件</span>
-            <span class="trust-label">VIP 可接收签到结果通知</span>
+          <div class="value-card">
+            <strong>结果留痕</strong>
+            <span>签到记录清楚可查，失败原因不再靠猜。</span>
           </div>
         </div>
       </div>
 
-      <div class="sponsor-box">
-        <div class="sponsor-head">
+      <div class="support-card" id="support">
+        <div class="support-top">
           <div>
-            <div class="sponsor-title">喜欢这个工具？赞助能直接提升稳定性。</div>
-            <p class="sponsor-copy">
-              服务器、数据库和域名都需要持续成本。赞助不是强制付费，而是让自动签到服务能更久、更稳地跑下去。
+            <div class="support-title">如果它替你稳住过一次签到，就请它续一口服务器电。</div>
+            <p class="support-copy">
+              免费使用不受影响。赞助用于服务器、数据库和域名续费；金额不重要，重要的是让这个小工具能继续稳定跑下去。
             </p>
           </div>
+          <div class="cost-pill">
+            约 ¥35
+            <small>每月基础成本</small>
+          </div>
         </div>
-        <div class="sponsor-actions">
-          <button class="sponsor-btn" type="button" onclick="toggleSponsor()">查看赞助码</button>
-          <button class="ghost-btn" type="button" onclick="focusLogin()">先登录使用</button>
-        </div>
-        <div class="qr-grid" id="sponsorQr">
-          <div class="qr-card">
+
+        <div class="qr-row" aria-label="赞助收款码">
+          <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信赞助码')">
             <img src="https://login.agai.online/vxcode.png" alt="微信赞助收款码">
             <strong>微信赞助</strong>
-          </div>
-          <div class="qr-card">
+            <span>点击放大，手机扫码</span>
+          </button>
+          <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝赞助码')">
             <img src="https://login.agai.online/zfbcode.png" alt="支付宝赞助收款码">
             <strong>支付宝赞助</strong>
-          </div>
+            <span>点击放大，手机扫码</span>
+          </button>
         </div>
+
+        <p class="support-note">
+          建议备注“学号 + 邮箱”，方便后续核对和赠送支持者福利。
+        </p>
       </div>
     </section>
 
-    <section class="login-panel" aria-label="登录">
-      <div class="login-kicker">立即进入控制面板</div>
+    <section class="login-card" aria-label="登录智能考勤签到">
+      <div class="login-kicker">现在开始</div>
       <h2>登录智能考勤</h2>
-      <p class="login-note">输入学号和考勤系统密码，登录后即可管理自动签到任务。</p>
+      <p class="login-note">进入仪表盘后，你可以创建签到任务、查看记录、绑定邮箱和管理 VIP。</p>
+
+      <div id="inviteNotice" class="invite-badge">
+        <i class="fas fa-gift"></i>
+        您正在通过邀请链接注册，绑定后双方各得 <span id="inviteRewardPreview">10</span> 天 VIP。
+      </div>
 
       <div class="input-group">
         <label for="studentId">学号</label>
@@ -456,28 +562,38 @@
 
       <button class="login-btn" id="loginBtn" type="button" onclick="login()">登录并进入仪表盘</button>
 
-      <div class="benefit-list">
-        <div class="benefit-item">
+      <div class="micro-list">
+        <div class="micro-item">
           <span class="check">✓</span>
-          <span>登录后可创建工作日、每天或自定义星期的签到任务。</span>
+          <span>登录后可以设置签到时间、星期和重试次数。</span>
         </div>
-        <div class="benefit-item">
+        <div class="micro-item">
           <span class="check">✓</span>
-          <span>可以查看最近签到记录，快速发现失败原因。</span>
+          <span>绑定邮箱后可接收签到结果通知，异常更容易发现。</span>
         </div>
-        <div class="benefit-item">
+        <div class="micro-item">
           <span class="check">✓</span>
-          <span>绑定邮箱可获得 VIP 体验，并接收结果通知。</span>
+          <span>邀请好友可获得 VIP 天数，适合宿舍和班级一起使用。</span>
         </div>
       </div>
 
-      <div class="support-strip">
-        <strong>赞助建议：</strong>如果它帮你省过一次签到焦虑，随缘支持一点，就能帮服务多撑很久。
+      <div class="mobile-support">
+        <strong>愿意支持一下？</strong>
+        赞助码在下方支持区，电脑端可直接看到，手机端也能点击放大保存。
+        <button type="button" onclick="scrollToSupport()">查看赞助码</button>
       </div>
     </section>
   </main>
 
   <div class="toast" id="toast" role="status"></div>
+
+  <div class="qr-modal" id="qrModal" onclick="closeQRModal()">
+    <div class="qr-modal-card" onclick="event.stopPropagation()">
+      <h3 id="qrModalTitle">赞助码</h3>
+      <img id="qrModalImage" src="" alt="赞助收款码">
+      <button class="close-modal" type="button" onclick="closeQRModal()">关闭</button>
+    </div>
+  </div>
 
   <script>
     const API_BASE = 'https://api.agai.online/api';
@@ -493,12 +609,43 @@
       }, 3000);
     }
 
-    function toggleSponsor() {
-      document.getElementById('sponsorQr').classList.toggle('show');
+    function scrollToSupport() {
+      document.getElementById('support').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    function focusLogin() {
-      document.getElementById('studentId').focus();
+    function openQRModal(imgSrc, title) {
+      document.getElementById('qrModalImage').src = imgSrc;
+      document.getElementById('qrModalTitle').textContent = title;
+      document.getElementById('qrModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeQRModal() {
+      document.getElementById('qrModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeQRModal();
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('invite');
+
+    if (inviteCode) {
+      localStorage.setItem('pendingInviteCode', inviteCode.toUpperCase());
+      document.getElementById('inviteNotice').style.display = 'block';
+
+      fetch(`${API_BASE}/admin/config`, {
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.configs?.invite_reward_days) {
+            document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days;
+          }
+        })
+        .catch(() => {});
     }
 
     async function login() {
@@ -508,12 +655,12 @@
 
       if (!studentId) {
         showToast('请输入学号', 'error');
-        focusLogin();
+        document.getElementById('studentId').focus();
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = '正在验证...';
+      btn.textContent = '正在登录...';
 
       try {
         const res = await fetch(`${API_BASE}/login`, {
@@ -531,7 +678,27 @@
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
           localStorage.setItem('attendancePassword', password || 'Ahgydx@920');
-          window.location.href = '/dashboard';
+
+          const pendingCode = localStorage.getItem('pendingInviteCode');
+          if (pendingCode) {
+            try {
+              const inviteRes = await fetch(`${API_BASE}/invite/apply`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${data.token}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ inviteCode: pendingCode })
+              });
+              await inviteRes.json();
+            } catch (e) {
+              // 邀请绑定失败不阻塞登录。
+            } finally {
+              localStorage.removeItem('pendingInviteCode');
+            }
+          }
+
+          window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard';
         } else {
           showToast(data.message || '登录失败，请检查后重试', 'error');
         }
@@ -543,12 +710,12 @@
       }
     }
 
-    document.getElementById('studentId').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') login();
+    document.getElementById('studentId').addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') login();
     });
 
-    document.getElementById('password').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') login();
+    document.getElementById('password').addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') login();
     });
 
     (function checkLoginStatus() {
@@ -561,7 +728,10 @@
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            window.location.href = '/dashboard';
+            window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard';
+          } else {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
           }
         })
         .catch(() => {});
