@@ -3,608 +3,569 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AG工作室 - 智能考勤系统</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
+  <title>AG工作室 - 智能考勤</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --ink: #162033;
+      --muted: #657184;
+      --line: #dfe6ef;
+      --primary: #3267d6;
+      --primary-dark: #204da6;
+      --teal: #0f9f9a;
+      --amber: #d97706;
+      --green: #16855a;
+      --shadow: 0 24px 70px rgba(22, 32, 51, 0.16);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
+      background:
+        linear-gradient(135deg, rgba(50, 103, 214, 0.12), rgba(15, 159, 154, 0.12)),
+        var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+      line-height: 1.5;
+      padding: 32px;
+    }
+
+    .page {
+      width: min(1120px, 100%);
+      min-height: calc(100vh - 64px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) 430px;
       align-items: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 20px;
+      gap: 28px;
     }
-    .page-wrapper {
-      width: 100%;
-      max-width: 440px;
+
+    .story-panel,
+    .login-panel {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(223, 230, 239, 0.9);
+      box-shadow: var(--shadow);
     }
-    
-    /* ========== 顶部品牌声明 ========== */
-    .brand-header {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
-      color: #fff;
-      text-align: center;
+
+    .story-panel {
+      min-height: 640px;
+      border-radius: 28px;
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
     }
-    .brand-header .brand-name {
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary-dark);
+      font-weight: 800;
+      letter-spacing: 0;
+      margin-bottom: 28px;
+    }
+
+    .brand-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #e8f1ff;
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    h1 {
+      max-width: 700px;
+      font-size: 52px;
+      line-height: 1.06;
+      letter-spacing: 0;
+      margin-bottom: 18px;
+    }
+
+    .lead {
+      max-width: 640px;
+      color: var(--muted);
       font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
     }
-    .brand-header .brand-name i {
-      color: #f39c12;
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 34px 0;
     }
-    .brand-header .brand-desc {
+
+    .trust-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+
+    .trust-value {
+      display: block;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .trust-label {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
       font-size: 13px;
-      opacity: 0.9;
-      line-height: 1.6;
     }
-    
-    .login-container {
-      background: white;
-      padding: 40px;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      width: 100%;
+
+    .sponsor-box {
+      border: 1px solid #f3d7a8;
+      border-radius: 18px;
+      background: #fff8ec;
+      padding: 22px;
     }
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
+
+    .sponsor-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
     }
-    .logo h1 {
-      font-size: 28px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+
+    .sponsor-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #7c3f00;
+      margin-bottom: 6px;
     }
-    .logo p {
-      color: #888;
+
+    .sponsor-copy {
+      color: #744a16;
       font-size: 14px;
-      margin-top: 5px;
     }
+
+    .sponsor-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .sponsor-btn,
+    .ghost-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+      white-space: nowrap;
+    }
+
+    .sponsor-btn {
+      background: var(--amber);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(217, 119, 6, 0.22);
+    }
+
+    .ghost-btn {
+      background: #fff;
+      color: #744a16;
+      border: 1px solid #efc982;
+    }
+
+    .sponsor-btn:hover,
+    .ghost-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .qr-grid {
+      display: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .qr-grid.show { display: grid; }
+
+    .qr-card {
+      background: #fff;
+      border: 1px solid #f0d9ad;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .qr-card img {
+      width: 132px;
+      height: 132px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .qr-card strong {
+      display: block;
+      margin-top: 10px;
+      color: #7c3f00;
+    }
+
+    .login-panel {
+      border-radius: 24px;
+      padding: 34px;
+    }
+
+    .login-kicker {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .login-panel h2 {
+      font-size: 30px;
+      letter-spacing: 0;
+      margin-bottom: 8px;
+    }
+
+    .login-note {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
+
     .input-group label {
       display: block;
       margin-bottom: 8px;
-      color: #555;
-      font-weight: 500;
+      color: #334155;
+      font-weight: 700;
       font-size: 14px;
     }
+
     .input-group input {
       width: 100%;
-      padding: 14px 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
+      height: 50px;
+      padding: 0 15px;
+      border: 1px solid #cfd9e6;
+      border-radius: 10px;
+      color: var(--ink);
       font-size: 16px;
-      transition: all 0.3s;
-    }
-    .input-group input:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+      background: #fbfdff;
     }
-    .btn {
+
+    .input-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(50, 103, 214, 0.12);
+      background: #fff;
+    }
+
+    .login-btn {
       width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
+      min-height: 52px;
+      border: 0;
       border-radius: 12px;
-      font-size: 18px;
-      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary), var(--teal));
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+      box-shadow: 0 16px 34px rgba(50, 103, 214, 0.26);
     }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 42px rgba(50, 103, 214, 0.3);
     }
-    .btn:disabled {
-      opacity: 0.6;
+
+    .login-btn:disabled {
+      opacity: 0.65;
       cursor: not-allowed;
       transform: none;
+      box-shadow: none;
     }
-    .tips {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f8f9fa;
-      border-radius: 12px;
-      font-size: 13px;
-      color: #666;
+
+    .benefit-list {
+      margin: 22px 0 0;
+      display: grid;
+      gap: 10px;
     }
-    .tips p {
-      margin-bottom: 5px;
-    }
-    .tips i {
-      color: #667eea;
-      margin-right: 5px;
-    }
-    .invite-badge {
-      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 13px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .invite-badge i {
-      margin-right: 5px;
-    }
-    
-    /* ========== 赞助区域 ========== */
-    .sponsor-section {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 20px;
-      margin-top: 20px;
-      color: #fff;
-    }
-    .sponsor-toggle {
-      text-align: center;
-      cursor: pointer;
-      font-size: 14px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
+
+    .benefit-item {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .sponsor-toggle:hover {
-      opacity: 1;
-    }
-    .sponsor-content {
-      display: none;
-      margin-top: 16px;
-    }
-    .sponsor-content.show {
-      display: block;
-    }
-    .sponsor-warning {
-      background: rgba(220,53,69,0.2);
-      border: 1px solid rgba(220,53,69,0.3);
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 13px;
-      margin-bottom: 16px;
-      text-align: center;
-      line-height: 1.6;
-    }
-    .sponsor-warning i {
-      margin-right: 5px;
-    }
-    .sponsor-reason {
-      font-size: 12px;
-      opacity: 0.85;
-      margin-bottom: 16px;
-      line-height: 1.6;
-      text-align: center;
-    }
-    .qr-codes {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-    .qr-item {
-      text-align: center;
-    }
-    .qr-item img {
-      width: 120px;
-      height: 120px;
-      border-radius: 12px;
-      background: #fff;
-      padding: 8px;
-    }
-    .qr-item p {
-      font-size: 12px;
-      margin-top: 8px;
-      opacity: 0.8;
-    }
-    .sponsor-amount {
-      text-align: center;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted);
       font-size: 14px;
-      margin-bottom: 12px;
     }
-    .sponsor-amount strong {
-      color: #f39c12;
-      font-size: 20px;
+
+    .check {
+      flex: 0 0 20px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #e9f8f3;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+      margin-top: 1px;
     }
-    .sponsor-instruction {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 12px;
-      line-height: 1.6;
-      text-align: center;
+
+    .support-strip {
+      margin-top: 22px;
+      border-radius: 14px;
+      padding: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
     }
-    .sponsor-instruction code {
-      background: rgba(255,255,255,0.2);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 11px;
+
+    .support-strip strong {
+      color: var(--ink);
     }
-    .sponsor-note {
-      text-align: center;
-      font-size: 11px;
-      margin-top: 12px;
-      opacity: 0.7;
-    }
-    
-    /* 页脚 */
-    .footer {
-      text-align: center;
-      margin-top: 12px;
-      color: rgba(255,255,255,0.6);
-      font-size: 12px;
-    }
+
     .toast {
       position: fixed;
       left: 50%;
       bottom: 24px;
       transform: translateX(-50%);
-      background: #1a1a2e;
+      background: #162033;
       color: #fff;
       padding: 12px 18px;
       border-radius: 10px;
-      z-index: 10000;
+      z-index: 100;
       display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      box-shadow: 0 14px 34px rgba(22, 32, 51, 0.22);
       font-size: 14px;
     }
-    .toast.success { background: #28a745; }
-    .toast.error { background: #dc3545; }
-    .toast.info { background: #1a1a2e; }
+
+    .toast.show { display: block; }
+    .toast.error { background: #b91c1c; }
+
+    @media (max-width: 980px) {
+      body { padding: 20px; }
+      .page {
+        min-height: auto;
+        grid-template-columns: 1fr;
+      }
+      .story-panel { min-height: auto; padding: 30px; order: 2; }
+      .login-panel { order: 1; }
+      h1 { font-size: 38px; }
+      .trust-row { grid-template-columns: 1fr; }
+    }
 
     @media (max-width: 520px) {
-      body { align-items: flex-start; padding: 16px; }
-      .login-container { padding: 28px 22px; border-radius: 18px; }
-      .logo h1 { font-size: 24px; }
-      .qr-codes { flex-direction: column; align-items: center; }
-      .sponsor-section, .brand-header { border-radius: 14px; }
+      body { padding: 14px; }
+      .story-panel,
+      .login-panel {
+        border-radius: 18px;
+        padding: 22px;
+      }
+      h1 { font-size: 31px; }
+      .lead { font-size: 16px; }
+      .login-panel h2 { font-size: 26px; }
+      .sponsor-head { display: block; }
+      .sponsor-actions { display: grid; grid-template-columns: 1fr; }
+      .qr-grid { grid-template-columns: 1fr; }
+      .qr-card img { width: 150px; height: 150px; }
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="/shared.js"></script>
 </head>
 <body>
-  <div class="page-wrapper">
-    
-    <!-- ========== 顶部：AG工作室品牌声明 ========== -->
-    <div class="brand-header">
-      <div class="brand-name">
-        <i class="fas fa-star"></i> AG工作室 出品
-      </div>
-      <div class="brand-desc">
-        本项目旨在帮助同学们解决因忙碌或疏忽而忘记签到的烦恼，让签到更简单、更省心。
-      </div>
-    </div>
-    
-    <!-- ========== 联系与资源 ========== -->
-    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; color: #fff; font-size: 13px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
-      <span>📂 <a href="https://github.com/AG521521/attendance-frontend" style="color: #fff; text-decoration: underline;">项目开源</a></span>
-      <span>💬 QQ频道：aggzs66666</span>
-      <span>📧 邮箱：support@agai.online</span>
-    </div>
-    
-    <!-- ========== 登录卡片 ========== -->
-    <div class="login-container">
-      <div class="logo">
-        <h1><i class="fas fa-robot"></i> 智能考勤</h1>
-        <p>AG工作室 · 让签到更简单</p>
-      </div>
-      
-      <div id="inviteNotice" class="invite-badge" style="display: none;">
-        <i class="fas fa-gift"></i> 您正在通过邀请链接注册，绑定后双方各得 <span id="inviteRewardPreview">10</span> 天 VIP！
-      </div>
-      
-      <div class="input-group">
-        <label><i class="fas fa-user-graduate"></i> 学号</label>
-        <input type="text" id="studentId" placeholder="请输入学号" autocomplete="off">
-      </div>
-      
-      <div class="input-group">
-        <label><i class="fas fa-lock"></i> 考勤系统密码</label>
-        <input type="password" id="password" placeholder="考勤系统密码（默认 Ahgydx@920）" value="Ahgydx@920">
-      </div>
-      
-      <button class="btn" id="loginBtn" onclick="login()">
-        <i class="fas fa-sign-in-alt"></i> 登 录
-      </button>
-      
-      <div class="tips">
-        <p><i class="fas fa-lightbulb"></i> <strong>提示</strong></p>
-        <p><i class="fas fa-check-circle"></i> 输入学号加考勤密码即可登录，系统内置默认密码</p>
-        <p><i class="fas fa-key"></i> 如果您觉得本工具有帮助，欢迎下滑点击赞助</p>
-        <p><i class="fas fa-gem"></i> 登录后绑定邮箱即送 30 天 VIP</p>
-        <p><i class="fas fa-gift"></i> 邀请好友注册，双方各得 10 天 VIP</p>
-      </div>
-    </div>
-    
-    <!-- ========== 赞助区域 ========== -->
-    <div class="sponsor-section">
-      <div class="sponsor-toggle" onclick="toggleSponsor()">
-        <i class="fas fa-heart" style="color: #e74c3c;"></i> 
-        赞助支持 · 让服务更长久
-        <i id="sponsorArrow" class="fas fa-chevron-down" style="font-size: 12px;"></i>
-      </div>
-      
-      <div class="sponsor-content" id="sponsorContent">
-        <div class="sponsor-warning">
-          <i class="fas fa-exclamation-triangle"></i>
-          <strong>服务现状：</strong>由于用户量持续增长，后端服务器频繁崩溃，免费服务压力巨大。本站可能在一个月后暂停服务。
+  <main class="page">
+    <section class="story-panel" aria-label="服务介绍与赞助">
+      <div>
+        <div class="brand-mark">
+          <span class="brand-dot">AG</span>
+          <span>AG工作室 出品</span>
         </div>
-        
-        <div class="sponsor-reason">
-          服务器每月需要约 <strong>¥35</strong> 的运维成本（后端 + 数据库 + 域名续费）。<br>
-          如果您觉得这个工具确实帮到了您，欢迎赞助支持。赞助者将获得<strong>优先签到保障</strong>。
-        </div>
-        
-        <div class="sponsor-amount">
-          建议金额：<strong>¥9.99</strong>（ 随缘赞助，多少都是心意 ❤️）
-        </div>
-        
-        <!-- ========== 收款码（点击放大） ========== -->
-        <div class="qr-codes">
-          <div class="qr-item" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信收款码')">
-            <img src="https://login.agai.online/vxcode.png" alt="微信收款码">
-            <p>微信支付</p>
-            <small style="color: #aaa;">点击放大</small>
+        <h1>把晚点名和签到，交给一个更稳的提醒系统。</h1>
+        <p class="lead">
+          智能考勤帮你保存签到任务、自动执行、记录结果。少一次临时慌张，多一点稳定和安心。
+        </p>
+
+        <div class="trust-row" aria-label="服务亮点">
+          <div class="trust-item">
+            <span class="trust-value">30 秒</span>
+            <span class="trust-label">学号登录，无需注册流程</span>
           </div>
-          <div class="qr-item" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝收款码')">
-            <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码">
-            <p>支付宝支付</p>
-            <small style="color: #aaa;">点击放大</small>
+          <div class="trust-item">
+            <span class="trust-value">21:25</span>
+            <span class="trust-label">默认晚寝签到时间</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-value">邮件</span>
+            <span class="trust-label">VIP 可接收签到结果通知</span>
           </div>
         </div>
-        
-        <div class="sponsor-instruction">
-          <i class="fas fa-info-circle"></i> 
-          <strong>赞助后如何获得保障？</strong><br>
-          付款时请在<strong>备注栏</strong>填写：<br>
-          <code>学号-密码-邮箱</code><br>
-          例如：<code>229144002-mypassword-123@qq.com</code><br>
-          管理员收到后会为您<strong>手动绑定永久 VIP</strong> 并保障签到服务。
+      </div>
+
+      <div class="sponsor-box">
+        <div class="sponsor-head">
+          <div>
+            <div class="sponsor-title">喜欢这个工具？赞助能直接提升稳定性。</div>
+            <p class="sponsor-copy">
+              服务器、数据库和域名都需要持续成本。赞助不是强制付费，而是让自动签到服务能更久、更稳地跑下去。
+            </p>
+          </div>
         </div>
-        
-        <div class="sponsor-note">
-          💡 非赞助用户不保证签到稳定性，感谢理解与支持！
+        <div class="sponsor-actions">
+          <button class="sponsor-btn" type="button" onclick="toggleSponsor()">查看赞助码</button>
+          <button class="ghost-btn" type="button" onclick="focusLogin()">先登录使用</button>
+        </div>
+        <div class="qr-grid" id="sponsorQr">
+          <div class="qr-card">
+            <img src="https://login.agai.online/vxcode.png" alt="微信赞助收款码">
+            <strong>微信赞助</strong>
+          </div>
+          <div class="qr-card">
+            <img src="https://login.agai.online/zfbcode.png" alt="支付宝赞助收款码">
+            <strong>支付宝赞助</strong>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <!-- 页脚 -->
-    <div class="footer">
-      AG工作室 © 2026 · 用爱发电，感谢支持 💙
-    </div>
-  </div>
+    </section>
+
+    <section class="login-panel" aria-label="登录">
+      <div class="login-kicker">立即进入控制面板</div>
+      <h2>登录智能考勤</h2>
+      <p class="login-note">输入学号和考勤系统密码，登录后即可管理自动签到任务。</p>
+
+      <div class="input-group">
+        <label for="studentId">学号</label>
+        <input type="text" id="studentId" placeholder="请输入学号" autocomplete="username">
+      </div>
+
+      <div class="input-group">
+        <label for="password">考勤系统密码</label>
+        <input type="password" id="password" placeholder="默认 Ahgydx@920" value="Ahgydx@920" autocomplete="current-password">
+      </div>
+
+      <button class="login-btn" id="loginBtn" type="button" onclick="login()">登录并进入仪表盘</button>
+
+      <div class="benefit-list">
+        <div class="benefit-item">
+          <span class="check">✓</span>
+          <span>登录后可创建工作日、每天或自定义星期的签到任务。</span>
+        </div>
+        <div class="benefit-item">
+          <span class="check">✓</span>
+          <span>可以查看最近签到记录，快速发现失败原因。</span>
+        </div>
+        <div class="benefit-item">
+          <span class="check">✓</span>
+          <span>绑定邮箱可获得 VIP 体验，并接收结果通知。</span>
+        </div>
+      </div>
+
+      <div class="support-strip">
+        <strong>赞助建议：</strong>如果它帮你省过一次签到焦虑，随缘支持一点，就能帮服务多撑很久。
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
 
   <script>
-        window.APP_CONFIG = window.APP_CONFIG || {
-      API_BASE: ''
-    };
-    
-    function showToast(message, type = 'info') {
-    
-      const toast = document.createElement('div');
-    
-      toast.className = `toast ${type}`;
-    
+    const API_BASE = 'https://api.agai.online/api';
+    let toastTimer = null;
+
+    function showToast(message, type = '') {
+      const toast = document.getElementById('toast');
       toast.textContent = message;
-    
-      document.body.appendChild(toast);
-    
-      toast.style.display = 'block';
-    
-      setTimeout(() => {
-    
-        toast.style.opacity = '0';
-    
-        setTimeout(() => {
-          toast.remove();
-        }, 300);
-    
-      }, 2500);
+      toast.className = `toast show ${type}`.trim();
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.className = 'toast';
+      }, 3000);
     }
-    
-    function clearSession() {
-    
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    
-    }
-    const API_BASE = window.APP_CONFIG.API_BASE;
-    
-    // ========== 赞助区域折叠 ==========
+
     function toggleSponsor() {
-      const content = document.getElementById('sponsorContent');
-      const arrow = document.getElementById('sponsorArrow');
-      if (content.classList.contains('show')) {
-        content.classList.remove('show');
-        arrow.classList.remove('fa-chevron-up');
-        arrow.classList.add('fa-chevron-down');
-      } else {
-        content.classList.add('show');
-        arrow.classList.remove('fa-chevron-down');
-        arrow.classList.add('fa-chevron-up');
-      }
+      document.getElementById('sponsorQr').classList.toggle('show');
     }
-          // ========== 收款码放大 ==========
-      function openQRModal(imgSrc, title) {
-        document.getElementById('qrModalImage').src = imgSrc;
-        document.getElementById('qrModalTitle').textContent = title;
-        document.getElementById('qrModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      }
-      
-      function closeQRModal() {
-        document.getElementById('qrModal').style.display = 'none';
-        document.body.style.overflow = '';
-      }
-      
-      // 点击 ESC 关闭弹窗
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          closeQRModal();
-        }
-      });
-    
-    // 检查 URL 中的邀请码
-    const urlParams = new URLSearchParams(window.location.search);
-    const inviteCode = urlParams.get('invite');
-    
-    if (inviteCode) {
-      localStorage.setItem('pendingInviteCode', inviteCode.toUpperCase());
-      document.getElementById('inviteNotice').style.display = 'block';
-      
-      fetch(`${API_BASE}/admin/config`, {
-        headers: { 'Content-Type': 'application/json' }
-      }).then(res => res.json()).then(data => {
-        if (data.success && data.configs?.invite_reward_days) {
-          document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days;
-        }
-      }).catch(() => {});
+
+    function focusLogin() {
+      document.getElementById('studentId').focus();
     }
-    
+
     async function login() {
       const studentId = document.getElementById('studentId').value.trim();
       const password = document.getElementById('password').value.trim();
       const btn = document.getElementById('loginBtn');
-      
+
       if (!studentId) {
         showToast('请输入学号', 'error');
+        focusLogin();
         return;
       }
-      
+
       btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
-      
+      btn.textContent = '正在验证...';
+
       try {
         const res = await fetch(`${API_BASE}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            studentId, 
-            attendancePassword: password || 'Ahgydx@920' 
+          body: JSON.stringify({
+            studentId,
+            attendancePassword: password || 'Ahgydx@920'
           })
         });
-        
+
         const data = await res.json();
-        
-    if (data.success) {
-    
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-    
-      const pendingCode = localStorage.getItem('pendingInviteCode');
-    
-      if (pendingCode) {
-    
-        try {
-    
-          const inviteRes = await fetch(`${API_BASE}/invite/apply`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${data.token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              inviteCode: pendingCode
-            })
-          });
-    
-          await inviteRes.json();
-    
-        } catch (e) {
-          console.error('邀请码绑定失败:', e);
-    
-        } finally {
-          localStorage.removeItem('pendingInviteCode');
-        }
-      }
-    
-      showToast('登录成功', 'success');
-    
-      setTimeout(() => {
-    
-        if (data.user.role === 'admin') {
-          window.location.href = '/admin';
-        } else {
+
+        if (data.success) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('attendancePassword', password || 'Ahgydx@920');
           window.location.href = '/dashboard';
+        } else {
+          showToast(data.message || '登录失败，请检查后重试', 'error');
         }
-    
-      }, 800);
-    
-    } else {
-    
-      showToast(data.message || '登录失败', 'error');
-    
-    }
       } catch (error) {
-        console.error('登录错误:', error);
-        showToast('网络错误，请重试', 'error');
+        showToast('网络错误，请稍后重试', 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登 录';
+        btn.textContent = '登录并进入仪表盘';
       }
     }
-    
+
     document.getElementById('studentId').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') login();
     });
-    
+
     document.getElementById('password').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') login();
     });
-    
-    // 检查是否已登录
+
     (function checkLoginStatus() {
       const token = localStorage.getItem('token');
-      if (token) {
-        fetch(`${API_BASE}/user/profile`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
+      if (!token) return;
+
+      fetch(`${API_BASE}/user/profile`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            if (data.user.role === 'admin') {
-              window.location.href = '/admin';
-            } else {
-              window.location.href = '/dashboard';
-            }
-          } else {
-            clearSession();
+            window.location.href = '/dashboard';
           }
         })
-        .catch(() => {
-          clearSession();
-        });
-      }
+        .catch(() => {});
     })();
   </script>
-  <!-- ========== 收款码放大弹窗 ========== -->
-<div id="qrModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;" onclick="closeQRModal()">
-  <span style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 36px; cursor: pointer;" onclick="closeQRModal()">&times;</span>
-  <h3 id="qrModalTitle" style="color: #fff; margin-bottom: 20px; font-size: 18px;"></h3>
-  <img id="qrModalImage" src="" alt="" style="max-width: 90%; max-height: 70vh; border-radius: 16px; background: #fff; padding: 12px; cursor: pointer;" onclick="event.stopPropagation()">
-  <p style="color: #aaa; margin-top: 15px; font-size: 13px;">💡 长按图片即可保存到相册</p>
-</div>
 </body>
 </html>
