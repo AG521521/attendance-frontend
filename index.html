@@ -74,7 +74,6 @@
             overflow-x: hidden;
         }
 
-        /* ============ 装饰光斑 ============ */
         .bg-orb {
             position: fixed;
             border-radius: 50%;
@@ -109,43 +108,21 @@
             animation: orbFloat3 20s ease-in-out infinite;
         }
         @keyframes orbFloat1 {
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-            25% {
-                transform: translate(40px, -30px) scale(1.08);
-            }
-            50% {
-                transform: translate(-20px, 20px) scale(0.94);
-            }
-            75% {
-                transform: translate(30px, 10px) scale(1.04);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -30px) scale(1.08); }
+            50% { transform: translate(-20px, 20px) scale(0.94); }
+            75% { transform: translate(30px, 10px) scale(1.04); }
         }
         @keyframes orbFloat2 {
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-            33% {
-                transform: translate(-35px, -25px) scale(1.06);
-            }
-            66% {
-                transform: translate(25px, 30px) scale(0.93);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-35px, -25px) scale(1.06); }
+            66% { transform: translate(25px, 30px) scale(0.93); }
         }
         @keyframes orbFloat3 {
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-            50% {
-                transform: translate(-30px, -20px) scale(1.07);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, -20px) scale(1.07); }
         }
 
-        /* ============ 主布局 ============ */
         .shell {
             position: relative;
             z-index: 1;
@@ -159,7 +136,6 @@
             gap: clamp(20px, 3vw, 32px);
         }
 
-        /* ============ 卡片通用 ============ */
         .hero,
         .login-card {
             background: rgba(255, 255, 255, 0.82);
@@ -176,7 +152,6 @@
             border-color: rgba(200, 210, 225, 0.7);
         }
 
-        /* ============ Hero 卡片 ============ */
         .hero {
             padding: clamp(26px, 4vw, 44px) clamp(22px, 4vw, 40px);
             display: flex;
@@ -266,7 +241,6 @@
             letter-spacing: -0.01em;
         }
 
-        /* ============ 价值卡片网格 ============ */
         .value-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -304,18 +278,9 @@
             font-size: 14px;
             font-weight: 700;
         }
-        .value-card .vc-icon.blue {
-            background: #eef4ff;
-            color: var(--primary);
-        }
-        .value-card .vc-icon.green {
-            background: var(--green-soft);
-            color: var(--green);
-        }
-        .value-card .vc-icon.amber {
-            background: var(--amber-soft);
-            color: var(--amber);
-        }
+        .value-card .vc-icon.blue { background: #eef4ff; color: var(--primary); }
+        .value-card .vc-icon.green { background: var(--green-soft); color: var(--green); }
+        .value-card .vc-icon.amber { background: var(--amber-soft); color: var(--amber); }
         .value-card strong {
             display: block;
             font-size: 15px;
@@ -329,7 +294,6 @@
             line-height: 1.45;
         }
 
-        /* ============ 赞助卡片 ============ */
         .support-card {
             position: relative;
             z-index: 1;
@@ -367,15 +331,8 @@
             animation: steam 2.5s ease-in-out infinite;
         }
         @keyframes steam {
-            0%,
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-5px);
-                opacity: 0.7;
-            }
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(-5px); opacity: 0.7; }
         }
         .support-copy {
             color: #7a5018;
@@ -403,7 +360,6 @@
             font-size: 11px;
         }
 
-        /* 二维码行 */
         .qr-row {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -465,7 +421,6 @@
             font-weight: 600;
         }
 
-        /* 赞助备注行 */
         .support-note {
             margin-top: 13px;
             color: #7a5018;
@@ -515,7 +470,6 @@
             color: #087a56;
         }
 
-        /* ============ 登录卡片 ============ */
         .login-card {
             padding: clamp(24px, 3vw, 36px) clamp(20px, 2.8vw, 32px);
             display: flex;
@@ -546,7 +500,6 @@
             letter-spacing: -0.01em;
         }
 
-        /* 邀请提示 */
         .invite-badge {
             display: none;
             background: #fffdf5;
@@ -562,21 +515,14 @@
             animation: fadeInDown 0.4s ease-out;
         }
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .invite-badge i {
             color: var(--amber);
             font-size: 14px;
         }
 
-        /* 输入组 */
         .input-group {
             margin-bottom: 14px;
             position: relative;
@@ -653,7 +599,6 @@
             background: var(--green-soft);
         }
 
-        /* 登录按钮 */
         .login-btn {
             width: 100%;
             min-height: 52px;
@@ -696,7 +641,6 @@
             filter: grayscale(15%);
         }
 
-        /* 微观列表 */
         .micro-list {
             margin-top: 18px;
             display: grid;
@@ -724,7 +668,6 @@
             margin-top: 1px;
         }
 
-        /* ============ 移动端赞助引导 ============ */
         .mobile-support {
             display: none;
             margin-top: 16px;
@@ -764,7 +707,6 @@
             transform: scale(0.95);
         }
 
-        /* ============ Toast ============ */
         .toast {
             position: fixed;
             left: 50%;
@@ -798,7 +740,6 @@
             box-shadow: 0 10px 32px rgba(8, 122, 86, 0.3);
         }
 
-        /* ============ QR 弹窗 ============ */
         .qr-modal {
             display: none;
             position: fixed;
@@ -816,12 +757,8 @@
             animation: modalFadeIn 0.25s ease-out;
         }
         @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .qr-modal-card {
             width: min(420px, 94vw);
@@ -833,14 +770,8 @@
             animation: modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes modalScaleIn {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         .qr-modal-card img {
             width: min(300px, 78vw);
@@ -882,7 +813,6 @@
             transform: scale(0.96);
         }
 
-        /* ============ 响应式 ============ */
         @media (max-width: 980px) {
             body {
                 padding: 12px;
@@ -893,151 +823,45 @@
                 grid-template-columns: 1fr;
                 gap: 18px;
             }
-            .login-card {
-                order: 1;
-                border-radius: var(--radius-lg);
-            }
-            .hero {
-                order: 2;
-                min-height: auto;
-                padding: 26px 20px;
-                border-radius: var(--radius-lg);
-                gap: 22px;
-            }
-            .hero::after {
-                display: none;
-            }
-            .hero h1 {
-                font-size: clamp(24px, 5vw, 34px);
-            }
-            .value-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-            .value-grid .value-card:last-child {
-                grid-column: 1 / -1;
-            }
-            .mobile-support {
-                display: flex;
-            }
-            .qr-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .qr-card img {
-                width: clamp(100px, 28vw, 140px);
-                height: clamp(100px, 28vw, 140px);
-            }
-            .support-top {
-                flex-direction: column;
-            }
-            .cost-pill {
-                align-self: flex-start;
-            }
-            .bg-orb--1 {
-                width: 180px;
-                height: 180px;
-                top: -5%;
-                left: -8%;
-            }
-            .bg-orb--2 {
-                width: 150px;
-                height: 150px;
-                top: 65%;
-                right: -10%;
-            }
-            .bg-orb--3 {
-                width: 120px;
-                height: 120px;
-                bottom: -3%;
-                left: 20%;
-            }
+            .login-card { order: 1; border-radius: var(--radius-lg); }
+            .hero { order: 2; min-height: auto; padding: 26px 20px; border-radius: var(--radius-lg); gap: 22px; }
+            .hero::after { display: none; }
+            .hero h1 { font-size: clamp(24px, 5vw, 34px); }
+            .value-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .value-grid .value-card:last-child { grid-column: 1 / -1; }
+            .mobile-support { display: flex; }
+            .qr-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .qr-card img { width: clamp(100px, 28vw, 140px); height: clamp(100px, 28vw, 140px); }
+            .support-top { flex-direction: column; }
+            .cost-pill { align-self: flex-start; }
+            .bg-orb--1 { width: 180px; height: 180px; top: -5%; left: -8%; }
+            .bg-orb--2 { width: 150px; height: 150px; top: 65%; right: -10%; }
+            .bg-orb--3 { width: 120px; height: 120px; bottom: -3%; left: 20%; }
         }
 
         @media (max-width: 560px) {
-            body {
-                padding: 8px;
-            }
-            .hero,
-            .login-card {
-                border-radius: var(--radius);
-                padding: 20px 15px;
-            }
-            .hero h1 {
-                font-size: 25px;
-            }
-            .lead {
-                font-size: 14px;
-            }
-            .value-grid {
-                grid-template-columns: 1fr;
-                gap: 7px;
-            }
-            .value-grid .value-card:last-child {
-                grid-column: auto;
-            }
-            .qr-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .qr-card {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                text-align: left;
-                padding: 10px 12px;
-            }
-            .qr-card img {
-                width: 80px;
-                height: 80px;
-                flex: 0 0 80px;
-                border-radius: 8px;
-            }
-            .qr-card strong {
-                margin-top: 0;
-                font-size: 13px;
-            }
-            .qr-card span {
-                font-size: 11px;
-            }
-            .qr-card .tap-hint {
-                font-size: 10px;
-            }
-            .support-note {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 6px;
-            }
-            .btn-copy-note {
-                justify-content: center;
-                width: 100%;
-            }
-            .input-group input {
-                height: 46px;
-                font-size: 15px;
-            }
-            .login-btn {
-                min-height: 48px;
-                font-size: 15px;
-            }
-            .brand {
-                font-size: 13px;
-                gap: 7px;
-            }
-            .brand-badge {
-                width: 30px;
-                height: 30px;
-                border-radius: 8px;
-                font-size: 13px;
-            }
-            .bg-orb {
-                display: none;
-            }
+            body { padding: 8px; }
+            .hero, .login-card { border-radius: var(--radius); padding: 20px 15px; }
+            .hero h1 { font-size: 25px; }
+            .lead { font-size: 14px; }
+            .value-grid { grid-template-columns: 1fr; gap: 7px; }
+            .value-grid .value-card:last-child { grid-column: auto; }
+            .qr-row { grid-template-columns: 1fr; gap: 10px; }
+            .qr-card { display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 12px; }
+            .qr-card img { width: 80px; height: 80px; flex: 0 0 80px; border-radius: 8px; }
+            .qr-card strong { margin-top: 0; font-size: 13px; }
+            .qr-card span { font-size: 11px; }
+            .qr-card .tap-hint { font-size: 10px; }
+            .support-note { flex-direction: column; align-items: stretch; gap: 6px; }
+            .btn-copy-note { justify-content: center; width: 100%; }
+            .input-group input { height: 46px; font-size: 15px; }
+            .login-btn { min-height: 48px; font-size: 15px; }
+            .brand { font-size: 13px; gap: 7px; }
+            .brand-badge { width: 30px; height: 30px; border-radius: 8px; font-size: 13px; }
+            .bg-orb { display: none; }
         }
 
-        /* ============ 暗色模式提示 (可选) ============ */
         @media (prefers-color-scheme: dark) {
-            /* 保持亮色设计，因为这是品牌风格 */
             body {
                 background:
                     radial-gradient(ellipse 80% 60% at 15% 8%, rgba(59, 109, 240, 0.08), transparent 45%),
@@ -1049,30 +873,25 @@
     </style>
 </head>
 <body>
-    <!-- 背景装饰光斑 -->
     <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
 
     <main class="shell">
-        <!-- Hero 区域 -->
         <section class="hero" aria-label="智能考勤签到服务介绍">
             <div class="hero-top">
                 <div class="brand">
                     <span class="brand-badge">AG</span>
                     <span>AG工作室 出品</span>
                 </div>
-
                 <div class="eyebrow">
                     <i class="fas fa-calendar-check"></i>
                     专注考勤签到，拒绝复杂噱头
                 </div>
-
                 <h1>把考勤签到这件小事，变成每天<span>自动完成</span>的安心感。</h1>
                 <p class="lead">
                     输入学号和考勤密码，创建你的签到任务。系统会按设定时间执行、记录结果，并在需要时提醒你处理异常。
                 </p>
-
                 <div class="value-grid">
                     <div class="value-card">
                         <div class="vc-icon blue"><i class="fas fa-bolt"></i></div>
@@ -1092,7 +911,6 @@
                 </div>
             </div>
 
-            <!-- 赞助卡片 -->
             <div class="support-card" id="support">
                 <div class="support-top">
                     <div>
@@ -1109,7 +927,6 @@
                         <small>每月基础成本</small>
                     </div>
                 </div>
-
                 <div class="qr-row" aria-label="赞助收款码">
                     <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信赞助码')" aria-label="微信赞助码，点击放大">
                         <img src="https://login.agai.online/vxcode.png" alt="微信赞助收款码" loading="lazy">
@@ -1128,17 +945,15 @@
                         </div>
                     </button>
                 </div>
-
                 <p class="support-note" id="supportNote">
-                    <span class="note-text" id="noteText">💡 建议备注<strong>"学号 + 邮箱"</strong>，方便后续核对和赠送支持者福利。</span>
-                    <button class="btn-copy-note" type="button" id="btnCopyNote" onclick="copyNoteTemplate()" aria-label="复制备注模板">
+                    <span class="note-text" id="noteText">💡 建议备注<strong>"学号 + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。</span>
+                    <button class="btn-copy-note" type="button" id="btnCopyNote" onclick="copyNoteTemplate()" aria-label="复制备注格式">
                         <i class="far fa-copy"></i> 复制备注格式
                     </button>
                 </p>
             </div>
         </section>
 
-        <!-- 登录卡片 -->
         <section class="login-card" aria-label="登录智能考勤签到">
             <div class="login-kicker">现在开始</div>
             <h2>登录智能考勤</h2>
@@ -1202,10 +1017,8 @@
         </section>
     </main>
 
-    <!-- Toast -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <!-- QR弹窗 -->
     <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true" aria-label="赞助码放大查看">
         <div class="qr-modal-card" onclick="event.stopPropagation()">
             <h3 id="qrModalTitle">赞助码</h3>
@@ -1220,7 +1033,6 @@
         let toastTimer = null;
         let passwordVisible = false;
 
-        // ============ Toast ============
         function showToast(message, type = '') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1231,12 +1043,10 @@
             }, 2800);
         }
 
-        // ============ 赞助区域滚动 ============
         function scrollToSupport() {
             const supportEl = document.getElementById('support');
             if (supportEl) {
                 supportEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // 短暂高亮赞助卡片
                 supportEl.style.boxShadow = '0 0 0 4px rgba(194,120,10,0.25), 0 6px 24px rgba(194,120,10,0.12)';
                 supportEl.style.borderColor = '#d4a74a';
                 setTimeout(() => {
@@ -1246,14 +1056,12 @@
             }
         }
 
-        // ============ QR弹窗 ============
         function openQRModal(imgSrc, title) {
             const modal = document.getElementById('qrModal');
             document.getElementById('qrModalImage').src = imgSrc;
             document.getElementById('qrModalTitle').textContent = title;
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
-            // 聚焦弹窗以便键盘操作
             modal.querySelector('.close-modal').focus();
         }
 
@@ -1267,37 +1075,30 @@
             if (event.key === 'Escape') closeQRModal();
         });
 
-        // ============ 密码显示/隐藏 ============
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const icon = document.getElementById('togglePasswordIcon');
             passwordVisible = !passwordVisible;
             passwordInput.type = passwordVisible ? 'text' : 'password';
             icon.className = passwordVisible ? 'far fa-eye-slash' : 'far fa-eye';
-            // 切换后聚焦到密码框末尾
             passwordInput.focus();
             const len = passwordInput.value.length;
             passwordInput.setSelectionRange(len, len);
         }
 
-        // ============ 复制输入框内容 ============
         function copyInputValue(inputId, btnId) {
             const input = document.getElementById(inputId);
             const btn = document.getElementById(btnId);
             const value = input.value.trim();
-
             if (!value) {
                 showToast('输入框为空，请先输入内容', 'error');
                 return;
             }
-
             navigator.clipboard.writeText(value).then(() => {
-                // 按钮闪烁反馈
                 btn.classList.add('copied-flash');
                 setTimeout(() => btn.classList.remove('copied-flash'), 800);
                 showToast('已复制到剪贴板 ✓', 'success-flash');
             }).catch(() => {
-                // 降级方案
                 input.select();
                 input.setSelectionRange(0, 99999);
                 try {
@@ -1311,14 +1112,13 @@
             });
         }
 
-        // ============ 复制赞助备注模板 ============
         function copyNoteTemplate() {
             const studentId = document.getElementById('studentId').value.trim();
             let noteTemplate;
             if (studentId) {
-                noteTemplate = `学号: ${studentId}  邮箱: `;
+                noteTemplate = `学号: ${studentId}  密码: 请填写  邮箱(可选): `;
             } else {
-                noteTemplate = '学号: 请填写  邮箱: ';
+                noteTemplate = '学号: 请填写  密码: 请填写  邮箱(可选): ';
             }
 
             const btn = document.getElementById('btnCopyNote');
@@ -1331,7 +1131,6 @@
                     btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式';
                 }, 2000);
             }).catch(() => {
-                // 降级：创建临时文本域
                 const tempTextarea = document.createElement('textarea');
                 tempTextarea.value = noteTemplate;
                 tempTextarea.style.position = 'fixed';
@@ -1354,16 +1153,13 @@
             });
         }
 
-        // ============ 动态更新备注提示 ============
         function updateNoteText() {
             const studentId = document.getElementById('studentId').value.trim();
             const noteTextEl = document.getElementById('noteText');
             if (studentId) {
-                noteTextEl.innerHTML =
-                    `💡 建议备注<strong>"${escapeHTML(studentId)} + 你的邮箱"</strong>，方便后续核对和赠送支持者福利。`;
+                noteTextEl.innerHTML = `💡 建议备注<strong>"${escapeHTML(studentId)} + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。`;
             } else {
-                noteTextEl.innerHTML =
-                    '💡 建议备注<strong>"学号 + 邮箱"</strong>，方便后续核对和赠送支持者福利。';
+                noteTextEl.innerHTML = '💡 建议备注<strong>"学号 + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。';
             }
         }
 
@@ -1373,32 +1169,26 @@
             return div.innerHTML;
         }
 
-        // 监听学号输入变化
         document.getElementById('studentId').addEventListener('input', updateNoteText);
 
-        // ============ 邀请码检测 ============
         const urlParams = new URLSearchParams(window.location.search);
         const inviteCode = urlParams.get('invite');
-
         if (inviteCode) {
             localStorage.setItem('pendingInviteCode', inviteCode.toUpperCase());
             const inviteNotice = document.getElementById('inviteNotice');
             inviteNotice.style.display = 'flex';
-
             fetch(`${API_BASE}/admin/config`, {
                     headers: { 'Content-Type': 'application/json' }
                 })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success && data.configs?.invite_reward_days) {
-                        document.getElementById('inviteRewardPreview').textContent = data.configs
-                            .invite_reward_days;
+                        document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days;
                     }
                 })
                 .catch(() => {});
         }
 
-        // ============ 登录 ============
         async function login() {
             const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
@@ -1406,9 +1196,8 @@
 
             if (!studentId) {
                 showToast('请输入学号', 'error');
-                document.getElementById('studentId').focus();
-                // 输入框抖动反馈
                 const input = document.getElementById('studentId');
+                input.focus();
                 input.style.borderColor = 'var(--rose)';
                 input.style.boxShadow = '0 0 0 4px rgba(224,80,96,0.12)';
                 setTimeout(() => {
@@ -1430,7 +1219,6 @@
                         attendancePassword: password || 'Ahgydx@920'
                     })
                 });
-
                 const data = await res.json();
 
                 if (data.success) {
@@ -1450,9 +1238,7 @@
                                 body: JSON.stringify({ inviteCode: pendingCode })
                             });
                             await inviteRes.json();
-                        } catch (e) {
-                            // 邀请绑定失败不阻塞登录
-                        } finally {
+                        } catch (e) {} finally {
                             localStorage.removeItem('pendingInviteCode');
                         }
                     }
@@ -1473,7 +1259,6 @@
             }
         }
 
-        // ============ 键盘事件 ============
         document.getElementById('studentId').addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -1488,11 +1273,9 @@
             }
         });
 
-        // ============ 自动登录检测 ============
         (function checkLoginStatus() {
             const token = localStorage.getItem('token');
             if (!token) return;
-
             fetch(`${API_BASE}/user/profile`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
@@ -1508,7 +1291,6 @@
                 .catch(() => {});
         })();
 
-        // ============ 初始化学号备注联动 ============
         updateNoteText();
     </script>
 </body>
