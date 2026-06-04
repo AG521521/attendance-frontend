@@ -146,6 +146,28 @@
       background: #fff; cursor: pointer; font-size: 13px; transition: var(--transition);
     }
     .weekday-btn.selected { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .auto-sign-hero {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; align-items: stretch;
+      padding: 18px; border-radius: 14px; background: linear-gradient(135deg,#eef7ff,#f7fff2);
+      border: 1px solid #dfeaf5; margin-bottom: 18px;
+    }
+    .auto-sign-hero h2 { margin-bottom: 8px; }
+    .auto-sign-time {
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      border-radius: 14px; background: #fff; border: 1px solid var(--border); min-height: 130px;
+    }
+    .auto-sign-time strong { font-size: 36px; color: var(--brand); line-height: 1; }
+    .auto-sign-time span { color: var(--text-secondary); margin-top: 8px; }
+    .setting-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .setting-line:last-child { border-bottom: 0; }
+    .setting-copy p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
+    .switch { position: relative; width: 54px; height: 30px; flex: 0 0 auto; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; inset: 0; cursor: pointer; background: #cfd8dc; border-radius: 999px; transition: var(--transition); }
+    .slider:before { content: ""; position: absolute; width: 24px; height: 24px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: var(--transition); box-shadow: var(--shadow); }
+    .switch input:checked + .slider { background: var(--success); }
+    .switch input:checked + .slider:before { transform: translateX(24px); }
+    .auto-sign-note { color: var(--text-secondary); font-size: 13px; line-height: 1.7; margin-top: 10px; }
 
     .list-item {
       display: flex; justify-content: space-between; align-items: center;
@@ -208,6 +230,7 @@
       }
       .menu-item.active { border-left-color: transparent; border-bottom-color: var(--brand); }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .auto-sign-hero { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .card { padding: 14px 16px; }
       .header { padding: 12px 16px; }
@@ -421,7 +444,7 @@
         document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
         item.classList.add('active');
         if (page === 'dashboard') { loadStats(); loadActiveSubs(); loadNotice(); }
-        else if (page === 'subscriptions') loadSubscriptions();
+        else if (page === 'subscriptions') loadAutoSignSetting();
         else if (page === 'email') loadEmailStatus();
         else if (page === 'invite') loadInviteInfo();
         else if (page === 'feedback') loadMyFeedback();
@@ -430,7 +453,67 @@
         else if (page === 'profile') loadProfile();
       });
     });
-    document.querySelectorAll('.weekday-btn').forEach(b => b.addEventListener('click', function(){ this.classList.toggle('selected'); }));
+    bindWeekdayButtons();
+
+    function bindWeekdayButtons() {
+      document.querySelectorAll('.weekday-btn').forEach(b => {
+        b.onclick = function() { this.classList.toggle('selected'); };
+      });
+    }
+
+    function initAutoSignExperience() {
+      const menu = document.querySelector('.menu-item[data-page="subscriptions"]');
+      if (menu) menu.innerHTML = '<i class="fas fa-calendar-check"></i> 自动签到';
+      const statLabel = document.querySelector('#statActiveSubs + .stat-label');
+      if (statLabel) statLabel.textContent = '自动';
+      const activeCard = document.getElementById('activeSubscriptionsList')?.closest('.card');
+      if (activeCard) activeCard.querySelector('h2').innerHTML = '<i class="fas fa-list-check"></i> 自动签到状态';
+
+      const page = document.getElementById('page-subscriptions');
+      if (!page) return;
+      page.innerHTML = `
+        <div class="auto-sign-hero">
+          <div>
+            <h2><i class="fas fa-moon" style="color:var(--brand);"></i> 自动签到</h2>
+            <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:25 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
+            <div id="autoSignStatus" style="margin-top:14px;"></div>
+          </div>
+          <div class="auto-sign-time">
+            <strong>21:25</strong>
+            <span>统一签到时间</span>
+          </div>
+        </div>
+        <div class="card">
+          <h2><i class="fas fa-sliders-h"></i> 签到偏好</h2>
+          <div class="setting-line">
+            <div class="setting-copy"><strong>启用自动签到</strong><p>适合每天晚上不想手动操作的同学。</p></div>
+            <label class="switch"><input type="checkbox" id="autoSignEnabled"><span class="slider"></span></label>
+          </div>
+          <div class="form-group" style="margin-top:14px;">
+            <label>签到日期</label>
+            <div class="weekday-selector" id="weekdaySelector">
+              <button type="button" class="weekday-btn selected" data-day="1">一</button>
+              <button type="button" class="weekday-btn selected" data-day="2">二</button>
+              <button type="button" class="weekday-btn selected" data-day="3">三</button>
+              <button type="button" class="weekday-btn selected" data-day="4">四</button>
+              <button type="button" class="weekday-btn selected" data-day="5">五</button>
+              <button type="button" class="weekday-btn" data-day="6">六</button>
+              <button type="button" class="weekday-btn" data-day="0">日</button>
+            </div>
+          </div>
+          <div class="setting-line">
+            <div class="setting-copy"><strong>成功后邮件通知</strong><p>签到成功时发一封邮件，让你放心。</p></div>
+            <label class="switch"><input type="checkbox" id="notifyOnSuccess" checked><span class="slider"></span></label>
+          </div>
+          <div class="setting-line">
+            <div class="setting-copy"><strong>失败后邮件提醒</strong><p>如果自动签到失败，第一时间提醒你手动处理。</p></div>
+            <label class="switch"><input type="checkbox" id="notifyOnFailure" checked><span class="slider"></span></label>
+          </div>
+          <button class="btn btn-primary" onclick="saveAutoSignSetting()" style="margin-top:16px;"><i class="fas fa-save"></i> 保存设置</button>
+        </div>
+      `;
+      bindWeekdayButtons();
+    }
 
     // ========== 首页 ==========
     async function loadNotice() {
@@ -453,12 +536,24 @@
           document.getElementById('statTotalSigns').textContent = data.stats.totalSigns || 0;
           document.getElementById('statSuccessSigns').textContent = data.stats.successSigns || 0;
           document.getElementById('statTodaySigns').textContent = data.stats.todaySigns || 0;
-          document.getElementById('statActiveSubs').textContent = data.stats.activeSubscriptions || 0;
+          document.getElementById('statActiveSubs').textContent = data.stats.autoSignEnabled ? 1 : 0;
         }
       } catch(e) {}
     }
     async function loadActiveSubs() {
       try {
+        const autoData = await api('/auto-sign');
+        const autoContainer = document.getElementById('activeSubscriptionsList');
+        if (autoData.success && autoContainer) {
+          const setting = autoData.setting || {};
+          const selectedDays = (setting.customDays || []).map(d => days[d]).join('、') || '未选择日期';
+          if (!setting.enabled) {
+            autoContainer.innerHTML = '<p class="empty">自动签到未开启。进入“自动签到”选择日期后保存即可。</p>';
+          } else {
+            autoContainer.innerHTML = '<div class="list-item"><div><h4>自动签到已开启</h4><p><i class="fas fa-clock"></i> 21:25 | <i class="fas fa-calendar-alt"></i> '+escapeHTML(selectedDays)+' | <i class="fas fa-envelope"></i> '+(setting.notifyOnSuccess || setting.notifyOnFailure ? '邮件提醒已配置' : '未开启邮件提醒')+'</p></div><span class="badge badge-success">启用</span></div>';
+          }
+          return;
+        }
         const data = await api('/subscriptions');
         const container = document.getElementById('activeSubscriptionsList');
         if (data.success) {
@@ -482,13 +577,68 @@
     }
 
     // ========== 任务管理 ==========
-    async function loadSubscriptions() {
+    function setAutoSignDays(selectedDays) {
+      const normalized = new Set((selectedDays && selectedDays.length ? selectedDays : [1,2,3,4,5]).map(Number));
+      document.querySelectorAll('#weekdaySelector .weekday-btn').forEach(btn => {
+        btn.classList.toggle('selected', normalized.has(Number(btn.dataset.day)));
+      });
+    }
+
+    function getSelectedAutoSignDays() {
+      return Array.from(document.querySelectorAll('#weekdaySelector .weekday-btn.selected'))
+        .map(btn => Number(btn.dataset.day))
+        .filter(day => Number.isInteger(day));
+    }
+
+    function renderAutoSignStatus(setting) {
+      const status = document.getElementById('autoSignStatus');
+      if (!status) return;
+      const selectedDays = (setting.customDays || []).map(d => days[d]).join('、') || '未选择日期';
+      status.innerHTML = setting.enabled
+        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' 21:25 自动签到</span>'
+        : '<span class="badge badge-warning">未开启</span><span style="margin-left:10px;color:var(--text-secondary);">打开开关并保存后生效</span>';
+    }
+
+    async function loadAutoSignSetting() {
       try {
-        const data = await api('/subscriptions');
-        const container = document.getElementById('subscriptionsList');
-        if (!data.subscriptions || data.subscriptions.length === 0) { container.innerHTML = '<p class="empty">暂无任务</p>'; return; }
-        container.innerHTML = data.subscriptions.map(s => '<div class="list-item"><div><h4>'+escapeHTML(s.name)+'</h4><p>⏰ '+escapeHTML(s.signTime)+' | 📅 '+(s.scheduleType==='daily'?'每天':(s.scheduleType==='weekdays'?'工作日':(s.customDays||[]).map(d=>days[d]).join('、')))+' | 🔄 重试'+escapeHTML(s.maxRetries)+'次</p></div><div style="display:flex;align-items:center;gap:8px;"><span class="badge '+(s.enabled?'badge-success':'badge-danger')+'">'+(s.enabled?'启用':'禁用')+'</span><button class="btn btn-sm btn-outline" onclick="toggleSub(\''+escapeAttr(s._id)+'\','+!s.enabled+')">'+(s.enabled?'禁用':'启用')+'</button><button class="btn btn-sm btn-danger" onclick="deleteSub(\''+escapeAttr(s._id)+'\')"><i class="fas fa-trash"></i></button></div></div>').join('');
+        const data = await api('/auto-sign');
+        if (!data.success) return;
+        const setting = data.setting || {};
+        document.getElementById('autoSignEnabled').checked = !!setting.enabled;
+        document.getElementById('notifyOnSuccess').checked = setting.notifyOnSuccess !== false;
+        document.getElementById('notifyOnFailure').checked = setting.notifyOnFailure !== false;
+        setAutoSignDays(setting.customDays);
+        renderAutoSignStatus(setting);
       } catch(e) {}
+    }
+
+    async function saveAutoSignSetting() {
+      const selectedDays = getSelectedAutoSignDays();
+      if (selectedDays.length === 0) {
+        showToast('请至少选择一天', 'error');
+        return;
+      }
+      const body = {
+        enabled: document.getElementById('autoSignEnabled').checked,
+        customDays: selectedDays,
+        notifyOnSuccess: document.getElementById('notifyOnSuccess').checked,
+        notifyOnFailure: document.getElementById('notifyOnFailure').checked
+      };
+      try {
+        const data = await api('/auto-sign', { method: 'PUT', body });
+        if (data.success) {
+          showToast('自动签到设置已保存', 'success');
+          renderAutoSignStatus(data.setting || body);
+          loadStats();
+          loadActiveSubs();
+        } else {
+          showToast(data.message || '保存失败', 'error');
+        }
+      } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    async function loadSubscriptions() {
+      return loadAutoSignSetting();
     }
     async function addSubscription() {
       const name = document.getElementById('courseName').value || '晚寝签到';
@@ -748,7 +898,7 @@
       const t = setInterval(() => { cd--; btn.textContent = cd + 's'; if (cd <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = '发送验证码'; } }, 1000);
     }
     function logout() { localStorage.clear(); window.location.href = '/'; }
-    loadUserInfo(); loadStats(); loadActiveSubs(); loadNotice();
+    initAutoSignExperience(); loadUserInfo(); loadStats(); loadActiveSubs(); loadNotice();
   </script>
 </body>
 </html>
