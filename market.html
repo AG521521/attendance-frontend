@@ -380,7 +380,7 @@
         function renderItems(grid, items) {
             grid.innerHTML = items.map(item => `
                 <div class="item-card" onclick="openDetail('${item._id}')">
-                    <div class="item-img">${getCatIcon(item.category)}</div>
+                    <div class="item-img">${(item.images && item.images.length > 0) ? `<img src="${item.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : getCatIcon(item.category)}</div>
                     <div class="item-badge">${getCatName(item.category)}</div>
                     <div class="item-body">
                         <div class="item-title">${escapeHTML(item.title)}</div>
@@ -424,11 +424,17 @@
                 const data = await res.json();
                 if (!data.success || !data.items?.length) return;
                 const item = data.items[0];
+                const imageHtml = (item.images && item.images.length > 0)
+                    ? `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;border-radius:12px;">
+                        ${item.images.map(img => `<img src="${img}" style="max-width:200px;max-height:200px;border-radius:8px;object-fit:cover;">`).join('')}
+                       </div>`
+                    : '';
                 content.innerHTML = `
-                    <span style="background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;">${getCatName(item.category)}</span>
-                    <h3 style="font-size:20px;margin:10px 0;">${escapeHTML(item.title)}</h3>
-                    <div style="font-size:28px;font-weight:800;color:#e05050;">¥${item.price.toFixed(2)}</div>
-                    <div style="color:var(--text-secondary);margin:10px 0;">${escapeHTML(item.description)}</div>
+                    <span style="background:var(--primary-light);...">${getCatName(item.category)}</span>
+                    <h3 style="...">${escapeHTML(item.title)}</h3>
+                    <div style="...">¥${item.price.toFixed(2)}</div>
+                    <div style="...">${escapeHTML(item.description)}</div>
+                    ${imageHtml}
                     <p style="color:var(--text-muted);">卖家：${getDisplayName(item.userId)}</p>
                     <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
                         <button class="btn-sm" onclick="showContact('${item._id}')" style="flex:1;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:14px;">📞 查看联系方式</button>
