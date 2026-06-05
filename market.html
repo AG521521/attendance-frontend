@@ -238,7 +238,7 @@
                 <div class="form-group"><label>微信（选填）</label><input type="text" id="pubWechat"></div>
             </div>
             <div style="display:flex; gap:10px; margin-top:16px;">
-                <button class="btn btn-white" onclick="()" style="flex:1;">✅ 确认发布</button>
+                <button class="btn btn-white" onclick="publishItem()" style="flex:1;">✅ 确认发布</button>
                 <button class="btn btn-outline" onclick="closeModal('publishModal')" style="flex:1;background:#f0f2f6;color:var(--text);">取消</button>
             </div>
         </div>
@@ -278,7 +278,7 @@
         // WebSocket
         function initSocket() {
             if (socket) return;
-            socket = io(API_BASE.replace('/api', ''), { transports: ['websocket', 'polling'] });
+            socket = io('https://api.agai.online', { transports: ['websocket', 'polling'] });
             socket.on('connect', () => { if (currentUser.id) socket.emit('bindUser', currentUser.id); });
             socket.on('newMessage', (data) => {
                 if (currentChatRoom === data.roomId) appendMessage(data);
