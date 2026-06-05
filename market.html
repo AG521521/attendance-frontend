@@ -559,13 +559,36 @@
             const qq = document.getElementById('pubQQ').value.trim();
             const wechat = document.getElementById('pubWechat').value.trim();
             if (!title || !description || isNaN(price) || price<0) { showToast('请填写完整信息','error'); return; }
-            // 图片上传处理：这里简化，直接传base64数组，后端需解析
-            const images = selectedImages.slice(0,5);
+            
             try {
+                // 1. 先上传图片文件（如果选了的话）
+                let imageUrls = [];
+                if (selectedImages.length > 0) {
+                    const formData = new FormData();
+                    // selectedImages 存的是 base64 data URLs，需转回 File
+                    for (const base64 of selectedImages) {
+                        const blob = await (await fetch(base64)).blob();
+                        formData.append('images', blob, 'image.jpg');
+                    }
+                    const uploadRes = await fetch(`${API_BASE}/market/upload`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: formData
+                    });
+                    const uploadData = await uploadRes.json();
+                    if (uploadData.success) {
+                        imageUrls = uploadData.urls;
+                    } else {
+                        showToast('图片上传失败: ' + uploadData.message, 'error');
+                        return;
+                    }
+                }
+                
+                // 2. 发布商品（传 URL 字符串）
                 const res = await fetch(`${API_BASE}/market/items`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' },
-                    body: JSON.stringify({ title, description, price, category, contact: { qq, wechat }, images })
+                    body: JSON.stringify({ title, description, price, category, contact: { qq, wechat }, images: imageUrls })
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -577,6 +600,7 @@
                 } else showToast(data.message,'error');
             } catch(e) { showToast('网络错误','error'); }
         }
+
 
         // 聊天
         async function startChat(sellerId, productId, productTitle) {
