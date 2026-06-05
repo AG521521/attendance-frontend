@@ -274,7 +274,12 @@
         let currentChatPartnerId = null;
         let selectedImages = [];
         let socket = null;
-
+        function togglePayQR() {
+          const content = document.getElementById('payQRContent');
+          if (content) {
+            content.style.display = content.style.display === 'none' ? 'block' : 'none';
+          }
+        }
         // WebSocket
         function initSocket() {
             if (socket) return;
@@ -436,6 +441,30 @@
                     <div style="...">${escapeHTML(item.description)}</div>
                     ${imageHtml}
                     <p style="color:var(--text-muted);">卖家：${getDisplayName(item.userId)}</p>
+                    // 在 openDetail 函数中，price 显示后面添加
+                    <div id="payQRArea" style="margin-top: 16px; padding: 14px; background: #fffef9; border: 1px solid #f0d89c; border-radius: 12px; text-align: center; cursor: pointer;" onclick="togglePayQR()">
+                      <div style="font-size: 14px; font-weight: 600; color: #6b3a0a; margin-bottom: 6px;">
+                        <i class="fas fa-qrcode"></i> 扫码直接付款（点击展开）
+                      </div>
+                      <div id="payQRContent" style="display: none; margin-top: 10px;">
+                        <p style="font-size: 12px; color: #9a6b2e; margin-bottom: 8px;">
+                          请支付 <strong style="color: #e05050;">¥${item.price.toFixed(2)}</strong>，备注你的昵称
+                        </p>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                          <div style="text-align: center;">
+                            <img src="https://login.agai.online/vxcode.png" alt="微信收款码" style="width: 100px; height: 100px; border-radius: 8px; border: 1px solid #f0d89c;">
+                            <p style="font-size: 11px; color: #6b3a0a; margin-top: 4px;">微信</p>
+                          </div>
+                          <div style="text-align: center;">
+                            <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码" style="width: 100px; height: 100px; border-radius: 8px; border: 1px solid #f0d89c;">
+                            <p style="font-size: 11px; color: #6b3a0a; margin-top: 4px;">支付宝</p>
+                          </div>
+                        </div>
+                        <p style="font-size: 11px; color: #9a6b2e; margin-top: 8px;">
+                          ⚠️ 付款后请截图发给卖家确认，平台不担保交易
+                        </p>
+                      </div>
+                    </div>
                     <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
                         <button class="btn-sm" onclick="showContact('${item._id}')" style="flex:1;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:14px;">📞 查看联系方式</button>
                         <button class="btn-sm" onclick="startChat('${item.userId._id}','${item._id}','${escapeHTML(item.title)}')" style="flex:1;padding:12px;border-radius:10px;font-size:14px;">💬 私聊卖家</button>
