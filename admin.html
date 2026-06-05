@@ -311,6 +311,10 @@
         <div class="menu-item" data-page="cards">
           <i class="fas fa-ticket-alt"></i> 卡密管理
         </div>
+        <div class="menu-item" data-page="reports">
+          <i class="fas fa-exclamation-triangle"></i> 举报管理
+          <span id="reportBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
+        </div>
         <div class="menu-item" data-page="feedback">
           <i class="fas fa-comment-dots"></i> 留言管理
           <span id="feedbackBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
@@ -469,7 +473,34 @@
           <div class="pagination" id="feedbackPagination"></div>
         </div>
       </div>
-      
+
+      <!-- 举报管理 -->
+      <div id="page-reports" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-filter"></i> 筛选</h3>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <select id="reportStatusFilter" onchange="loadReports()" style="padding:10px; border-radius:8px;">
+              <option value="">全部状态</option>
+              <option value="pending">⏳ 待处理</option>
+              <option value="handled">✅ 已处理</option>
+              <option value="dismissed">❌ 已驳回</option>
+            </select>
+            <button class="btn btn-outline" onclick="loadReports()">
+              <i class="fas fa-sync-alt"></i> 刷新
+            </button>
+          </div>
+        </div>
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-exclamation-triangle"></i> 举报列表</h3>
+          </div>
+          <div id="reportsStats" style="margin-bottom:20px;"></div>
+          <div id="reportsTable">加载中...</div>
+          <div class="pagination" id="reportsPagination"></div>
+        </div>
+      </div>
       <!-- 系统设置 -->
       <div id="page-settings" class="hidden">
         <div class="content-card">
@@ -651,12 +682,13 @@
         document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
         
-        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', feedback: '留言管理', settings: '系统设置' };
+        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', reports: '举报管理', feedback: '留言管理', settings: '系统设置' };
         document.getElementById('pageTitle').textContent = titles[page];
         
         if (page === 'dashboard') loadDashboardStats();
         else if (page === 'users') loadUsers();
         else if (page === 'cards') loadCards();
+        else if (page === 'reports') loadReports();  
         else if (page === 'feedback') loadFeedbacks();
         else if (page === 'settings') loadSettings();
       });
@@ -1302,7 +1334,84 @@
         showToast('删除失败', 'error');
       }
     }
+
+
+    // ============ 举报管理 ============
+    let reportsCurrentPage = 1;
     
+    async function loadReports(page = 1) {
+      reportsCurrentPage = page;
+      const status = document.getElementById('reportStatusFilter')?.value || '';
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports?page=${page}&status=${status}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          const badge = document.getElementById('reportBadge');
+          if (data.pendingCount > 0) {
+            badge.textContent = data.pendingCount;
+            badge.style.display = 'block';
+          } else {
+            badge.style.display = 'none';
+          }
+          
+          document.getElementById('reportsStats').innerHTML = `
+            <span class="badge badge-warning">待处理: ${data.pendingCount}</span>
+            <span class="badge badge-info">总计: ${data.total}</span>
+          `;
+          
+          const statusMap = {
+            pending: '<span class="badge badge-warning">待处理</span>',
+            handled: '<span class="badge badge-success">已处理</span>',
+            dismissed: '<span class="badge badge-danger">已驳回</span>'
+          };
+          
+          document.getElementById('reportsTable').innerHTML = `
+            <table>
+              <thead>
+                <tr><th>举报人</th><th>被举报人</th><th>原因</th><th>商品</th><th>状态</th><th>时间</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                ${data.reports.map(r => `
+                  <tr>
+                    <td>${r.reporterId?.name || r.reporterId?.studentId || '未知'}</td>
+                    <td>${r.targetUserId?.name || r.targetUserId?.studentId || '未知'}</td>
+                    <td>${r.reason}</td>
+                    <td>${r.productId?.title || '-'}</td>
+                    <td>${statusMap[r.status]}</td>
+                    <td>${new Date(r.createdAt).toLocaleString()}</td>
+                    <td>
+                      ${r.status === 'pending' ? `
+                        <button class="btn btn-success btn-sm" onclick="handleReport('${r._id}', 'handled')">标记已处理</button>
+                        <button class="btn btn-danger btn-sm" onclick="handleReport('${r._id}', 'dismissed')">驳回</button>
+                      ` : '<span class="badge badge-info">已完结</span>'}
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (e) {}
+    }
+    
+    async function handleReport(id, status) {
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports/${id}`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(status === 'handled' ? '已标记为已处理' : '已驳回举报', 'success');
+          loadReports(reportsCurrentPage);
+        }
+      } catch (e) { showToast('操作失败', 'error'); }
+    }
     function closeReplyModal() {
       document.getElementById('replyModal').classList.remove('show');
     }
