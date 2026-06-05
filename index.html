@@ -593,6 +593,18 @@
                     <i class="fas fa-chevron-right" style="color: #aaa;"></i>
                 </div>
             </div>     
+
+            <!-- 快速登录入口 -->
+                <div style="margin-top: 16px; padding: 14px; background: #f8fafb; border-radius: 12px; border: 1px dashed #dde3ed; text-align: center;">
+                  <p style="font-size: 13px; color: #6b7187; margin-bottom: 8px;">不想输入学号？</p>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="quickNickname" placeholder="输入一个昵称即可进入" style="flex: 1; padding: 10px 12px; border: 1.5px solid #dde3ed; border-radius: 8px; font-size: 14px; outline: none;">
+                    <button onclick="quickLogin()" style="padding: 10px 16px; background: linear-gradient(135deg, #667eea, #5a6fd6); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 13px;">
+                      <i class="fas fa-bolt"></i> 快速进入
+                    </button>
+                  </div>
+                  <p style="font-size: 11px; color: #aaa; margin-top: 6px;">快速登录仅可浏览二手市场，无法使用签到功能</p>
+                </div>
             <div class="micro-list">
                 <div class="micro-item">
                     <span class="check">✓</span>
@@ -802,6 +814,44 @@
                 .catch(() => {});
         }
 
+        async function quickLogin() {
+          const nickname = document.getElementById('quickNickname').value.trim();
+          const btn = document.querySelector('#quickNickname + button');
+          
+          if (!nickname || nickname.length < 2) {
+            showToast('请输入至少2个字符的昵称', 'error');
+            return;
+          }
+          
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 进入中...';
+          
+          try {
+            const res = await fetch(`${API_BASE}/quick-login`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ nickname })
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+              localStorage.setItem('token', data.token);
+              localStorage.setItem('user', JSON.stringify(data.user));
+              showToast('欢迎！正在进入二手市场...', 'success-flash');
+              setTimeout(() => {
+                window.location.href = '/market';
+              }, 500);
+            } else {
+              showToast(data.message || '登录失败', 'error');
+            }
+          } catch (error) {
+            showToast('网络错误', 'error');
+          } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-bolt"></i> 快速进入';
+          }
+        }
+ 
         async function login() {
             const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
