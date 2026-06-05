@@ -366,6 +366,16 @@
           <div id="statsDetail">加载中...</div>
         </div>
       </div>
+      <div class="content-card">
+        <div class="card-header">
+          <h3><i class="fas fa-rocket"></i> 应急签到</h3>
+        </div>
+        <p style="margin-bottom:12px; color:#666;">在定时任务未触发时，手动执行一次全员签到（仅对已启用自动签到的用户生效）</p>
+        <button class="btn btn-warning" onclick="triggerAllSign()">
+          <i class="fas fa-bolt"></i> 一键全员签到
+        </button>
+        <span id="triggerResult" style="margin-left:15px;"></span>
+      </div>
       
       <!-- 用户管理 -->
       <div id="page-users" class="hidden">
@@ -637,6 +647,8 @@
     if (!token) window.location.href = '/';
     
     const DEBUG = true;
+
+
     
     async function checkAdmin() {
       if (DEBUG) console.log('🔍 开始检查管理员权限...');
@@ -664,7 +676,36 @@
         window.location.href = '/';
       }
     }
-    
+
+    async function triggerAllSign() {
+      if (!confirm('确定要立即为所有启用自动签到的用户执行签到吗？')) return;
+      
+      const btn = document.querySelector('#page-dashboard .btn-warning');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 执行中...';
+      
+      try {
+        const res = await fetch(`${API_BASE}/admin/trigger-sign`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('triggerResult').innerHTML = 
+            '<span style="color:#28a745;">✅ 任务已触发，请等待执行完成</span>';
+        } else {
+          document.getElementById('triggerResult').innerHTML = 
+            `<span style="color:#dc3545;">❌ ${data.message}</span>`;
+        }
+      } catch (e) {
+        document.getElementById('triggerResult').innerHTML = 
+          '<span style="color:#dc3545;">网络错误</span>';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-bolt"></i> 一键全员签到';
+      }
+    }
+ 
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
       toast.textContent = message;
