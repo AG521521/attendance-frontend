@@ -680,7 +680,12 @@
     async function triggerAllSign() {
       if (!confirm('确定要立即为所有启用自动签到的用户执行签到吗？')) return;
       
-      const btn = document.querySelector('#page-dashboard .btn-warning');
+      const btn = document.getElementById('triggerSignBtn');
+      if (!btn) {
+        alert('按钮未找到，请刷新页面');
+        return;
+      }
+      
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 执行中...';
       
