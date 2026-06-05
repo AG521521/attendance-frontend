@@ -238,7 +238,7 @@
                 <div class="form-group"><label>微信（选填）</label><input type="text" id="pubWechat"></div>
             </div>
             <div style="display:flex; gap:10px; margin-top:16px;">
-                <button class="btn btn-white" onclick="publishItem()" style="flex:1;">✅ 确认发布</button>
+                <button class="btn btn-white" onclick="()" style="flex:1;">✅ 确认发布</button>
                 <button class="btn btn-outline" onclick="closeModal('publishModal')" style="flex:1;background:#f0f2f6;color:var(--text);">取消</button>
             </div>
         </div>
@@ -477,7 +477,7 @@
                 renderItems(grid, data.items);
             } catch(e) {}
         }
-
+        
         async function loadProfile() {
             if (!token) return;
             document.getElementById('profileHeader').innerHTML = `
@@ -551,54 +551,49 @@
         function removeImage(idx) { selectedImages.splice(idx,1); renderImagePreviews(); }
 
         async function publishItem() {
-            if (!token) { showToast('请先登录','error'); window.location.href='/'; return; }
+            if (!token) { showToast('请先登录', 'error'); window.location.href = '/'; return; }
+        
             const title = document.getElementById('pubTitle').value.trim();
             const description = document.getElementById('pubDesc').value.trim();
             const price = parseFloat(document.getElementById('pubPrice').value);
             const category = document.getElementById('pubCategory').value;
             const qq = document.getElementById('pubQQ').value.trim();
             const wechat = document.getElementById('pubWechat').value.trim();
-            if (!title || !description || isNaN(price) || price<0) { showToast('请填写完整信息','error'); return; }
-            
+        
+            if (!title || !description || isNaN(price) || price < 0) {
+                showToast('请填写完整信息', 'error'); return;
+            }
+        
+            // 把本地预览的图片 base64 数据提交上去，最多 5 张
+            const images = selectedImages.slice(0, 5);
+        
             try {
-                // 1. 先上传图片文件（如果选了的话）
-                let imageUrls = [];
-                if (selectedImages.length > 0) {
-                    const formData = new FormData();
-                    // selectedImages 存的是 base64 data URLs，需转回 File
-                    for (const base64 of selectedImages) {
-                        const blob = await (await fetch(base64)).blob();
-                        formData.append('images', blob, 'image.jpg');
-                    }
-                    const uploadRes = await fetch(`${API_BASE}/market/upload`, {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${token}` },
-                        body: formData
-                    });
-                    const uploadData = await uploadRes.json();
-                    if (uploadData.success) {
-                        imageUrls = uploadData.urls;
-                    } else {
-                        showToast('图片上传失败: ' + uploadData.message, 'error');
-                        return;
-                    }
-                }
-                
-                // 2. 发布商品（传 URL 字符串）
                 const res = await fetch(`${API_BASE}/market/items`, {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' },
-                    body: JSON.stringify({ title, description, price, category, contact: { qq, wechat }, images: imageUrls })
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title, description, price, category,
+                        contact: { qq, wechat },
+                        images     // ← 这里直接把图片数组发给后端
+                    })
                 });
+        
                 const data = await res.json();
                 if (data.success) {
-                    showToast('🎉 发布成功！','success');
+                    showToast('🎉 发布成功！', 'success');
                     closeModal('publishModal');
-                    ['pubTitle','pubDesc','pubPrice','pubQQ','pubWechat'].forEach(id => document.getElementById(id).value = '');
-                    selectedImages = []; renderImagePreviews();
-                    loadMarketItems();
-                } else showToast(data.message,'error');
-            } catch(e) { showToast('网络错误','error'); }
+                    document.getElementById('pubTitle').value = '';
+                    document.getElementById('pubDesc').value = '';
+                    document.getElementById('pubPrice').value = '';
+                    document.getElementById('pubQQ').value = '';
+                    document.getElementById('pubWechat').value = '';
+                    selectedImages = [];
+                    renderImagePreviews();
+                    loadMarketItems();   // 刷新商品列表
+                } else {
+                    showToast(data.message || '发布失败', 'error');
+                }
+            } catch (e) { showToast('网络错误', 'error'); }
         }
 
 
