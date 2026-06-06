@@ -260,7 +260,7 @@
                 </div>
             </div>
         </div>
-
+        
         <!-- 个人中心视图 -->
         <div class="view" id="view-profile" style="display:none;">
             <div class="profile-header" id="profileHeader"></div>
@@ -269,9 +269,23 @@
             <!-- 收款码上传区 -->
             <div style="background:#fffef9;border:1px solid #f0d89c;border-radius:12px;padding:14px;margin-top:14px;">
                 <h4 style="margin-bottom:10px;">💰 我的收款码（买家扫码付款给你）</h4>
-                <div class="form-group"><label>微信收款码URL</label><input type="text" id="payQRWechat" placeholder="图片链接"></div>
-                <div class="form-group"><label>支付宝收款码URL</label><input type="text" id="payQRAlipay" placeholder="图片链接"></div>
-                <button class="btn btn-white" onclick="savePayQR()">💾 保存收款码</button>
+                <div style="display:flex;gap:12px;">
+                    <div style="flex:1;text-align:center;">
+                        <div id="wechatPayPreview" style="width:100px;height:100px;border:2px dashed #ddd;border-radius:10px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:#999;" onclick="document.getElementById('wechatPayInput').click()">
+                            ＋ 微信码
+                        </div>
+                        <input type="file" id="wechatPayInput" accept="image/*" style="display:none" onchange="handlePayQRSelect(event, 'wechat')">
+                        <span style="font-size:12px;color:#666;">微信</span>
+                    </div>
+                    <div style="flex:1;text-align:center;">
+                        <div id="alipayPayPreview" style="width:100px;height:100px;border:2px dashed #ddd;border-radius:10px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:#999;" onclick="document.getElementById('alipayPayInput').click()">
+                            ＋ 支付宝码
+                        </div>
+                        <input type="file" id="alipayPayInput" accept="image/*" style="display:none" onchange="handlePayQRSelect(event, 'alipay')">
+                        <span style="font-size:12px;color:#666;">支付宝</span>
+                    </div>
+                </div>
+                <button class="btn btn-white" onclick="savePayQR()" style="margin-top:10px;width:100%;">💾 保存收款码</button>
             </div>
             <!-- 卖家加购列表 -->
             <div style="background:#f8f9fc;border-radius:12px;padding:14px;margin-top:14px;">
@@ -924,6 +938,53 @@
                 } else showToast(data.message || '操作失败', 'error');
             } catch(e) { showToast('网络错误', 'error'); }
         }
+
+            let payQRImages = { wechat: '', alipay: '' };
+
+    // 处理收款码图片选择（转 base64）
+    function handlePayQRSelect(event, type) {
+        const file = event.target.files[0];
+        if (!file || !file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            payQRImages[type] = e.target.result;
+            const previewId = type === 'wechat' ? 'wechatPayPreview' : 'alipayPayPreview';
+            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // 加载已有收款码
+    async function loadPayQR() {
+        try {
+            const res = await fetch(`${API_BASE}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.success && data.user && data.user.payQR) {
+                if (data.user.payQR.wechat) {
+                    payQRImages.wechat = data.user.payQR.wechat;
+                    document.getElementById('wechatPayPreview').innerHTML = `<img src="${data.user.payQR.wechat}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+                }
+                if (data.user.payQR.alipay) {
+                    payQRImages.alipay = data.user.payQR.alipay;
+                    document.getElementById('alipayPayPreview').innerHTML = `<img src="${data.user.payQR.alipay}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+                }
+            }
+        } catch(e) {}
+    }
+
+    // 保存收款码
+    async function savePayQR() {
+        try {
+            const res = await fetch(`${API_BASE}/user/payqr`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ wechat: payQRImages.wechat, alipay: payQRImages.alipay })
+            });
+            const data = await res.json();
+            showToast(data.success ? '收款码已保存' : '保存失败', data.success ? 'success' : 'error');
+        } catch(e) { showToast('网络错误', 'error'); }
+    }
+
 
         // 图片上传处理
         function handleImageSelect(event) {
