@@ -12,118 +12,56 @@
       background: #f5f7fb;
       min-height: 100vh;
     }
-    
     .admin-layout { display: flex; min-height: 100vh; }
-    
     .sidebar {
       width: 280px;
       background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
       color: #fff;
       padding: 24px 0;
     }
-    
-    .sidebar-header {
-      padding: 0 20px 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    
+    .sidebar-header { padding: 0 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .sidebar-header h2 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
-    
     .sidebar-menu { padding: 20px 0; }
-    
     .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 20px;
-      margin: 4px 12px;
-      border-radius: 10px;
-      color: rgba(255,255,255,0.7);
-      cursor: pointer;
-      transition: all 0.2s;
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; margin: 4px 12px; border-radius: 10px;
+      color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.2s;
     }
-    
     .menu-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
     .menu-item.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-    
-    .main-content {
-      flex: 1;
-      padding: 24px 32px;
-      overflow-y: auto;
-    }
-    
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
-    }
-    
+    .main-content { flex: 1; padding: 24px 32px; overflow-y: auto; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
     .page-title { font-size: 28px; font-weight: 700; color: #1a1a2e; }
-    
     .admin-badge {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: #fff;
-      padding: 10px 20px;
-      border-radius: 40px;
+      display: flex; align-items: center; gap: 16px;
+      background: #fff; padding: 10px 20px; border-radius: 40px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-bottom: 28px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-bottom: 28px;
     }
-    
-    .stat-card {
-      background: #fff;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    
+    .stat-card { background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     .stat-value { font-size: 32px; font-weight: 700; color: #1a1a2e; }
     .stat-label { color: #888; font-size: 14px; margin-top: 4px; }
-    
     .content-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      background: #fff; border-radius: 20px; padding: 24px;
+      margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .card-header h3 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
-    
     .hidden { display: none !important; }
-    
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #f0f2f6; font-size: 14px; }
     th { font-weight: 700; color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
     tr:hover { background: #fafbfd; }
-    
-    .badge {
-      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
-      display: inline-block;
-    }
+    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
     .badge-success { background: #d4edda; color: #155724; }
     .badge-warning { background: #fff3cd; color: #856404; }
     .badge-danger { background: #f8d7da; color: #721c24; }
     .badge-info { background: #d1ecf1; color: #0c5460; }
     .badge-admin { background: #e8d5f5; color: #5a2d82; }
-    
     .action-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
-    
     .btn {
       padding: 10px 18px; border: none; border-radius: 10px; cursor: pointer;
       font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px;
@@ -137,27 +75,20 @@
     .btn-outline { background: #fff; color: #666; border: 2px solid #e0e0e0; }
     .btn-outline:hover { border-color: #667eea; color: #667eea; }
     .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
-    
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #555; font-size: 13px; }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 10px;
       font-size: 14px; outline: none; font-family: inherit;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: #667eea;
-    }
-    .form-row { display: flex; gap: 16px; }
-    .form-row .form-group { flex: 1; }
-    
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #667eea; }
+    .form-row { display: flex; gap: 16px; } .form-row .form-group { flex: 1; }
     .search-box {
       display: flex; gap: 10px; margin-bottom: 20px;
       background: #f8f9fc; padding: 12px; border-radius: 12px;
     }
     .search-box input { flex: 1; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; }
-    
     .pagination { display: flex; gap: 6px; margin-top: 20px; justify-content: center; }
-    
     .modal {
       display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
       align-items: center; justify-content: center; z-index: 1000; padding: 20px;
@@ -172,12 +103,10 @@
     .modal-header h3 { font-size: 20px; }
     .modal-close { font-size: 28px; cursor: pointer; color: #999; }
     .modal-close:hover { color: #333; }
-    
     .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #f0f2f6; }
     .tab { padding: 10px 16px; cursor: pointer; color: #888; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
     .tab.active { color: #667eea; border-bottom-color: #667eea; }
     .tab:hover { color: #667eea; }
-    
     .toast {
       position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
       background: #1a1d28; color: #fff; padding: 12px 24px; border-radius: 12px;
@@ -189,7 +118,6 @@
     .toast.success { background: #087a56; }
     .toast.error { background: #b91c1c; }
     .toast.info { background: #1a1d28; }
-    
     @media (max-width: 768px) {
       .admin-layout { flex-direction: column; }
       .sidebar { width: 100%; padding: 12px; }
@@ -202,9 +130,10 @@
 </head>
 <body>
   <div class="admin-layout">
+    <!-- ========== 侧边栏 ========== -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.2</h2>
+        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.3</h2>
       </div>
       <div class="sidebar-menu">
         <div class="menu-item active" data-page="dashboard">
@@ -220,10 +149,11 @@
           <i class="fas fa-exclamation-triangle"></i> 举报管理
           <span id="reportBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
         </div>
-        <!-- ===== 订单管理菜单 ===== -->
         <div class="menu-item" data-page="orders">
           <i class="fas fa-shopping-bag"></i> 订单管理
-          <span id="orderBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
+        </div>
+        <div class="menu-item" data-page="market-items">
+          <i class="fas fa-box"></i> 商品管理
         </div>
         <div class="menu-item" data-page="feedback">
           <i class="fas fa-comment-dots"></i> 留言管理
@@ -237,8 +167,8 @@
         </div>
       </div>
     </div>
-    
-    <!-- 主内容 -->
+
+    <!-- ========== 主内容 ========== -->
     <div class="main-content">
       <div class="top-bar">
         <h1 class="page-title" id="pageTitle">仪表盘</h1>
@@ -247,138 +177,84 @@
           <span id="adminName">管理员</span>
         </div>
       </div>
-      
-      <!-- 仪表盘 -->
+
+      <!-- ===== 仪表盘 ===== -->
       <div id="page-dashboard">
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value" id="statTotalUsers">0</div>
-            <div class="stat-label">总用户数</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="statVipUsers">0</div>
-            <div class="stat-label">VIP 用户</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="statTodaySigns">0</div>
-            <div class="stat-label">今日签到</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="statSuccessRate">0%</div>
-            <div class="stat-label">成功率</div>
-          </div>
+          <div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">注册用户</div></div>
+          <div class="stat-card"><div class="stat-value" id="statVipUsers">0</div><div class="stat-label">VIP 用户</div></div>
+          <div class="stat-card"><div class="stat-value" id="statTodaySigns">0</div><div class="stat-label">今日签到</div></div>
+          <div class="stat-card"><div class="stat-value" id="statSuccessRate">0%</div><div class="stat-label">成功率</div></div>
         </div>
-        
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-chart-line"></i> 系统概览</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-chart-line"></i> 系统概览</h3></div>
           <div id="statsDetail">加载中...</div>
         </div>
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-rocket"></i> 应急签到</h3>
-          </div>
-          <p style="margin-bottom:12px; color:#666;">在定时任务未触发时，手动执行一次全员签到（仅对已启用自动签到的用户生效）</p>
-          <button class="btn btn-warning" onclick="triggerAllSign()">
-            <i class="fas fa-bolt"></i> 一键全员签到
-          </button>
+          <div class="card-header"><h3><i class="fas fa-rocket"></i> 应急签到</h3></div>
+          <p style="margin-bottom:12px; color:#666;">手动执行一次全员签到（仅对已启用自动签到的用户生效）</p>
+          <button class="btn btn-warning" onclick="triggerAllSign()"><i class="fas fa-bolt"></i> 一键全员签到</button>
           <span id="triggerResult" style="margin-left:15px;"></span>
         </div>
       </div>
-      
-      <!-- 用户管理 -->
+
+      <!-- ===== 用户管理 ===== -->
       <div id="page-users" class="hidden">
         <div class="content-card">
           <div class="card-header">
             <h3><i class="fas fa-users"></i> 用户列表</h3>
-            <button class="btn btn-primary" onclick="exportUsers()">
-              <i class="fas fa-download"></i> 导出用户
-            </button>
+            <button class="btn btn-primary" onclick="exportUsers()"><i class="fas fa-download"></i> 导出用户</button>
           </div>
           <div class="search-box">
-            <input type="text" id="userSearch" placeholder="搜索学号、姓名、邮箱..." onkeypress="if(event.key==='Enter') searchUsers()">
-            <button class="btn btn-primary" onclick="searchUsers()">
-              <i class="fas fa-search"></i> 搜索
-            </button>
-            <button class="btn btn-outline" onclick="loadUsers()">
-              <i class="fas fa-sync-alt"></i> 刷新
-            </button>
+            <input type="text" id="userSearch" placeholder="搜索学号、姓名、邮箱..." onkeypress="if(event.key==='Enter')searchUsers()">
+            <button class="btn btn-primary" onclick="searchUsers()"><i class="fas fa-search"></i> 搜索</button>
+            <button class="btn btn-outline" onclick="loadUsers()"><i class="fas fa-sync-alt"></i> 刷新</button>
+            <button class="btn btn-outline btn-sm" id="toggleGuestsBtn" onclick="toggleGuests()">👤 显示游客</button>
           </div>
           <div id="usersTable">加载中...</div>
           <div class="pagination" id="usersPagination"></div>
         </div>
       </div>
-      
-      <!-- 卡密管理 -->
+
+      <!-- ===== 卡密管理 ===== -->
       <div id="page-cards" class="hidden">
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-plus-circle"></i> 批量生成卡密</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-plus-circle"></i> 批量生成卡密</h3></div>
           <div style="display: flex; gap: 20px; align-items: flex-end;">
-            <div style="flex: 1;">
-              <label>生成数量</label>
-              <input type="number" id="cardCount" value="10" min="1" max="100" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
-            </div>
-            <div style="flex: 1;">
-              <label>有效天数</label>
-              <select id="cardDays" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;">
-                <option value="30">30天</option>
-                <option value="90">90天</option>
-                <option value="365">365天</option>
-              </select>
-            </div>
-            <button class="btn btn-success" onclick="generateCards()">
-              <i class="fas fa-magic"></i> 生成卡密
-            </button>
+            <div style="flex: 1;"><label>生成数量</label><input type="number" id="cardCount" value="10" min="1" max="100" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;"></div>
+            <div style="flex: 1;"><label>有效天数</label><select id="cardDays" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;"><option value="30">30天</option><option value="90">90天</option><option value="365">365天</option></select></div>
+            <button class="btn btn-success" onclick="generateCards()"><i class="fas fa-magic"></i> 生成卡密</button>
           </div>
         </div>
-        
         <div class="content-card">
           <div class="card-header">
             <h3><i class="fas fa-list"></i> 卡密列表</h3>
             <div>
               <select id="cardStatusFilter" onchange="loadCards()" style="padding: 8px; border-radius: 8px; margin-right: 10px;">
-                <option value="">全部</option>
-                <option value="unused">未使用</option>
-                <option value="used">已使用</option>
+                <option value="">全部</option><option value="unused">未使用</option><option value="used">已使用</option>
               </select>
-              <button class="btn btn-outline" onclick="exportCards()">
-                <i class="fas fa-download"></i> 导出未使用
-              </button>
-              <button class="btn btn-outline" onclick="loadCards()">
-                <i class="fas fa-sync-alt"></i> 刷新
-              </button>
+              <button class="btn btn-outline" onclick="exportCards()"><i class="fas fa-download"></i> 导出未使用</button>
+              <button class="btn btn-outline" onclick="loadCards()"><i class="fas fa-sync-alt"></i> 刷新</button>
             </div>
           </div>
           <div id="cardsStats" style="margin-bottom: 20px;"></div>
           <div id="cardsTable">加载中...</div>
         </div>
       </div>
-      
-      <!-- 举报管理 -->
+
+      <!-- ===== 举报管理 ===== -->
       <div id="page-reports" class="hidden">
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-filter"></i> 筛选</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-filter"></i> 筛选</h3></div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <select id="reportStatusFilter" onchange="loadReports()" style="padding:10px; border-radius:8px;">
-              <option value="">全部状态</option>
-              <option value="pending">⏳ 待处理</option>
-              <option value="handled">✅ 已处理</option>
-              <option value="dismissed">❌ 已驳回</option>
+              <option value="">全部状态</option><option value="pending">⏳ 待处理</option><option value="handled">✅ 已处理</option><option value="dismissed">❌ 已驳回</option>
             </select>
-            <button class="btn btn-outline" onclick="loadReports()">
-              <i class="fas fa-sync-alt"></i> 刷新
-            </button>
+            <button class="btn btn-outline" onclick="loadReports()"><i class="fas fa-sync-alt"></i> 刷新</button>
           </div>
         </div>
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-exclamation-triangle"></i> 举报列表</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-exclamation-triangle"></i> 举报列表</h3></div>
           <div id="reportsStats" style="margin-bottom:20px;"></div>
           <div id="reportsTable">加载中...</div>
           <div class="pagination" id="reportsPagination"></div>
@@ -388,9 +264,7 @@
       <!-- ===== 订单管理 ===== -->
       <div id="page-orders" class="hidden">
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-filter"></i> 筛选</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-filter"></i> 筛选</h3></div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <select id="orderStatusFilter" onchange="loadOrders()" style="padding:10px; border-radius:8px;">
               <option value="">全部状态</option>
@@ -400,247 +274,147 @@
               <option value="completed">✔️ 已完成</option>
               <option value="cancelled">❌ 已取消</option>
             </select>
-            <button class="btn btn-outline" onclick="loadOrders()">
-              <i class="fas fa-sync-alt"></i> 刷新
-            </button>
+            <button class="btn btn-outline" onclick="loadOrders()"><i class="fas fa-sync-alt"></i> 刷新</button>
           </div>
         </div>
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-shopping-bag"></i> 订单列表</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-shopping-bag"></i> 订单列表</h3></div>
           <div id="ordersStats" style="margin-bottom:20px;"></div>
           <div id="ordersTable">加载中...</div>
           <div class="pagination" id="ordersPagination"></div>
         </div>
       </div>
 
-      <!-- 留言管理 -->
+      <!-- ===== 商品管理 ===== -->
+      <div id="page-market-items" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-box"></i> 市场商品列表</h3>
+            <button class="btn btn-outline" onclick="loadMarketItems()"><i class="fas fa-sync-alt"></i> 刷新</button>
+          </div>
+          <div id="marketItemsStats" style="margin-bottom:20px;"></div>
+          <div id="marketItemsTable">加载中...</div>
+          <div class="pagination" id="marketItemsPagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== 留言管理 ===== -->
       <div id="page-feedback" class="hidden">
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-filter"></i> 筛选</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-filter"></i> 筛选</h3></div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <select id="feedbackStatusFilter" onchange="loadFeedbacks()" style="padding:10px; border-radius:8px;">
-              <option value="">全部状态</option>
-              <option value="pending">⏳ 待处理</option>
-              <option value="read">👀 已读</option>
-              <option value="replied">✅ 已回复</option>
-              <option value="closed">🔒 已关闭</option>
+              <option value="">全部状态</option><option value="pending">⏳ 待处理</option><option value="read">👀 已读</option><option value="replied">✅ 已回复</option><option value="closed">🔒 已关闭</option>
             </select>
             <select id="feedbackTypeFilter" onchange="loadFeedbacks()" style="padding:10px; border-radius:8px;">
-              <option value="">全部类型</option>
-              <option value="bug">🐛 问题反馈</option>
-              <option value="suggestion">💡 功能建议</option>
-              <option value="question">❓ 使用疑问</option>
-              <option value="other">📝 其他</option>
+              <option value="">全部类型</option><option value="bug">🐛 问题反馈</option><option value="suggestion">💡 功能建议</option><option value="question">❓ 使用疑问</option><option value="other">📝 其他</option>
             </select>
-            <button class="btn btn-outline" onclick="loadFeedbacks()">
-              <i class="fas fa-sync-alt"></i> 刷新
-            </button>
+            <button class="btn btn-outline" onclick="loadFeedbacks()"><i class="fas fa-sync-alt"></i> 刷新</button>
           </div>
         </div>
-        
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-comments"></i> 留言列表</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-comments"></i> 留言列表</h3></div>
           <div id="feedbackStats" style="margin-bottom:20px;"></div>
           <div id="feedbacksTable">加载中...</div>
           <div class="pagination" id="feedbackPagination"></div>
         </div>
       </div>
 
-      <!-- 系统设置 -->
+      <!-- ===== 系统设置 ===== -->
       <div id="page-settings" class="hidden">
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-cog"></i> 系统配置</h3>
-          </div>
-          <div class="form-group">
-            <label>默认考勤密码</label>
-            <input type="text" id="defaultPassword" value="Ahgydx@920" placeholder="新用户默认密码">
-          </div>
-          <div class="form-group">
-            <label>签到时间（定时任务）</label>
-            <input type="text" id="signSchedule" value="每天 21:25 和 21:30" disabled style="background:#f5f5f5;">
-            <small style="color:#888;">定时任务已硬编码，如需修改请联系管理员</small>
-          </div>
-          <button class="btn btn-primary" onclick="saveSettings()">
-            <i class="fas fa-save"></i> 保存设置
-          </button>
+          <div class="card-header"><h3><i class="fas fa-cog"></i> 系统配置</h3></div>
+          <div class="form-group"><label>默认考勤密码</label><input type="text" id="defaultPassword" value="Ahgydx@920" placeholder="新用户默认密码"></div>
+          <div class="form-group"><label>签到时间（定时任务）</label><input type="text" id="signSchedule" value="每天 21:25 和 21:30" disabled style="background:#f5f5f5;">
+            <small style="color:#888;">定时任务已硬编码，如需修改请联系管理员</small></div>
+          <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> 保存设置</button>
         </div>
-
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-bullhorn"></i> 仪表盘通知设置</h3>
-          </div>
-          <div class="form-group">
-            <label>启用通知</label>
-            <select id="noticeEnabled">
-              <option value="true">是</option>
-              <option value="false">否</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>通知标题</label>
-            <input type="text" id="noticeTitleInput" placeholder="例如：系统公告">
-          </div>
-          <div class="form-group">
-            <label>通知内容</label>
-            <textarea id="noticeContentInput" rows="4"></textarea>
-          </div>
-          <div class="form-group">
-            <label>通知样式</label>
-            <select id="noticeStyle">
-              <option value="info">📘 信息（蓝色）</option>
-              <option value="success">✅ 成功（绿色）</option>
-              <option value="warning">⚠️ 警告（黄色）</option>
-              <option value="error">❌ 错误（红色）</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="saveNoticeConfig()">
-            <i class="fas fa-save"></i> 保存通知设置
-          </button>
+          <div class="card-header"><h3><i class="fas fa-bullhorn"></i> 仪表盘通知设置</h3></div>
+          <div class="form-group"><label>启用通知</label><select id="noticeEnabled"><option value="true">是</option><option value="false">否</option></select></div>
+          <div class="form-group"><label>通知标题</label><input type="text" id="noticeTitleInput"></div>
+          <div class="form-group"><label>通知内容</label><textarea id="noticeContentInput" rows="4"></textarea></div>
+          <div class="form-group"><label>通知样式</label><select id="noticeStyle"><option value="info">📘 信息</option><option value="success">✅ 成功</option><option value="warning">⚠️ 警告</option><option value="error">❌ 错误</option></select></div>
+          <button class="btn btn-primary" onclick="saveNoticeConfig()"><i class="fas fa-save"></i> 保存通知设置</button>
         </div>
-
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-gift"></i> 邀请奖励设置</h3>
-          </div>
-          <div class="form-group">
-            <label>每人奖励 VIP 天数</label>
-            <input type="number" id="inviteRewardDays" value="10" min="1" max="365">
-          </div>
-          <button class="btn btn-primary" onclick="saveInviteReward()">
-            <i class="fas fa-save"></i> 保存奖励设置
-          </button>
+          <div class="card-header"><h3><i class="fas fa-gift"></i> 邀请奖励设置</h3></div>
+          <div class="form-group"><label>每人奖励 VIP 天数</label><input type="number" id="inviteRewardDays" value="10" min="1" max="365"></div>
+          <button class="btn btn-primary" onclick="saveInviteReward()"><i class="fas fa-save"></i> 保存奖励设置</button>
         </div>
-        
         <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-database"></i> 数据维护</h3>
-          </div>
+          <div class="card-header"><h3><i class="fas fa-database"></i> 数据维护</h3></div>
           <div style="display: flex; gap: 10px;">
-            <button class="btn btn-warning" onclick="cleanExpiredData()">
-              <i class="fas fa-broom"></i> 清理过期验证码
-            </button>
-            <button class="btn btn-danger" onclick="resetSystem()">
-              <i class="fas fa-exclamation-triangle"></i> 重置系统（危险）
-            </button>
+            <button class="btn btn-warning" onclick="cleanExpiredData()"><i class="fas fa-broom"></i> 清理过期验证码</button>
+            <button class="btn btn-danger" onclick="resetSystem()"><i class="fas fa-exclamation-triangle"></i> 重置系统（危险）</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- 用户详情弹窗 -->
+
+  <!-- ===== 用户详情弹窗 ===== -->
   <div class="modal" id="userDetailModal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3>用户详情</h3>
-        <span class="modal-close" onclick="closeUserModal()">&times;</span>
-      </div>
-      
+      <div class="modal-header"><h3>用户详情</h3><span class="modal-close" onclick="closeUserModal()">&times;</span></div>
       <div class="tabs">
         <div class="tab active" data-tab="info">基本信息</div>
         <div class="tab" data-tab="subscriptions">订阅列表</div>
         <div class="tab" data-tab="logs">签到记录</div>
       </div>
-      
-      <div id="userInfoTab">
-        <div id="userDetailContent">加载中...</div>
-      </div>
-      <div id="userSubscriptionsTab" class="hidden">
-        <div id="userSubscriptionsList">加载中...</div>
-      </div>
-      <div id="userLogsTab" class="hidden">
-        <div id="userLogsList">加载中...</div>
-      </div>
+      <div id="userInfoTab"><div id="userDetailContent">加载中...</div></div>
+      <div id="userSubscriptionsTab" class="hidden"><div id="userSubscriptionsList">加载中...</div></div>
+      <div id="userLogsTab" class="hidden"><div id="userLogsList">加载中...</div></div>
     </div>
   </div>
-  
-  <!-- 回复留言弹窗 -->
+
+  <!-- ===== 回复留言弹窗 ===== -->
   <div class="modal" id="replyModal">
     <div class="modal-content" style="max-width:600px;">
-      <div class="modal-header">
-        <h3>回复留言</h3>
-        <span class="modal-close" onclick="closeReplyModal()">&times;</span>
-      </div>
+      <div class="modal-header"><h3>回复留言</h3><span class="modal-close" onclick="closeReplyModal()">&times;</span></div>
       <div id="replyModalContent">加载中...</div>
     </div>
   </div>
-  
+
   <div class="toast" id="toast"></div>
 
   <script>
     const API_BASE = 'https://api.agai.online/api';
     const token = localStorage.getItem('token');
-    
+
     let currentPage = 1;
     let currentUserId = null;
     let currentUserData = null;
     let feedbackCurrentPage = 1;
     let ordersCurrentPage = 1;
-    
-    if (!token) window.location.href = '/';
-    
-    const DEBUG = true;
+    let reportsCurrentPage = 1;
+    let marketItemsPage = 1;
+    let showGuests = false;
 
+    if (!token) window.location.href = '/';
+
+    // ========== 权限检查 ==========
     async function checkAdmin() {
-      if (DEBUG) console.log('🔍 开始检查管理员权限...');
       try {
-        const res = await fetch(`${API_BASE}/user/profile`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (DEBUG) console.log('📡 API 响应状态:', res.status);
+        const res = await fetch(`${API_BASE}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        if (DEBUG) console.log('👤 用户角色:', data.user?.role);
         if (!data.success || data.user.role !== 'admin') {
           alert('需要管理员权限');
           window.location.href = '/dashboard';
           return;
         }
-        console.log('✅ 管理员权限验证通过');
         document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
-      } catch (e) {
-        console.error('❌ 请求异常:', e);
-        window.location.href = '/';
-      }
+      } catch (e) { window.location.href = '/'; }
     }
 
-    async function triggerAllSign() {
-      if (!confirm('确定要立即为所有启用自动签到的用户执行签到吗？')) return;
-      const btn = document.querySelector('#page-dashboard .btn-warning');
-      if (!btn) { alert('按钮未找到，请刷新页面'); return; }
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 执行中...';
-      try {
-        const res = await fetch(`${API_BASE}/admin/trigger-sign`, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        document.getElementById('triggerResult').innerHTML = data.success 
-          ? '<span style="color:#28a745;">✅ 任务已触发，请等待执行完成</span>'
-          : `<span style="color:#dc3545;">❌ ${data.message}</span>`;
-      } catch (e) {
-        document.getElementById('triggerResult').innerHTML = '<span style="color:#dc3545;">网络错误</span>';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-bolt"></i> 一键全员签到';
-      }
-    }
- 
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.className = `toast ${type} show`;
       setTimeout(() => { toast.className = 'toast'; toast.style.display = 'none'; }, 3000);
     }
-    
-    // 页面切换
+
+    // ========== 页面切换 ==========
     document.querySelectorAll('.menu-item[data-page]').forEach(item => {
       item.addEventListener('click', () => {
         const page = item.dataset.page;
@@ -648,25 +422,29 @@
         document.getElementById(`page-${page}`).classList.remove('hidden');
         document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
-        
-        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', reports: '举报管理', orders: '订单管理', feedback: '留言管理', settings: '系统设置' };
+
+        const titles = {
+          dashboard: '仪表盘', users: '用户管理', cards: '卡密管理',
+          reports: '举报管理', orders: '订单管理', 'market-items': '商品管理',
+          feedback: '留言管理', settings: '系统设置'
+        };
         document.getElementById('pageTitle').textContent = titles[page];
-        
+
         if (page === 'dashboard') loadDashboardStats();
         else if (page === 'users') loadUsers();
         else if (page === 'cards') loadCards();
         else if (page === 'reports') loadReports();
         else if (page === 'orders') loadOrders();
+        else if (page === 'market-items') loadMarketItems();
         else if (page === 'feedback') loadFeedbacks();
         else if (page === 'settings') loadSettings();
       });
     });
-    
+
+    // ========== 仪表盘 ==========
     async function loadDashboardStats() {
       try {
-        const res = await fetch(`${API_BASE}/admin/stats`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/stats`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (data.success) {
           document.getElementById('statTotalUsers').textContent = data.stats.users.total;
@@ -685,12 +463,27 @@
         }
       } catch (e) {}
     }
-    
+
+    async function triggerAllSign() {
+      if (!confirm('确定要立即为所有启用自动签到的用户执行签到吗？')) return;
+      const btn = document.querySelector('#page-dashboard .btn-warning');
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 执行中...';
+      try {
+        const res = await fetch(`${API_BASE}/admin/trigger-sign`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        document.getElementById('triggerResult').innerHTML = data.success
+          ? '<span style="color:#28a745;">✅ 任务已触发</span>'
+          : `<span style="color:#dc3545;">❌ ${data.message}</span>`;
+      } catch (e) { document.getElementById('triggerResult').innerHTML = '<span style="color:#dc3545;">网络错误</span>'; }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-bolt"></i> 一键全员签到'; }
+    }
+
+    // ========== 用户管理 ==========
     async function loadUsers(page = 1) {
       currentPage = page;
       const search = document.getElementById('userSearch')?.value || '';
       try {
-        const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}`, {
+        const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}&showGuests=${showGuests}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -698,43 +491,50 @@
           document.getElementById('usersTable').innerHTML = `
             <table>
               <thead><tr><th>学号</th><th>姓名</th><th>邮箱</th><th>VIP</th><th>角色</th><th>签到统计</th><th>操作</th></tr></thead>
-              <tbody>
-                ${data.users.map(u => `
-                  <tr>
-                    <td>${u.studentId}</td>
-                    <td>${(u.name && u.name !== u.studentId) ? u.name : '未实名'}</td>
-                    <td>${u.email || '-'} ${u.emailVerified ? '✓' : ''}</td>
-                    <td>${u.isVip ? `<span class="badge badge-success">VIP ${u.vipExpireAt ? new Date(u.vipExpireAt).toLocaleDateString() : ''}</span>` : '<span class="badge badge-danger">普通</span>'}</td>
-                    <td>${u.role === 'admin' ? '<span class="badge badge-admin">管理员</span>' : '<span class="badge badge-info">用户</span>'}</td>
-                    <td>${u.successSignCount || 0}/${u.totalSignCount || 0}</td>
-                    <td>
-                      <div class="action-buttons">
-                        <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')" title="查看详情"><i class="fas fa-eye"></i></button>
-                        <button class="btn btn-success btn-sm" onclick="adminSign('${u._id}', '${u.studentId}')" title="帮TA签到"><i class="fas fa-pen"></i></button>
-                        <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)" title="加30天VIP"><i class="fas fa-crown"></i></button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')" title="删除用户"><i class="fas fa-trash"></i></button>
-                      </div>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
+              <tbody>${data.users.map(u => `
+                <tr>
+                  <td>${u.studentId} ${u.isGuest?'👤':''}</td>
+                  <td>${(u.name && u.name !== u.studentId) ? u.name : '未实名'}</td>
+                  <td>${u.email || '-'} ${u.emailVerified ? '✓' : ''}</td>
+                  <td>${u.isVip ? `<span class="badge badge-success">VIP ${u.vipExpireAt ? new Date(u.vipExpireAt).toLocaleDateString() : ''}</span>` : '<span class="badge badge-danger">普通</span>'}</td>
+                  <td>${u.role === 'admin' ? '<span class="badge badge-admin">管理员</span>' : '<span class="badge badge-info">用户</span>'}</td>
+                  <td>${u.successSignCount || 0}/${u.totalSignCount || 0}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')" title="查看详情"><i class="fas fa-eye"></i></button>
+                      <button class="btn btn-success btn-sm" onclick="adminSign('${u._id}', '${u.studentId}')" title="帮TA签到"><i class="fas fa-pen"></i></button>
+                      <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)" title="加30天VIP"><i class="fas fa-crown"></i></button>
+                      <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')" title="删除用户"><i class="fas fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}</tbody>
             </table>
           `;
           const totalPages = Math.ceil(data.total / 20);
-          document.getElementById('usersPagination').innerHTML = Array.from({length: totalPages}, (_, i) => 
+          document.getElementById('usersPagination').innerHTML = Array.from({length: totalPages}, (_, i) =>
             `<button class="btn ${i+1 === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadUsers(${i+1})">${i+1}</button>`
           ).join('');
         }
       } catch (e) {}
     }
-    
+
+    function toggleGuests() {
+      showGuests = !showGuests;
+      document.getElementById('toggleGuestsBtn').textContent = showGuests ? '👤 隐藏游客' : '👤 显示游客';
+      loadUsers(1);
+    }
+
     function searchUsers() { loadUsers(1); }
-    
+
     async function adminSign(userId, studentId) {
       const password = prompt(`请输入 ${studentId} 的考勤密码（留空使用已保存的密码）:`);
       try {
         showToast(`正在为 ${studentId} 签到...`, 'info');
-        const res = await fetch(`${API_BASE}/admin/sign/${userId}`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ attendancePassword: password || undefined }) });
+        const res = await fetch(`${API_BASE}/admin/sign/${userId}`, {
+          method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ attendancePassword: password || undefined })
+        });
         const data = await res.json();
         if (data.success) {
           showToast(data.result.success ? `✅ 为 ${studentId} 签到成功！` : `❌ 签到失败: ${data.result.message}`, data.result.success ? 'success' : 'error');
@@ -742,7 +542,7 @@
         } else showToast(data.message || '签到失败', 'error');
       } catch (e) { showToast('网络错误', 'error'); }
     }
-    
+
     async function viewUser(userId) {
       currentUserId = userId;
       try {
@@ -790,12 +590,11 @@
         }
       } catch (e) { showToast('加载失败', 'error'); }
     }
-    
+
     async function saveUserChanges() {
       try {
         const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
-          method: 'PUT',
-          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: document.getElementById('editName')?.value,
             email: document.getElementById('editEmail')?.value,
@@ -811,7 +610,7 @@
         else showToast(data.message || '保存失败', 'error');
       } catch (e) { showToast('保存失败', 'error'); }
     }
-    
+
     async function addVipDays(days) {
       if (!currentUserData) return;
       const user = currentUserData.user;
@@ -820,14 +619,13 @@
       expireAt.setDate(expireAt.getDate() + days);
       try {
         const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
-          method: 'PUT',
-          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ isVip: true, vipExpireAt: expireAt.toISOString() })
         });
         if ((await res.json()).success) { showToast(`已添加 ${days} 天 VIP`, 'success'); viewUser(currentUserId); loadUsers(currentPage); }
       } catch (e) { showToast('操作失败', 'error'); }
     }
-    
+
     async function quickVip(userId, days) {
       try {
         const res = await fetch(`${API_BASE}/admin/users/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -845,35 +643,38 @@
         loadUsers(currentPage);
       } catch (e) { showToast('操作失败', 'error'); }
     }
-    
+
     async function adminSignFromDetail(userId, studentId) { closeUserModal(); await adminSign(userId, studentId); }
-    
+
     async function deleteUser(userId, studentId) {
       if (!confirm(`确定删除用户 ${studentId} 吗？此操作不可恢复！`)) return;
       if (!confirm('再次确认：删除后将清除该用户的所有数据！')) return;
       try {
         const res = await fetch(`${API_BASE}/admin/users/${userId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-        if ((await res.json()).success) { showToast(`✅ 用户 ${studentId} 已删除`, 'success'); closeUserModal(); loadUsers(currentPage); loadDashboardStats(); }
-        else showToast('删除失败', 'error');
+        if ((await res.json()).success) {
+          showToast(`✅ 用户 ${studentId} 已删除`, 'success');
+          closeUserModal(); loadUsers(currentPage); loadDashboardStats();
+        } else showToast('删除失败', 'error');
       } catch (e) { showToast('网络错误', 'error'); }
     }
-    
+
     function closeUserModal() { document.getElementById('userDetailModal').classList.remove('show'); currentUserId = null; currentUserData = null; }
-    
+
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const tabName = tab.dataset.tab;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        ['userInfoTab','userSubscriptionsTab','userLogsTab'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        document.getElementById(tabName==='info'?'userInfoTab':tabName==='subscriptions'?'userSubscriptionsTab':'userLogsTab').classList.remove('hidden');
+        ['userInfoTab', 'userSubscriptionsTab', 'userLogsTab'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.getElementById(tabName === 'info' ? 'userInfoTab' : tabName === 'subscriptions' ? 'userSubscriptionsTab' : 'userLogsTab').classList.remove('hidden');
       });
     });
-    
+
+    // ========== 卡密管理 ==========
     async function loadCards() {
       const status = document.getElementById('cardStatusFilter')?.value || '';
       try {
-        const res = await fetch(`${API_BASE}/admin/cards?limit=100${status ? '&status='+status : ''}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await fetch(`${API_BASE}/admin/cards?limit=100${status ? '&status=' + status : ''}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (data.success) {
           document.getElementById('cardsStats').innerHTML = `
@@ -883,30 +684,156 @@
           document.getElementById('cardsTable').innerHTML = `
             <table><thead><tr><th>卡密</th><th>天数</th><th>状态</th><th>使用者</th><th>使用时间</th><th>生成时间</th></tr></thead>
             <tbody>${data.cards.map(c => `
-              <tr><td><code>${c.code}</code></td><td>${c.days}天</td>
-              <td><span class="badge ${c.status==='unused'?'badge-success':'badge-warning'}">${c.status==='unused'?'未使用':'已使用'}</span></td>
-              <td>${c.usedBy ? `${c.usedBy.name || c.usedBy.studentId}` : '-'}</td>
-              <td>${c.usedAt ? new Date(c.usedAt).toLocaleString() : '-'}</td>
-              <td>${new Date(c.createdAt).toLocaleString()}</td></tr>
+              <tr>
+                <td><code>${c.code}</code></td><td>${c.days}天</td>
+                <td><span class="badge ${c.status==='unused'?'badge-success':'badge-warning'}">${c.status==='unused'?'未使用':'已使用'}</span></td>
+                <td>${c.usedBy ? `${c.usedBy.name || c.usedBy.studentId}` : '-'}</td>
+                <td>${c.usedAt ? new Date(c.usedAt).toLocaleString() : '-'}</td>
+                <td>${new Date(c.createdAt).toLocaleString()}</td>
+              </tr>
             `).join('')}</tbody></table>`;
         }
       } catch (e) {}
     }
-    
+
     async function generateCards() {
       const count = parseInt(document.getElementById('cardCount').value);
       const days = parseInt(document.getElementById('cardDays').value);
       try {
-        const res = await fetch(`${API_BASE}/admin/cards/generate`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ count, days }) });
+        const res = await fetch(`${API_BASE}/admin/cards/generate`, {
+          method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ count, days })
+        });
         const data = await res.json();
-        if (data.success) { showToast(data.message, 'success'); alert('生成的卡密：\n' + data.cards.map(c => c.code).join('\n')); loadCards(); }
+        if (data.success) {
+          showToast(data.message, 'success');
+          alert('生成的卡密：\n' + data.cards.map(c => c.code).join('\n'));
+          loadCards();
+        }
       } catch (e) {}
     }
-    
+
     function exportCards() { window.open(`${API_BASE}/admin/cards/export`, '_blank'); }
     function exportUsers() { alert('导出功能开发中'); }
-    
-    // ============ 留言管理 ============
+
+    // ========== 举报管理 ==========
+    async function loadReports(page = 1) {
+      reportsCurrentPage = page;
+      const status = document.getElementById('reportStatusFilter')?.value || '';
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports?page=${page}&status=${status}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success) {
+          const badge = document.getElementById('reportBadge');
+          if (data.pendingCount > 0) { badge.textContent = data.pendingCount; badge.style.display = 'block'; }
+          else badge.style.display = 'none';
+          document.getElementById('reportsStats').innerHTML = `<span class="badge badge-warning">待处理: ${data.pendingCount}</span> <span class="badge badge-info">总计: ${data.total}</span>`;
+          const statusMap = { pending: '<span class="badge badge-warning">待处理</span>', handled: '<span class="badge badge-success">已处理</span>', dismissed: '<span class="badge badge-danger">已驳回</span>' };
+          document.getElementById('reportsTable').innerHTML = `
+            <table><thead><tr><th>举报人</th><th>被举报人</th><th>原因</th><th>商品</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
+            <tbody>${data.reports.map(r => `
+              <tr>
+                <td>${r.reporterId?.name || r.reporterId?.studentId || '未知'}</td>
+                <td>${r.targetUserId?.name || r.targetUserId?.studentId || '未知'}</td>
+                <td>${r.reason}</td><td>${r.productId?.title || '-'}</td>
+                <td>${statusMap[r.status]}</td>
+                <td>${new Date(r.createdAt).toLocaleString()}</td>
+                <td>${r.status === 'pending' ? `<button class="btn btn-success btn-sm" onclick="handleReport('${r._id}','handled')">标记已处理</button> <button class="btn btn-danger btn-sm" onclick="handleReport('${r._id}','dismissed')">驳回</button>` : '<span class="badge badge-info">已完结</span>'}</td>
+              </tr>
+            `).join('')}</tbody></table>`;
+        }
+      } catch (e) {}
+    }
+
+    async function handleReport(id, status) {
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports/${id}`, {
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        if ((await res.json()).success) {
+          showToast(status === 'handled' ? '已标记为已处理' : '已驳回举报', 'success');
+          loadReports(reportsCurrentPage);
+        }
+      } catch (e) { showToast('操作失败', 'error'); }
+    }
+
+    // ========== 订单管理 ==========
+    async function loadOrders(page = 1) {
+      ordersCurrentPage = page;
+      const status = document.getElementById('orderStatusFilter')?.value || '';
+      try {
+        const res = await fetch(`${API_BASE}/admin/orders?page=${page}&limit=20&status=${status}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('ordersStats').innerHTML = `<span class="badge badge-info">总计: ${data.total || 0}</span>`;
+          const statusMap = {
+            pending: '<span class="badge badge-warning">待确认</span>',
+            confirmed: '<span class="badge badge-info">已确认</span>',
+            shipped: '<span class="badge badge-success">已发货</span>',
+            completed: '<span class="badge badge-success">已完成</span>',
+            cancelled: '<span class="badge badge-danger">已取消</span>'
+          };
+          document.getElementById('ordersTable').innerHTML = `
+            <table><thead><tr><th>订单号</th><th>商品专号</th><th>商品</th><th>价格</th><th>买家</th><th>卖家</th><th>收货信息</th><th>状态</th><th>时间</th></tr></thead>
+            <tbody>${(data.orders || []).map(o => `
+              <tr>
+                <td><code>${o.orderNo}</code></td>
+                <td>${o.productNo || '-'}</td>
+                <td>${o.title}</td>
+                <td>¥${o.price.toFixed(2)}</td>
+                <td>${o.buyerId?.name || o.buyerId?.studentId || '-'}</td>
+                <td>${o.sellerId?.name || o.sellerId?.studentId || '-'}</td>
+                <td style="font-size:12px;">📍${o.address?.name || '-'}<br>📱${o.address?.phone || '-'}<br>🏠${o.address?.detail || '-'}</td>
+                <td>${statusMap[o.status]}</td>
+                <td>${new Date(o.createdAt).toLocaleString()}</td>
+              </tr>
+            `).join('')}</tbody></table>`;
+          const totalPages = Math.ceil((data.total || 0) / 20);
+          document.getElementById('ordersPagination').innerHTML = Array.from({length: totalPages}, (_, i) =>
+            `<button class="btn ${i+1===page?'btn-primary':'btn-outline'} btn-sm" onclick="loadOrders(${i+1})">${i+1}</button>`).join('');
+        }
+      } catch (e) {}
+    }
+
+    // ========== 商品管理 ==========
+    async function loadMarketItems(page = 1) {
+      marketItemsPage = page;
+      try {
+        const res = await fetch(`${API_BASE}/admin/market-items?page=${page}&limit=20`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('marketItemsStats').innerHTML = `<span class="badge badge-info">总计: ${data.total || 0}</span>`;
+          document.getElementById('marketItemsTable').innerHTML = `
+            <table><thead><tr><th>专号</th><th>图片</th><th>标题</th><th>价格</th><th>卖家</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody>${(data.items || []).map(i => `
+              <tr>
+                <td><code>${i.productNo || '-'}</code></td>
+                <td>${i.images?.[0] ? `<img src="${i.images[0]}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">` : '📦'}</td>
+                <td>${i.title}</td>
+                <td>¥${i.price.toFixed(2)}</td>
+                <td>${i.userId?.name || i.userId?.studentId || '-'}</td>
+                <td><span class="badge ${i.status==='active'?'badge-success':'badge-danger'}">${i.status==='active'?'在售':'已下架'}</span></td>
+                <td>${i.status === 'active' ? `<button class="btn btn-danger btn-sm" onclick="deleteMarketItem('${i._id}')">下架</button>` : '-'}</td>
+              </tr>
+            `).join('')}</tbody></table>`;
+          const totalPages = Math.ceil((data.total || 0) / 20);
+          document.getElementById('marketItemsPagination').innerHTML = Array.from({length: totalPages}, (_, i) =>
+            `<button class="btn ${i+1===page?'btn-primary':'btn-outline'} btn-sm" onclick="loadMarketItems(${i+1})">${i+1}</button>`).join('');
+        }
+      } catch (e) {}
+    }
+
+    async function deleteMarketItem(id) {
+      if (!confirm('确定下架该商品？')) return;
+      try {
+        await fetch(`${API_BASE}/admin/market-items/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+        showToast('已下架', 'success');
+        loadMarketItems(marketItemsPage);
+      } catch (e) { showToast('操作失败', 'error'); }
+    }
+
+    // ========== 留言管理 ==========
     async function loadFeedbacks(page = 1) {
       feedbackCurrentPage = page;
       const status = document.getElementById('feedbackStatusFilter')?.value || '';
@@ -923,34 +850,44 @@
             <span class="badge badge-info">已读: ${data.stats.read}</span>
             <span class="badge badge-success">已回复: ${data.stats.replied}</span>
             <span class="badge badge-danger">已关闭: ${data.stats.closed}</span>`;
-          const typeMap = { bug:'🐛', suggestion:'💡', question:'❓', other:'📝' };
-          const statusMap = { pending:'<span class="badge badge-warning">待处理</span>', read:'<span class="badge badge-info">已读</span>', replied:'<span class="badge badge-success">已回复</span>', closed:'<span class="badge badge-danger">已关闭</span>' };
+          const typeMap = {bug:'🐛',suggestion:'💡',question:'❓',other:'📝'};
+          const statusMap = {pending:'<span class="badge badge-warning">待处理</span>',read:'<span class="badge badge-info">已读</span>',replied:'<span class="badge badge-success">已回复</span>',closed:'<span class="badge badge-danger">已关闭</span>'};
           document.getElementById('feedbacksTable').innerHTML = `
             <table><thead><tr><th>类型</th><th>用户</th><th>标题</th><th>状态</th><th>提交时间</th><th>操作</th></tr></thead>
             <tbody>${data.feedbacks.map(f => `
-              <tr><td>${typeMap[f.type]||'📝'}</td><td>${f.userId?.name || f.userId?.studentId || '未知'}</td>
-              <td>${f.title}</td><td>${statusMap[f.status]}</td><td>${new Date(f.createdAt).toLocaleString()}</td>
-              <td><div class="action-buttons">
-                <button class="btn btn-outline btn-sm" onclick="viewFeedbackDetail('${f._id}')"><i class="fas fa-eye"></i></button>
-                <button class="btn btn-primary btn-sm" onclick="openReplyModal('${f._id}')"><i class="fas fa-reply"></i></button>
-                <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${f._id}')"><i class="fas fa-trash"></i></button>
-              </div></td></tr>
+              <tr>
+                <td>${typeMap[f.type]||'📝'}</td>
+                <td>${f.userId?.name || f.userId?.studentId || '未知'}</td>
+                <td>${f.title}</td>
+                <td>${statusMap[f.status]}</td>
+                <td>${new Date(f.createdAt).toLocaleString()}</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn btn-outline btn-sm" onclick="viewFeedbackDetail('${f._id}')"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-primary btn-sm" onclick="openReplyModal('${f._id}')"><i class="fas fa-reply"></i></button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${f._id}')"><i class="fas fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
             `).join('')}</tbody></table>`;
           const totalPages = Math.ceil(data.total / 20);
-          document.getElementById('feedbackPagination').innerHTML = Array.from({length:totalPages},(_,i)=>
+          document.getElementById('feedbackPagination').innerHTML = Array.from({length:totalPages}, (_, i) =>
             `<button class="btn ${i+1===page?'btn-primary':'btn-outline'} btn-sm" onclick="loadFeedbacks(${i+1})">${i+1}</button>`).join('');
         }
       } catch (e) {}
     }
-    
+
     async function viewFeedbackDetail(id) {
       try {
         const res = await fetch(`${API_BASE}/feedback/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        if (data.success) { const f = data.feedback; alert(`标题：${f.title}\n内容：${f.content}\n${f.adminReply ? '回复：' + f.adminReply : '暂无回复'}`); }
+        if (data.success) {
+          const f = data.feedback;
+          alert(`标题：${f.title}\n内容：${f.content}\n${f.adminReply ? '回复：' + f.adminReply : '暂无回复'}`);
+        }
       } catch (e) {}
     }
-    
+
     async function openReplyModal(id) {
       try {
         const res = await fetch(`${API_BASE}/feedback/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -958,110 +895,52 @@
         if (data.success) {
           const f = data.feedback;
           document.getElementById('replyModalContent').innerHTML = `
-            <p><strong>用户：</strong>${f.userId?.name || f.userId?.studentId}</p><p><strong>标题：</strong>${f.title}</p>
+            <p><strong>用户：</strong>${f.userId?.name || f.userId?.studentId}</p>
+            <p><strong>标题：</strong>${f.title}</p>
             <div style="background:#f5f7fa;padding:12px;border-radius:8px;margin:15px 0;">${f.content.replace(/\n/g,'<br>')}</div>
             <div class="form-group"><label>回复内容</label><textarea id="replyContent" rows="5" style="width:100%;padding:12px;border-radius:8px;">${f.adminReply||''}</textarea></div>
             <button class="btn btn-primary" onclick="submitReply('${f._id}')"><i class="fas fa-paper-plane"></i> 提交回复</button>
-            ${f.status==='pending'?`<button class="btn btn-outline" onclick="markAsRead('${f._id}')" style="margin-left:10px;"><i class="fas fa-check"></i> 标记为已读</button>`:''}`;
+            ${f.status==='pending' ? `<button class="btn btn-outline" onclick="markAsRead('${f._id}')" style="margin-left:10px;"><i class="fas fa-check"></i> 标记为已读</button>` : ''}`;
           document.getElementById('replyModal').classList.add('show');
         }
       } catch (e) {}
     }
-    
+
     async function submitReply(id) {
       const reply = document.getElementById('replyContent').value.trim();
       if (!reply) { alert('请输入回复内容'); return; }
       try {
-        const res = await fetch(`${API_BASE}/admin/feedback/${id}/reply`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ reply }) });
+        const res = await fetch(`${API_BASE}/admin/feedback/${id}/reply`, {
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reply })
+        });
         if ((await res.json()).success) { showToast('回复成功', 'success'); closeReplyModal(); loadFeedbacks(feedbackCurrentPage); }
         else showToast('回复失败', 'error');
       } catch (e) { showToast('网络错误', 'error'); }
     }
-    
+
     async function markAsRead(id) {
       try {
-        await fetch(`${API_BASE}/admin/feedback/${id}/status`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'read' }) });
+        await fetch(`${API_BASE}/admin/feedback/${id}/status`, {
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'read' })
+        });
         closeReplyModal(); loadFeedbacks(feedbackCurrentPage);
       } catch (e) {}
     }
-    
+
     async function deleteFeedback(id) {
       if (!confirm('确定删除这条留言吗？')) return;
-      try { await fetch(`${API_BASE}/admin/feedback/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); showToast('删除成功', 'success'); loadFeedbacks(feedbackCurrentPage); }
-      catch (e) { showToast('删除失败', 'error'); }
-    }
-
-    // ============ 举报管理 ============
-    let reportsCurrentPage = 1;
-    
-    async function loadReports(page = 1) {
-      reportsCurrentPage = page;
-      const status = document.getElementById('reportStatusFilter')?.value || '';
       try {
-        const res = await fetch(`${API_BASE}/admin/reports?page=${page}&status=${status}`, { headers: { 'Authorization': `Bearer ${token}` } });
-        const data = await res.json();
-        if (data.success) {
-          const badge = document.getElementById('reportBadge');
-          if (data.pendingCount > 0) { badge.textContent = data.pendingCount; badge.style.display = 'block'; }
-          else badge.style.display = 'none';
-          document.getElementById('reportsStats').innerHTML = `<span class="badge badge-warning">待处理: ${data.pendingCount}</span> <span class="badge badge-info">总计: ${data.total}</span>`;
-          const statusMap = { pending:'<span class="badge badge-warning">待处理</span>', handled:'<span class="badge badge-success">已处理</span>', dismissed:'<span class="badge badge-danger">已驳回</span>' };
-          document.getElementById('reportsTable').innerHTML = `
-            <table><thead><tr><th>举报人</th><th>被举报人</th><th>原因</th><th>商品</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
-            <tbody>${data.reports.map(r => `
-              <tr><td>${r.reporterId?.name || r.reporterId?.studentId || '未知'}</td><td>${r.targetUserId?.name || r.targetUserId?.studentId || '未知'}</td>
-              <td>${r.reason}</td><td>${r.productId?.title || '-'}</td><td>${statusMap[r.status]}</td><td>${new Date(r.createdAt).toLocaleString()}</td>
-              <td>${r.status==='pending' ? `<button class="btn btn-success btn-sm" onclick="handleReport('${r._id}','handled')">标记已处理</button> <button class="btn btn-danger btn-sm" onclick="handleReport('${r._id}','dismissed')">驳回</button>` : '<span class="badge badge-info">已完结</span>'}</td></tr>
-            `).join('')}</tbody></table>`;
-        }
-      } catch (e) {}
-    }
-    
-    async function handleReport(id, status) {
-      try {
-        const res = await fetch(`${API_BASE}/admin/reports/${id}`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
-        if ((await res.json()).success) { showToast(status==='handled'?'已标记为已处理':'已驳回举报','success'); loadReports(reportsCurrentPage); }
-      } catch (e) { showToast('操作失败', 'error'); }
-    }
-
-    // ============ 订单管理 ============
-    async function loadOrders(page = 1) {
-      ordersCurrentPage = page;
-      const status = document.getElementById('orderStatusFilter')?.value || '';
-      try {
-        const res = await fetch(`${API_BASE}/admin/orders?page=${page}&limit=20&status=${status}`, { headers: { 'Authorization': `Bearer ${token}` } });
-        const data = await res.json();
-        if (data.success) {
-          const pendingCount = status ? (data.total || 0) : 0; // approximate
-          document.getElementById('ordersStats').innerHTML = `<span class="badge badge-info">总计: ${data.total || 0}</span>`;
-          const statusMap = {
-            pending: '<span class="badge badge-warning">待确认</span>',
-            confirmed: '<span class="badge badge-info">已确认</span>',
-            shipped: '<span class="badge badge-success">已发货</span>',
-            completed: '<span class="badge badge-success">已完成</span>',
-            cancelled: '<span class="badge badge-danger">已取消</span>'
-          };
-          document.getElementById('ordersTable').innerHTML = `
-            <table><thead><tr><th>订单号</th><th>商品专号</th><th>商品</th><th>价格</th><th>买家</th><th>卖家</th><th>收货信息</th><th>状态</th><th>时间</th></tr></thead>
-            <tbody>${(data.orders || []).map(o => `
-              <tr>
-                <td><code>${o.orderNo}</code></td><td>${o.productNo || '-'}</td><td>${o.title}</td><td>¥${o.price.toFixed(2)}</td>
-                <td>${o.buyerId?.name || o.buyerId?.studentId || '-'}</td><td>${o.sellerId?.name || o.sellerId?.studentId || '-'}</td>
-                <td style="font-size:12px;">📍${o.address?.name || '-'}<br>📱${o.address?.phone || '-'}<br>🏠${o.address?.detail || '-'}</td>
-                <td>${statusMap[o.status]}</td><td>${new Date(o.createdAt).toLocaleString()}</td>
-              </tr>
-            `).join('')}</tbody></table>
-          `;
-          const totalPages = Math.ceil((data.total || 0) / 20);
-          document.getElementById('ordersPagination').innerHTML = Array.from({length: totalPages}, (_, i) =>
-            `<button class="btn ${i+1===page?'btn-primary':'btn-outline'} btn-sm" onclick="loadOrders(${i+1})">${i+1}</button>`).join('');
-        }
-      } catch (e) {}
+        await fetch(`${API_BASE}/admin/feedback/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+        showToast('删除成功', 'success');
+        loadFeedbacks(feedbackCurrentPage);
+      } catch (e) { showToast('删除失败', 'error'); }
     }
 
     function closeReplyModal() { document.getElementById('replyModal').classList.remove('show'); }
-    
-    // ============ 设置功能 ============
+
+    // ========== 设置 ==========
     async function loadSettings() {
       try {
         const res = await fetch(`${API_BASE}/admin/config`, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -1076,43 +955,53 @@
           }
           if (data.configs.invite_reward_days) document.getElementById('inviteRewardDays').value = data.configs.invite_reward_days;
         }
-      } catch (e) { console.error('加载设置失败', e); }
+      } catch (e) {}
     }
-    
+
     async function saveNoticeConfig() {
-      const value = { enabled: document.getElementById('noticeEnabled').value==='true', title: document.getElementById('noticeTitleInput').value, content: document.getElementById('noticeContentInput').value, style: document.getElementById('noticeStyle').value };
+      const value = {
+        enabled: document.getElementById('noticeEnabled').value === 'true',
+        title: document.getElementById('noticeTitleInput').value,
+        content: document.getElementById('noticeContentInput').value,
+        style: document.getElementById('noticeStyle').value
+      };
       try {
-        const res = await fetch(`${API_BASE}/admin/config/dashboard_notice`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ value }) });
-        if ((await res.json()).success) showToast('通知设置已保存', 'success'); else showToast('保存失败', 'error');
+        const res = await fetch(`${API_BASE}/admin/config/dashboard_notice`, {
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ value })
+        });
+        if ((await res.json()).success) showToast('通知设置已保存', 'success');
+        else showToast('保存失败', 'error');
       } catch (e) { showToast('网络错误', 'error'); }
     }
-    
+
     async function saveInviteReward() {
       const value = parseInt(document.getElementById('inviteRewardDays').value);
       try {
-        const res = await fetch(`${API_BASE}/admin/config/invite_reward_days`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ value }) });
-        if ((await res.json()).success) showToast('奖励设置已保存', 'success'); else showToast('保存失败', 'error');
+        const res = await fetch(`${API_BASE}/admin/config/invite_reward_days`, {
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ value })
+        });
+        if ((await res.json()).success) showToast('奖励设置已保存', 'success');
+        else showToast('保存失败', 'error');
       } catch (e) { showToast('网络错误', 'error'); }
     }
-    
+
     function saveSettings() { showToast('设置已保存', 'success'); }
     function cleanExpiredData() { showToast('清理完成', 'success'); }
     function resetSystem() {
-      if (!confirm('⚠️ 危险操作！确定重置系统吗？所有数据将被删除！')) return;
+      if (!confirm('⚠️ 危险操作！确定重置系统吗？')) return;
       if (!confirm('再次确认：此操作不可恢复！')) return;
       showToast('系统已重置', 'success');
     }
-    
+
     function logout() { localStorage.clear(); window.location.href = '/'; }
-    
+
+    // ========== 事件绑定 ==========
     document.getElementById('userDetailModal').addEventListener('click', function(e) { if (e.target === this) closeUserModal(); });
     document.getElementById('replyModal').addEventListener('click', function(e) { if (e.target === this) closeReplyModal(); });
-    
-    function initAutoSignAdminLabels() {
-      const subscriptionTab = document.querySelector('.tab[data-tab="subscriptions"]');
-      if (subscriptionTab) subscriptionTab.textContent = '自动签到';
-    }
-    initAutoSignAdminLabels();
+
+    // ========== 初始化 ==========
     checkAdmin();
     loadDashboardStats();
   </script>
