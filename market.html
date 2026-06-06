@@ -68,12 +68,12 @@
         .cat-chip.active { border-color: var(--primary); background: var(--primary-light); }
         .cat-chip.active .cat-icon { background: var(--primary); }
 
-        .tab-bar { display:flex; gap:4px; background:var(--card); padding:4px; border-radius:var(--radius-sm); margin-bottom:16px; box-shadow: var(--shadow-sm); }
-        .tab-item { flex:1; padding:10px 8px; text-align:center; cursor:pointer; font-weight:600; font-size:13px; color:var(--text-secondary); border-radius:8px; }
+        .tab-bar { display:flex; gap:4px; background:var(--card); padding:4px; border-radius:var(--radius-sm); margin-bottom:16px; box-shadow: var(--shadow-sm); overflow-x:auto; }
+        .tab-item { flex:1; padding:10px 8px; text-align:center; cursor:pointer; font-weight:600; font-size:13px; color:var(--text-secondary); border-radius:8px; white-space:nowrap; }
         .tab-item.active { background: var(--primary); color:#fff; }
 
         .items-grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-        .item-card { background:var(--card); border-radius:var(--radius); overflow:hidden; box-shadow: var(--shadow-sm); cursor:pointer; position:relative; }
+        .item-card { background:var(--card); border-radius:var(--radius); overflow:hidden; box-shadow: var(--shadow-sm); cursor:pointer; position:relative; transition:all var(--transition); }
         .item-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
         .item-img { width:100%; height:170px; object-fit:cover; background:linear-gradient(135deg, #f8f9fc 0%, #eef1f8 100%); display:flex; align-items:center; justify-content:center; font-size:48px; }
         .item-badge { position:absolute; top:12px; left:12px; padding:5px 10px; border-radius:20px; font-size:11px; font-weight:700; color:#fff; background: var(--primary); }
@@ -98,106 +98,158 @@
         .form-group { margin-bottom:14px; }
         .form-group label { display:block; margin-bottom:6px; font-weight:600; font-size:13px; color:var(--text-secondary); }
         .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 14px; border:2px solid var(--border); border-radius:10px; font-size:14px; outline:none; font-family: inherit; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); }
-        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+        .form-row { display:flex; gap:12px; }
+        .form-row .form-group { flex:1; }
 
-        /* 图片上传 */
-        .image-upload-area { border:2px dashed var(--border); border-radius:12px; padding:20px; text-align:center; cursor:pointer; transition:border-color var(--transition); margin-bottom:14px; }
-        .image-upload-area:hover { border-color: var(--primary); }
-        .image-previews { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-        .image-preview-item { width:80px; height:80px; border-radius:8px; object-fit:cover; border:1px solid var(--border); position:relative; }
-        .image-preview-item .remove-img { position:absolute; top:-6px; right:-6px; background:#ef4444; color:#fff; border-radius:50%; width:20px; height:20px; font-size:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+        .image-upload-area { border:2px dashed #ddd; border-radius:12px; padding:30px; text-align:center; cursor:pointer; transition:all var(--transition); }
+        .image-upload-area:hover { border-color: var(--primary); background:#fff8f5; }
+        .image-previews { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+        .image-preview-item { width:70px; height:70px; border-radius:8px; position:relative; }
+        .image-preview-item .remove-img { position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#e05050; color:#fff; font-size:12px; display:grid; place-items:center; cursor:pointer; }
 
-        /* 聊天 */
-        .chat-container { display:flex; flex-direction:column; height:420px; }
-        .chat-header { padding:12px 16px; background:var(--primary); color:#fff; border-radius:var(--radius-sm) var(--radius-sm) 0 0; display:flex; align-items:center; justify-content:space-between; }
-        .chat-header .chat-actions { display:flex; gap:8px; }
-        .chat-header .chat-actions button { background:rgba(255,255,255,0.2); border:none; color:#fff; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:12px; }
-        .chat-messages { flex:1; overflow-y:auto; padding:14px; background:#fafbfd; border:1px solid var(--border); border-top:none; }
-        .chat-bubble { margin-bottom:12px; display:flex; }
-        .chat-bubble.me { justify-content:flex-end; }
-        .chat-bubble .msg { max-width:72%; padding:10px 14px; border-radius:14px; font-size:14px; line-height:1.5; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.04); word-break:break-word; }
-        .chat-bubble.me .msg { background: var(--primary); color:#fff; border-bottom-right-radius:4px; }
-        .chat-bubble.other .msg { border-bottom-left-radius:4px; }
-        .chat-input-area { display:flex; padding:10px; border:1px solid var(--border); border-top:none; border-radius:0 0 var(--radius-sm) var(--radius-sm); background:#fff; }
-        .chat-input-area input { flex:1; padding:10px 14px; border:2px solid var(--border); border-radius:10px; font-size:14px; outline:none; }
-        .chat-input-area input:focus { border-color: var(--primary); }
-        .chat-input-area button { margin-left:8px; padding:10px 18px; border:none; border-radius:10px; background: var(--primary); color:#fff; font-weight:600; cursor:pointer; font-size:14px; }
+        .chat-area { display:flex; gap:12px; min-height:400px; }
+        .chat-list { width:200px; background:var(--card); border-radius:var(--radius); padding:10px; box-shadow:var(--shadow-sm); overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
+        .chat-detail { flex:1; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow-sm); display:flex; flex-direction:column; }
+        .chat-header { padding:12px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+        .chat-messages { flex:1; padding:14px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; min-height:300px; max-height:400px; }
+        .chat-bubble { max-width:75%; padding:10px 14px; border-radius:16px; font-size:14px; word-break:break-word; }
+        .chat-bubble.me { align-self:flex-end; background: var(--primary); color:#fff; border-bottom-right-radius:4px; }
+        .chat-bubble.other { align-self:flex-start; background:#f0f2f6; color:var(--text); border-bottom-left-radius:4px; }
+        .chat-input-area { padding:10px 14px; border-top:1px solid var(--border); display:flex; gap:8px; }
+        .chat-input-area input { flex:1; padding:10px 14px; border:2px solid var(--border); border-radius:20px; font-size:14px; outline:none; }
+        .chat-input-area button { padding:10px 18px; border:none; border-radius:20px; background:var(--primary); color:#fff; font-weight:600; cursor:pointer; }
 
-        /* 个人主页 */
-        .profile-header { background:var(--card); border-radius:var(--radius-lg); padding:24px; margin-bottom:20px; box-shadow: var(--shadow-sm); display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
-        .profile-avatar { width:70px; height:70px; border-radius:50%; background:linear-gradient(135deg, #ff6b35, #ff8f5e); display:grid; place-items:center; color:#fff; font-size:28px; font-weight:700; }
-        .profile-info h3 { font-size:20px; margin-bottom:4px; }
-        .profile-info p { color:var(--text-muted); font-size:14px; }
+        .profile-header { display:flex; align-items:center; gap:14px; margin-bottom:18px; padding:16px; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow-sm); }
+        .profile-avatar { width:48px; height:48px; border-radius:50%; background:var(--primary); color:#fff; display:grid; place-items:center; font-weight:700; font-size:18px; }
+        .profile-info h3 { font-size:18px; }
+        .profile-info p { color:var(--text-muted); font-size:13px; }
 
-        .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:#fff; padding:12px 22px; border-radius:12px; z-index:2000; font-size:14px; font-weight:600; display:none; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
-        .toast.show { display:block; }
-        .toast.success { background:#10b981; }
-        .toast.error { background:#ef4444; }
+        .toast { position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px); background:#1a1d28; color:#fff; padding:11px 18px; border-radius:10px; z-index:10000; opacity:0; pointer-events:none; box-shadow:0 10px 32px rgba(0,0,0,0.28); font-size:13.5px; font-weight:600; transition:all 0.28s cubic-bezier(0.4,0,0.2,1); }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+        .toast.error { background:#b91c1c; }
+        .toast.success { background:#087a56; }
 
-        @media (max-width: 600px) {
-            .items-grid { grid-template-columns:1fr; }
-            .form-row { grid-template-columns:1fr; }
-            .category-scroll { gap:8px; }
-            .cat-chip { min-width:56px; padding:10px 6px; }
-            .cat-chip .cat-icon { width:36px; height:36px; font-size:16px; }
+        .order-card { background:var(--card); border-radius:var(--radius); padding:16px; margin-bottom:12px; box-shadow:var(--shadow-sm); }
+        .order-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+        .order-status { padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600; }
+        .status-pending { background:#fff3cd; color:#856404; }
+        .status-confirmed { background:#d1ecf1; color:#0c5460; }
+        .status-shipped { background:#d4edda; color:#155724; }
+        .status-completed { background:#d4edda; color:#155724; }
+        .status-cancelled { background:#f8d7da; color:#721c24; }
+        .order-address { background:#f8f9fc; padding:10px; border-radius:8px; font-size:13px; margin-top:8px; }
+
+        @media (max-width:640px) {
+            .chat-area { flex-direction:column; }
+            .chat-list { width:100%; max-height:120px; }
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">
-            <div class="logo-icon">🛒</div>
-            <h2>AG校园二手</h2>
-        </div>
-        <div class="navbar-actions">
-            <button class="btn btn-outline" onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> 返回</button>
-            <button class="btn btn-white" onclick="openPublishModal()"><i class="fas fa-plus"></i> 发布闲置</button>
+    <!-- ========== 登录弹窗 ========== -->
+    <div class="modal" id="loginModal">
+        <div class="modal-card">
+            <h3>🔑 登录二手市场</h3>
+            <div class="form-group">
+                <label>昵称（起一个好记的名字）</label>
+                <input type="text" id="loginNickname" placeholder="至少2个字符" minlength="2">
+            </div>
+            <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">💡 首次登录自动注册，无需密码</p>
+            <button class="btn btn-white" onclick="marketLogin()" id="marketLoginBtn" style="width:100%;">🚀 进入市场</button>
         </div>
     </div>
 
+    <!-- ========== 下单地址弹窗 ========== -->
+    <div class="modal" id="buyModal">
+        <div class="modal-card">
+            <h3>🛍️ 确认下单</h3>
+            <div id="buyProductInfo" style="background:#f8f9fc;padding:12px;border-radius:10px;margin-bottom:14px;"></div>
+            <div class="form-group"><label>收件人 *</label><input type="text" id="buyName" placeholder="姓名"></div>
+            <div class="form-group"><label>手机号 *</label><input type="text" id="buyPhone" placeholder="手机号码"></div>
+            <div class="form-group"><label>详细地址 *</label><textarea id="buyAddress" rows="2" placeholder="省/市/区/详细地址"></textarea></div>
+            <p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">⚠️ 下单后商家将看到您的收货信息</p>
+            <div style="display:flex; gap:10px; margin-top:16px;">
+                <button class="btn btn-white" onclick="submitOrder()" style="flex:1;">✅ 确认下单</button>
+                <button class="btn btn-outline" onclick="closeModal('buyModal')" style="flex:1;background:#f0f2f6;color:var(--text);">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 导航栏 ========== -->
+    <div class="navbar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-store"></i></div>
+            <h2>AG 校园二手</h2>
+        </div>
+        <div class="navbar-actions">
+            <button class="btn btn-outline" onclick="openPublishModal()"><i class="fas fa-plus"></i> 发布</button>
+            <button class="btn btn-white" onclick="window.location.href='/'"><i class="fas fa-home"></i> 签到</button>
+        </div>
+    </div>
+
+    <!-- ========== 主容器 ========== -->
     <div class="container">
+        <!-- 搜索栏 -->
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="搜索你想找的宝贝..." onkeypress="if(event.key==='Enter')searchItems()">
+            <input type="text" id="searchInput" placeholder="搜索商品..." onkeypress="if(event.key==='Enter')searchItems()">
             <button onclick="searchItems()"><i class="fas fa-search"></i> 搜索</button>
         </div>
 
-        <div class="category-scroll" id="categoryBar">
-            <div class="cat-chip active" data-cat="all"><div class="cat-icon">📦</div><div class="cat-label">全部</div></div>
+        <!-- 分类 -->
+        <div class="category-scroll">
+            <div class="cat-chip active" data-cat="all"><div class="cat-icon">🌟</div><div class="cat-label">全部</div></div>
             <div class="cat-chip" data-cat="book"><div class="cat-icon">📚</div><div class="cat-label">教材书籍</div></div>
             <div class="cat-chip" data-cat="electronic"><div class="cat-icon">💻</div><div class="cat-label">数码电子</div></div>
             <div class="cat-chip" data-cat="life"><div class="cat-icon">🏠</div><div class="cat-label">生活用品</div></div>
             <div class="cat-chip" data-cat="other"><div class="cat-icon">🎁</div><div class="cat-label">其他</div></div>
         </div>
 
+        <!-- 标签 -->
         <div class="tab-bar">
             <div class="tab-item active" data-tab="market">🏪 市场</div>
+            <div class="tab-item" data-tab="cart">🛒 购物车</div>
+            <div class="tab-item" data-tab="orders">📋 订单</div>
             <div class="tab-item" data-tab="favorites">❤️ 收藏</div>
-            <div class="tab-item" data-tab="profile">👤 我的</div>
             <div class="tab-item" data-tab="chats">💬 消息</div>
+            <div class="tab-item" data-tab="profile">👤 我的</div>
         </div>
 
-        <div id="view-market" class="view">
-            <div class="items-grid" id="itemsGrid"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>加载中...</p></div></div>
+        <!-- 市场视图 -->
+        <div class="view" id="view-market">
+            <div class="items-grid" id="itemsGrid"></div>
         </div>
-        <div id="view-favorites" class="view" style="display:none;">
-            <div class="items-grid" id="favGrid"><div class="empty-state"><i class="fas fa-heart"></i><p>暂无收藏</p></div></div>
+
+        <!-- 购物车视图 -->
+        <div class="view" id="view-cart" style="display:none;">
+            <h3 style="margin-bottom:14px;">🛒 我的购物车</h3>
+            <div class="items-grid" id="cartGrid"></div>
         </div>
-        <div id="view-profile" class="view" style="display:none;">
-            <div class="profile-header" id="profileHeader"></div>
-            <h3 style="margin-bottom:12px;">📦 我发布的商品</h3>
-            <div class="items-grid" id="myGrid"><div class="empty-state"><i class="fas fa-box"></i><p>暂无商品</p></div></div>
+
+        <!-- 订单视图 -->
+        <div class="view" id="view-orders" style="display:none;">
+            <h3 style="margin-bottom:14px;">📋 我的订单</h3>
+            <div id="ordersList"></div>
         </div>
-        <div id="view-chats" class="view" style="display:none;">
-            <div id="chatRoomsList" style="display:flex;flex-direction:column;gap:8px;"><div class="empty-state"><i class="fas fa-comments"></i><p>暂无消息</p></div></div>
-            <div id="chatDetail" style="display:none;">
-                <button class="btn btn-outline" onclick="backToChatList()" style="margin-bottom:10px;background:#f0f2f6;color:var(--text);border-color:var(--border);"><i class="fas fa-arrow-left"></i> 返回列表</button>
-                <div class="chat-container">
+
+        <!-- 收藏视图 -->
+        <div class="view" id="view-favorites" style="display:none;">
+            <h3 style="margin-bottom:14px;">❤️ 我的收藏</h3>
+            <div class="items-grid" id="favGrid"></div>
+        </div>
+
+        <!-- 聊天视图 -->
+        <div class="view" id="view-chats" style="display:none;">
+            <h3 style="margin-bottom:14px;">💬 消息</h3>
+            <div class="chat-area">
+                <div class="chat-list" id="chatRoomsList"></div>
+                <div class="chat-detail" id="chatDetail" style="display:none;">
                     <div class="chat-header">
-                        <span id="chatPartnerName">聊天</span>
-                        <div class="chat-actions">
-                            <button onclick="blockUser()">🚫 拉黑</button>
-                            <button onclick="reportUser()">⚠️ 举报</button>
+                        <button class="btn-sm" onclick="backToChatList()" style="width:auto;flex:none;"><i class="fas fa-arrow-left"></i></button>
+                        <strong id="chatPartnerName"></strong>
+                        <div style="margin-left:auto;display:flex;gap:6px;">
+                            <button class="btn-sm" onclick="reportUser()" style="width:auto;flex:none;color:#e05050;">举报</button>
+                            <button class="btn-sm" onclick="blockUser()" style="width:auto;flex:none;">拉黑</button>
                         </div>
                     </div>
                     <div class="chat-messages" id="chatMessages"></div>
@@ -206,6 +258,25 @@
                         <button onclick="sendMessage()">发送</button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- 个人中心视图 -->
+        <div class="view" id="view-profile" style="display:none;">
+            <div class="profile-header" id="profileHeader"></div>
+            <h3 style="margin:14px 0;">📦 发布的商品</h3>
+            <div class="items-grid" id="myGrid"></div>
+            <!-- 收款码上传区 -->
+            <div style="background:#fffef9;border:1px solid #f0d89c;border-radius:12px;padding:14px;margin-top:14px;">
+                <h4 style="margin-bottom:10px;">💰 我的收款码（买家扫码付款给你）</h4>
+                <div class="form-group"><label>微信收款码URL</label><input type="text" id="payQRWechat" placeholder="图片链接"></div>
+                <div class="form-group"><label>支付宝收款码URL</label><input type="text" id="payQRAlipay" placeholder="图片链接"></div>
+                <button class="btn btn-white" onclick="savePayQR()">💾 保存收款码</button>
+            </div>
+            <!-- 卖家加购列表 -->
+            <div style="background:#f8f9fc;border-radius:12px;padding:14px;margin-top:14px;">
+                <h4 style="margin-bottom:10px;">👀 谁加购了我的商品</h4>
+                <div id="sellerCartList" style="font-size:13px;color:var(--text-muted);">加载中...</div>
             </div>
         </div>
     </div>
@@ -266,25 +337,65 @@
 
     <script>
         const API_BASE = 'https://api.agai.online/api';
-        const token = localStorage.getItem('token');
-        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        let token = localStorage.getItem('token');
+        let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
         let currentCategory = 'all';
         let activeView = 'market';
         let currentChatRoom = null;
         let currentChatPartnerId = null;
         let selectedImages = [];
         let socket = null;
+        let currentBuyProductId = null;
+        let currentBuySellerId = null;
+
         function togglePayQR() {
-          const content = document.getElementById('payQRContent');
-          if (content) {
-            content.style.display = content.style.display === 'none' ? 'block' : 'none';
-          }
+            const content = document.getElementById('payQRContent');
+            if (content) { content.style.display = content.style.display === 'none' ? 'block' : 'none'; }
         }
+
+        // ========== 市场登录 ==========
+        function marketLogin() {
+            const nickname = document.getElementById('loginNickname').value.trim();
+            if (!nickname || nickname.length < 2) { showToast('昵称至少2个字符', 'error'); return; }
+            const btn = document.getElementById('marketLoginBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 进入中...';
+            fetch(`${API_BASE}/quick-login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nickname })
+            }).then(r => r.json()).then(data => {
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    token = data.token;
+                    currentUser = data.user;
+                    document.getElementById('loginModal').classList.remove('show');
+                    initSocket();
+                    loadMarketItems();
+                    showToast('欢迎，' + (data.user.name || '同学') + '！', 'success');
+                } else showToast(data.message || '登录失败', 'error');
+            }).catch(() => showToast('网络错误', 'error')).finally(() => {
+                btn.disabled = false; btn.innerHTML = '🚀 进入市场';
+            });
+        }
+
+        // 检查登录状态
+        (function checkMarketAuth() {
+            if (!token) {
+                document.getElementById('loginModal').classList.add('show');
+            }
+        })();
+
+        function refreshAuth() {
+            token = localStorage.getItem('token');
+            currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        }
+
         // WebSocket
         function initSocket() {
-            if (socket) return;
+            if (socket || !currentUser.id) return;
             socket = io('https://api.agai.online', { transports: ['websocket', 'polling'] });
-            socket.on('connect', () => { if (currentUser.id) socket.emit('bindUser', currentUser.id); });
+            socket.on('connect', () => { socket.emit('bindUser', currentUser.id); });
             socket.on('newMessage', (data) => {
                 if (currentChatRoom === data.roomId) appendMessage(data);
                 if (activeView === 'chats') loadChatRooms();
@@ -335,11 +446,14 @@
                 this.classList.add('active');
                 activeView = this.dataset.tab;
                 document.querySelectorAll('.view').forEach(v => v.style.display='none');
-                document.getElementById('view-'+activeView).style.display='block';
+                const viewEl = document.getElementById('view-'+activeView);
+                if (viewEl) viewEl.style.display='block';
                 if (activeView==='market') loadMarketItems();
                 else if (activeView==='favorites') loadFavorites();
                 else if (activeView==='profile') loadProfile();
                 else if (activeView==='chats') loadChatRooms();
+                else if (activeView==='cart') loadCart();
+                else if (activeView==='orders') loadMyOrders();
             });
         });
 
@@ -351,14 +465,15 @@
         // 模拟商品数据
         function getMockItems() {
             const mockData = [
-                { title:'高等数学第七版', desc:'9成新，只用了一学期，无笔记', price:12.5, category:'book', seller:'张同学' },
-                { title:'iPad 2021 64GB', desc:'国行在保，屏幕完美，充电器原装', price:1850, category:'electronic', seller:'李同学' },
-                { title:'宿舍小冰箱 20L', desc:'冷暖两用，毕业转让，安静省电', price:80, category:'life', seller:'王同学' },
-                { title:'机械键盘 Cherry红轴', desc:'手感极佳，带RGB灯效', price:150, category:'electronic', seller:'赵同学' },
-                { title:'四六级耳机', desc:'只用过一次，带电池', price:8, category:'other', seller:'刘同学' },
+                { title:'高等数学第七版', desc:'9成新，只用了一学期，无笔记', price:12.5, category:'book', seller:'张同学', productNo:'AGMOCK01' },
+                { title:'iPad 2021 64GB', desc:'国行在保，屏幕完美，充电器原装', price:1850, category:'electronic', seller:'李同学', productNo:'AGMOCK02' },
+                { title:'宿舍小冰箱 20L', desc:'冷暖两用，毕业转让，安静省电', price:80, category:'life', seller:'王同学', productNo:'AGMOCK03' },
+                { title:'机械键盘 Cherry红轴', desc:'手感极佳，带RGB灯效', price:150, category:'electronic', seller:'赵同学', productNo:'AGMOCK04' },
+                { title:'四六级耳机', desc:'只用过一次，带电池', price:8, category:'other', seller:'刘同学', productNo:'AGMOCK05' },
             ];
             return mockData.map((m, i) => ({
                 _id: 'mock'+i,
+                productNo: m.productNo,
                 title: m.title,
                 description: m.desc,
                 price: m.price,
@@ -392,9 +507,13 @@
                         <div class="item-desc">${escapeHTML(item.description)}</div>
                         <div class="item-footer">
                             <span class="item-price"><span style="font-size:14px;">¥</span>${item.price.toFixed(2)}</span>
+                            <span class="item-seller" style="font-size:10px;">#${item.productNo || item._id.slice(-6).toUpperCase()}</span>
+                        </div>
+                        <div class="item-footer" style="margin-top:4px;">
                             <span class="item-seller">${getDisplayName(item.userId)}</span>
                         </div>
                         <div class="item-actions" onclick="event.stopPropagation()">
+                            <button class="btn-sm" onclick="addToCart('${item._id}')"><i class="fas fa-cart-plus"></i> 加购</button>
                             <button class="btn-sm" onclick="toggleFavorite('${item._id}', this)"><i class="far fa-heart"></i> 收藏</button>
                             <button class="btn-sm" onclick="showContact('${item._id}')"><i class="fas fa-address-book"></i> 联系</button>
                             <button class="btn-sm" onclick="startChat('${item.userId?._id||item.userId}','${item._id}','${escapeHTML(item.title)}')"><i class="fas fa-comment-dots"></i> 私聊</button>
@@ -415,6 +534,7 @@
                 if (mock) {
                     content.innerHTML = `
                         <span style="background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;">${getCatName(mock.category)}</span>
+                        <span style="font-size:11px;color:var(--text-muted);margin-left:8px;">#${mock.productNo}</span>
                         <h3 style="font-size:20px;margin:10px 0;">${escapeHTML(mock.title)}</h3>
                         <div style="font-size:28px;font-weight:800;color:#e05050;">¥${mock.price.toFixed(2)}</div>
                         <div style="color:var(--text-secondary);margin:10px 0;">${escapeHTML(mock.description)}</div>
@@ -429,49 +549,58 @@
                 const data = await res.json();
                 if (!data.success || !data.items?.length) return;
                 const item = data.items[0];
+                const sellerId = item.userId?._id || item.userId;
                 const imageHtml = (item.images && item.images.length > 0)
                     ? `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;border-radius:12px;">
                         ${item.images.map(img => `<img src="${img}" style="max-width:200px;max-height:200px;border-radius:8px;object-fit:cover;">`).join('')}
                        </div>`
                     : '';
                 content.innerHTML = `
-                    <span style="background:var(--primary-light);...">${getCatName(item.category)}</span>
-                    <h3 style="...">${escapeHTML(item.title)}</h3>
-                    <div style="...">¥${item.price.toFixed(2)}</div>
-                    <div style="...">${escapeHTML(item.description)}</div>
+                    <span style="background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;">${getCatName(item.category)}</span>
+                    <span style="font-size:11px;color:var(--text-muted);margin-left:8px;">#${item.productNo || item._id.slice(-6).toUpperCase()}</span>
+                    <h3 style="font-size:20px;margin:10px 0;">${escapeHTML(item.title)}</h3>
+                    <div style="font-size:28px;font-weight:800;color:#e05050;">¥${item.price.toFixed(2)}</div>
+                    <div style="color:var(--text-secondary);margin:10px 0;">${escapeHTML(item.description)}</div>
                     ${imageHtml}
                     <p style="color:var(--text-muted);">卖家：${getDisplayName(item.userId)}</p>
-                    // 在 openDetail 函数中，price 显示后面添加
                     <div id="payQRArea" style="margin-top: 16px; padding: 14px; background: #fffef9; border: 1px solid #f0d89c; border-radius: 12px; text-align: center; cursor: pointer;" onclick="togglePayQR()">
                       <div style="font-size: 14px; font-weight: 600; color: #6b3a0a; margin-bottom: 6px;">
                         <i class="fas fa-qrcode"></i> 扫码直接付款（点击展开）
                       </div>
-                      <div id="payQRContent" style="display: none; margin-top: 10px;">
-                        <p style="font-size: 12px; color: #9a6b2e; margin-bottom: 8px;">
-                          请支付 <strong style="color: #e05050;">¥${item.price.toFixed(2)}</strong>，备注你的昵称
-                        </p>
-                        <div style="display: flex; gap: 12px; justify-content: center;">
-                          <div style="text-align: center;">
-                            <img src="https://login.agai.online/vxcode.png" alt="微信收款码" style="width: 100px; height: 100px; border-radius: 8px; border: 1px solid #f0d89c;">
-                            <p style="font-size: 11px; color: #6b3a0a; margin-top: 4px;">微信</p>
-                          </div>
-                          <div style="text-align: center;">
-                            <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码" style="width: 100px; height: 100px; border-radius: 8px; border: 1px solid #f0d89c;">
-                            <p style="font-size: 11px; color: #6b3a0a; margin-top: 4px;">支付宝</p>
-                          </div>
-                        </div>
-                        <p style="font-size: 11px; color: #9a6b2e; margin-top: 8px;">
-                          ⚠️ 付款后请截图发给卖家确认，平台不担保交易
-                        </p>
-                      </div>
+                      <div id="payQRContent" style="display: none; margin-top: 10px;">加载卖家收款码...</div>
                     </div>
                     <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
-                        <button class="btn-sm" onclick="showContact('${item._id}')" style="flex:1;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:14px;">📞 查看联系方式</button>
-                        <button class="btn-sm" onclick="startChat('${item.userId._id}','${item._id}','${escapeHTML(item.title)}')" style="flex:1;padding:12px;border-radius:10px;font-size:14px;">💬 私聊卖家</button>
+                        <button class="btn-sm" onclick="addToCart('${item._id}')" style="flex:1;padding:12px;background:#28a745;color:#fff;border:none;border-radius:10px;font-size:14px;">🛒 加入购物车</button>
+                        <button class="btn-sm" onclick="openBuyModal('${item._id}','${escapeHTML(item.title)}',${item.price},'${sellerId}','${item.productNo||''}')" style="flex:1;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:14px;">🛍️ 立即下单</button>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+                        <button class="btn-sm" onclick="showContact('${item._id}')" style="flex:1;padding:12px;border-radius:10px;font-size:14px;">📞 查看联系方式</button>
+                        <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}','${escapeHTML(item.title)}')" style="flex:1;padding:12px;border-radius:10px;font-size:14px;">💬 私聊卖家</button>
                     </div>
                     <button class="btn btn-outline" onclick="closeModal('detailModal')" style="margin-top:12px;width:100%;background:#f0f2f6;color:var(--text);border-color:var(--border);">关闭</button>
                 `;
+                // 加载卖家收款码
+                if (sellerId) loadSellerPayQR(sellerId, item.price, item.productNo);
             } catch(e) {}
+        }
+
+        // 加载卖家收款码
+        async function loadSellerPayQR(sellerId, price, productNo) {
+            try {
+                const res = await fetch(`${API_BASE}/user/payqr/${sellerId}`);
+                const data = await res.json();
+                const qrArea = document.getElementById('payQRContent');
+                if (data.success && (data.payQR?.wechat || data.payQR?.alipay)) {
+                    let qrHtml = `<p style="font-size:12px;color:#9a6b2e;margin-bottom:8px;">请支付 <strong style="color:#e05050;">¥${price.toFixed(2)}</strong>，备注 <strong>${productNo || '商品'}</strong> 和收货地址</p>`;
+                    qrHtml += '<div style="display:flex;gap:12px;justify-content:center;">';
+                    if (data.payQR.wechat) qrHtml += `<div style="text-align:center;"><img src="${data.payQR.wechat}" style="width:100px;height:100px;border-radius:8px;border:1px solid #f0d89c;"><p style="font-size:11px;color:#6b3a0a;margin-top:4px;">微信</p></div>`;
+                    if (data.payQR.alipay) qrHtml += `<div style="text-align:center;"><img src="${data.payQR.alipay}" style="width:100px;height:100px;border-radius:8px;border:1px solid #f0d89c;"><p style="font-size:11px;color:#6b3a0a;margin-top:4px;">支付宝</p></div>`;
+                    qrHtml += '</div><p style="font-size:11px;color:#9a6b2e;margin-top:8px;">⚠️ 付款后请截图发给卖家确认，平台不担保交易</p>';
+                    qrArea.innerHTML = qrHtml;
+                } else {
+                    qrArea.innerHTML = '<p style="font-size:12px;color:#9a6b2e;">卖家暂未设置收款码，建议通过私聊确认付款方式</p>';
+                }
+            } catch(e) { document.getElementById('payQRContent').innerHTML = '<p style="font-size:12px;color:#9a6b2e;">加载收款码失败</p>'; }
         }
 
         async function showContact(id) {
@@ -485,7 +614,7 @@
         }
 
         async function toggleFavorite(itemId, btn) {
-            if (!token) { showToast('请先登录','error'); return; }
+            if (!token) { showToast('请先登录','error'); document.getElementById('loginModal').classList.add('show'); return; }
             try {
                 const res = await fetch(`${API_BASE}/market/favorite`, {
                     method: 'POST',
@@ -529,24 +658,78 @@
                 const count = data.items?.length || 0;
                 document.querySelector('.profile-info p').textContent = `学号：${currentUser.studentId || ''} · 已发布商品数：${count}`;
                 if (!data.success || !data.items?.length) {
-                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-box"></i><p>暂无商品</p></div>'; return;
-                }
-                grid.innerHTML = data.items.map(item => `
-                    <div class="item-card" onclick="openDetail('${item._id}')">
-                        <div class="item-img">${getCatIcon(item.category)}</div>
-                        <div class="item-badge">${getCatName(item.category)}</div>
-                        <div class="item-body">
-                            <div class="item-title">${escapeHTML(item.title)}</div>
-                            <div class="item-desc">${escapeHTML(item.description)}</div>
-                            <div class="item-footer">
-                                <span class="item-price" style="font-size:18px;">¥${item.price.toFixed(2)}</span>
-                                <span class="item-seller">${item.status==='active'?'在售':'已下架'}</span>
+                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-box"></i><p>暂无商品</p></div>';
+                } else {
+                    grid.innerHTML = data.items.map(item => `
+                        <div class="item-card" onclick="openDetail('${item._id}')">
+                            <div class="item-img">${getCatIcon(item.category)}</div>
+                            <div class="item-badge">${getCatName(item.category)}</div>
+                            <div class="item-body">
+                                <div class="item-title">${escapeHTML(item.title)}</div>
+                                <div class="item-desc">${escapeHTML(item.description)}</div>
+                                <div class="item-footer">
+                                    <span class="item-price" style="font-size:18px;">¥${item.price.toFixed(2)}</span>
+                                    <span class="item-seller" style="font-size:10px;">#${item.productNo||''}</span>
+                                </div>
+                                <div class="item-footer" style="margin-top:4px;">
+                                    <span class="item-seller">${item.status==='active'?'在售':'已下架'}</span>
+                                </div>
+                                ${item.status==='active' ? `<div class="item-actions" onclick="event.stopPropagation()"><button class="btn-sm" onclick="removeItem('${item._id}')">下架</button></div>` : ''}
                             </div>
-                            ${item.status==='active' ? `<div class="item-actions" onclick="event.stopPropagation()"><button class="btn-sm" onclick="removeItem('${item._id}')">下架</button></div>` : ''}
                         </div>
-                    </div>
-                `).join('');
+                    `).join('');
+                }
             } catch(e) {}
+            // 加载收款码
+            loadPayQR();
+            // 加载加购列表
+            loadSellerCart();
+        }
+
+        // ========== 收款码 ==========
+        async function loadPayQR() {
+            try {
+                const res = await fetch(`${API_BASE}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                if (data.success && data.user) {
+                    if (data.user.payQR) {
+                        document.getElementById('payQRWechat').value = data.user.payQR.wechat || '';
+                        document.getElementById('payQRAlipay').value = data.user.payQR.alipay || '';
+                    }
+                }
+            } catch(e) {}
+        }
+
+        async function savePayQR() {
+            const wechat = document.getElementById('payQRWechat').value.trim();
+            const alipay = document.getElementById('payQRAlipay').value.trim();
+            try {
+                const res = await fetch(`${API_BASE}/user/payqr`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ wechat, alipay })
+                });
+                const data = await res.json();
+                showToast(data.success ? '收款码已保存' : '保存失败', data.success ? 'success' : 'error');
+            } catch(e) { showToast('网络错误','error'); }
+        }
+
+        // ========== 卖家加购列表 ==========
+        async function loadSellerCart() {
+            const el = document.getElementById('sellerCartList');
+            try {
+                const res = await fetch(`${API_BASE}/market/cart/seller`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                if (data.success && data.cartEntries?.length) {
+                    el.innerHTML = data.cartEntries.map(e => `
+                        <div style="padding:8px;margin-bottom:6px;background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+                            🛒 <strong>${getDisplayName(e.userId)}</strong> 加购了 <strong>#${e.productId?.productNo||''} ${escapeHTML(e.productId?.title||'')}</strong> (¥${e.productId?.price||0})
+                        </div>
+                    `).join('');
+                } else {
+                    el.innerHTML = '<p>暂无买家加购你的商品</p>';
+                }
+            } catch(e) { el.innerHTML = '<p>加载失败</p>'; }
         }
 
         async function removeItem(id) {
@@ -559,6 +742,183 @@
             } catch(e) { showToast('网络错误','error'); }
         }
 
+        // ========== 购物车 ==========
+        async function addToCart(productId) {
+            if (!token) { showToast('请先登录','error'); document.getElementById('loginModal').classList.add('show'); return; }
+            try {
+                const res = await fetch(`${API_BASE}/market/cart`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productId })
+                });
+                const data = await res.json();
+                showToast(data.success ? '🛒 已加入购物车' : (data.message || '操作失败'), data.success ? 'success' : 'error');
+            } catch(e) { showToast('网络错误','error'); }
+        }
+
+        async function loadCart() {
+            if (!token) return;
+            const grid = document.getElementById('cartGrid');
+            try {
+                const res = await fetch(`${API_BASE}/market/cart`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                if (!data.success || !data.items?.length) {
+                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-cart"></i><p>购物车空空如也</p></div>'; return;
+                }
+                grid.innerHTML = data.items.map(item => `
+                    <div class="item-card">
+                        <div class="item-img">${(item.images && item.images.length > 0) ? `<img src="${item.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : getCatIcon(item.category)}</div>
+                        <div class="item-badge">${getCatName(item.category)}</div>
+                        <div class="item-body">
+                            <div class="item-title">${escapeHTML(item.title)}</div>
+                            <div class="item-footer">
+                                <span class="item-price">¥${item.price.toFixed(2)}</span>
+                                <span class="item-seller" style="font-size:10px;">#${item.productNo||''}</span>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="btn-sm" onclick="openBuyModal('${item._id}','${escapeHTML(item.title)}',${item.price},'${item.userId?._id||item.userId}','${item.productNo||''}')" style="background:var(--primary);color:#fff;border:none;">🛍️ 下单</button>
+                                <button class="btn-sm" onclick="removeFromCart('${item._id}')">移除</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {}
+        }
+
+        async function removeFromCart(productId) {
+            try {
+                await fetch(`${API_BASE}/market/cart/${productId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                loadCart();
+                showToast('已移除', 'success');
+            } catch(e) {}
+        }
+
+        // ========== 下单 + 地址 ==========
+        function openBuyModal(productId, title, price, sellerId, productNo) {
+            if (!token) { showToast('请先登录','error'); document.getElementById('loginModal').classList.add('show'); return; }
+            currentBuyProductId = productId;
+            currentBuySellerId = sellerId;
+            document.getElementById('buyProductInfo').innerHTML = `
+                <strong>${escapeHTML(title)}</strong> <span style="font-size:10px;color:var(--text-muted);">#${productNo||''}</span><br>
+                <span style="font-size:20px;font-weight:800;color:#e05050;">¥${price.toFixed(2)}</span>
+            `;
+            document.getElementById('buyModal').classList.add('show');
+        }
+
+        async function submitOrder() {
+            const name = document.getElementById('buyName').value.trim();
+            const phone = document.getElementById('buyPhone').value.trim();
+            const detail = document.getElementById('buyAddress').value.trim();
+            if (!name || !phone || !detail) { showToast('请填写完整收货信息', 'error'); return; }
+            try {
+                const res = await fetch(`${API_BASE}/market/orders`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productId: currentBuyProductId, address: { name, phone, detail } })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('🎉 下单成功！商家将收到您的收货信息', 'success');
+                    closeModal('buyModal');
+                    document.getElementById('buyName').value = '';
+                    document.getElementById('buyPhone').value = '';
+                    document.getElementById('buyAddress').value = '';
+                    if (activeView === 'cart') loadCart();
+                } else showToast(data.message || '下单失败', 'error');
+            } catch(e) { showToast('网络错误', 'error'); }
+        }
+
+        // ========== 我的订单 ==========
+        async function loadMyOrders() {
+            if (!token) return;
+            const container = document.getElementById('ordersList');
+            try {
+                const [buyerRes, sellerRes] = await Promise.all([
+                    fetch(`${API_BASE}/market/orders/buyer`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE}/market/orders/seller`, { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+                const buyerData = await buyerRes.json();
+                const sellerData = await sellerRes.json();
+                const statusNames = { pending:'⏳ 待确认', confirmed:'✅ 已确认', shipped:'📦 已发货', completed:'✔️ 已完成', cancelled:'❌ 已取消' };
+                const statusClasses = { pending:'status-pending', confirmed:'status-confirmed', shipped:'status-shipped', completed:'status-completed', cancelled:'status-cancelled' };
+
+                let html = '';
+
+                // 买家订单
+                html += '<h4 style="margin-bottom:10px;">🛍️ 我购买的</h4>';
+                if (buyerData.success && buyerData.orders?.length) {
+                    html += buyerData.orders.map(o => `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <strong>${escapeHTML(o.title)}</strong>
+                                <span class="order-status ${statusClasses[o.status]}">${statusNames[o.status]}</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);">
+                                <span>订单号: ${o.orderNo}</span>
+                                <span style="font-weight:700;color:#e05050;">¥${o.price.toFixed(2)}</span>
+                            </div>
+                            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">卖家: ${getDisplayName(o.sellerId)}</div>
+                            <div class="order-address">
+                                📍 收件人: ${o.address.name} &nbsp; 📱 ${o.address.phone}<br>
+                                🏠 ${o.address.detail}
+                            </div>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${new Date(o.createdAt).toLocaleString()}</div>
+                        </div>
+                    `).join('');
+                } else { html += '<p style="color:var(--text-muted);margin-bottom:16px;">暂无购买记录</p>'; }
+
+                // 卖家订单
+                html += '<h4 style="margin:16px 0 10px;">📦 我卖出的</h4>';
+                if (sellerData.success && sellerData.orders?.length) {
+                    html += sellerData.orders.map(o => `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <strong>${escapeHTML(o.title)}</strong>
+                                <span class="order-status ${statusClasses[o.status]}">${statusNames[o.status]}</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);">
+                                <span>订单号: ${o.orderNo}</span>
+                                <span style="font-weight:700;color:#e05050;">¥${o.price.toFixed(2)}</span>
+                            </div>
+                            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">买家: ${getDisplayName(o.buyerId)}</div>
+                            <div class="order-address">
+                                📍 收件人: ${o.address.name} &nbsp; 📱 ${o.address.phone}<br>
+                                🏠 ${o.address.detail}
+                            </div>
+                            ${o.status === 'pending' ? `
+                                <div style="margin-top:8px;display:flex;gap:8px;">
+                                    <button class="btn-sm" onclick="updateOrderStatus('${o._id}','confirmed')" style="background:#28a745;color:#fff;border:none;">✅ 确认</button>
+                                    <button class="btn-sm" onclick="updateOrderStatus('${o._id}','cancelled')" style="background:#dc3545;color:#fff;border:none;">❌ 取消</button>
+                                </div>
+                            ` : (o.status === 'confirmed' ? `
+                                <div style="margin-top:8px;">
+                                    <button class="btn-sm" onclick="updateOrderStatus('${o._id}','shipped')" style="background:#17a2b8;color:#fff;border:none;">📦 标记发货</button>
+                                </div>
+                            ` : '')}
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${new Date(o.createdAt).toLocaleString()}</div>
+                        </div>
+                    `).join('');
+                } else { html += '<p style="color:var(--text-muted);">暂无卖出记录</p>'; }
+
+                container.innerHTML = html;
+            } catch(e) { container.innerHTML = '<p style="color:var(--text-muted);">加载失败</p>'; }
+        }
+
+        async function updateOrderStatus(orderId, status) {
+            try {
+                const res = await fetch(`${API_BASE}/market/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('订单状态已更新', 'success');
+                    loadMyOrders();
+                } else showToast(data.message || '操作失败', 'error');
+            } catch(e) { showToast('网络错误', 'error'); }
+        }
+
         // 图片上传处理
         function handleImageSelect(event) {
             const files = Array.from(event.target.files);
@@ -566,10 +926,7 @@
             files.forEach(file => {
                 if (!file.type.startsWith('image/')) return;
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    selectedImages.push(e.target.result);
-                    renderImagePreviews();
-                };
+                reader.onload = (e) => { selectedImages.push(e.target.result); renderImagePreviews(); };
                 reader.readAsDataURL(file);
             });
             event.target.value = '';
@@ -586,33 +943,21 @@
         function removeImage(idx) { selectedImages.splice(idx,1); renderImagePreviews(); }
 
         async function publishItem() {
-            if (!token) { showToast('请先登录', 'error'); window.location.href = '/'; return; }
-        
+            if (!token) { showToast('请先登录', 'error'); document.getElementById('loginModal').classList.add('show'); return; }
             const title = document.getElementById('pubTitle').value.trim();
             const description = document.getElementById('pubDesc').value.trim();
             const price = parseFloat(document.getElementById('pubPrice').value);
             const category = document.getElementById('pubCategory').value;
             const qq = document.getElementById('pubQQ').value.trim();
             const wechat = document.getElementById('pubWechat').value.trim();
-        
-            if (!title || !description || isNaN(price) || price < 0) {
-                showToast('请填写完整信息', 'error'); return;
-            }
-        
-            // 把本地预览的图片 base64 数据提交上去，最多 5 张
+            if (!title || !description || isNaN(price) || price < 0) { showToast('请填写完整信息', 'error'); return; }
             const images = selectedImages.slice(0, 5);
-        
             try {
                 const res = await fetch(`${API_BASE}/market/items`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title, description, price, category,
-                        contact: { qq, wechat },
-                        images     // ← 这里直接把图片数组发给后端
-                    })
+                    body: JSON.stringify({ title, description, price, category, contact: { qq, wechat }, images })
                 });
-        
                 const data = await res.json();
                 if (data.success) {
                     showToast('🎉 发布成功！', 'success');
@@ -624,17 +969,14 @@
                     document.getElementById('pubWechat').value = '';
                     selectedImages = [];
                     renderImagePreviews();
-                    loadMarketItems();   // 刷新商品列表
-                } else {
-                    showToast(data.message || '发布失败', 'error');
-                }
+                    loadMarketItems();
+                } else { showToast(data.message || '发布失败', 'error'); }
             } catch (e) { showToast('网络错误', 'error'); }
         }
 
-
         // 聊天
         async function startChat(sellerId, productId, productTitle) {
-            if (!token) { showToast('请先登录','error'); return; }
+            if (!token) { showToast('请先登录','error'); document.getElementById('loginModal').classList.add('show'); return; }
             if (!sellerId) return;
             try {
                 const res = await fetch(`${API_BASE}/market/chat/create`, {
@@ -690,8 +1032,7 @@
         }
 
         function backToChatList() {
-            currentChatRoom = null;
-            currentChatPartnerId = null;
+            currentChatRoom = null; currentChatPartnerId = null;
             document.getElementById('chatDetail').style.display = 'none';
             document.getElementById('chatRoomsList').style.display = 'flex';
         }
@@ -723,11 +1064,7 @@
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' },
                     body: JSON.stringify({ roomId: currentChatRoom, content })
                 });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.success && data.message) appendMessage(data.message);
-                    input.value = '';
-                }
+                if (res.ok) { const data = await res.json(); if (data.success && data.message) appendMessage(data.message); input.value = ''; }
             } catch(e) {}
         }
 
@@ -738,9 +1075,7 @@
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' },
                 body: JSON.stringify({ userId: currentChatPartnerId })
-            }).then(res => res.json()).then(data => {
-                if (data.success) showToast('已拉黑用户','success');
-            }).catch(() => showToast('操作失败','error'));
+            }).then(res => res.json()).then(data => { if (data.success) showToast('已拉黑用户','success'); }).catch(() => showToast('操作失败','error'));
         }
 
         function reportUser() {
@@ -751,24 +1086,20 @@
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type':'application/json' },
                 body: JSON.stringify({ userId: currentChatPartnerId, reason, productId: currentChatRoom })
-            }).then(res => res.json()).then(data => {
-                if (data.success) showToast('举报已提交，我们将尽快处理','success');
-            }).catch(() => showToast('操作失败','error'));
+            }).then(res => res.json()).then(data => { if (data.success) showToast('举报已提交，我们将尽快处理','success'); }).catch(() => showToast('操作失败','error'));
         }
 
         function openPublishModal() {
-            if (!token) { showToast('请先登录','error'); window.location.href='/'; return; }
+            if (!token) { showToast('请先登录','error'); document.getElementById('loginModal').classList.add('show'); return; }
             document.getElementById('publishModal').classList.add('show');
         }
 
-        function openContactModal() {
-            document.getElementById('contactModal').classList.add('show');
-        }
+        function openContactModal() { document.getElementById('contactModal').classList.add('show'); }
 
         // 初始化
         loadMarketItems();
 
-        // 联系客服按钮（底部固定）
+        // 联系客服按钮
         const contactBtn = document.createElement('div');
         contactBtn.innerHTML = `<button style="position:fixed;bottom:80px;right:20px;z-index:99;width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,0.2);cursor:pointer;font-size:20px;" onclick="openContactModal()"><i class="fas fa-headset"></i></button>`;
         document.body.appendChild(contactBtn);
