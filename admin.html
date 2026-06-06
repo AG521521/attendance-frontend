@@ -103,200 +103,105 @@
       margin-bottom: 20px;
     }
     
-    .card-header h3 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a2e;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .card-header h3 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
     
-    .btn {
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
+    .hidden { display: none !important; }
     
-    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-    .btn-success { background: #28a745; color: #fff; }
-    .btn-warning { background: #f39c12; color: #fff; }
-    .btn-danger { background: #dc3545; color: #fff; }
-    .btn-outline { background: #fff; border: 1px solid #ddd; color: #666; }
-    .btn-sm { padding: 6px 12px; font-size: 12px; }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    th, td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    
-    th {
-      font-weight: 600;
-      color: #666;
-      font-size: 13px;
-      background: #f8f9fa;
-    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #f0f2f6; font-size: 14px; }
+    th { font-weight: 700; color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    tr:hover { background: #fafbfd; }
     
     .badge {
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      display: inline-block;
     }
-    
     .badge-success { background: #d4edda; color: #155724; }
     .badge-warning { background: #fff3cd; color: #856404; }
     .badge-danger { background: #f8d7da; color: #721c24; }
     .badge-info { background: #d1ecf1; color: #0c5460; }
-    .badge-admin { background: #667eea; color: #fff; }
+    .badge-admin { background: #e8d5f5; color: #5a2d82; }
+    
+    .action-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+    
+    .btn {
+      padding: 10px 18px; border: none; border-radius: 10px; cursor: pointer;
+      font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+    .btn-success { background: #28a745; color: #fff; }
+    .btn-warning { background: #ffc107; color: #333; }
+    .btn-danger { background: #dc3545; color: #fff; }
+    .btn-outline { background: #fff; color: #666; border: 2px solid #e0e0e0; }
+    .btn-outline:hover { border-color: #667eea; color: #667eea; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
+    
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #555; font-size: 13px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 10px;
+      font-size: 14px; outline: none; font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #667eea;
+    }
+    .form-row { display: flex; gap: 16px; }
+    .form-row .form-group { flex: 1; }
     
     .search-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+      display: flex; gap: 10px; margin-bottom: 20px;
+      background: #f8f9fc; padding: 12px; border-radius: 12px;
     }
+    .search-box input { flex: 1; padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; }
     
-    .search-box input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    
-    .pagination {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
+    .pagination { display: flex; gap: 6px; margin-top: 20px; justify-content: center; }
     
     .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      align-items: center; justify-content: center; z-index: 1000; padding: 20px;
     }
-    
     .modal.show { display: flex; }
-    
     .modal-content {
-      background: #fff;
-      border-radius: 24px;
-      padding: 32px;
-      width: 100%;
-      max-width: 700px;
-      max-height: 90vh;
-      overflow-y: auto;
+      background: #fff; border-radius: 20px; padding: 28px;
+      width: 100%; max-width: 750px; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 20px; }
+    .modal-close { font-size: 28px; cursor: pointer; color: #999; }
+    .modal-close:hover { color: #333; }
     
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    
-    .modal-close {
-      font-size: 28px;
-      cursor: pointer;
-      color: #aaa;
-    }
-    
-    .form-group {
-      margin-bottom: 18px;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: #555;
-    }
-    
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    
-    .tabs {
-      display: flex;
-      gap: 4px;
-      background: #f5f7fb;
-      padding: 4px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-    
-    .tab {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      color: #888;
-    }
-    
-    .tab.active {
-      background: #fff;
-      color: #667eea;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    
-    .hidden { display: none !important; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #f0f2f6; }
+    .tab { padding: 10px 16px; cursor: pointer; color: #888; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+    .tab.active { color: #667eea; border-bottom-color: #667eea; }
+    .tab:hover { color: #667eea; }
     
     .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #1a1a2e;
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: 12px;
-      z-index: 2000;
-      display: none;
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
+      background: #1a1d28; color: #fff; padding: 12px 24px; border-radius: 12px;
+      z-index: 10000; opacity: 0; pointer-events: none; display: none;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.3); font-size: 14px; font-weight: 600;
+      transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
     }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; display: block; }
+    .toast.success { background: #087a56; }
+    .toast.error { background: #b91c1c; }
+    .toast.info { background: #1a1d28; }
     
-    .toast.success { background: #28a745; }
-    .toast.error { background: #dc3545; }
-    .toast.info { background: #17a2b8; }
-    
-    .action-buttons {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
+    @media (max-width: 768px) {
+      .admin-layout { flex-direction: column; }
+      .sidebar { width: 100%; padding: 12px; }
+      .sidebar-menu { display: flex; flex-wrap: wrap; gap: 4px; padding: 0; }
+      .menu-item { padding: 10px 12px; margin: 0; font-size: 13px; }
+      .main-content { padding: 16px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="admin-layout">
-    <!-- 侧边栏 -->
     <div class="sidebar">
       <div class="sidebar-header">
         <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.2</h2>
@@ -314,6 +219,11 @@
         <div class="menu-item" data-page="reports">
           <i class="fas fa-exclamation-triangle"></i> 举报管理
           <span id="reportBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
+        </div>
+        <!-- ===== 订单管理菜单 ===== -->
+        <div class="menu-item" data-page="orders">
+          <i class="fas fa-shopping-bag"></i> 订单管理
+          <span id="orderBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
         </div>
         <div class="menu-item" data-page="feedback">
           <i class="fas fa-comment-dots"></i> 留言管理
@@ -365,16 +275,16 @@
           </div>
           <div id="statsDetail">加载中...</div>
         </div>
-      </div>
-      <div class="content-card">
-        <div class="card-header">
-          <h3><i class="fas fa-rocket"></i> 应急签到</h3>
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-rocket"></i> 应急签到</h3>
+          </div>
+          <p style="margin-bottom:12px; color:#666;">在定时任务未触发时，手动执行一次全员签到（仅对已启用自动签到的用户生效）</p>
+          <button class="btn btn-warning" onclick="triggerAllSign()">
+            <i class="fas fa-bolt"></i> 一键全员签到
+          </button>
+          <span id="triggerResult" style="margin-left:15px;"></span>
         </div>
-        <p style="margin-bottom:12px; color:#666;">在定时任务未触发时，手动执行一次全员签到（仅对已启用自动签到的用户生效）</p>
-        <button class="btn btn-warning" onclick="triggerAllSign()">
-          <i class="fas fa-bolt"></i> 一键全员签到
-        </button>
-        <span id="triggerResult" style="margin-left:15px;"></span>
       </div>
       
       <!-- 用户管理 -->
@@ -447,6 +357,64 @@
         </div>
       </div>
       
+      <!-- 举报管理 -->
+      <div id="page-reports" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-filter"></i> 筛选</h3>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <select id="reportStatusFilter" onchange="loadReports()" style="padding:10px; border-radius:8px;">
+              <option value="">全部状态</option>
+              <option value="pending">⏳ 待处理</option>
+              <option value="handled">✅ 已处理</option>
+              <option value="dismissed">❌ 已驳回</option>
+            </select>
+            <button class="btn btn-outline" onclick="loadReports()">
+              <i class="fas fa-sync-alt"></i> 刷新
+            </button>
+          </div>
+        </div>
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-exclamation-triangle"></i> 举报列表</h3>
+          </div>
+          <div id="reportsStats" style="margin-bottom:20px;"></div>
+          <div id="reportsTable">加载中...</div>
+          <div class="pagination" id="reportsPagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== 订单管理 ===== -->
+      <div id="page-orders" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-filter"></i> 筛选</h3>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <select id="orderStatusFilter" onchange="loadOrders()" style="padding:10px; border-radius:8px;">
+              <option value="">全部状态</option>
+              <option value="pending">⏳ 待确认</option>
+              <option value="confirmed">✅ 已确认</option>
+              <option value="shipped">📦 已发货</option>
+              <option value="completed">✔️ 已完成</option>
+              <option value="cancelled">❌ 已取消</option>
+            </select>
+            <button class="btn btn-outline" onclick="loadOrders()">
+              <i class="fas fa-sync-alt"></i> 刷新
+            </button>
+          </div>
+        </div>
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-shopping-bag"></i> 订单列表</h3>
+          </div>
+          <div id="ordersStats" style="margin-bottom:20px;"></div>
+          <div id="ordersTable">加载中...</div>
+          <div class="pagination" id="ordersPagination"></div>
+        </div>
+      </div>
+
       <!-- 留言管理 -->
       <div id="page-feedback" class="hidden">
         <div class="content-card">
@@ -484,33 +452,6 @@
         </div>
       </div>
 
-      <!-- 举报管理 -->
-      <div id="page-reports" class="hidden">
-        <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-filter"></i> 筛选</h3>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <select id="reportStatusFilter" onchange="loadReports()" style="padding:10px; border-radius:8px;">
-              <option value="">全部状态</option>
-              <option value="pending">⏳ 待处理</option>
-              <option value="handled">✅ 已处理</option>
-              <option value="dismissed">❌ 已驳回</option>
-            </select>
-            <button class="btn btn-outline" onclick="loadReports()">
-              <i class="fas fa-sync-alt"></i> 刷新
-            </button>
-          </div>
-        </div>
-        <div class="content-card">
-          <div class="card-header">
-            <h3><i class="fas fa-exclamation-triangle"></i> 举报列表</h3>
-          </div>
-          <div id="reportsStats" style="margin-bottom:20px;"></div>
-          <div id="reportsTable">加载中...</div>
-          <div class="pagination" id="reportsPagination"></div>
-        </div>
-      </div>
       <!-- 系统设置 -->
       <div id="page-settings" class="hidden">
         <div class="content-card">
@@ -531,7 +472,6 @@
           </button>
         </div>
 
-        <!-- 仪表盘通知设置 -->
         <div class="content-card">
           <div class="card-header">
             <h3><i class="fas fa-bullhorn"></i> 仪表盘通知设置</h3>
@@ -565,7 +505,6 @@
           </button>
         </div>
 
-        <!-- 邀请奖励设置 -->
         <div class="content-card">
           <div class="card-header">
             <h3><i class="fas fa-gift"></i> 邀请奖励设置</h3>
@@ -643,32 +582,26 @@
     let currentUserId = null;
     let currentUserData = null;
     let feedbackCurrentPage = 1;
+    let ordersCurrentPage = 1;
     
     if (!token) window.location.href = '/';
     
     const DEBUG = true;
 
-
-    
     async function checkAdmin() {
       if (DEBUG) console.log('🔍 开始检查管理员权限...');
-      
       try {
         const res = await fetch(`${API_BASE}/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        
         if (DEBUG) console.log('📡 API 响应状态:', res.status);
-        
         const data = await res.json();
         if (DEBUG) console.log('👤 用户角色:', data.user?.role);
-        
         if (!data.success || data.user.role !== 'admin') {
           alert('需要管理员权限');
           window.location.href = '/dashboard';
           return;
         }
-        
         console.log('✅ 管理员权限验证通过');
         document.getElementById('adminName').textContent = data.user.name || data.user.studentId;
       } catch (e) {
@@ -679,32 +612,21 @@
 
     async function triggerAllSign() {
       if (!confirm('确定要立即为所有启用自动签到的用户执行签到吗？')) return;
-      
-      const btn = document.getElementById('triggerSignBtn');
-      if (!btn) {
-        alert('按钮未找到，请刷新页面');
-        return;
-      }
-      
+      const btn = document.querySelector('#page-dashboard .btn-warning');
+      if (!btn) { alert('按钮未找到，请刷新页面'); return; }
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 执行中...';
-      
       try {
         const res = await fetch(`${API_BASE}/admin/trigger-sign`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
-        if (data.success) {
-          document.getElementById('triggerResult').innerHTML = 
-            '<span style="color:#28a745;">✅ 任务已触发，请等待执行完成</span>';
-        } else {
-          document.getElementById('triggerResult').innerHTML = 
-            `<span style="color:#dc3545;">❌ ${data.message}</span>`;
-        }
+        document.getElementById('triggerResult').innerHTML = data.success 
+          ? '<span style="color:#28a745;">✅ 任务已触发，请等待执行完成</span>'
+          : `<span style="color:#dc3545;">❌ ${data.message}</span>`;
       } catch (e) {
-        document.getElementById('triggerResult').innerHTML = 
-          '<span style="color:#dc3545;">网络错误</span>';
+        document.getElementById('triggerResult').innerHTML = '<span style="color:#dc3545;">网络错误</span>';
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-bolt"></i> 一键全员签到';
@@ -714,9 +636,8 @@
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
       toast.textContent = message;
-      toast.className = `toast ${type}`;
-      toast.style.display = 'block';
-      setTimeout(() => toast.style.display = 'none', 3000);
+      toast.className = `toast ${type} show`;
+      setTimeout(() => { toast.className = 'toast'; toast.style.display = 'none'; }, 3000);
     }
     
     // 页面切换
@@ -728,13 +649,14 @@
         document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
         
-        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', reports: '举报管理', feedback: '留言管理', settings: '系统设置' };
+        const titles = { dashboard: '仪表盘', users: '用户管理', cards: '卡密管理', reports: '举报管理', orders: '订单管理', feedback: '留言管理', settings: '系统设置' };
         document.getElementById('pageTitle').textContent = titles[page];
         
         if (page === 'dashboard') loadDashboardStats();
         else if (page === 'users') loadUsers();
         else if (page === 'cards') loadCards();
-        else if (page === 'reports') loadReports();  
+        else if (page === 'reports') loadReports();
+        else if (page === 'orders') loadOrders();
         else if (page === 'feedback') loadFeedbacks();
         else if (page === 'settings') loadSettings();
       });
@@ -751,7 +673,6 @@
           document.getElementById('statVipUsers').textContent = data.stats.users.vip;
           document.getElementById('statTodaySigns').textContent = data.stats.signs.today;
           document.getElementById('statSuccessRate').textContent = data.stats.signs.successRate + '%';
-          
           document.getElementById('statsDetail').innerHTML = `
             <table>
               <tr><td>总签到次数</td><td><strong>${data.stats.signs.total}</strong></td></tr>
@@ -761,11 +682,6 @@
               <tr><td>总邀请次数</td><td><strong>${data.stats.invites?.total || 0}</strong></td></tr>
             </table>
           `;
-          const statsRows = document.querySelectorAll('#statsDetail table tr');
-          if (statsRows[2]) {
-            statsRows[2].children[0].textContent = '自动签到用户';
-            statsRows[2].children[1].querySelector('strong').textContent = data.stats.autoSign?.users ?? data.stats.subscriptions.active;
-          }
         }
       } catch (e) {}
     }
@@ -773,57 +689,30 @@
     async function loadUsers(page = 1) {
       currentPage = page;
       const search = document.getElementById('userSearch')?.value || '';
-      
       try {
         const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
         if (data.success) {
-          const html = `
+          document.getElementById('usersTable').innerHTML = `
             <table>
-              <thead>
-                <tr>
-                  <th>学号</th>
-                  <th>姓名</th>
-                  <th>邮箱</th>
-                  <th>VIP</th>
-                  <th>角色</th>
-                  <th>签到统计</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
+              <thead><tr><th>学号</th><th>姓名</th><th>邮箱</th><th>VIP</th><th>角色</th><th>签到统计</th><th>操作</th></tr></thead>
               <tbody>
                 ${data.users.map(u => `
                   <tr>
                     <td>${u.studentId}</td>
                     <td>${(u.name && u.name !== u.studentId) ? u.name : '未实名'}</td>
                     <td>${u.email || '-'} ${u.emailVerified ? '✓' : ''}</td>
-                    <td>
-                      ${u.isVip ? 
-                        `<span class="badge badge-success">VIP ${u.vipExpireAt ? new Date(u.vipExpireAt).toLocaleDateString() : ''}</span>` : 
-                        '<span class="badge badge-danger">普通</span>'}
-                    </td>
-                    <td>
-                      ${u.role === 'admin' ? 
-                        '<span class="badge badge-admin">管理员</span>' : 
-                        '<span class="badge badge-info">用户</span>'}
-                    </td>
+                    <td>${u.isVip ? `<span class="badge badge-success">VIP ${u.vipExpireAt ? new Date(u.vipExpireAt).toLocaleDateString() : ''}</span>` : '<span class="badge badge-danger">普通</span>'}</td>
+                    <td>${u.role === 'admin' ? '<span class="badge badge-admin">管理员</span>' : '<span class="badge badge-info">用户</span>'}</td>
                     <td>${u.successSignCount || 0}/${u.totalSignCount || 0}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')" title="查看详情">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-success btn-sm" onclick="adminSign('${u._id}', '${u.studentId}')" title="帮TA签到">
-                          <i class="fas fa-pen"></i>
-                        </button>
-                        <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)" title="加30天VIP">
-                          <i class="fas fa-crown"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')" title="删除用户">
-                          <i class="fas fa-trash"></i>
-                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')" title="查看详情"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-success btn-sm" onclick="adminSign('${u._id}', '${u.studentId}')" title="帮TA签到"><i class="fas fa-pen"></i></button>
+                        <button class="btn btn-warning btn-sm" onclick="quickVip('${u._id}', 30)" title="加30天VIP"><i class="fas fa-crown"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')" title="删除用户"><i class="fas fa-trash"></i></button>
                       </div>
                     </td>
                   </tr>
@@ -831,14 +720,10 @@
               </tbody>
             </table>
           `;
-          document.getElementById('usersTable').innerHTML = html;
-          
           const totalPages = Math.ceil(data.total / 20);
-          let paginationHtml = '';
-          for (let i = 1; i <= totalPages; i++) {
-            paginationHtml += `<button class="btn ${i === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadUsers(${i})">${i}</button>`;
-          }
-          document.getElementById('usersPagination').innerHTML = paginationHtml;
+          document.getElementById('usersPagination').innerHTML = Array.from({length: totalPages}, (_, i) => 
+            `<button class="btn ${i+1 === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadUsers(${i+1})">${i+1}</button>`
+          ).join('');
         }
       } catch (e) {}
     }
@@ -847,323 +732,163 @@
     
     async function adminSign(userId, studentId) {
       const password = prompt(`请输入 ${studentId} 的考勤密码（留空使用已保存的密码）:`);
-      
       try {
         showToast(`正在为 ${studentId} 签到...`, 'info');
-        
-        const res = await fetch(`${API_BASE}/admin/sign/${userId}`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ attendancePassword: password || undefined })
-        });
-        
+        const res = await fetch(`${API_BASE}/admin/sign/${userId}`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ attendancePassword: password || undefined }) });
         const data = await res.json();
-        
         if (data.success) {
-          if (data.result.success) {
-            showToast(`✅ 为 ${studentId} 签到成功！`, 'success');
-          } else {
-            showToast(`❌ 签到失败: ${data.result.message}`, 'error');
-          }
-          loadUsers(currentPage);
-          loadDashboardStats();
-        } else {
-          showToast(data.message || '签到失败', 'error');
-        }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
-    }
-    
-    async function adminSignFromDetail(userId, studentId) {
-      closeUserModal();
-      await adminSign(userId, studentId);
+          showToast(data.result.success ? `✅ 为 ${studentId} 签到成功！` : `❌ 签到失败: ${data.result.message}`, data.result.success ? 'success' : 'error');
+          loadUsers(currentPage); loadDashboardStats();
+        } else showToast(data.message || '签到失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
     
     async function viewUser(userId) {
       currentUserId = userId;
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/users/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (data.success) {
           currentUserData = data;
-          const user = data.user;
-          
+          const u = data.user;
           document.getElementById('userDetailContent').innerHTML = `
             <div class="form-row">
-              <div class="form-group">
-                <label>学号</label>
-                <input type="text" value="${user.studentId}" disabled style="background:#f5f5f5;">
-              </div>
-              <div class="form-group">
-                <label>姓名</label>
-                <input type="text" id="editName" value="${user.name || ''}">
-              </div>
+              <div class="form-group"><label>学号</label><input type="text" value="${u.studentId}" disabled style="background:#f5f5f5;"></div>
+              <div class="form-group"><label>姓名</label><input type="text" id="editName" value="${u.name || ''}"></div>
             </div>
-            <div class="form-group">
-              <label>邮箱</label>
-              <input type="email" id="editEmail" value="${user.email || ''}">
-            </div>
-            <div class="form-group">
-              <label>考勤密码</label>
-              <input type="text" id="editAttendancePassword" value="${user.attendancePassword || 'Ahgydx@920'}">
+            <div class="form-group"><label>邮箱</label><input type="email" id="editEmail" value="${u.email || ''}"></div>
+            <div class="form-group"><label>考勤密码</label><input type="text" id="editAttendancePassword" value="${u.attendancePassword || 'Ahgydx@920'}"></div>
+            <div class="form-row">
+              <div class="form-group"><label>VIP 状态</label><select id="editVip"><option value="true" ${u.isVip ? 'selected' : ''}>是</option><option value="false" ${!u.isVip ? 'selected' : ''}>否</option></select></div>
+              <div class="form-group"><label>VIP 过期时间</label><input type="date" id="editVipExpireAt" value="${u.vipExpireAt ? new Date(u.vipExpireAt).toISOString().split('T')[0] : ''}"></div>
             </div>
             <div class="form-row">
-              <div class="form-group">
-                <label>VIP 状态</label>
-                <select id="editVip">
-                  <option value="true" ${user.isVip ? 'selected' : ''}>是</option>
-                  <option value="false" ${!user.isVip ? 'selected' : ''}>否</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>VIP 过期时间</label>
-                <input type="date" id="editVipExpireAt" value="${user.vipExpireAt ? new Date(user.vipExpireAt).toISOString().split('T')[0] : ''}">
-              </div>
+              <div class="form-group"><label>角色</label><select id="editRole"><option value="user" ${u.role==='user'?'selected':''}>普通用户</option><option value="admin" ${u.role==='admin'?'selected':''}>管理员</option></select></div>
+              <div class="form-group"><label>账号状态</label><select id="editActive"><option value="true" ${u.isActive!==false?'selected':''}>启用</option><option value="false" ${u.isActive===false?'selected':''}>禁用</option></select></div>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>角色</label>
-                <select id="editRole">
-                  <option value="user" ${user.role === 'user' ? 'selected' : ''}>普通用户</option>
-                  <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>管理员</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>账号状态</label>
-                <select id="editActive">
-                  <option value="true" ${user.isActive !== false ? 'selected' : ''}>启用</option>
-                  <option value="false" ${user.isActive === false ? 'selected' : ''}>禁用</option>
-                </select>
-              </div>
-            </div>
-            <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-              <button class="btn btn-primary" onclick="saveUserChanges()">
-                <i class="fas fa-save"></i> 保存修改
-              </button>
-              <button class="btn btn-success" onclick="adminSignFromDetail('${user._id}', '${user.studentId}')">
-                <i class="fas fa-pen"></i> 帮 TA 签到
-              </button>
-              <button class="btn btn-warning" onclick="addVipDays(30)">
-                <i class="fas fa-crown"></i> +30天VIP
-              </button>
-              <button class="btn btn-danger" onclick="deleteUser('${user._id}', '${user.studentId}')">
-                <i class="fas fa-trash"></i> 删除用户
-              </button>
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="saveUserChanges()"><i class="fas fa-save"></i> 保存修改</button>
+              <button class="btn btn-success" onclick="adminSignFromDetail('${u._id}','${u.studentId}')"><i class="fas fa-pen"></i> 帮TA签到</button>
+              <button class="btn btn-warning" onclick="addVipDays(30)"><i class="fas fa-crown"></i> +30天VIP</button>
+              <button class="btn btn-danger" onclick="deleteUser('${u._id}','${u.studentId}')"><i class="fas fa-trash"></i> 删除用户</button>
             </div>
           `;
-          
-          const subs = data.subscriptions || [];
-          document.getElementById('userSubscriptionsList').innerHTML = subs.length > 0 ? subs.map(s => `
-            <div style="padding: 12px; border-bottom: 1px solid #eee;">
-              <strong>${s.name}</strong>
-              <span class="badge ${s.enabled ? 'badge-success' : 'badge-danger'}">${s.enabled ? '启用' : '禁用'}</span>
-              <span style="margin-left: 10px; color: #888;">${s.signTime}</span>
-            </div>
-          `).join('') : '<p>暂无订阅</p>';
-          
-          const autoSign = subs[0];
-          document.getElementById('userSubscriptionsList').innerHTML = autoSign ? `
-            <div style="padding: 12px; border-bottom: 1px solid #eee;">
+          document.getElementById('userSubscriptionsList').innerHTML = (data.subscriptions?.[0]) ? `
+            <div style="padding:12px;border-bottom:1px solid #eee;">
               <strong>自动签到</strong>
-              <span class="badge ${autoSign.enabled ? 'badge-success' : 'badge-danger'}">${autoSign.enabled ? '已开启' : '未开启'}</span>
-              <span style="margin-left: 10px; color: #888;">21:25</span>
-              <div style="margin-top: 8px; color: #666;">日期：${(autoSign.customDays || []).map(d => ['日','一','二','三','四','五','六'][d]).join('、') || '未设置'} ｜ 邮件：${autoSign.notifyOnSuccess || autoSign.notifyOnFailure ? '已开启提醒' : '未开启提醒'}</div>
-            </div>
-          ` : '<p>未启用自动签到</p>';
-
-          const logs = data.logs || [];
-          document.getElementById('userLogsList').innerHTML = logs.length > 0 ? logs.map(l => `
-            <div style="padding: 12px; border-bottom: 1px solid #eee;">
-              <span>${l.status === 'success' ? '✅' : '❌'}</span>
-              <strong style="margin-left: 10px;">${l.subscriptionName}</strong>
-              <span style="margin-left: 10px; color: #888;">${new Date(l.executedAt).toLocaleString()}</span>
-              <span style="margin-left: 10px; font-size: 13px;">${l.message || ''}</span>
-            </div>
-          `).join('') : '<p>暂无记录</p>';
-          
+              <span class="badge ${data.subscriptions[0].enabled ? 'badge-success' : 'badge-danger'}">${data.subscriptions[0].enabled ? '已开启' : '未开启'}</span>
+              <span style="margin-left:10px;color:#888;">21:25</span>
+            </div>` : '<p>未启用自动签到</p>';
+          document.getElementById('userLogsList').innerHTML = (data.logs?.length) ? data.logs.map(l => `
+            <div style="padding:12px;border-bottom:1px solid #eee;">
+              <span>${l.status==='success'?'✅':'❌'}</span>
+              <strong style="margin-left:10px;">${l.subscriptionName}</strong>
+              <span style="margin-left:10px;color:#888;">${new Date(l.executedAt).toLocaleString()}</span>
+              <span style="margin-left:10px;font-size:13px;">${l.message||''}</span>
+            </div>`).join('') : '<p>暂无记录</p>';
           document.getElementById('userDetailModal').classList.add('show');
         }
-      } catch (e) {
-        showToast('加载失败', 'error');
-      }
+      } catch (e) { showToast('加载失败', 'error'); }
     }
     
     async function saveUserChanges() {
-      const name = document.getElementById('editName')?.value;
-      const email = document.getElementById('editEmail')?.value;
-      const attendancePassword = document.getElementById('editAttendancePassword')?.value;
-      const isVip = document.getElementById('editVip')?.value === 'true';
-      const vipExpireAt = document.getElementById('editVipExpireAt')?.value;
-      const role = document.getElementById('editRole')?.value;
-      const isActive = document.getElementById('editActive')?.value === 'true';
-      
       try {
         const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
           method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ name, email, attendancePassword, isVip, vipExpireAt, role, isActive })
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: document.getElementById('editName')?.value,
+            email: document.getElementById('editEmail')?.value,
+            attendancePassword: document.getElementById('editAttendancePassword')?.value,
+            isVip: document.getElementById('editVip')?.value === 'true',
+            vipExpireAt: document.getElementById('editVipExpireAt')?.value,
+            role: document.getElementById('editRole')?.value,
+            isActive: document.getElementById('editActive')?.value === 'true'
+          })
         });
-        
         const data = await res.json();
-        if (data.success) {
-          showToast('保存成功', 'success');
-          closeUserModal();
-          loadUsers(currentPage);
-        } else {
-          showToast(data.message || '保存失败', 'error');
-        }
-      } catch (e) {
-        showToast('保存失败', 'error');
-      }
+        if (data.success) { showToast('保存成功', 'success'); closeUserModal(); loadUsers(currentPage); }
+        else showToast(data.message || '保存失败', 'error');
+      } catch (e) { showToast('保存失败', 'error'); }
     }
     
     async function addVipDays(days) {
       if (!currentUserData) return;
-      
       const user = currentUserData.user;
       let expireAt = user.vipExpireAt ? new Date(user.vipExpireAt) : new Date();
       if (!user.isVip || expireAt < new Date()) expireAt = new Date();
       expireAt.setDate(expireAt.getDate() + days);
-      
       try {
         const res = await fetch(`${API_BASE}/admin/users/${currentUserId}`, {
           method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ isVip: true, vipExpireAt: expireAt.toISOString() })
         });
-        
-        const data = await res.json();
-        if (data.success) {
-          showToast(`已添加 ${days} 天 VIP`, 'success');
-          viewUser(currentUserId);
-          loadUsers(currentPage);
-        }
-      } catch (e) {
-        showToast('操作失败', 'error');
-      }
+        if ((await res.json()).success) { showToast(`已添加 ${days} 天 VIP`, 'success'); viewUser(currentUserId); loadUsers(currentPage); }
+      } catch (e) { showToast('操作失败', 'error'); }
     }
     
     async function quickVip(userId, days) {
       try {
-        const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/users/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (!data.success) return;
-        
         const user = data.user;
         let expireAt = user.vipExpireAt ? new Date(user.vipExpireAt) : new Date();
         if (!user.isVip || expireAt < new Date()) expireAt = new Date();
         expireAt.setDate(expireAt.getDate() + days);
-        
         await fetch(`${API_BASE}/admin/users/${userId}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
+          method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ isVip: true, vipExpireAt: expireAt.toISOString() })
         });
-        
         showToast(`已添加 ${days} 天 VIP`, 'success');
         loadUsers(currentPage);
-      } catch (e) {
-        showToast('操作失败', 'error');
-      }
+      } catch (e) { showToast('操作失败', 'error'); }
     }
+    
+    async function adminSignFromDetail(userId, studentId) { closeUserModal(); await adminSign(userId, studentId); }
     
     async function deleteUser(userId, studentId) {
       if (!confirm(`确定删除用户 ${studentId} 吗？此操作不可恢复！`)) return;
       if (!confirm('再次确认：删除后将清除该用户的所有数据！')) return;
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/users/${userId}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        const data = await res.json();
-        
-        if (data.success) {
-          showToast(`✅ 用户 ${studentId} 已删除`, 'success');
-          closeUserModal();
-          loadUsers(currentPage);
-          loadDashboardStats();
-        } else {
-          showToast(`❌ ${data.message || '删除失败'}`, 'error');
-        }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+        const res = await fetch(`${API_BASE}/admin/users/${userId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+        if ((await res.json()).success) { showToast(`✅ 用户 ${studentId} 已删除`, 'success'); closeUserModal(); loadUsers(currentPage); loadDashboardStats(); }
+        else showToast('删除失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
     
-    function closeUserModal() {
-      document.getElementById('userDetailModal').classList.remove('show');
-      currentUserId = null;
-      currentUserData = null;
-    }
+    function closeUserModal() { document.getElementById('userDetailModal').classList.remove('show'); currentUserId = null; currentUserData = null; }
     
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const tabName = tab.dataset.tab;
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        document.getElementById('userInfoTab').classList.add('hidden');
-        document.getElementById('userSubscriptionsTab').classList.add('hidden');
-        document.getElementById('userLogsTab').classList.add('hidden');
-        if (tabName === 'info') document.getElementById('userInfoTab').classList.remove('hidden');
-        else if (tabName === 'subscriptions') document.getElementById('userSubscriptionsTab').classList.remove('hidden');
-        else if (tabName === 'logs') document.getElementById('userLogsTab').classList.remove('hidden');
+        ['userInfoTab','userSubscriptionsTab','userLogsTab'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.getElementById(tabName==='info'?'userInfoTab':tabName==='subscriptions'?'userSubscriptionsTab':'userLogsTab').classList.remove('hidden');
       });
     });
     
     async function loadCards() {
       const status = document.getElementById('cardStatusFilter')?.value || '';
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/cards?limit=100${status ? '&status=' + status : ''}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/cards?limit=100${status ? '&status='+status : ''}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (data.success) {
           document.getElementById('cardsStats').innerHTML = `
             <span class="badge badge-success">未使用: ${data.unusedCount}</span>
             <span class="badge badge-warning">已使用: ${data.usedCount}</span>
-            <span class="badge badge-info">总计: ${data.total}</span>
-          `;
-          
+            <span class="badge badge-info">总计: ${data.total}</span>`;
           document.getElementById('cardsTable').innerHTML = `
-            <table>
-              <thead>
-                <tr><th>卡密</th><th>天数</th><th>状态</th><th>使用者</th><th>使用时间</th><th>生成时间</th></tr>
-              </thead>
-              <tbody>
-                ${data.cards.map(c => `
-                  <tr>
-                    <td><code>${c.code}</code></td>
-                    <td>${c.days}天</td>
-                    <td><span class="badge ${c.status === 'unused' ? 'badge-success' : 'badge-warning'}">${c.status === 'unused' ? '未使用' : '已使用'}</span></td>
-                    <td>${c.usedBy ? `${c.usedBy.name || c.usedBy.studentId}` : '-'}</td>
-                    <td>${c.usedAt ? new Date(c.usedAt).toLocaleString() : '-'}</td>
-                    <td>${new Date(c.createdAt).toLocaleString()}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          `;
+            <table><thead><tr><th>卡密</th><th>天数</th><th>状态</th><th>使用者</th><th>使用时间</th><th>生成时间</th></tr></thead>
+            <tbody>${data.cards.map(c => `
+              <tr><td><code>${c.code}</code></td><td>${c.days}天</td>
+              <td><span class="badge ${c.status==='unused'?'badge-success':'badge-warning'}">${c.status==='unused'?'未使用':'已使用'}</span></td>
+              <td>${c.usedBy ? `${c.usedBy.name || c.usedBy.studentId}` : '-'}</td>
+              <td>${c.usedAt ? new Date(c.usedAt).toLocaleString() : '-'}</td>
+              <td>${new Date(c.createdAt).toLocaleString()}</td></tr>
+            `).join('')}</tbody></table>`;
         }
       } catch (e) {}
     }
@@ -1171,154 +896,73 @@
     async function generateCards() {
       const count = parseInt(document.getElementById('cardCount').value);
       const days = parseInt(document.getElementById('cardDays').value);
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/cards/generate`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ count, days })
-        });
-        
+        const res = await fetch(`${API_BASE}/admin/cards/generate`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ count, days }) });
         const data = await res.json();
-        if (data.success) {
-          showToast(data.message, 'success');
-          alert('生成的卡密：\n' + data.cards.map(c => c.code).join('\n'));
-          loadCards();
-        }
+        if (data.success) { showToast(data.message, 'success'); alert('生成的卡密：\n' + data.cards.map(c => c.code).join('\n')); loadCards(); }
       } catch (e) {}
     }
     
-    function exportCards() {
-      window.open(`${API_BASE}/admin/cards/export`, '_blank');
-    }
+    function exportCards() { window.open(`${API_BASE}/admin/cards/export`, '_blank'); }
+    function exportUsers() { alert('导出功能开发中'); }
     
-    function exportUsers() {
-      alert('导出功能开发中');
-    }
-    
-    // ============ 留言管理功能 ============
+    // ============ 留言管理 ============
     async function loadFeedbacks(page = 1) {
       feedbackCurrentPage = page;
       const status = document.getElementById('feedbackStatusFilter')?.value || '';
       const type = document.getElementById('feedbackTypeFilter')?.value || '';
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/feedback?page=${page}&status=${status}&type=${type}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/feedback?page=${page}&status=${status}&type=${type}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        
         if (data.success) {
           const badge = document.getElementById('feedbackBadge');
-          if (data.stats.pending > 0) {
-            badge.textContent = data.stats.pending;
-            badge.style.display = 'block';
-          } else {
-            badge.style.display = 'none';
-          }
-          
+          if (data.stats.pending > 0) { badge.textContent = data.stats.pending; badge.style.display = 'block'; }
+          else badge.style.display = 'none';
           document.getElementById('feedbackStats').innerHTML = `
             <span class="badge badge-warning">待处理: ${data.stats.pending}</span>
             <span class="badge badge-info">已读: ${data.stats.read}</span>
             <span class="badge badge-success">已回复: ${data.stats.replied}</span>
-            <span class="badge badge-danger">已关闭: ${data.stats.closed}</span>
-          `;
-          
-          const typeMap = { bug: '🐛', suggestion: '💡', question: '❓', other: '📝' };
-          const statusMap = {
-            pending: '<span class="badge badge-warning">待处理</span>',
-            read: '<span class="badge badge-info">已读</span>',
-            replied: '<span class="badge badge-success">已回复</span>',
-            closed: '<span class="badge badge-danger">已关闭</span>'
-          };
-          
+            <span class="badge badge-danger">已关闭: ${data.stats.closed}</span>`;
+          const typeMap = { bug:'🐛', suggestion:'💡', question:'❓', other:'📝' };
+          const statusMap = { pending:'<span class="badge badge-warning">待处理</span>', read:'<span class="badge badge-info">已读</span>', replied:'<span class="badge badge-success">已回复</span>', closed:'<span class="badge badge-danger">已关闭</span>' };
           document.getElementById('feedbacksTable').innerHTML = `
-            <table>
-              <thead>
-                <tr><th>类型</th><th>用户</th><th>标题</th><th>状态</th><th>提交时间</th><th>操作</th></tr>
-              </thead>
-              <tbody>
-                ${data.feedbacks.map(f => `
-                  <tr>
-                    <td>${typeMap[f.type] || '📝'}</td>
-                    <td>${f.userId?.name || f.userId?.studentId || '未知'}</td>
-                    <td>${f.title}</td>
-                    <td>${statusMap[f.status]}</td>
-                    <td>${new Date(f.createdAt).toLocaleString()}</td>
-                    <td>
-                      <div class="action-buttons">
-                        <button class="btn btn-outline btn-sm" onclick="viewFeedbackDetail('${f._id}')">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="openReplyModal('${f._id}')">
-                          <i class="fas fa-reply"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${f._id}')">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          `;
-          
+            <table><thead><tr><th>类型</th><th>用户</th><th>标题</th><th>状态</th><th>提交时间</th><th>操作</th></tr></thead>
+            <tbody>${data.feedbacks.map(f => `
+              <tr><td>${typeMap[f.type]||'📝'}</td><td>${f.userId?.name || f.userId?.studentId || '未知'}</td>
+              <td>${f.title}</td><td>${statusMap[f.status]}</td><td>${new Date(f.createdAt).toLocaleString()}</td>
+              <td><div class="action-buttons">
+                <button class="btn btn-outline btn-sm" onclick="viewFeedbackDetail('${f._id}')"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-primary btn-sm" onclick="openReplyModal('${f._id}')"><i class="fas fa-reply"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteFeedback('${f._id}')"><i class="fas fa-trash"></i></button>
+              </div></td></tr>
+            `).join('')}</tbody></table>`;
           const totalPages = Math.ceil(data.total / 20);
-          let paginationHtml = '';
-          for (let i = 1; i <= totalPages; i++) {
-            paginationHtml += `<button class="btn ${i === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadFeedbacks(${i})">${i}</button>`;
-          }
-          document.getElementById('feedbackPagination').innerHTML = paginationHtml;
+          document.getElementById('feedbackPagination').innerHTML = Array.from({length:totalPages},(_,i)=>
+            `<button class="btn ${i+1===page?'btn-primary':'btn-outline'} btn-sm" onclick="loadFeedbacks(${i+1})">${i+1}</button>`).join('');
         }
       } catch (e) {}
     }
     
     async function viewFeedbackDetail(id) {
       try {
-        const res = await fetch(`${API_BASE}/feedback/${id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/feedback/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        
-        if (data.success) {
-          const f = data.feedback;
-          alert(`标题：${f.title}\n内容：${f.content}\n${f.adminReply ? '回复：' + f.adminReply : '暂无回复'}`);
-        }
+        if (data.success) { const f = data.feedback; alert(`标题：${f.title}\n内容：${f.content}\n${f.adminReply ? '回复：' + f.adminReply : '暂无回复'}`); }
       } catch (e) {}
     }
     
     async function openReplyModal(id) {
       try {
-        const res = await fetch(`${API_BASE}/feedback/${id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/feedback/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        
         if (data.success) {
           const f = data.feedback;
           document.getElementById('replyModalContent').innerHTML = `
-            <p><strong>用户：</strong>${f.userId?.name || f.userId?.studentId}</p>
-            <p><strong>标题：</strong>${f.title}</p>
-            <div style="background:#f5f7fa; padding:12px; border-radius:8px; margin:15px 0;">
-              ${f.content.replace(/\n/g, '<br>')}
-            </div>
-            <div class="form-group">
-              <label>回复内容</label>
-              <textarea id="replyContent" rows="5" style="width:100%; padding:12px; border-radius:8px;">${f.adminReply || ''}</textarea>
-            </div>
-            <button class="btn btn-primary" onclick="submitReply('${f._id}')">
-              <i class="fas fa-paper-plane"></i> 提交回复
-            </button>
-            ${f.status === 'pending' ? `
-              <button class="btn btn-outline" onclick="markAsRead('${f._id}')" style="margin-left:10px;">
-                <i class="fas fa-check"></i> 标记为已读
-              </button>
-            ` : ''}
-          `;
+            <p><strong>用户：</strong>${f.userId?.name || f.userId?.studentId}</p><p><strong>标题：</strong>${f.title}</p>
+            <div style="background:#f5f7fa;padding:12px;border-radius:8px;margin:15px 0;">${f.content.replace(/\n/g,'<br>')}</div>
+            <div class="form-group"><label>回复内容</label><textarea id="replyContent" rows="5" style="width:100%;padding:12px;border-radius:8px;">${f.adminReply||''}</textarea></div>
+            <button class="btn btn-primary" onclick="submitReply('${f._id}')"><i class="fas fa-paper-plane"></i> 提交回复</button>
+            ${f.status==='pending'?`<button class="btn btn-outline" onclick="markAsRead('${f._id}')" style="margin-left:10px;"><i class="fas fa-check"></i> 标记为已读</button>`:''}`;
           document.getElementById('replyModal').classList.add('show');
         }
       } catch (e) {}
@@ -1327,60 +971,25 @@
     async function submitReply(id) {
       const reply = document.getElementById('replyContent').value.trim();
       if (!reply) { alert('请输入回复内容'); return; }
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/feedback/${id}/reply`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ reply })
-        });
-        
-        const data = await res.json();
-        if (data.success) {
-          showToast('回复成功', 'success');
-          closeReplyModal();
-          loadFeedbacks(feedbackCurrentPage);
-        } else {
-          showToast(data.message || '回复失败', 'error');
-        }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+        const res = await fetch(`${API_BASE}/admin/feedback/${id}/reply`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ reply }) });
+        if ((await res.json()).success) { showToast('回复成功', 'success'); closeReplyModal(); loadFeedbacks(feedbackCurrentPage); }
+        else showToast('回复失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
     
     async function markAsRead(id) {
       try {
-        await fetch(`${API_BASE}/admin/feedback/${id}/status`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ status: 'read' })
-        });
-        closeReplyModal();
-        loadFeedbacks(feedbackCurrentPage);
+        await fetch(`${API_BASE}/admin/feedback/${id}/status`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'read' }) });
+        closeReplyModal(); loadFeedbacks(feedbackCurrentPage);
       } catch (e) {}
     }
     
     async function deleteFeedback(id) {
       if (!confirm('确定删除这条留言吗？')) return;
-      
-      try {
-        await fetch(`${API_BASE}/admin/feedback/${id}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        showToast('删除成功', 'success');
-        loadFeedbacks(feedbackCurrentPage);
-      } catch (e) {
-        showToast('删除失败', 'error');
-      }
+      try { await fetch(`${API_BASE}/admin/feedback/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); showToast('删除成功', 'success'); loadFeedbacks(feedbackCurrentPage); }
+      catch (e) { showToast('删除失败', 'error'); }
     }
-
 
     // ============ 举报管理 ============
     let reportsCurrentPage = 1;
@@ -1388,86 +997,74 @@
     async function loadReports(page = 1) {
       reportsCurrentPage = page;
       const status = document.getElementById('reportStatusFilter')?.value || '';
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/reports?page=${page}&status=${status}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/reports?page=${page}&status=${status}`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        
         if (data.success) {
           const badge = document.getElementById('reportBadge');
-          if (data.pendingCount > 0) {
-            badge.textContent = data.pendingCount;
-            badge.style.display = 'block';
-          } else {
-            badge.style.display = 'none';
-          }
-          
-          document.getElementById('reportsStats').innerHTML = `
-            <span class="badge badge-warning">待处理: ${data.pendingCount}</span>
-            <span class="badge badge-info">总计: ${data.total}</span>
-          `;
-          
-          const statusMap = {
-            pending: '<span class="badge badge-warning">待处理</span>',
-            handled: '<span class="badge badge-success">已处理</span>',
-            dismissed: '<span class="badge badge-danger">已驳回</span>'
-          };
-          
+          if (data.pendingCount > 0) { badge.textContent = data.pendingCount; badge.style.display = 'block'; }
+          else badge.style.display = 'none';
+          document.getElementById('reportsStats').innerHTML = `<span class="badge badge-warning">待处理: ${data.pendingCount}</span> <span class="badge badge-info">总计: ${data.total}</span>`;
+          const statusMap = { pending:'<span class="badge badge-warning">待处理</span>', handled:'<span class="badge badge-success">已处理</span>', dismissed:'<span class="badge badge-danger">已驳回</span>' };
           document.getElementById('reportsTable').innerHTML = `
-            <table>
-              <thead>
-                <tr><th>举报人</th><th>被举报人</th><th>原因</th><th>商品</th><th>状态</th><th>时间</th><th>操作</th></tr>
-              </thead>
-              <tbody>
-                ${data.reports.map(r => `
-                  <tr>
-                    <td>${r.reporterId?.name || r.reporterId?.studentId || '未知'}</td>
-                    <td>${r.targetUserId?.name || r.targetUserId?.studentId || '未知'}</td>
-                    <td>${r.reason}</td>
-                    <td>${r.productId?.title || '-'}</td>
-                    <td>${statusMap[r.status]}</td>
-                    <td>${new Date(r.createdAt).toLocaleString()}</td>
-                    <td>
-                      ${r.status === 'pending' ? `
-                        <button class="btn btn-success btn-sm" onclick="handleReport('${r._id}', 'handled')">标记已处理</button>
-                        <button class="btn btn-danger btn-sm" onclick="handleReport('${r._id}', 'dismissed')">驳回</button>
-                      ` : '<span class="badge badge-info">已完结</span>'}
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          `;
+            <table><thead><tr><th>举报人</th><th>被举报人</th><th>原因</th><th>商品</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
+            <tbody>${data.reports.map(r => `
+              <tr><td>${r.reporterId?.name || r.reporterId?.studentId || '未知'}</td><td>${r.targetUserId?.name || r.targetUserId?.studentId || '未知'}</td>
+              <td>${r.reason}</td><td>${r.productId?.title || '-'}</td><td>${statusMap[r.status]}</td><td>${new Date(r.createdAt).toLocaleString()}</td>
+              <td>${r.status==='pending' ? `<button class="btn btn-success btn-sm" onclick="handleReport('${r._id}','handled')">标记已处理</button> <button class="btn btn-danger btn-sm" onclick="handleReport('${r._id}','dismissed')">驳回</button>` : '<span class="badge badge-info">已完结</span>'}</td></tr>
+            `).join('')}</tbody></table>`;
         }
       } catch (e) {}
     }
     
     async function handleReport(id, status) {
       try {
-        const res = await fetch(`${API_BASE}/admin/reports/${id}`, {
-          method: 'PUT',
-          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status })
-        });
-        const data = await res.json();
-        if (data.success) {
-          showToast(status === 'handled' ? '已标记为已处理' : '已驳回举报', 'success');
-          loadReports(reportsCurrentPage);
-        }
+        const res = await fetch(`${API_BASE}/admin/reports/${id}`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+        if ((await res.json()).success) { showToast(status==='handled'?'已标记为已处理':'已驳回举报','success'); loadReports(reportsCurrentPage); }
       } catch (e) { showToast('操作失败', 'error'); }
     }
-    function closeReplyModal() {
-      document.getElementById('replyModal').classList.remove('show');
+
+    // ============ 订单管理 ============
+    async function loadOrders(page = 1) {
+      ordersCurrentPage = page;
+      const status = document.getElementById('orderStatusFilter')?.value || '';
+      try {
+        const res = await fetch(`${API_BASE}/admin/orders?page=${page}&limit=20&status=${status}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success) {
+          const pendingCount = status ? (data.total || 0) : 0; // approximate
+          document.getElementById('ordersStats').innerHTML = `<span class="badge badge-info">总计: ${data.total || 0}</span>`;
+          const statusMap = {
+            pending: '<span class="badge badge-warning">待确认</span>',
+            confirmed: '<span class="badge badge-info">已确认</span>',
+            shipped: '<span class="badge badge-success">已发货</span>',
+            completed: '<span class="badge badge-success">已完成</span>',
+            cancelled: '<span class="badge badge-danger">已取消</span>'
+          };
+          document.getElementById('ordersTable').innerHTML = `
+            <table><thead><tr><th>订单号</th><th>商品专号</th><th>商品</th><th>价格</th><th>买家</th><th>卖家</th><th>收货信息</th><th>状态</th><th>时间</th></tr></thead>
+            <tbody>${(data.orders || []).map(o => `
+              <tr>
+                <td><code>${o.orderNo}</code></td><td>${o.productNo || '-'}</td><td>${o.title}</td><td>¥${o.price.toFixed(2)}</td>
+                <td>${o.buyerId?.name || o.buyerId?.studentId || '-'}</td><td>${o.sellerId?.name || o.sellerId?.studentId || '-'}</td>
+                <td style="font-size:12px;">📍${o.address?.name || '-'}<br>📱${o.address?.phone || '-'}<br>🏠${o.address?.detail || '-'}</td>
+                <td>${statusMap[o.status]}</td><td>${new Date(o.createdAt).toLocaleString()}</td>
+              </tr>
+            `).join('')}</tbody></table>
+          `;
+          const totalPages = Math.ceil((data.total || 0) / 20);
+          document.getElementById('ordersPagination').innerHTML = Array.from({length: totalPages}, (_, i) =>
+            `<button class="btn ${i+1===page?'btn-primary':'btn-outline'} btn-sm" onclick="loadOrders(${i+1})">${i+1}</button>`).join('');
+        }
+      } catch (e) {}
     }
+
+    function closeReplyModal() { document.getElementById('replyModal').classList.remove('show'); }
     
     // ============ 设置功能 ============
     async function loadSettings() {
       try {
-        const res = await fetch(`${API_BASE}/admin/config`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_BASE}/admin/config`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
         if (data.success) {
           if (data.configs.dashboard_notice) {
@@ -1477,100 +1074,44 @@
             document.getElementById('noticeContentInput').value = notice.content || '';
             document.getElementById('noticeStyle').value = notice.style || 'info';
           }
-          if (data.configs.invite_reward_days) {
-            document.getElementById('inviteRewardDays').value = data.configs.invite_reward_days;
-          }
+          if (data.configs.invite_reward_days) document.getElementById('inviteRewardDays').value = data.configs.invite_reward_days;
         }
-      } catch (e) {
-        console.error('加载设置失败', e);
-      }
+      } catch (e) { console.error('加载设置失败', e); }
     }
     
     async function saveNoticeConfig() {
-      const value = {
-        enabled: document.getElementById('noticeEnabled').value === 'true',
-        title: document.getElementById('noticeTitleInput').value,
-        content: document.getElementById('noticeContentInput').value,
-        style: document.getElementById('noticeStyle').value
-      };
-      
+      const value = { enabled: document.getElementById('noticeEnabled').value==='true', title: document.getElementById('noticeTitleInput').value, content: document.getElementById('noticeContentInput').value, style: document.getElementById('noticeStyle').value };
       try {
-        const res = await fetch(`${API_BASE}/admin/config/dashboard_notice`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ value })
-        });
-        
-        const data = await res.json();
-        if (data.success) {
-          showToast('通知设置已保存', 'success');
-        } else {
-          showToast('保存失败', 'error');
-        }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+        const res = await fetch(`${API_BASE}/admin/config/dashboard_notice`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ value }) });
+        if ((await res.json()).success) showToast('通知设置已保存', 'success'); else showToast('保存失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
     
     async function saveInviteReward() {
       const value = parseInt(document.getElementById('inviteRewardDays').value);
-      
       try {
-        const res = await fetch(`${API_BASE}/admin/config/invite_reward_days`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ value })
-        });
-        
-        const data = await res.json();
-        if (data.success) {
-          showToast('奖励设置已保存', 'success');
-        } else {
-          showToast('保存失败', 'error');
-        }
-      } catch (e) {
-        showToast('网络错误', 'error');
-      }
+        const res = await fetch(`${API_BASE}/admin/config/invite_reward_days`, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ value }) });
+        if ((await res.json()).success) showToast('奖励设置已保存', 'success'); else showToast('保存失败', 'error');
+      } catch (e) { showToast('网络错误', 'error'); }
     }
     
-    function saveSettings() {
-      showToast('设置已保存', 'success');
-    }
-    
-    function cleanExpiredData() {
-      showToast('清理完成', 'success');
-    }
-    
+    function saveSettings() { showToast('设置已保存', 'success'); }
+    function cleanExpiredData() { showToast('清理完成', 'success'); }
     function resetSystem() {
       if (!confirm('⚠️ 危险操作！确定重置系统吗？所有数据将被删除！')) return;
       if (!confirm('再次确认：此操作不可恢复！')) return;
       showToast('系统已重置', 'success');
     }
     
-    function logout() {
-      localStorage.clear();
-      window.location.href = '/';
-    }
+    function logout() { localStorage.clear(); window.location.href = '/'; }
     
-    document.getElementById('userDetailModal').addEventListener('click', function(e) {
-      if (e.target === this) closeUserModal();
-    });
-    
-    document.getElementById('replyModal').addEventListener('click', function(e) {
-      if (e.target === this) closeReplyModal();
-    });
+    document.getElementById('userDetailModal').addEventListener('click', function(e) { if (e.target === this) closeUserModal(); });
+    document.getElementById('replyModal').addEventListener('click', function(e) { if (e.target === this) closeReplyModal(); });
     
     function initAutoSignAdminLabels() {
       const subscriptionTab = document.querySelector('.tab[data-tab="subscriptions"]');
       if (subscriptionTab) subscriptionTab.textContent = '自动签到';
     }
-
     initAutoSignAdminLabels();
     checkAdmin();
     loadDashboardStats();
