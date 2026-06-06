@@ -43,395 +43,175 @@
             --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            -webkit-tap-highlight-color: transparent;
-            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            -webkit-tap-highlight-color: transparent; scroll-behavior: smooth;
         }
-
         body {
-            min-height: 100vh;
-            min-height: 100dvh;
+            min-height: 100vh; min-height: 100dvh;
             background:
                 radial-gradient(ellipse 80% 60% at 15% 8%, rgba(59, 109, 240, 0.10), transparent 45%),
                 radial-gradient(ellipse 60% 50% at 82% 12%, rgba(13, 158, 108, 0.08), transparent 40%),
                 radial-gradient(ellipse 70% 55% at 50% 90%, rgba(194, 120, 10, 0.05), transparent 45%),
                 linear-gradient(175deg, #f3f6fc 0%, #f8fafd 35%, #fafbfd 65%, #fdfaf5 100%);
-            color: var(--ink);
-            font-family: var(--font-sans);
-            line-height: 1.55;
-            padding: clamp(14px, 3vw, 34px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
+            color: var(--ink); font-family: var(--font-sans); line-height: 1.55;
+            padding: clamp(14px, 3vw, 34px); display: flex; align-items: center;
+            justify-content: center; overflow-x: hidden;
         }
+        .bg-orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px); opacity: 0.38; will-change: transform; }
+        .bg-orb--1 { width: 320px; height: 320px; background: rgba(59, 109, 240, 0.14); top: -8%; left: -6%; animation: orbFloat1 18s ease-in-out infinite; }
+        .bg-orb--2 { width: 260px; height: 260px; background: rgba(13, 158, 108, 0.11); top: 55%; right: -7%; animation: orbFloat2 22s ease-in-out infinite; }
+        .bg-orb--3 { width: 200px; height: 200px; background: rgba(194, 120, 10, 0.09); bottom: -5%; left: 30%; animation: orbFloat3 20s ease-in-out infinite; }
+        @keyframes orbFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 25%{transform:translate(40px,-30px) scale(1.08)} 50%{transform:translate(-20px,20px) scale(.94)} 75%{transform:translate(30px,10px) scale(1.04)} }
+        @keyframes orbFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-35px,-25px) scale(1.06)} 66%{transform:translate(25px,30px) scale(.93)} }
+        @keyframes orbFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-20px) scale(1.07)} }
 
-        .bg-orb {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            filter: blur(90px);
-            opacity: 0.38;
-            will-change: transform;
-        }
-        .bg-orb--1 {
-            width: 320px;
-            height: 320px;
-            background: rgba(59, 109, 240, 0.14);
-            top: -8%;
-            left: -6%;
-            animation: orbFloat1 18s ease-in-out infinite;
-        }
-        .bg-orb--2 {
-            width: 260px;
-            height: 260px;
-            background: rgba(13, 158, 108, 0.11);
-            top: 55%;
-            right: -7%;
-            animation: orbFloat2 22s ease-in-out infinite;
-        }
-        .bg-orb--3 {
-            width: 200px;
-            height: 200px;
-            background: rgba(194, 120, 10, 0.09);
-            bottom: -5%;
-            left: 30%;
-            animation: orbFloat3 20s ease-in-out infinite;
-        }
-        @keyframes orbFloat1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(40px, -30px) scale(1.08); }
-            50% { transform: translate(-20px, 20px) scale(0.94); }
-            75% { transform: translate(30px, 10px) scale(1.04); }
-        }
-        @keyframes orbFloat2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(-35px, -25px) scale(1.06); }
-            66% { transform: translate(25px, 30px) scale(0.93); }
-        }
-        @keyframes orbFloat3 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-30px, -20px) scale(1.07); }
-        }
-
-        .shell {
-            position: relative;
-            z-index: 1;
-            width: min(1200px, 100%);
-            min-height: clamp(580px, 78vh, 760px);
-            min-height: clamp(580px, 78dvh, 760px);
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: minmax(0, 1.08fr) 440px;
-            align-items: stretch;
-            gap: clamp(20px, 3vw, 32px);
-        }
-
-        .hero,
-        .login-card {
-            background: rgba(255, 255, 255, 0.82);
-            border: 1px solid rgba(229, 233, 240, 0.7);
-            box-shadow: var(--shadow-lg);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-radius: var(--radius-xl);
-            transition: box-shadow var(--transition-slow), border-color var(--transition-slow);
-        }
-        .hero:hover,
-        .login-card:hover {
-            box-shadow: var(--shadow-xl);
-            border-color: rgba(200, 210, 225, 0.7);
-        }
-
-        .hero {
-            padding: clamp(26px, 4vw, 44px) clamp(22px, 4vw, 40px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 28px;
-            overflow: hidden;
-            position: relative;
-        }
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: -60px;
-            right: -60px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(59, 109, 240, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .hero-top {
-            position: relative;
-            z-index: 1;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-dark);
-            font-weight: 800;
-            font-size: 15px;
-            margin-bottom: 24px;
-            letter-spacing: -0.01em;
-        }
-        .brand-badge {
-            width: 38px;
-            height: 38px;
-            border-radius: 11px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, #e8f0ff, #dce7fd);
-            color: var(--primary);
-            font-weight: 900;
-            font-size: 16px;
-            letter-spacing: -0.02em;
-            box-shadow: 0 2px 8px rgba(59, 109, 240, 0.12);
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 6px 13px;
-            border-radius: 999px;
-            background: var(--green-soft);
-            color: #087a56;
-            font-size: 12.5px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: 0.01em;
-            border: 1px solid rgba(13, 158, 108, 0.13);
-        }
+        .shell { position: relative; z-index: 1; width: min(1200px, 100%); min-height: clamp(580px, 78vh, 760px); min-height: clamp(580px, 78dvh, 760px); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.08fr) 440px; align-items: stretch; gap: clamp(20px, 3vw, 32px); }
+        .hero, .login-card { background: rgba(255,255,255,0.82); border: 1px solid rgba(229,233,240,0.7); box-shadow: var(--shadow-lg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: var(--radius-xl); transition: box-shadow var(--transition-slow), border-color var(--transition-slow); }
+        .hero:hover, .login-card:hover { box-shadow: var(--shadow-xl); border-color: rgba(200,210,225,0.7); }
+        .hero { padding: clamp(26px,4vw,44px) clamp(22px,4vw,40px); display: flex; flex-direction: column; justify-content: space-between; gap: 28px; overflow: hidden; position: relative; }
+        .hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(59,109,240,0.05) 0%, transparent 70%); pointer-events: none; }
+        .hero-top { position: relative; z-index: 1; }
+        .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--primary-dark); font-weight: 800; font-size: 15px; margin-bottom: 24px; letter-spacing: -0.01em; }
+        .brand-badge { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: linear-gradient(135deg,#e8f0ff,#dce7fd); color: var(--primary); font-weight: 900; font-size: 16px; letter-spacing: -0.02em; box-shadow: 0 2px 8px rgba(59,109,240,0.12); }
+        .eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; background: var(--green-soft); color: #087a56; font-size: 12.5px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.01em; border: 1px solid rgba(13,158,108,0.13); }
         .eyebrow i { font-size: 11px; }
-
-        .hero h1 {
-            max-width: 700px;
-            font-size: clamp(28px, 4.2vw, 50px);
-            line-height: 1.12;
-            letter-spacing: -0.025em;
-            margin-bottom: 14px;
-            font-weight: 800;
-            color: #111520;
+        .hero h1 { max-width: 700px; font-size: clamp(28px,4.2vw,50px); line-height: 1.12; letter-spacing: -0.025em; margin-bottom: 14px; font-weight: 800; color: #111520; }
+        .hero h1 span { background: linear-gradient(135deg,var(--primary),#5b8af7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .lead { max-width: 640px; color: var(--ink-secondary); font-size: clamp(15px,1.4vw,17px); letter-spacing: -0.01em; }
+        .value-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 28px; }
+        .value-card { background: #fafcfe; border: 1px solid var(--line-light); border-radius: var(--radius); padding: clamp(13px,1.6vw,17px) clamp(12px,1.4vw,15px); transition: all var(--transition); position: relative; overflow: hidden; }
+        .value-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(59,109,240,0.03) 0%,transparent 60%); pointer-events: none; }
+        .value-card:hover { border-color: #cdd7ea; box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+        .value-card .vc-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; margin-bottom: 8px; font-size: 14px; font-weight: 700; }
+        .value-card .vc-icon.blue{background:#eef4ff;color:var(--primary)} .value-card .vc-icon.green{background:var(--green-soft);color:var(--green)} .value-card .vc-icon.amber{background:var(--amber-soft);color:var(--amber)}
+        .value-card strong{display:block;font-size:15px;margin-bottom:3px;font-weight:750;letter-spacing:-0.01em} .value-card span{color:var(--muted);font-size:12.5px;line-height:1.45}
+        .support-card{position:relative;z-index:1;margin-top:6px;border-radius:var(--radius-lg);border:1px solid var(--amber-border);background:linear-gradient(175deg,#fffcf5,#fef9ee 40%,#fffdf9 100%);padding:clamp(18px,2.2vw,24px);box-shadow:0 2px 12px rgba(194,120,10,0.06);transition:all var(--transition)}
+        .support-card:hover{box-shadow:0 6px 24px rgba(194,120,10,0.10);border-color:#e2c88a}
+        .support-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+        .support-title{font-size:clamp(16px,1.6vw,19px);font-weight:800;color:#6b3a0a;margin-bottom:6px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px}
+        .support-title .coffee-icon{font-size:18px;animation:steam 2.5s ease-in-out infinite}
+        @keyframes steam{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-5px);opacity:.7}}
+        .support-copy{color:#7a5018;font-size:13.5px;line-height:1.55}
+        .cost-pill{flex:0 0 auto;padding:10px 14px;border-radius:var(--radius-sm);background:#fffefb;border:1px solid #ecd9a8;color:#6b3a0a;font-weight:800;text-align:center;min-width:90px;font-size:14px;white-space:nowrap}
+        .cost-pill small{display:block;color:#9a6b2e;font-weight:600;margin-top:2px;font-size:11px}
+        .qr-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+        .qr-card{border:1px solid #ecd9a8;border-radius:var(--radius);background:#fffefb;padding:13px;text-align:center;cursor:pointer;transition:all var(--transition);-webkit-tap-highlight-color:transparent;user-select:none;position:relative}
+        .qr-card:hover{transform:translateY(-3px);border-color:#d4a74a;box-shadow:0 10px 30px rgba(194,120,10,0.14)}
+        .qr-card:active{transform:scale(.97);transition:transform .1s}
+        .qr-card img{width:clamp(120px,15vw,150px);height:clamp(120px,15vw,150px);object-fit:contain;border-radius:10px;background:#fff;border:1px solid #f5eedf;pointer-events:none}
+        .qr-card strong{display:block;margin-top:9px;color:#6b3a0a;font-size:14px;font-weight:750;letter-spacing:-0.01em}
+        .qr-card span{display:block;margin-top:3px;color:#9a6b2e;font-size:11.5px}
+        .qr-card .tap-hint{display:inline-block;margin-top:5px;padding:3px 8px;border-radius:6px;background:rgba(194,120,10,0.06);font-size:10.5px;color:#8a5c20;font-weight:600}
+        .support-note{margin-top:13px;color:#7a5018;font-size:12.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,0.6);border-radius:8px;padding:8px 12px;border:1px dashed #e8d5a8}
+        .support-note .note-text{flex:1;min-width:0}
+        .btn-copy-note{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;border:1px solid #d4b87a;border-radius:7px;padding:6px 11px;background:#fffef9;color:#6b3a0a;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all var(--transition-fast);font-family:var(--font-sans)}
+        .btn-copy-note:hover{background:#fff8e8;border-color:#c29a3a;box-shadow:0 2px 8px rgba(194,120,10,0.1)}
+        .btn-copy-note:active{transform:scale(.95);background:#fef3d8}
+        .btn-copy-note.copied{background:#eafaf3;border-color:#0d9e6c;color:#087a56}
+        .login-card{padding:clamp(24px,3vw,36px) clamp(20px,2.8vw,32px);display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative}
+        .login-kicker{color:var(--green);font-size:12.5px;font-weight:800;margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase}
+        .login-card h2{font-size:clamp(24px,3vw,30px);letter-spacing:-0.02em;margin-bottom:4px;font-weight:800;color:#111520}
+        .login-note{color:var(--muted);font-size:13.5px;margin-bottom:18px;letter-spacing:-0.01em}
+        .invite-badge{display:none;background:#fffdf5;border:1px solid #f0d89c;color:#7a4e0a;padding:10px 13px;border-radius:var(--radius-sm);font-size:13px;margin-bottom:14px;font-weight:650;align-items:center;gap:7px;animation:fadeInDown .4s ease-out}
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        .invite-badge i{color:var(--amber);font-size:14px}
+        .input-group{margin-bottom:14px;position:relative}
+        .input-group label{display:block;margin-bottom:6px;color:#3a3f50;font-size:13px;font-weight:700;letter-spacing:-0.01em}
+        .input-wrapper{position:relative;display:flex;align-items:center}
+        .input-group input{width:100%;height:50px;padding:0 40px 0 14px;border:1.5px solid #dde3ed;border-radius:var(--radius-sm);background:#fafcfe;color:var(--ink);font-size:15.5px;font-family:var(--font-sans);outline:none;transition:all var(--transition);letter-spacing:-0.01em}
+        .input-group input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,109,240,0.10),0 0 0 1px rgba(59,109,240,0.06);background:#fff}
+        .input-group input::placeholder{color:#bcc3d0}
+        .input-actions{position:absolute;right:4px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:1px;z-index:2}
+        .btn-input-action{width:34px;height:34px;border:0;border-radius:7px;background:transparent;color:#a0a9b8;cursor:pointer;font-size:14px;display:grid;place-items:center;transition:all var(--transition-fast);-webkit-tap-highlight-color:transparent}
+        .btn-input-action:hover{background:#eef2f8;color:#555d6e}
+        .btn-input-action:active{background:#dde3ee;transform:scale(.9)}
+        .btn-input-action.copied-flash{color:var(--green);background:var(--green-soft)}
+        .login-btn{width:100%;min-height:52px;border:0;border-radius:var(--radius-sm);background:linear-gradient(135deg,#3b6df0 0%,#2851c5 100%);color:#fff;font-size:16px;font-weight:750;cursor:pointer;transition:all var(--transition);box-shadow:0 6px 20px rgba(59,109,240,0.28),0 2px 6px rgba(40,81,197,0.15);letter-spacing:-0.01em;position:relative;overflow:hidden;font-family:var(--font-sans)}
+        .login-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.12) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
+        .login-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(59,109,240,0.35),0 4px 10px rgba(40,81,197,0.2)}
+        .login-btn:active{transform:scale(.97);transition:transform .1s;box-shadow:0 4px 14px rgba(59,109,240,0.22)}
+        .login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:0 4px 14px rgba(59,109,240,0.14);filter:grayscale(15%)}
+        .help-section{margin-top:14px}
+        .help-trigger{display:inline-flex;align-items:center;gap:6px;background:transparent;border:0;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;padding:6px 10px;border-radius:8px;transition:all var(--transition-fast);-webkit-tap-highlight-color:transparent;font-family:var(--font-sans);letter-spacing:-0.01em}
+        .help-trigger i{font-size:14px;color:var(--primary);transition:transform .2s}
+        .help-trigger:hover{color:var(--primary);background:rgba(59,109,240,0.06)}
+        .help-trigger.active i{transform:rotate(180deg)}
+        .help-trigger.active{color:var(--primary)}
+        .help-detail{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(0.4,0,0.2,1),margin .3s;margin-top:0}
+        .help-detail.open{max-height:200px;margin-top:10px}
+        .help-card{background:#f8fafd;border:1px solid #e0e7f2;border-radius:var(--radius-sm);padding:14px 15px;box-shadow:var(--shadow-xs)}
+        .help-text{font-size:13px;color:var(--ink-secondary);margin-bottom:12px;line-height:1.5}
+        .help-text strong{color:var(--primary-dark);word-break:break-all}
+        .help-jump-btn{display:inline-flex;align-items:center;gap:7px;background:var(--primary);color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:8px;text-decoration:none;transition:all var(--transition-fast);box-shadow:0 2px 8px rgba(59,109,240,0.2);font-family:var(--font-sans)}
+        .help-jump-btn i{font-size:12px}
+        .help-jump-btn:hover{background:var(--primary-dark);box-shadow:0 4px 14px rgba(59,109,240,0.3);transform:translateY(-1px)}
+        .help-jump-btn:active{transform:scale(.96)}
+        .help-mobile-tip{font-size:11px;color:var(--muted);margin-top:8px;display:flex;align-items:center;gap:4px}
+        .micro-list{margin-top:18px;display:grid;gap:9px}
+        .micro-item{display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em}
+        .check{flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px}
+        .mobile-support{display:none;margin-top:16px;border-radius:var(--radius);padding:13px 15px;background:var(--amber-soft);border:1px solid var(--amber-border);color:#6b3a0a;font-size:13px;font-weight:600;align-items:center;gap:10px;flex-wrap:wrap}
+        .mobile-support .ms-text{flex:1;min-width:0}
+        .mobile-support button{flex:0 0 auto;border:0;border-radius:8px;padding:9px 15px;background:#c2780a;color:#fff;font-weight:700;cursor:pointer;font-size:13px;white-space:nowrap;transition:all var(--transition-fast);font-family:var(--font-sans)}
+        .mobile-support button:hover{background:#a56608}
+        .mobile-support button:active{transform:scale(.95)}
+        .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#1a1d28;color:#fff;padding:11px 18px;border-radius:10px;z-index:10000;opacity:0;pointer-events:none;box-shadow:0 10px 32px rgba(18,20,30,0.28);font-size:13.5px;font-weight:600;letter-spacing:-0.01em;transition:all .28s cubic-bezier(0.4,0,0.2,1);font-family:var(--font-sans)}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+        .toast.error{background:#b91c1c;box-shadow:0 10px 32px rgba(185,28,28,0.3)}
+        .toast.success-flash{background:#087a56;box-shadow:0 10px 32px rgba(8,122,86,0.3)}
+        .qr-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,14,22,0.88);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+        .qr-modal.show{display:flex;animation:modalFadeIn .25s ease-out}
+        @keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
+        .qr-modal-card{width:min(420px,94vw);border-radius:var(--radius-lg);background:#fff;padding:clamp(18px,3vw,24px);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.4);animation:modalScaleIn .3s cubic-bezier(0.34,1.56,0.64,1)}
+        @keyframes modalScaleIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+        .qr-modal-card img{width:min(300px,78vw);height:min(300px,78vw);object-fit:contain;border-radius:14px;border:1px solid var(--line);background:#fff}
+        .qr-modal-card h3{margin-bottom:14px;font-size:19px;font-weight:800;letter-spacing:-0.01em}
+        .qr-modal-card .modal-hint{font-size:12px;color:var(--muted);margin-top:8px}
+        .close-modal{width:100%;margin-top:14px;border:0;border-radius:10px;padding:11px 14px;background:#1a1d28;color:#fff;font-weight:700;cursor:pointer;font-size:14px;transition:all var(--transition-fast);font-family:var(--font-sans)}
+        .close-modal:hover{background:#2a2d38}
+        .close-modal:active{transform:scale(.96)}
+        @media(max-width:980px){
+            body{padding:12px;align-items:flex-start}
+            .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
+            .login-card{order:1;border-radius:var(--radius-lg)}
+            .hero{order:2;min-height:auto;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
+            .hero::after{display:none}
+            .hero h1{font-size:clamp(24px,5vw,34px)}
+            .value-grid{grid-template-columns:1fr 1fr;gap:8px}
+            .value-grid .value-card:last-child{grid-column:1/-1}
+            .mobile-support{display:flex}
+            .qr-row{grid-template-columns:1fr 1fr;gap:10px}
+            .qr-card img{width:clamp(100px,28vw,140px);height:clamp(100px,28vw,140px)}
+            .support-top{flex-direction:column}
+            .cost-pill{align-self:flex-start}
+            .bg-orb--1{width:180px;height:180px;top:-5%;left:-8%}
+            .bg-orb--2{width:150px;height:150px;top:65%;right:-10%}
+            .bg-orb--3{width:120px;height:120px;bottom:-3%;left:20%}
         }
-        .hero h1 span {
-            background: linear-gradient(135deg, var(--primary), #5b8af7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .lead {
-            max-width: 640px;
-            color: var(--ink-secondary);
-            font-size: clamp(15px, 1.4vw, 17px);
-            letter-spacing: -0.01em;
-        }
-
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 28px;
-        }
-        .value-card {
-            background: #fafcfe;
-            border: 1px solid var(--line-light);
-            border-radius: var(--radius);
-            padding: clamp(13px, 1.6vw, 17px) clamp(12px, 1.4vw, 15px);
-            transition: all var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        .value-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(59, 109, 240, 0.03) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .value-card:hover {
-            border-color: #cdd7ea;
-            box-shadow: var(--shadow-sm);
-            transform: translateY(-2px);
-        }
-        .value-card .vc-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: grid;
-            place-items: center;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .value-card .vc-icon.blue { background: #eef4ff; color: var(--primary); }
-        .value-card .vc-icon.green { background: var(--green-soft); color: var(--green); }
-        .value-card .vc-icon.amber { background: var(--amber-soft); color: var(--amber); }
-        .value-card strong { display: block; font-size: 15px; margin-bottom: 3px; font-weight: 750; letter-spacing: -0.01em; }
-        .value-card span { color: var(--muted); font-size: 12.5px; line-height: 1.45; }
-
-        .support-card {
-            position: relative;
-            z-index: 1;
-            margin-top: 6px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--amber-border);
-            background: linear-gradient(175deg, #fffcf5, #fef9ee 40%, #fffdf9 100%);
-            padding: clamp(18px, 2.2vw, 24px);
-            box-shadow: 0 2px 12px rgba(194, 120, 10, 0.06);
-            transition: all var(--transition);
-        }
-        .support-card:hover { box-shadow: 0 6px 24px rgba(194, 120, 10, 0.10); border-color: #e2c88a; }
-        .support-top { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
-        .support-title { font-size: clamp(16px, 1.6vw, 19px); font-weight: 800; color: #6b3a0a; margin-bottom: 6px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
-        .support-title .coffee-icon { font-size: 18px; animation: steam 2.5s ease-in-out infinite; }
-        @keyframes steam { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(-5px); opacity: 0.7; } }
-        .support-copy { color: #7a5018; font-size: 13.5px; line-height: 1.55; }
-        .cost-pill { flex: 0 0 auto; padding: 10px 14px; border-radius: var(--radius-sm); background: #fffefb; border: 1px solid #ecd9a8; color: #6b3a0a; font-weight: 800; text-align: center; min-width: 90px; font-size: 14px; white-space: nowrap; }
-        .cost-pill small { display: block; color: #9a6b2e; font-weight: 600; margin-top: 2px; font-size: 11px; }
-
-        .qr-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
-        .qr-card { border: 1px solid #ecd9a8; border-radius: var(--radius); background: #fffefb; padding: 13px; text-align: center; cursor: pointer; transition: all var(--transition); -webkit-tap-highlight-color: transparent; user-select: none; position: relative; }
-        .qr-card:hover { transform: translateY(-3px); border-color: #d4a74a; box-shadow: 0 10px 30px rgba(194, 120, 10, 0.14); }
-        .qr-card:active { transform: scale(0.97); transition: transform 0.1s; }
-        .qr-card img { width: clamp(120px, 15vw, 150px); height: clamp(120px, 15vw, 150px); object-fit: contain; border-radius: 10px; background: #fff; border: 1px solid #f5eedf; pointer-events: none; }
-        .qr-card strong { display: block; margin-top: 9px; color: #6b3a0a; font-size: 14px; font-weight: 750; letter-spacing: -0.01em; }
-        .qr-card span { display: block; margin-top: 3px; color: #9a6b2e; font-size: 11.5px; }
-        .qr-card .tap-hint { display: inline-block; margin-top: 5px; padding: 3px 8px; border-radius: 6px; background: rgba(194, 120, 10, 0.06); font-size: 10.5px; color: #8a5c20; font-weight: 600; }
-
-        .support-note { margin-top: 13px; color: #7a5018; font-size: 12.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: rgba(255, 255, 255, 0.6); border-radius: 8px; padding: 8px 12px; border: 1px dashed #e8d5a8; }
-        .support-note .note-text { flex: 1; min-width: 0; }
-        .btn-copy-note { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 5px; border: 1px solid #d4b87a; border-radius: 7px; padding: 6px 11px; background: #fffef9; color: #6b3a0a; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all var(--transition-fast); font-family: var(--font-sans); }
-        .btn-copy-note:hover { background: #fff8e8; border-color: #c29a3a; box-shadow: 0 2px 8px rgba(194, 120, 10, 0.1); }
-        .btn-copy-note:active { transform: scale(0.95); background: #fef3d8; }
-        .btn-copy-note.copied { background: #eafaf3; border-color: #0d9e6c; color: #087a56; }
-
-        .login-card { padding: clamp(24px, 3vw, 36px) clamp(20px, 2.8vw, 32px); display: flex; flex-direction: column; justify-content: center; gap: 6px; position: relative; }
-        .login-kicker { color: var(--green); font-size: 12.5px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.03em; text-transform: uppercase; }
-        .login-card h2 { font-size: clamp(24px, 3vw, 30px); letter-spacing: -0.02em; margin-bottom: 4px; font-weight: 800; color: #111520; }
-        .login-note { color: var(--muted); font-size: 13.5px; margin-bottom: 18px; letter-spacing: -0.01em; }
-
-        .invite-badge { display: none; background: #fffdf5; border: 1px solid #f0d89c; color: #7a4e0a; padding: 10px 13px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 14px; font-weight: 650; align-items: center; gap: 7px; animation: fadeInDown 0.4s ease-out; }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-        .invite-badge i { color: var(--amber); font-size: 14px; }
-
-        .input-group { margin-bottom: 14px; position: relative; }
-        .input-group label { display: block; margin-bottom: 6px; color: #3a3f50; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-group input { width: 100%; height: 50px; padding: 0 40px 0 14px; border: 1.5px solid #dde3ed; border-radius: var(--radius-sm); background: #fafcfe; color: var(--ink); font-size: 15.5px; font-family: var(--font-sans); outline: none; transition: all var(--transition); letter-spacing: -0.01em; }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59, 109, 240, 0.10), 0 0 0 1px rgba(59, 109, 240, 0.06); background: #fff; }
-        .input-group input::placeholder { color: #bcc3d0; }
-        .input-actions { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 1px; z-index: 2; }
-        .btn-input-action { width: 34px; height: 34px; border: 0; border-radius: 7px; background: transparent; color: #a0a9b8; cursor: pointer; font-size: 14px; display: grid; place-items: center; transition: all var(--transition-fast); -webkit-tap-highlight-color: transparent; }
-        .btn-input-action:hover { background: #eef2f8; color: #555d6e; }
-        .btn-input-action:active { background: #dde3ee; transform: scale(0.9); }
-        .btn-input-action.copied-flash { color: var(--green); background: var(--green-soft); }
-
-        .login-btn { width: 100%; min-height: 52px; border: 0; border-radius: var(--radius-sm); background: linear-gradient(135deg, #3b6df0 0%, #2851c5 100%); color: #fff; font-size: 16px; font-weight: 750; cursor: pointer; transition: all var(--transition); box-shadow: 0 6px 20px rgba(59, 109, 240, 0.28), 0 2px 6px rgba(40, 81, 197, 0.15); letter-spacing: -0.01em; position: relative; overflow: hidden; font-family: var(--font-sans); }
-        .login-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%); pointer-events: none; border-radius: inherit; }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59, 109, 240, 0.35), 0 4px 10px rgba(40, 81, 197, 0.2); }
-        .login-btn:active { transform: scale(0.97); transition: transform 0.1s; box-shadow: 0 4px 14px rgba(59, 109, 240, 0.22); }
-        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: 0 4px 14px rgba(59, 109, 240, 0.14); filter: grayscale(15%); }
-
-        /* 帮助区域 */
-        .help-section { margin-top: 14px; }
-        .help-trigger { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 0; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; padding: 6px 10px; border-radius: 8px; transition: all var(--transition-fast); -webkit-tap-highlight-color: transparent; font-family: var(--font-sans); letter-spacing: -0.01em; }
-        .help-trigger i { font-size: 14px; color: var(--primary); transition: transform 0.2s; }
-        .help-trigger:hover { color: var(--primary); background: rgba(59, 109, 240, 0.06); }
-        .help-trigger.active i { transform: rotate(180deg); }
-        .help-trigger.active { color: var(--primary); }
-
-        .help-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), margin 0.3s; margin-top: 0; }
-        .help-detail.open { max-height: 200px; margin-top: 10px; }
-
-        .help-card { background: #f8fafd; border: 1px solid #e0e7f2; border-radius: var(--radius-sm); padding: 14px 15px; box-shadow: var(--shadow-xs); }
-        .help-text { font-size: 13px; color: var(--ink-secondary); margin-bottom: 12px; line-height: 1.5; }
-        .help-text strong { color: var(--primary-dark); word-break: break-all; }
-        .help-jump-btn { display: inline-flex; align-items: center; gap: 7px; background: var(--primary); color: #fff; font-weight: 700; font-size: 13px; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: all var(--transition-fast); box-shadow: 0 2px 8px rgba(59, 109, 240, 0.2); font-family: var(--font-sans); }
-        .help-jump-btn i { font-size: 12px; }
-        .help-jump-btn:hover { background: var(--primary-dark); box-shadow: 0 4px 14px rgba(59, 109, 240, 0.3); transform: translateY(-1px); }
-        .help-jump-btn:active { transform: scale(0.96); }
-        .help-mobile-tip { font-size: 11px; color: var(--muted); margin-top: 8px; display: flex; align-items: center; gap: 4px; }
-
-        .micro-list { margin-top: 18px; display: grid; gap: 9px; }
-        .micro-item { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: 13px; letter-spacing: -0.01em; }
-        .check { flex: 0 0 20px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: #eafaf3; color: var(--green); font-size: 11px; font-weight: 900; margin-top: 1px; }
-
-        .mobile-support { display: none; margin-top: 16px; border-radius: var(--radius); padding: 13px 15px; background: var(--amber-soft); border: 1px solid var(--amber-border); color: #6b3a0a; font-size: 13px; font-weight: 600; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .mobile-support .ms-text { flex: 1; min-width: 0; }
-        .mobile-support button { flex: 0 0 auto; border: 0; border-radius: 8px; padding: 9px 15px; background: #c2780a; color: #fff; font-weight: 700; cursor: pointer; font-size: 13px; white-space: nowrap; transition: all var(--transition-fast); font-family: var(--font-sans); }
-        .mobile-support button:hover { background: #a56608; }
-        .mobile-support button:active { transform: scale(0.95); }
-
-        .toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: #1a1d28; color: #fff; padding: 11px 18px; border-radius: 10px; z-index: 10000; opacity: 0; pointer-events: none; box-shadow: 0 10px 32px rgba(18, 20, 30, 0.28); font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1); font-family: var(--font-sans); }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-        .toast.error { background: #b91c1c; box-shadow: 0 10px 32px rgba(185, 28, 28, 0.3); }
-        .toast.success-flash { background: #087a56; box-shadow: 0 10px 32px rgba(8, 122, 86, 0.3); }
-
-        .qr-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(10, 14, 22, 0.88); align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-        .qr-modal.show { display: flex; animation: modalFadeIn 0.25s ease-out; }
-        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .qr-modal-card { width: min(420px, 94vw); border-radius: var(--radius-lg); background: #fff; padding: clamp(18px, 3vw, 24px); text-align: center; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4); animation: modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes modalScaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .qr-modal-card img { width: min(300px, 78vw); height: min(300px, 78vw); object-fit: contain; border-radius: 14px; border: 1px solid var(--line); background: #fff; }
-        .qr-modal-card h3 { margin-bottom: 14px; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
-        .qr-modal-card .modal-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
-        .close-modal { width: 100%; margin-top: 14px; border: 0; border-radius: 10px; padding: 11px 14px; background: #1a1d28; color: #fff; font-weight: 700; cursor: pointer; font-size: 14px; transition: all var(--transition-fast); font-family: var(--font-sans); }
-        .close-modal:hover { background: #2a2d38; }
-        .close-modal:active { transform: scale(0.96); }
-
-        @media (max-width: 980px) {
-            body { padding: 12px; align-items: flex-start; }
-            .shell { min-height: auto; grid-template-columns: 1fr; gap: 18px; }
-            .login-card { order: 1; border-radius: var(--radius-lg); }
-            .hero { order: 2; min-height: auto; padding: 26px 20px; border-radius: var(--radius-lg); gap: 22px; }
-            .hero::after { display: none; }
-            .hero h1 { font-size: clamp(24px, 5vw, 34px); }
-            .value-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .value-grid .value-card:last-child { grid-column: 1 / -1; }
-            .mobile-support { display: flex; }
-            .qr-row { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .qr-card img { width: clamp(100px, 28vw, 140px); height: clamp(100px, 28vw, 140px); }
-            .support-top { flex-direction: column; }
-            .cost-pill { align-self: flex-start; }
-            .bg-orb--1 { width: 180px; height: 180px; top: -5%; left: -8%; }
-            .bg-orb--2 { width: 150px; height: 150px; top: 65%; right: -10%; }
-            .bg-orb--3 { width: 120px; height: 120px; bottom: -3%; left: 20%; }
-        }
-
-        @media (max-width: 560px) {
-            body { padding: 8px; }
-            .hero, .login-card { border-radius: var(--radius); padding: 20px 15px; }
-            .hero h1 { font-size: 25px; }
-            .lead { font-size: 14px; }
-            .value-grid { grid-template-columns: 1fr; gap: 7px; }
-            .value-grid .value-card:last-child { grid-column: auto; }
-            .qr-row { grid-template-columns: 1fr; gap: 10px; }
-            .qr-card { display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 12px; }
-            .qr-card img { width: 80px; height: 80px; flex: 0 0 80px; border-radius: 8px; }
-            .qr-card strong { margin-top: 0; font-size: 13px; }
-            .qr-card span { font-size: 11px; }
-            .qr-card .tap-hint { font-size: 10px; }
-            .support-note { flex-direction: column; align-items: stretch; gap: 6px; }
-            .btn-copy-note { justify-content: center; width: 100%; }
-            .input-group input { height: 46px; font-size: 15px; }
-            .login-btn { min-height: 48px; font-size: 15px; }
-            .brand { font-size: 13px; gap: 7px; }
-            .brand-badge { width: 30px; height: 30px; border-radius: 8px; font-size: 13px; }
-            .bg-orb { display: none; }
-            .help-card { padding: 12px; }
-            .help-jump-btn { width: 100%; justify-content: center; }
+        @media(max-width:560px){
+            body{padding:8px}
+            .hero,.login-card{border-radius:var(--radius);padding:20px 15px}
+            .hero h1{font-size:25px}
+            .lead{font-size:14px}
+            .value-grid{grid-template-columns:1fr;gap:7px}
+            .value-grid .value-card:last-child{grid-column:auto}
+            .qr-row{grid-template-columns:1fr;gap:10px}
+            .qr-card{display:flex;align-items:center;gap:12px;text-align:left;padding:10px 12px}
+            .qr-card img{width:80px;height:80px;flex:0 0 80px;border-radius:8px}
+            .qr-card strong{margin-top:0;font-size:13px}
+            .qr-card span{font-size:11px}
+            .qr-card .tap-hint{font-size:10px}
+            .support-note{flex-direction:column;align-items:stretch;gap:6px}
+            .btn-copy-note{justify-content:center;width:100%}
+            .input-group input{height:46px;font-size:15px}
+            .login-btn{min-height:48px;font-size:15px}
+            .brand{font-size:13px;gap:7px}
+            .brand-badge{width:30px;height:30px;border-radius:8px;font-size:13px}
+            .bg-orb{display:none}
+            .help-card{padding:12px}
+            .help-jump-btn{width:100%;justify-content:center}
         }
     </style>
 </head>
@@ -508,76 +288,73 @@
                         </div>
                     </button>
                 </div>
-                <p class="support-note" id="supportNote">
+                <div class="support-note">
                     <span class="note-text" id="noteText">💡 建议备注<strong>"学号 + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。</span>
-                    <button class="btn-copy-note" type="button" id="btnCopyNote" onclick="copyNoteTemplate()" aria-label="复制备注格式">
+                    <button class="btn-copy-note" id="btnCopyNote" type="button" onclick="copyNoteTemplate()">
                         <i class="far fa-copy"></i> 复制备注格式
                     </button>
-                </p>
+                </div>
             </div>
         </section>
 
-        <section class="login-card" aria-label="登录智能考勤签到">
-            <div class="login-kicker">现在开始</div>
-            <h2>登录智能考勤</h2>
-            <p class="login-note">进入仪表盘后，你可以创建签到任务、查看记录、绑定邮箱和管理VIP。</p>
+        <section class="login-card" aria-label="登录区">
+            <div class="login-kicker">🔐 安全登录</div>
+            <h2>智能考勤 · 仪表盘</h2>
+            <p class="login-note">输入学号和考勤密码（首登会自动创建账号）。</p>
 
-            <div id="inviteNotice" class="invite-badge">
+            <div class="invite-badge" id="inviteNotice">
                 <i class="fas fa-gift"></i>
-                您正在通过邀请链接注册，绑定后双方各得 <span id="inviteRewardPreview">10</span> 天VIP。
+                <span>通过邀请链接注册，双方均可获得 <strong id="inviteRewardPreview">10</strong> 天VIP！</span>
             </div>
 
             <div class="input-group">
                 <label for="studentId">学号</label>
                 <div class="input-wrapper">
-                    <input type="text" id="studentId" placeholder="请输入学号" autocomplete="username" aria-label="学号输入框">
-                    <div class="input-actions">
-                        <button class="btn-input-action" type="button" id="btnCopyStudentId" onclick="copyInputValue('studentId', 'btnCopyStudentId')" aria-label="复制学号" title="复制学号">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </div>
+                    <input type="text" id="studentId" placeholder="例如：2024000001" autocomplete="username" inputmode="text" required>
                 </div>
             </div>
-
             <div class="input-group">
-                <label for="password">考勤系统密码</label>
+                <label for="password">考勤密码</label>
                 <div class="input-wrapper">
-                    <input type="password" id="password" placeholder="默认 Ahgydx@920" value="Ahgydx@920" autocomplete="current-password" aria-label="密码输入框">
+                    <input type="password" id="password" placeholder="默认为 Ahgydx@920" autocomplete="current-password" required>
                     <div class="input-actions">
-                        <button class="btn-input-action" type="button" id="btnTogglePassword" onclick="togglePasswordVisibility()" aria-label="显示/隐藏密码" title="显示/隐藏密码">
+                        <button class="btn-input-action" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()" aria-label="切换密码可见性">
                             <i class="far fa-eye" id="togglePasswordIcon"></i>
                         </button>
-                        <button class="btn-input-action" type="button" id="btnCopyPassword" onclick="copyInputValue('password', 'btnCopyPassword')" aria-label="复制密码" title="复制密码">
+                        <button class="btn-input-action copied-flash" type="button" id="copyPasswordBtn" onclick="copyInputValue('password','copyPasswordBtn')" aria-label="复制密码">
                             <i class="far fa-copy"></i>
                         </button>
                     </div>
                 </div>
             </div>
-
             <button class="login-btn" id="loginBtn" type="button" onclick="login()">
                 登录并进入仪表盘
             </button>
 
-            <!-- 帮助区域 -->
             <div class="help-section">
-                <button class="help-trigger" type="button" id="helpTrigger" onclick="toggleHelp()" aria-expanded="false">
-                    <i class="far fa-question-circle"></i> 登录不上？
+                <button class="help-trigger" id="helpTrigger" type="button" onclick="toggleHelp()" aria-expanded="false" aria-controls="helpDetail">
+                    <i class="fas fa-circle-question"></i>
+                    不知道考勤密码怎么办？
                 </button>
                 <div class="help-detail" id="helpDetail">
                     <div class="help-card">
                         <p class="help-text">
-                            密码改了忘记了？电脑搜索 <strong>https://xskq.ahut.edu.cn/</strong> 点击“忘记密码”找回。
+                            如果你还没有登录过，可以直接使用默认密码 <strong>Ahgydx@920</strong> 登录。<br>
+                            如果你忘记了已修改的密码，请进入内部网站重新设置考勤签到密码。
                         </p>
-                        <a href="https://xskq.ahut.edu.cn/" target="_blank" rel="noopener noreferrer" class="help-jump-btn">
-                            <i class="fas fa-external-link-alt"></i> 一键跳转找回密码
+                        <a class="help-jump-btn" href="http://yx.xuancheng.cn" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i>
+                            前往内部网站更改密码
                         </a>
                         <p class="help-mobile-tip">
-                            <i class="fas fa-desktop"></i> 建议在电脑浏览器中打开操作
+                            <i class="fas fa-info-circle"></i>
+                            更改后即可在这里使用新密码登录。
                         </p>
                     </div>
                 </div>
             </div>
-            <!-- 二手市场入口 -->
+
+            <!-- 🛒 二手市场快捷入口 -->
             <div style="margin-top: 18px; padding: 14px 16px; background: linear-gradient(135deg, #f0f5ff, #fff7f0); border-radius: 14px; border: 1px solid #e0e8f5; cursor: pointer; transition: all 0.2s;"
                  onclick="window.location.href='/market'"
                  onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.06)';"
@@ -592,19 +369,10 @@
                     </div>
                     <i class="fas fa-chevron-right" style="color: #aaa;"></i>
                 </div>
-            </div>     
+            </div>
 
-            <!-- 快速登录入口 -->
-                <div style="margin-top: 16px; padding: 14px; background: #f8fafb; border-radius: 12px; border: 1px dashed #dde3ed; text-align: center;">
-                  <p style="font-size: 13px; color: #6b7187; margin-bottom: 8px;">不想输入学号？</p>
-                  <div style="display: flex; gap: 8px;">
-                    <input type="text" id="quickNickname" placeholder="输入一个昵称即可进入" style="flex: 1; padding: 10px 12px; border: 1.5px solid #dde3ed; border-radius: 8px; font-size: 14px; outline: none;">
-                    <button onclick="quickLogin()" style="padding: 10px 16px; background: linear-gradient(135deg, #667eea, #5a6fd6); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 13px;">
-                      <i class="fas fa-bolt"></i> 快速进入
-                    </button>
-                  </div>
-                  <p style="font-size: 11px; color: #aaa; margin-top: 6px;">快速登录仅可浏览二手市场，无法使用签到功能</p>
-                </div>
+            <!-- ===== 原来游客登录已删除，改为仅导向市场 ===== -->
+
             <div class="micro-list">
                 <div class="micro-item">
                     <span class="check">✓</span>
@@ -648,9 +416,7 @@
             toast.textContent = message;
             toast.className = `toast show ${type}`.trim();
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2800);
+            toastTimer = setTimeout(() => { toast.className = 'toast'; }, 2800);
         }
 
         function scrollToSupport() {
@@ -659,10 +425,7 @@
                 supportEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 supportEl.style.boxShadow = '0 0 0 4px rgba(194,120,10,0.25), 0 6px 24px rgba(194,120,10,0.12)';
                 supportEl.style.borderColor = '#d4a74a';
-                setTimeout(() => {
-                    supportEl.style.boxShadow = '';
-                    supportEl.style.borderColor = '';
-                }, 1800);
+                setTimeout(() => { supportEl.style.boxShadow = ''; supportEl.style.borderColor = ''; }, 1800);
             }
         }
 
@@ -681,23 +444,14 @@
             document.body.style.overflow = '';
         }
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') closeQRModal();
-        });
+        document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeQRModal(); });
 
         function toggleHelp() {
             const detail = document.getElementById('helpDetail');
             const trigger = document.getElementById('helpTrigger');
             const isOpen = detail.classList.contains('open');
-            if (isOpen) {
-                detail.classList.remove('open');
-                trigger.classList.remove('active');
-                trigger.setAttribute('aria-expanded', 'false');
-            } else {
-                detail.classList.add('open');
-                trigger.classList.add('active');
-                trigger.setAttribute('aria-expanded', 'true');
-            }
+            if (isOpen) { detail.classList.remove('open'); trigger.classList.remove('active'); trigger.setAttribute('aria-expanded', 'false'); }
+            else { detail.classList.add('open'); trigger.classList.add('active'); trigger.setAttribute('aria-expanded', 'true'); }
         }
 
         function togglePasswordVisibility() {
@@ -715,65 +469,34 @@
             const input = document.getElementById(inputId);
             const btn = document.getElementById(btnId);
             const value = input.value.trim();
-            if (!value) {
-                showToast('输入框为空，请先输入内容', 'error');
-                return;
-            }
+            if (!value) { showToast('输入框为空，请先输入内容', 'error'); return; }
             navigator.clipboard.writeText(value).then(() => {
                 btn.classList.add('copied-flash');
                 setTimeout(() => btn.classList.remove('copied-flash'), 800);
                 showToast('已复制到剪贴板 ✓', 'success-flash');
             }).catch(() => {
-                input.select();
-                input.setSelectionRange(0, 99999);
-                try {
-                    document.execCommand('copy');
-                    btn.classList.add('copied-flash');
-                    setTimeout(() => btn.classList.remove('copied-flash'), 800);
-                    showToast('已复制到剪贴板 ✓', 'success-flash');
-                } catch (e) {
-                    showToast('复制失败，请手动选择复制', 'error');
-                }
+                input.select(); input.setSelectionRange(0, 99999);
+                try { document.execCommand('copy'); btn.classList.add('copied-flash'); setTimeout(() => btn.classList.remove('copied-flash'), 800); showToast('已复制到剪贴板 ✓', 'success-flash'); }
+                catch(e) { showToast('复制失败，请手动选择复制', 'error'); }
             });
         }
 
         function copyNoteTemplate() {
             const studentId = document.getElementById('studentId').value.trim();
-            let noteTemplate;
-            if (studentId) {
-                noteTemplate = `学号: ${studentId}  密码: 请填写  邮箱(可选): `;
-            } else {
-                noteTemplate = '学号: 请填写  密码: 请填写  邮箱(可选): ';
-            }
-
+            let noteTemplate = studentId ? `学号: ${studentId}  密码: 请填写  邮箱(可选): ` : '学号: 请填写  密码: 请填写  邮箱(可选): ';
             const btn = document.getElementById('btnCopyNote');
             navigator.clipboard.writeText(noteTemplate).then(() => {
-                btn.classList.add('copied');
-                btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
                 showToast('备注模板已复制，粘贴到支付备注即可 ✓', 'success-flash');
-                setTimeout(() => {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式';
-                }, 2000);
+                setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式'; }, 2000);
             }).catch(() => {
-                const tempTextarea = document.createElement('textarea');
-                tempTextarea.value = noteTemplate;
-                tempTextarea.style.position = 'fixed';
-                tempTextarea.style.opacity = '0';
-                document.body.appendChild(tempTextarea);
-                tempTextarea.select();
-                try {
-                    document.execCommand('copy');
-                    btn.classList.add('copied');
-                    btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                    showToast('备注模板已复制，粘贴到支付备注即可 ✓', 'success-flash');
-                    setTimeout(() => {
-                        btn.classList.remove('copied');
-                        btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式';
-                    }, 2000);
-                } catch (e) {
-                    showToast('复制失败，请手动记录备注信息', 'error');
-                }
+                const tempTextarea = document.createElement('textarea'); tempTextarea.value = noteTemplate;
+                tempTextarea.style.position = 'fixed'; tempTextarea.style.opacity = '0';
+                document.body.appendChild(tempTextarea); tempTextarea.select();
+                try { document.execCommand('copy'); btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                    showToast('备注模板已复制 ✓', 'success-flash');
+                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式'; }, 2000); }
+                catch(e) { showToast('复制失败', 'error'); }
                 document.body.removeChild(tempTextarea);
             });
         }
@@ -781,18 +504,11 @@
         function updateNoteText() {
             const studentId = document.getElementById('studentId').value.trim();
             const noteTextEl = document.getElementById('noteText');
-            if (studentId) {
-                noteTextEl.innerHTML = `💡 建议备注<strong>"${escapeHTML(studentId)} + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。`;
-            } else {
-                noteTextEl.innerHTML = '💡 建议备注<strong>"学号 + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。';
-            }
+            if (studentId) noteTextEl.innerHTML = `💡 建议备注<strong>"${escapeHTML(studentId)} + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。`;
+            else noteTextEl.innerHTML = '💡 建议备注<strong>"学号 + 密码"</strong>，邮箱可选，方便后续核对和赠送支持者福利。';
         }
 
-        function escapeHTML(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
+        function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
 
         document.getElementById('studentId').addEventListener('input', updateNoteText);
 
@@ -802,155 +518,52 @@
             localStorage.setItem('pendingInviteCode', inviteCode.toUpperCase());
             const inviteNotice = document.getElementById('inviteNotice');
             inviteNotice.style.display = 'flex';
-            fetch(`${API_BASE}/admin/config`, {
-                    headers: { 'Content-Type': 'application/json' }
-                })
+            fetch(`${API_BASE}/admin/config`, { headers: { 'Content-Type': 'application/json' } })
                 .then(res => res.json())
-                .then(data => {
-                    if (data.success && data.configs?.invite_reward_days) {
-                        document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days;
-                    }
-                })
+                .then(data => { if (data.success && data.configs?.invite_reward_days) { document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days; } })
                 .catch(() => {});
         }
 
-        async function quickLogin() {
-          const nickname = document.getElementById('quickNickname').value.trim();
-          const btn = document.querySelector('#quickNickname + button');
-          
-          if (!nickname || nickname.length < 2) {
-            showToast('请输入至少2个字符的昵称', 'error');
-            return;
-          }
-          
-          btn.disabled = true;
-          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 进入中...';
-          
-          try {
-            const res = await fetch(`${API_BASE}/quick-login`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ nickname })
-            });
-            const data = await res.json();
-            
-            if (data.success) {
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('user', JSON.stringify(data.user));
-              showToast('欢迎！正在进入二手市场...', 'success-flash');
-              setTimeout(() => {
-                window.location.href = '/market';
-              }, 500);
-            } else {
-              showToast(data.message || '登录失败', 'error');
-            }
-          } catch (error) {
-            showToast('网络错误', 'error');
-          } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-bolt"></i> 快速进入';
-          }
-        }
- 
+        // ===== 游客登录已删除 =====
+
         async function login() {
             const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
             const btn = document.getElementById('loginBtn');
 
-            if (!studentId) {
-                showToast('请输入学号', 'error');
-                const input = document.getElementById('studentId');
-                input.focus();
-                input.style.borderColor = 'var(--rose)';
-                input.style.boxShadow = '0 0 0 4px rgba(224,80,96,0.12)';
-                setTimeout(() => {
-                    input.style.borderColor = '';
-                    input.style.boxShadow = '';
-                }, 1500);
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = '正在登录...';
-
+            if (!studentId) { showToast('请输入学号', 'error'); const input = document.getElementById('studentId'); input.focus(); input.style.borderColor = 'var(--rose)'; input.style.boxShadow = '0 0 0 4px rgba(224,80,96,0.12)'; setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 1500); return; }
+            btn.disabled = true; btn.textContent = '正在登录...';
             try {
                 const res = await fetch(`${API_BASE}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        studentId,
-                        attendancePassword: password || 'Ahgydx@920'
-                    })
+                    body: JSON.stringify({ studentId, attendancePassword: password || 'Ahgydx@920' })
                 });
                 const data = await res.json();
-
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     localStorage.setItem('attendancePassword', password || 'Ahgydx@920');
-
                     const pendingCode = localStorage.getItem('pendingInviteCode');
                     if (pendingCode) {
-                        try {
-                            const inviteRes = await fetch(`${API_BASE}/invite/apply`, {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': `Bearer ${data.token}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ inviteCode: pendingCode })
-                            });
-                            await inviteRes.json();
-                        } catch (e) {} finally {
-                            localStorage.removeItem('pendingInviteCode');
-                        }
+                        try { const inviteRes = await fetch(`${API_BASE}/invite/apply`, { method: 'POST', headers: { 'Authorization': `Bearer ${data.token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ inviteCode: pendingCode }) }); await inviteRes.json(); }
+                        catch(e) {} finally { localStorage.removeItem('pendingInviteCode'); }
                     }
-
                     showToast('登录成功，正在跳转...', 'success-flash');
-                    setTimeout(() => {
-                        window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard';
-                    }, 400);
-                } else {
-                    showToast(data.message || '登录失败，请检查后重试', 'error');
-                    btn.disabled = false;
-                    btn.textContent = '登录并进入仪表盘';
-                }
-            } catch (error) {
-                showToast('网络错误，请稍后重试', 'error');
-                btn.disabled = false;
-                btn.textContent = '登录并进入仪表盘';
-            }
+                    setTimeout(() => { window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard'; }, 400);
+                } else { showToast(data.message || '登录失败', 'error'); btn.disabled = false; btn.textContent = '登录并进入仪表盘'; }
+            } catch(error) { showToast('网络错误', 'error'); btn.disabled = false; btn.textContent = '登录并进入仪表盘'; }
         }
 
-        document.getElementById('studentId').addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                document.getElementById('password').focus();
-            }
-        });
-
-        document.getElementById('password').addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                login();
-            }
-        });
+        document.getElementById('studentId').addEventListener('keypress', (event) => { if (event.key === 'Enter') { event.preventDefault(); document.getElementById('password').focus(); } });
+        document.getElementById('password').addEventListener('keypress', (event) => { if (event.key === 'Enter') { event.preventDefault(); login(); } });
 
         (function checkLoginStatus() {
             const token = localStorage.getItem('token');
             if (!token) return;
-            fetch(`${API_BASE}/user/profile`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                })
+            fetch(`${API_BASE}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard';
-                    } else {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('user');
-                    }
-                })
+                .then(data => { if (data.success) { window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard'; } else { localStorage.removeItem('token'); localStorage.removeItem('user'); } })
                 .catch(() => {});
         })();
 
