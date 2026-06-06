@@ -184,7 +184,7 @@
         </div>
         <div class="navbar-actions">
             <button class="btn btn-outline" onclick="openPublishModal()"><i class="fas fa-plus"></i> 发布</button>
-            <button class="btn btn-white" onclick="window.location.href='/'"><i class="fas fa-home"></i> 签到</button>
+            <button class="btn btn-white" id="btnGotoSign" onclick="window.location.href='/'"><i class="fas fa-home"></i> 签到</button>
         </div>
     </div>
 
@@ -352,6 +352,12 @@
             const content = document.getElementById('payQRContent');
             if (content) { content.style.display = content.style.display === 'none' ? 'block' : 'none'; }
         }
+
+        // 游客隐藏"返回签到"按钮
+        if (currentUser.studentId && currentUser.studentId.startsWith('guest_')) {
+            document.getElementById('btnGotoSign').style.display = 'none';
+        }
+
 
         // ========== 市场登录 ==========
         function marketLogin() {
