@@ -252,6 +252,81 @@
   </div>
 
   <div class="container">
+    <!-- ========== 赞助提醒弹窗 ========== -->
+    <div id="sponsorModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+      <div style="background:#fff; border-radius:20px; padding:28px 24px; max-width:420px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); position:relative; animation:popIn 0.3s ease-out;">
+        
+        <!-- 关闭按钮 -->
+        <button onclick="closeSponsorModal()" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">&times;</button>
+        
+        <!-- 图标 -->
+        <div style="font-size:48px; margin-bottom:12px;">🏠</div>
+        
+        <!-- 标题 -->
+        <h2 style="font-size:20px; font-weight:800; color:#1a1a2e; margin-bottom:8px;">
+          快放假了，下学期还能用吗？
+        </h2>
+        
+        <!-- 正文 -->
+        <div style="text-align:left; background:#fff9f0; border-radius:12px; padding:16px; margin-bottom:16px; font-size:14px; color:#5a4a3a; line-height:1.7;">
+          <p style="margin-bottom:8px;">👋 同学们好，我是这个签到工具的维护者。</p>
+          <p style="margin-bottom:8px;">最近使用人数增多，服务器和数据库成本每月约 <strong style="color:#e05050;">¥35</strong>，一个人承担确实有点吃力。</p>
+          <p style="margin-bottom:8px;">如果你觉得这个工具确实帮你省了不少心，希望能支持一下。</p>
+          <p style="margin-bottom:8px; background:#fff3e0; padding:8px 12px; border-radius:8px; border-left:3px solid #ff9800;">
+            💡 <strong>6月30日前赞助任意金额，下学期开学自动激活签到服务，无需重新注册。</strong>
+          </p>
+          <p style="margin:0; font-size:12px; color:#999;">🙏 不赞助也不会影响本学期剩余签到的使用，感谢信任。</p>
+        </div>
+        
+        <!-- 按钮组 -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button onclick="goToSponsor()" style="width:100%; padding:14px; background:linear-gradient(135deg, #ff9800, #f57c00); color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer;">
+            ❤️ 现在赞助，锁定下学期资格
+          </button>
+          <button onclick="closeSponsorModal()" style="width:100%; padding:12px; background:none; border:1px solid #ddd; border-radius:10px; color:#999; font-size:14px; cursor:pointer;">
+            暂时不了，我先用着
+          </button>
+        </div>
+        
+        <p style="margin-top:12px; font-size:11px; color:#bbb;">
+          弹窗仅出现一次 · 已赞助用户不会看到此提示
+        </p>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes popIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+    </style>
+    
+    <script>
+      // ========== 赞助弹窗逻辑 ==========
+      function showSponsorModal() {
+        // 已赞助用户不弹
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (user.isVip) return;
+        
+        // 已经弹过或手动关闭过，不再弹
+        if (localStorage.getItem('sponsorModalClosed')) return;
+        
+        document.getElementById('sponsorModal').style.display = 'flex';
+      }
+      
+      function closeSponsorModal() {
+        document.getElementById('sponsorModal').style.display = 'none';
+        localStorage.setItem('sponsorModalClosed', 'true');
+      }
+      
+      function goToSponsor() {
+        // 跳转到赞助区域（首页的赞助模块）
+        window.location.href = '/#support';
+      }
+      
+      // 页面加载3秒后弹出
+      setTimeout(showSponsorModal, 3000);
+    </script>
     <div class="layout">
       <!-- 侧栏 -->
       <div class="sidebar">
