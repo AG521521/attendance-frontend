@@ -120,11 +120,11 @@
         .input-group{margin-bottom:14px;position:relative}
         .input-group label{display:block;margin-bottom:6px;color:#3a3f50;font-size:13px;font-weight:700;letter-spacing:-0.01em}
         .input-wrapper{position:relative;display:flex;align-items:center}
-        .input-group input{width:100%;height:50px;padding:0 40px 0 14px;border:1.5px solid #dde3ed;border-radius:var(--radius-sm);background:#fafcfe;color:var(--ink);font-size:15.5px;font-family:var(--font-sans);outline:none;transition:all var(--transition);letter-spacing:-0.01em}
+        .input-group input{width:100%;height:50px;padding:0 85px 0 14px;border:1.5px solid #dde3ed;border-radius:var(--radius-sm);background:#fafcfe;color:var(--ink);font-size:15.5px;font-family:var(--font-sans);outline:none;transition:all var(--transition);letter-spacing:-0.01em}
         .input-group input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,109,240,0.10),0 0 0 1px rgba(59,109,240,0.06);background:#fff}
         .input-group input::placeholder{color:#bcc3d0}
-        .input-actions{position:absolute;right:4px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:1px;z-index:2}
-        .btn-input-action{width:34px;height:34px;border:0;border-radius:7px;background:transparent;color:#a0a9b8;cursor:pointer;font-size:14px;display:grid;place-items:center;transition:all var(--transition-fast);-webkit-tap-highlight-color:transparent}
+        .input-actions{position:absolute;right:4px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:0;z-index:2}
+        .btn-input-action{width:28px;height:28px;border:0;border-radius:6px;background:transparent;color:#a0a9b8;cursor:pointer;font-size:12px;display:grid;place-items:center;transition:all var(--transition-fast);-webkit-tap-highlight-color:transparent}
         .btn-input-action:hover{background:#eef2f8;color:#555d6e}
         .btn-input-action:active{background:#dde3ee;transform:scale(.9)}
         .btn-input-action.copied-flash{color:var(--green);background:var(--green-soft)}
@@ -172,6 +172,9 @@
         .close-modal{width:100%;margin-top:14px;border:0;border-radius:10px;padding:11px 14px;background:#1a1d28;color:#fff;font-weight:700;cursor:pointer;font-size:14px;transition:all var(--transition-fast);font-family:var(--font-sans)}
         .close-modal:hover{background:#2a2d38}
         .close-modal:active{transform:scale(.96)}
+        /* 快捷入口卡片hover */
+        .quick-link-card{cursor:pointer;transition:all var(--transition);border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid}
+        .quick-link-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
         @media(max-width:980px){
             body{padding:12px;align-items:flex-start}
             .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
@@ -262,10 +265,9 @@
                             如果它替你稳住过一次签到
                         </div>
                         <p class="support-copy">
-                            <p class="support-copy">
-                              赞助用于服务器、数据库和域名续费。💰<br>
-                              <strong style="color:#e05050;">🎓 6月12日前赞助任意金额，下学期开学自动激活签到服务。</strong><br>
-                              金额需>=5，目的是让这个小工具能继续稳定跑下去。
+                            赞助用于服务器、数据库和域名续费。💰<br>
+                            <strong style="color:#e05050;">🎓 6月12日前赞助任意金额，下学期开学自动激活签到服务。</strong><br>
+                            金额需>=5，目的是让这个小工具能继续稳定跑下去。
                         </p>
                     </div>
                     <div class="cost-pill">
@@ -324,6 +326,9 @@
                         <button class="btn-input-action" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()" aria-label="切换密码可见性">
                             <i class="far fa-eye" id="togglePasswordIcon"></i>
                         </button>
+                        <button class="btn-input-action" type="button" onclick="fillDefaultPassword()" aria-label="填入默认密码" title="一键填入默认密码 Ahgydx@920">
+                            <i class="fas fa-key"></i>
+                        </button>
                         <button class="btn-input-action copied-flash" type="button" id="copyPasswordBtn" onclick="copyInputValue('password','copyPasswordBtn')" aria-label="复制密码">
                             <i class="far fa-copy"></i>
                         </button>
@@ -357,24 +362,35 @@
                 </div>
             </div>
 
-            <!-- 🛒 二手市场快捷入口 -->
-            <div style="margin-top: 18px; padding: 14px 16px; background: linear-gradient(135deg, #f0f5ff, #fff7f0); border-radius: 14px; border: 1px solid #e0e8f5; cursor: pointer; transition: all 0.2s;"
-                 onclick="window.location.href='/market'"
-                 onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.06)';"
-                 onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #667eea, #f39c12); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px;">
-                        <i class="fas fa-store"></i>
+            <!-- QQ频道入口 -->
+            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f8ff,#e8f0fe);border-color:#c8ddf8;"
+                 onclick="window.open('https://pd.qq.com/s/YOUR_CHANNEL_LINK','_blank')">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#12b7f5,#0d8bd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
+                        <i class="fab fa-qq"></i>
                     </div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 700; font-size: 15px; color: #1a1d28;">🛒 AG校园二手</div>
-                        <div style="font-size: 12px; color: #6b7187; margin-top: 2px;">教材 · 数码 · 毕业甩卖 · 闲置交易</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">💬 加入QQ频道</div>
+                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">反馈问题 · 交流经验 · 签到提醒</div>
                     </div>
-                    <i class="fas fa-chevron-right" style="color: #aaa;"></i>
+                    <i class="fas fa-chevron-right" style="color:#aaa;"></i>
                 </div>
             </div>
 
-            <!-- ===== 原来游客登录已删除，改为仅导向市场 ===== -->
+            <!-- 🛒 二手市场入口 -->
+            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f5ff,#fff7f0);border-color:#e0e8f5;margin-bottom:0;"
+                 onclick="window.location.href='/market'">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#667eea,#f39c12);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">🛒 AG校园二手</div>
+                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">教材 · 数码 · 毕业甩卖 · 闲置交易</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color:#aaa;"></i>
+                </div>
+            </div>
 
             <div class="micro-list">
                 <div class="micro-item">
@@ -457,6 +473,16 @@
             else { detail.classList.add('open'); trigger.classList.add('active'); trigger.setAttribute('aria-expanded', 'true'); }
         }
 
+        function fillDefaultPassword() {
+            const pwd = document.getElementById('password');
+            pwd.type = 'text';
+            pwd.value = 'Ahgydx@920';
+            passwordVisible = true;
+            document.getElementById('togglePasswordIcon').className = 'far fa-eye-slash';
+            pwd.focus();
+            showToast('已填入默认密码 Ahgydx@920', 'success-flash');
+        }
+
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const icon = document.getElementById('togglePasswordIcon');
@@ -527,12 +553,16 @@
                 .catch(() => {});
         }
 
-        // ===== 游客登录已删除 =====
-
         async function login() {
             const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
             const btn = document.getElementById('loginBtn');
+
+            // 禁止游客学号通过签到页登录
+            if (studentId.startsWith('guest_')) {
+                showToast('该账号为市场游客，请前往二手市场登录', 'error');
+                return;
+            }
 
             if (!studentId) { showToast('请输入学号', 'error'); const input = document.getElementById('studentId'); input.focus(); input.style.borderColor = 'var(--rose)'; input.style.boxShadow = '0 0 0 4px rgba(224,80,96,0.12)'; setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 1500); return; }
             btn.disabled = true; btn.textContent = '正在登录...';
@@ -566,7 +596,20 @@
             if (!token) return;
             fetch(`${API_BASE}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then(res => res.json())
-                .then(data => { if (data.success) { window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard'; } else { localStorage.removeItem('token'); localStorage.removeItem('user'); } })
+                .then(data => {
+                    if (data.success) {
+                        // 市场游客不自动跳转签到系统
+                        if (data.user.studentId && data.user.studentId.startsWith('guest_')) {
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            return;
+                        }
+                        window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard';
+                    } else {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                    }
+                })
                 .catch(() => {});
         })();
 
