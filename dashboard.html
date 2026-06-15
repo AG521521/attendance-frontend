@@ -216,6 +216,20 @@
 
     .hidden { display: none !important; }
 
+    .qq-link-card {
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #f0f8ff, #e8f0fe);
+      border-radius: 12px;
+      border: 1px solid #c8ddf8;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .qq-link-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
     /* 移动端 */
     @media (max-width: 768px) {
       .layout { flex-direction: column; }
@@ -346,8 +360,22 @@
       </div>
       <!-- 内容 -->
       <div class="content">
+
         <!-- 首页 -->
         <div id="page-dashboard" class="page active">
+          <!-- ===== QQ频道入口 🆕 ===== -->
+          <div class="qq-link-card" onclick="window.open('https://pd.qq.com/s/YOUR_CHANNEL_LINK','_blank')">
+            <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#12b7f5,#0d8bd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
+              <i class="fab fa-qq"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:15px;color:#1a1a2e;">💬 加入QQ频道</div>
+              <div style="font-size:12px;color:#6b7187;">反馈问题 · 交流经验 · 签到提醒</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:#aaa;"></i>
+          </div>
+          <!-- ===== QQ频道入口结束 ===== -->
+
           <div id="noticeCard" class="card hidden"><h2 id="noticeTitle"></h2><div id="noticeContent"></div></div>
           <div class="stats-grid">
             <div class="stat-card"><div class="stat-value" id="statTotalSigns">0</div><div class="stat-label">累计</div></div>
@@ -490,6 +518,13 @@
     const token = localStorage.getItem('token');
     if (!token) window.location.href = '/';
     let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // ========== 🆕 游客拦截：市场游客跳回市场 ==========
+    if (currentUser.studentId && currentUser.studentId.startsWith('guest_')) {
+        window.location.href = '/market';
+        throw new Error('guest');
+    }
+
     document.getElementById('userName').textContent = (currentUser.name || currentUser.studentId) + ' (' + currentUser.studentId + ')';
     let currentOrder = null, pollingTimer = null;
     const days = ['日','一','二','三','四','五','六'];
@@ -626,7 +661,7 @@
           const setting = autoData.setting || {};
           const selectedDays = (setting.customDays || []).map(d => days[d]).join('、') || '未选择日期';
           if (!setting.enabled) {
-            autoContainer.innerHTML = '<p class="empty">自动签到未开启。进入“自动签到”选择日期后保存即可。</p>';
+            autoContainer.innerHTML = '<p class="empty">自动签到未开启。进入"自动签到"选择日期后保存即可。</p>';
           } else {
             autoContainer.innerHTML = '<div class="list-item"><div><h4>自动签到已开启</h4><p><i class="fas fa-clock"></i> 21:25 | <i class="fas fa-calendar-alt"></i> '+escapeHTML(selectedDays)+' | <i class="fas fa-envelope"></i> '+(setting.notifyOnSuccess || setting.notifyOnFailure ? '邮件提醒已配置' : '未开启邮件提醒')+'</p></div><span class="badge badge-success">启用</span></div>';
           }
