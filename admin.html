@@ -65,7 +65,7 @@
     .btn {
       padding: 10px 18px; border: none; border-radius: 10px; cursor: pointer;
       font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px;
-      transition: all 0.2s; font-family: inherit;
+      transition: all 0.2s; font-family: inherit; text-decoration: none;
     }
     .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
     .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
@@ -118,6 +118,9 @@
     .toast.success { background: #087a56; }
     .toast.error { background: #b91c1c; }
     .toast.info { background: #1a1d28; }
+    .quick-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .heat-bar { height: 8px; background: #eee; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+    .heat-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
     @media (max-width: 768px) {
       .admin-layout { flex-direction: column; }
       .sidebar { width: 100%; padding: 12px; }
@@ -133,7 +136,7 @@
     <!-- ========== 侧边栏 ========== -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.3</h2>
+        <h2><i class="fas fa-shield-alt"></i> 管理后台 v2.4</h2>
       </div>
       <div class="sidebar-menu">
         <div class="menu-item active" data-page="dashboard">
@@ -158,6 +161,9 @@
         <div class="menu-item" data-page="feedback">
           <i class="fas fa-comment-dots"></i> 留言管理
           <span id="feedbackBadge" style="margin-left:auto; background:#dc3545; color:white; padding:2px 8px; border-radius:10px; font-size:11px; display:none;">0</span>
+        </div>
+        <div class="menu-item" data-page="email">
+          <i class="fas fa-envelope"></i> 群发邮件
         </div>
         <div class="menu-item" data-page="settings">
           <i class="fas fa-cog"></i> 系统设置
@@ -195,6 +201,14 @@
           <p style="margin-bottom:12px; color:#666;">手动执行一次全员签到（仅对已启用自动签到的用户生效）</p>
           <button class="btn btn-warning" onclick="triggerAllSign()"><i class="fas fa-bolt"></i> 一键全员签到</button>
           <span id="triggerResult" style="margin-left:15px;"></span>
+        </div>
+        <div class="content-card">
+          <div class="card-header"><h3><i class="fas fa-link"></i> 快捷入口</h3></div>
+          <div class="quick-links">
+            <a href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" class="btn btn-outline"><i class="fab fa-qq"></i> QQ频道</a>
+            <a href="/market" target="_blank" class="btn btn-outline"><i class="fas fa-store"></i> 二手市场</a>
+            <a href="/" target="_blank" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> 签到入口</a>
+          </div>
         </div>
       </div>
 
@@ -320,6 +334,39 @@
         </div>
       </div>
 
+      <!-- ===== 群发邮件 ===== -->
+      <div id="page-email" class="hidden">
+        <div class="content-card">
+          <div class="card-header"><h3><i class="fas fa-envelope"></i> 群发邮件通知</h3></div>
+          <div id="emailRecipientStats" style="margin-bottom:16px;color:#888;">加载中...</div>
+          <div class="form-group"><label>邮件主题 *</label><input type="text" id="emailSubject" placeholder="例如：系统维护通知"></div>
+          <div class="form-group">
+            <label>邮件内容 *</label>
+            <textarea id="emailContent" rows="8" placeholder="支持纯文本，换行会保留。&#10;&#10;示例：&#10;同学们好，今晚22:00-23:00系统升级维护，期间签到服务暂停。"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>发送范围</label>
+              <select id="emailRecipients">
+                <option value="">请选择</option>
+                <option value="all">全部用户</option>
+                <option value="vip">仅VIP用户</option>
+                <option value="nonVip">非VIP用户</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>排除游客</label>
+              <select id="emailFilterGuest">
+                <option value="true">是（排除游客）</option>
+                <option value="false">否（包含游客）</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="sendBulkEmail()" id="sendEmailBtn"><i class="fas fa-paper-plane"></i> 发送邮件</button>
+          <span id="sendEmailResult" style="margin-left:15px;"></span>
+        </div>
+      </div>
+
       <!-- ===== 系统设置 ===== -->
       <div id="page-settings" class="hidden">
         <div class="content-card">
@@ -426,7 +473,7 @@
         const titles = {
           dashboard: '仪表盘', users: '用户管理', cards: '卡密管理',
           reports: '举报管理', orders: '订单管理', 'market-items': '商品管理',
-          feedback: '留言管理', settings: '系统设置'
+          feedback: '留言管理', email: '群发邮件', settings: '系统设置'
         };
         document.getElementById('pageTitle').textContent = titles[page];
 
@@ -437,6 +484,7 @@
         else if (page === 'orders') loadOrders();
         else if (page === 'market-items') loadMarketItems();
         else if (page === 'feedback') loadFeedbacks();
+        else if (page === 'email') loadEmailStats();
         else if (page === 'settings') loadSettings();
       });
     });
@@ -451,6 +499,13 @@
           document.getElementById('statVipUsers').textContent = data.stats.users.vip;
           document.getElementById('statTodaySigns').textContent = data.stats.signs.today;
           document.getElementById('statSuccessRate').textContent = data.stats.signs.successRate + '%';
+
+          // 签到热力
+          const todaySigns = data.stats.signs.today || 0;
+          const totalUsers = data.stats.users.total || 1;
+          const heatPercent = Math.min(100, Math.round(todaySigns / totalUsers * 100));
+          const heatColor = heatPercent > 80 ? '#28a745' : (heatPercent > 50 ? '#ffc107' : '#dc3545');
+
           document.getElementById('statsDetail').innerHTML = `
             <table>
               <tr><td>总签到次数</td><td><strong>${data.stats.signs.total}</strong></td></tr>
@@ -459,6 +514,11 @@
               <tr><td>今日新增用户</td><td><strong>${data.stats.users.today}</strong></td></tr>
               <tr><td>总邀请次数</td><td><strong>${data.stats.invites?.total || 0}</strong></td></tr>
             </table>
+            <div style="margin-top:14px; background:#f8f9fc; padding:12px; border-radius:8px;">
+              <strong>📊 今日签到热力</strong>
+              <div class="heat-bar"><div class="heat-fill" style="width:${heatPercent}%; background:${heatColor};"></div></div>
+              <span style="font-size:12px; color:#888;">${heatPercent}% 用户今日已签到（${todaySigns}/${totalUsers}）</span>
+            </div>
           `;
         }
       } catch (e) {}
@@ -939,6 +999,55 @@
     }
 
     function closeReplyModal() { document.getElementById('replyModal').classList.remove('show'); }
+
+    // ========== 群发邮件 ==========
+    async function loadEmailStats() {
+      try {
+        const res = await fetch(`${API_BASE}/admin/email-recipients-count`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('emailRecipientStats').innerHTML = `
+            📊 可发送对象：<strong>${data.total}</strong> 位非游客用户 | VIP：<strong>${data.vip}</strong> | 含游客总计：<strong>${data.all}</strong>
+          `;
+        }
+      } catch (e) {}
+    }
+
+    async function sendBulkEmail() {
+      const subject = document.getElementById('emailSubject').value.trim();
+      const content = document.getElementById('emailContent').value.trim();
+      const recipients = document.getElementById('emailRecipients').value;
+      const filterGuest = document.getElementById('emailFilterGuest').value === 'true';
+
+      if (!subject || !content) { showToast('请填写主题和内容', 'error'); return; }
+      if (!recipients) { showToast('请选择发送范围', 'error'); return; }
+
+      const stats = await fetch(`${API_BASE}/admin/email-recipients-count`, { headers: { 'Authorization': `Bearer ${token}` } })
+        .then(r => r.json());
+      const count = recipients === 'vip' ? stats.vip : (recipients === 'nonVip' ? (stats.all - stats.vip) : stats.all);
+
+      if (!confirm(`确定向约 ${count} 位用户发送邮件吗？\n\n主题：${subject}`)) return;
+
+      const btn = document.getElementById('sendEmailBtn');
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发送中...';
+      document.getElementById('sendEmailResult').innerHTML = '';
+
+      try {
+        const res = await fetch(`${API_BASE}/admin/send-bulk-email`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject, content, recipients, filterGuest })
+        });
+        const data = await res.json();
+        document.getElementById('sendEmailResult').innerHTML = data.success
+          ? `<span style="color:#28a745;">✅ ${data.message}</span>`
+          : `<span style="color:#dc3545;">❌ ${data.message}</span>`;
+      } catch (e) {
+        document.getElementById('sendEmailResult').innerHTML = '<span style="color:#dc3545;">网络错误</span>';
+      } finally {
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发送邮件';
+      }
+    }
 
     // ========== 设置 ==========
     async function loadSettings() {
