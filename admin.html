@@ -75,6 +75,12 @@
     .btn-outline { background: #fff; color: #666; border: 2px solid #e0e0e0; }
     .btn-outline:hover { border-color: #667eea; color: #667eea; }
     .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 6px; }
+    .btn-gold {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #333;
+      font-weight: 700;
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4); }
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #555; font-size: 13px; }
     .form-group input, .form-group select, .form-group textarea {
@@ -121,6 +127,13 @@
     .quick-links { display: flex; gap: 12px; flex-wrap: wrap; }
     .heat-bar { height: 8px; background: #eee; border-radius: 4px; margin-top: 6px; overflow: hidden; }
     .heat-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+    .sponsor-notice-card {
+      background: linear-gradient(135deg, #fff9f0, #fff4e6);
+      border: 2px solid #ffb347;
+      border-radius: 20px;
+    }
+    .sponsor-notice-card .card-header h3 { color: #d4880f; }
+    .sponsor-notice-card .form-group label { color: #7a5a2e; }
     @media (max-width: 768px) {
       .admin-layout { flex-direction: column; }
       .sidebar { width: 100%; padding: 12px; }
@@ -389,6 +402,43 @@
           <div class="form-group"><label>每人奖励 VIP 天数</label><input type="number" id="inviteRewardDays" value="10" min="1" max="365"></div>
           <button class="btn btn-primary" onclick="saveInviteReward()"><i class="fas fa-save"></i> 保存奖励设置</button>
         </div>
+
+        <!-- ===== 🆕 赞助者专属通知卡片 ===== -->
+        <div class="content-card sponsor-notice-card">
+          <div class="card-header">
+            <h3><i class="fas fa-gift" style="color:#f7971e;"></i> 赞助者专属通知</h3>
+          </div>
+          <div class="form-group">
+            <label>启用通知</label>
+            <select id="sponsorNoticeEnabled">
+              <option value="true">是</option>
+              <option value="false">否</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>通知标题</label>
+            <input type="text" id="sponsorNoticeTitle" placeholder="感谢您的赞助！">
+          </div>
+          <div class="form-group">
+            <label>通知内容（支持换行）</label>
+            <textarea id="sponsorNoticeContent" rows="4" placeholder="输入想对赞助者说的话..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>通知样式</label>
+            <select id="sponsorNoticeStyle">
+              <option value="info">📘 信息</option>
+              <option value="success">✅ 成功</option>
+              <option value="warning">⚠️ 警告</option>
+              <option value="error">❌ 错误</option>
+            </select>
+          </div>
+          <button class="btn btn-gold" onclick="saveSponsorNotice()">
+            <i class="fas fa-save"></i> 保存并发送邮件通知
+          </button>
+          <p style="font-size:12px;color:#888;margin-top:8px;">保存后将自动向所有VIP用户发送邮件，并会在其仪表盘显示通知。</p>
+          <span id="sponsorNoticeResult"></span>
+        </div>
+
         <div class="content-card">
           <div class="card-header"><h3><i class="fas fa-database"></i> 数据维护</h3></div>
           <div style="display: flex; gap: 10px;">
@@ -485,7 +535,7 @@
         else if (page === 'market-items') loadMarketItems();
         else if (page === 'feedback') loadFeedbacks();
         else if (page === 'email') loadEmailStats();
-        else if (page === 'settings') loadSettings();
+        else if (page === 'settings') { loadSettings(); loadSponsorNotice(); }
       });
     });
 
@@ -500,7 +550,6 @@
           document.getElementById('statTodaySigns').textContent = data.stats.signs.today;
           document.getElementById('statSuccessRate').textContent = data.stats.signs.successRate + '%';
 
-          // 签到热力
           const todaySigns = data.stats.signs.today || 0;
           const totalUsers = data.stats.users.total || 1;
           const heatPercent = Math.min(100, Math.round(todaySigns / totalUsers * 100));
@@ -1102,6 +1151,57 @@
       if (!confirm('⚠️ 危险操作！确定重置系统吗？')) return;
       if (!confirm('再次确认：此操作不可恢复！')) return;
       showToast('系统已重置', 'success');
+    }
+
+    // ========== 🆕 赞助者专属通知 ==========
+    async function loadSponsorNotice() {
+      try {
+        const res = await fetch(`${API_BASE}/admin/config`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success && data.configs.sponsor_notice) {
+          const notice = data.configs.sponsor_notice;
+          document.getElementById('sponsorNoticeEnabled').value = notice.enabled ? 'true' : 'false';
+          document.getElementById('sponsorNoticeTitle').value = notice.title || '';
+          document.getElementById('sponsorNoticeContent').value = notice.content || '';
+          document.getElementById('sponsorNoticeStyle').value = notice.style || 'info';
+        }
+      } catch(e) {}
+    }
+
+    async function saveSponsorNotice() {
+      const value = {
+        enabled: document.getElementById('sponsorNoticeEnabled').value === 'true',
+        title: document.getElementById('sponsorNoticeTitle').value,
+        content: document.getElementById('sponsorNoticeContent').value,
+        style: document.getElementById('sponsorNoticeStyle').value
+      };
+      if (!value.title || !value.content) {
+        alert('请填写完整内容');
+        return;
+      }
+      if (!confirm('保存后将立即向所有VIP用户发送邮件，确定吗？')) return;
+      const btn = document.querySelector('.btn-gold');
+      btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
+      try {
+        const res = await fetch(`${API_BASE}/admin/config/sponsor_notice`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ value })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('赞助者通知已保存，邮件正在发送中...', 'success');
+          document.getElementById('sponsorNoticeResult').innerHTML = '<span style="color:#28a745;">✅ 已保存，邮件已开始发送</span>';
+        } else {
+          showToast(data.message || '保存失败', 'error');
+          document.getElementById('sponsorNoticeResult').innerHTML = '<span style="color:#dc3545;">❌ ' + data.message + '</span>';
+        }
+      } catch(e) {
+        showToast('网络错误', 'error');
+        document.getElementById('sponsorNoticeResult').innerHTML = '<span style="color:#dc3545;">网络错误</span>';
+      } finally {
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> 保存并发送邮件通知';
+      }
     }
 
     function logout() { localStorage.clear(); window.location.href = '/'; }
