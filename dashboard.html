@@ -44,7 +44,7 @@
       gap: 12px;
     }
     .header h1 { font-size: 22px; }
-    .user-info { display: flex; align-items: center; gap: 12px; }
+    .user-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .user-info span { font-size: 14px; opacity: 0.9; }
     .btn {
       display: inline-flex;
@@ -230,6 +230,16 @@
     }
     .qq-link-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
 
+    .sponsor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
     /* 移动端 */
     @media (max-width: 768px) {
       .layout { flex-direction: column; }
@@ -250,6 +260,7 @@
       .header { padding: 12px 16px; }
       .header h1 { font-size: 18px; }
       .list-item { flex-direction: column; align-items: flex-start; }
+      .user-info { flex-wrap: wrap; }
     }
     @media (max-width: 400px) {
       .stats-grid { grid-template-columns: 1fr; }
@@ -269,19 +280,11 @@
     <!-- ========== 赞助提醒弹窗 ========== -->
     <div id="sponsorModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; border-radius:20px; padding:28px 24px; max-width:420px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); position:relative; animation:popIn 0.3s ease-out;">
-        
-        <!-- 关闭按钮 -->
         <button onclick="closeSponsorModal()" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">&times;</button>
-        
-        <!-- 图标 -->
         <div style="font-size:48px; margin-bottom:12px;">🏠</div>
-        
-        <!-- 标题 -->
         <h2 style="font-size:20px; font-weight:800; color:#1a1a2e; margin-bottom:8px;">
           快放假了，下学期还能用吗？
         </h2>
-        
-        <!-- 正文 -->
         <div style="text-align:left; background:#fff9f0; border-radius:12px; padding:16px; margin-bottom:16px; font-size:14px; color:#5a4a3a; line-height:1.7;">
           <p style="margin-bottom:8px;">👋 同学们好，我是这个签到工具的维护者。</p>
           <p style="margin-bottom:8px;">最近使用人数增多，服务器和数据库成本每月约 <strong style="color:#e05050;">¥55</strong>，一个人承担确实有点吃力。</p>
@@ -291,8 +294,6 @@
           </p>
           <p style="margin:0; font-size:12px; color:#999;">🙏 不赞助也不会影响本学期剩余签到的使用，感谢信任。</p>
         </div>
-        
-        <!-- 按钮组 -->
         <div style="display:flex; flex-direction:column; gap:10px;">
           <button onclick="goToSponsor()" style="width:100%; padding:14px; background:linear-gradient(135deg, #ff9800, #f57c00); color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer;">
             ❤️ 现在赞助，锁定下学期资格
@@ -301,46 +302,35 @@
             暂时不了，我先用着
           </button>
         </div>
-        
         <p style="margin-top:12px; font-size:11px; color:#bbb;">
           弹窗仅出现一次 · 已赞助用户不会看到此提示
         </p>
       </div>
     </div>
-    
     <style>
       @keyframes popIn {
         from { transform: scale(0.9); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
       }
     </style>
-    
     <script>
       // ========== 赞助弹窗逻辑 ==========
       function showSponsorModal() {
-        // 已赞助用户不弹
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (user.isVip) return;
-        
-        // 已经弹过或手动关闭过，不再弹
         if (localStorage.getItem('sponsorModalClosed')) return;
-        
         document.getElementById('sponsorModal').style.display = 'flex';
       }
-      
       function closeSponsorModal() {
         document.getElementById('sponsorModal').style.display = 'none';
         localStorage.setItem('sponsorModalClosed', 'true');
       }
-      
       function goToSponsor() {
-        // 跳转到赞助区域（首页的赞助模块）
         window.location.href = '/#support';
       }
-      
-      // 页面加载3秒后弹出
       setTimeout(showSponsorModal, 3000);
     </script>
+
     <div class="layout">
       <!-- 侧栏 -->
       <div class="sidebar">
@@ -358,12 +348,15 @@
           <li class="menu-item" data-page="profile"><i class="fas fa-user"></i> 我的</li>
         </ul>
       </div>
+
       <!-- 内容 -->
       <div class="content">
-
         <!-- 首页 -->
         <div id="page-dashboard" class="page active">
-          <!-- ===== QQ频道入口 🆕 ===== -->
+          <!-- 🆕 VIP 专属通知横幅 -->
+          <div id="vipNoticeBanner"></div>
+
+          <!-- QQ频道入口 -->
           <div class="qq-link-card" onclick="window.open('https://pd.qq.com/s/9fkh0w8xw','_blank')">
             <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#12b7f5,#0d8bd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
               <i class="fab fa-qq"></i>
@@ -374,7 +367,6 @@
             </div>
             <i class="fas fa-chevron-right" style="color:#aaa;"></i>
           </div>
-          <!-- ===== QQ频道入口结束 ===== -->
 
           <div id="noticeCard" class="card hidden"><h2 id="noticeTitle"></h2><div id="noticeContent"></div></div>
           <div class="stats-grid">
@@ -393,20 +385,45 @@
 
         <!-- 签到任务 -->
         <div id="page-subscriptions" class="page">
-          <div class="card">
-            <h2><i class="fas fa-plus-circle"></i> 新建任务</h2>
-            <div class="form-row">
-              <div class="form-group"><label>名称</label><input type="text" id="courseName" value="晚寝签到"></div>
-              <div class="form-group"><label>时间</label><input type="time" id="signTime" value="21:25"></div>
+          <div class="auto-sign-hero">
+            <div>
+              <h2><i class="fas fa-moon" style="color:var(--brand);"></i> 自动签到</h2>
+              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:25 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
+              <div id="autoSignStatus" style="margin-top:14px;"></div>
             </div>
-            <div class="form-row">
-              <div class="form-group"><label>重试次数</label><input type="number" id="maxRetries" value="3" min="1" max="5"></div>
-              <div class="form-group"><label>自动签到</label><select id="autoSign"><option value="true">✅ 开启</option><option value="false">❌ 关闭</option></select></div>
+            <div class="auto-sign-time">
+              <strong>21:25</strong>
+              <span>统一签到时间</span>
             </div>
-            <div class="form-group"><label>重复日期</label><div class="weekday-selector" id="weekdaySelector"><button class="weekday-btn selected" data-day="1">一</button><button class="weekday-btn selected" data-day="2">二</button><button class="weekday-btn selected" data-day="3">三</button><button class="weekday-btn selected" data-day="4">四</button><button class="weekday-btn selected" data-day="5">五</button><button class="weekday-btn" data-day="6">六</button><button class="weekday-btn" data-day="0">日</button></div></div>
-            <button class="btn btn-primary" onclick="addSubscription()"><i class="fas fa-plus"></i> 添加</button>
           </div>
-          <div class="card"><h2><i class="fas fa-list"></i> 任务列表</h2><div id="subscriptionsList"><p class="loading">加载中...</p></div></div>
+          <div class="card">
+            <h2><i class="fas fa-sliders-h"></i> 签到偏好</h2>
+            <div class="setting-line">
+              <div class="setting-copy"><strong>启用自动签到</strong><p>适合每天晚上不想手动操作的同学。</p></div>
+              <label class="switch"><input type="checkbox" id="autoSignEnabled"><span class="slider"></span></label>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+              <label>签到日期</label>
+              <div class="weekday-selector" id="weekdaySelector">
+                <button type="button" class="weekday-btn selected" data-day="1">一</button>
+                <button type="button" class="weekday-btn selected" data-day="2">二</button>
+                <button type="button" class="weekday-btn selected" data-day="3">三</button>
+                <button type="button" class="weekday-btn selected" data-day="4">四</button>
+                <button type="button" class="weekday-btn selected" data-day="5">五</button>
+                <button type="button" class="weekday-btn" data-day="6">六</button>
+                <button type="button" class="weekday-btn" data-day="0">日</button>
+              </div>
+            </div>
+            <div class="setting-line">
+              <div class="setting-copy"><strong>成功后邮件通知</strong><p>签到成功时发一封邮件，让你放心。</p></div>
+              <label class="switch"><input type="checkbox" id="notifyOnSuccess" checked><span class="slider"></span></label>
+            </div>
+            <div class="setting-line">
+              <div class="setting-copy"><strong>失败后邮件提醒</strong><p>如果自动签到失败，第一时间提醒你手动处理。</p></div>
+              <label class="switch"><input type="checkbox" id="notifyOnFailure" checked><span class="slider"></span></label>
+            </div>
+            <button class="btn btn-primary" onclick="saveAutoSignSetting()" style="margin-top:16px;"><i class="fas fa-save"></i> 保存设置</button>
+          </div>
         </div>
 
         <!-- 邮箱 -->
@@ -519,7 +536,7 @@
     if (!token) window.location.href = '/';
     let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-    // ========== 🆕 游客拦截：市场游客跳回市场 ==========
+    // ========== 游客拦截 ==========
     if (currentUser.studentId && currentUser.studentId.startsWith('guest_')) {
         window.location.href = '/market';
         throw new Error('guest');
@@ -556,7 +573,7 @@
         document.getElementById('page-' + page).classList.add('active');
         document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
         item.classList.add('active');
-        if (page === 'dashboard') { loadStats(); loadActiveSubs(); loadNotice(); }
+        if (page === 'dashboard') { loadStats(); loadActiveSubs(); loadNotice(); loadVipNotice(); }
         else if (page === 'subscriptions') loadAutoSignSetting();
         else if (page === 'email') loadEmailStatus();
         else if (page === 'invite') loadInviteInfo();
@@ -574,58 +591,66 @@
       });
     }
 
-    function initAutoSignExperience() {
-      const menu = document.querySelector('.menu-item[data-page="subscriptions"]');
-      if (menu) menu.innerHTML = '<i class="fas fa-calendar-check"></i> 自动签到';
-      const statLabel = document.querySelector('#statActiveSubs + .stat-label');
-      if (statLabel) statLabel.textContent = '自动';
-      const activeCard = document.getElementById('activeSubscriptionsList')?.closest('.card');
-      if (activeCard) activeCard.querySelector('h2').innerHTML = '<i class="fas fa-list-check"></i> 自动签到状态';
-
-      const page = document.getElementById('page-subscriptions');
-      if (!page) return;
-      page.innerHTML = `
-        <div class="auto-sign-hero">
-          <div>
-            <h2><i class="fas fa-moon" style="color:var(--brand);"></i> 自动签到</h2>
-            <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:25 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
-            <div id="autoSignStatus" style="margin-top:14px;"></div>
-          </div>
-          <div class="auto-sign-time">
-            <strong>21:25</strong>
-            <span>统一签到时间</span>
-          </div>
-        </div>
-        <div class="card">
-          <h2><i class="fas fa-sliders-h"></i> 签到偏好</h2>
-          <div class="setting-line">
-            <div class="setting-copy"><strong>启用自动签到</strong><p>适合每天晚上不想手动操作的同学。</p></div>
-            <label class="switch"><input type="checkbox" id="autoSignEnabled"><span class="slider"></span></label>
-          </div>
-          <div class="form-group" style="margin-top:14px;">
-            <label>签到日期</label>
-            <div class="weekday-selector" id="weekdaySelector">
-              <button type="button" class="weekday-btn selected" data-day="1">一</button>
-              <button type="button" class="weekday-btn selected" data-day="2">二</button>
-              <button type="button" class="weekday-btn selected" data-day="3">三</button>
-              <button type="button" class="weekday-btn selected" data-day="4">四</button>
-              <button type="button" class="weekday-btn selected" data-day="5">五</button>
-              <button type="button" class="weekday-btn" data-day="6">六</button>
-              <button type="button" class="weekday-btn" data-day="0">日</button>
-            </div>
-          </div>
-          <div class="setting-line">
-            <div class="setting-copy"><strong>成功后邮件通知</strong><p>签到成功时发一封邮件，让你放心。</p></div>
-            <label class="switch"><input type="checkbox" id="notifyOnSuccess" checked><span class="slider"></span></label>
-          </div>
-          <div class="setting-line">
-            <div class="setting-copy"><strong>失败后邮件提醒</strong><p>如果自动签到失败，第一时间提醒你手动处理。</p></div>
-            <label class="switch"><input type="checkbox" id="notifyOnFailure" checked><span class="slider"></span></label>
-          </div>
-          <button class="btn btn-primary" onclick="saveAutoSignSetting()" style="margin-top:16px;"><i class="fas fa-save"></i> 保存设置</button>
-        </div>
+    // ========== 🆕 赞助者徽章 ==========
+    function renderSponsorBadge() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user.isVip) return;
+      const expireDate = user.vipExpireAt ? new Date(user.vipExpireAt) : null;
+      if (!expireDate || expireDate <= new Date()) return;
+      const daysLeft = Math.ceil((expireDate - new Date()) / (1000 * 60 * 60 * 24));
+      let level, color, icon;
+      if (daysLeft > 30) { level = '金'; color = '#ffd700'; icon = '👑'; }
+      else if (daysLeft > 7) { level = '银'; color = '#c0c0c0'; icon = '⭐'; }
+      else { level = '铜'; color = '#cd7f32'; icon = '🌟'; }
+      
+      const badgeHtml = `
+        <span class="sponsor-badge" style="background:${color}20;border:2px solid ${color};color:#333;">
+          <span style="font-size:18px;">${icon}</span>
+          <span>赞助者 · ${level}牌 (剩余${daysLeft}天)</span>
+        </span>
       `;
-      bindWeekdayButtons();
+      const userInfo = document.querySelector('.user-info');
+      if (userInfo) {
+        const existing = userInfo.querySelector('.sponsor-badge');
+        if (existing) existing.remove();
+        const div = document.createElement('div');
+        div.innerHTML = badgeHtml;
+        userInfo.insertBefore(div.firstChild, userInfo.querySelector('button'));
+      }
+    }
+
+    // ========== 🆕 VIP专属通知 ==========
+    async function loadVipNotice() {
+      try {
+        const res = await fetch(`${API_BASE}/notice/vip`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (data.success && data.notice && data.notice.enabled) {
+          const n = data.notice;
+          const styles = {
+            info: { bg: '#d1ecf1', border: '#bee5eb', color: '#0c5460', icon: '📢' },
+            success: { bg: '#d4edda', border: '#c3e6cb', color: '#155724', icon: '✅' },
+            warning: { bg: '#fff3cd', border: '#ffeeba', color: '#856404', icon: '⚠️' },
+            error: { bg: '#f8d7da', border: '#f5c6cb', color: '#721c24', icon: '❌' }
+          };
+          const s = styles[n.style] || styles.info;
+          const bannerHtml = `
+            <div id="vipNoticeBanner" style="background:${s.bg};border-left:4px solid ${s.border};padding:14px 18px;border-radius:12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;color:${s.color};box-shadow:0 2px 8px rgba(0,0,0,0.05);position:relative;overflow:hidden;">
+              <div style="display:flex;align-items:center;gap:12px;flex:1;">
+                <span style="font-size:28px;">${s.icon}</span>
+                <div>
+                  <strong style="font-size:16px;">${n.title}</strong>
+                  <span style="margin-left:10px;font-size:14px;">${n.content}</span>
+                </div>
+              </div>
+              <button onclick="document.getElementById('vipNoticeBanner').style.display='none'" style="background:none;border:none;font-size:24px;cursor:pointer;color:${s.color};padding:0 8px;">&times;</button>
+              <div style="position:absolute;top:-20px;right:-20px;font-size:60px;opacity:0.1;pointer-events:none;">🎉</div>
+              <div style="position:absolute;bottom:-20px;left:-20px;font-size:40px;opacity:0.1;pointer-events:none;">✨</div>
+            </div>
+          `;
+          const container = document.getElementById('vipNoticeBanner');
+          if (container) container.innerHTML = bannerHtml;
+        }
+      } catch(e) {}
     }
 
     // ========== 首页 ==========
@@ -748,33 +773,6 @@
           showToast(data.message || '保存失败', 'error');
         }
       } catch(e) { showToast('网络错误', 'error'); }
-    }
-
-    async function loadSubscriptions() {
-      return loadAutoSignSetting();
-    }
-    async function addSubscription() {
-      const name = document.getElementById('courseName').value || '晚寝签到';
-      const signTime = document.getElementById('signTime').value || '21:25';
-      const maxRetries = parseInt(document.getElementById('maxRetries').value) || 3;
-      const selectedDays = []; document.querySelectorAll('.weekday-btn.selected').forEach(b => selectedDays.push(parseInt(b.dataset.day)));
-      let scheduleType = 'custom';
-      if (selectedDays.length === 7) scheduleType = 'daily';
-      else if (selectedDays.length === 5 && selectedDays.every(d => d >= 1 && d <= 5)) scheduleType = 'weekdays';
-      try {
-        const data = await api('/subscriptions', { method: 'POST', body: { name, scheduleType, customDays: selectedDays, signTime, maxRetries, autoSign: true, notifyOnSuccess: true, notifyOnFailure: true } });
-        if (data.success) { showToast('添加成功', 'success'); loadSubscriptions(); loadStats(); }
-        else showToast(data.message || '添加失败', 'error');
-      } catch(e) { showToast('网络错误', 'error'); }
-    }
-    async function toggleSub(id, enabled) {
-      try { await api('/subscriptions/' + id + '/toggle', { method: 'POST' }); loadSubscriptions(); loadStats(); }
-      catch(e) { showToast('操作失败', 'error'); }
-    }
-    async function deleteSub(id) {
-      if (!confirm('确定删除？')) return;
-      try { await api('/subscriptions/' + id, { method: 'DELETE' }); loadSubscriptions(); loadStats(); }
-      catch(e) { showToast('删除失败', 'error'); }
     }
 
     // ========== 邮箱 ==========
@@ -900,7 +898,6 @@
         const data = await api('/feedback/' + id);
         if (data.success) {
           const f = data.feedback;
-          const detail = '<div style="margin:16px 0;">'+escapeHTML(f.content).replace(/\n/g,'<br>')+'</div>' + (f.adminReply ? '<div style="background:#d4edda;padding:12px;border-radius:8px;border-left:4px solid var(--success);"><strong>回复：</strong>'+escapeHTML(f.adminReply).replace(/\n/g,'<br>')+'</div>' : '<p class="empty">暂无回复</p>');
           alert('标题：'+f.title+'\n\n内容：'+f.content+'\n\n'+(f.adminReply?'回复：'+f.adminReply:'暂无回复'));
         }
       } catch(e) {}
@@ -1003,7 +1000,12 @@
     async function loadUserInfo() {
       try {
         const data = await api('/user/profile');
-        if (data.success) { currentUser = data.user; localStorage.setItem('user', JSON.stringify(currentUser)); document.getElementById('userName').textContent = (currentUser.name||currentUser.studentId)+' ('+currentUser.studentId+')'; }
+        if (data.success) {
+          currentUser = data.user;
+          localStorage.setItem('user', JSON.stringify(currentUser));
+          document.getElementById('userName').textContent = (currentUser.name||currentUser.studentId)+' ('+currentUser.studentId+')';
+          renderSponsorBadge();
+        }
       } catch(e) {}
     }
     function countdownBtn(btn) {
@@ -1011,7 +1013,23 @@
       const t = setInterval(() => { cd--; btn.textContent = cd + 's'; if (cd <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = '发送验证码'; } }, 1000);
     }
     function logout() { localStorage.clear(); window.location.href = '/'; }
-    initAutoSignExperience(); loadUserInfo(); loadStats(); loadActiveSubs(); loadNotice();
+
+    // ========== 初始化 ==========
+    initAutoSignExperience();
+    loadUserInfo();
+    loadStats();
+    loadActiveSubs();
+    loadNotice();
+    setTimeout(loadVipNotice, 500);
+
+    function initAutoSignExperience() {
+      const menu = document.querySelector('.menu-item[data-page="subscriptions"]');
+      if (menu) menu.innerHTML = '<i class="fas fa-calendar-check"></i> 自动签到';
+      const statLabel = document.querySelector('#statActiveSubs + .stat-label');
+      if (statLabel) statLabel.textContent = '自动';
+      const activeCard = document.getElementById('activeSubscriptionsList')?.closest('.card');
+      if (activeCard) activeCard.querySelector('h2').innerHTML = '<i class="fas fa-list-check"></i> 自动签到状态';
+    }
   </script>
 </body>
 </html>
