@@ -237,6 +237,7 @@
             <button class="btn btn-primary" onclick="searchUsers()"><i class="fas fa-search"></i> 搜索</button>
             <button class="btn btn-outline" onclick="loadUsers()"><i class="fas fa-sync-alt"></i> 刷新</button>
             <button class="btn btn-outline btn-sm" id="toggleGuestsBtn" onclick="toggleGuests()">👤 显示游客</button>
+            <button class="btn btn-outline btn-sm" id="toggleMarketBtn" onclick="toggleMarket()" style="margin-left:6px">🛒 显示市场用户</button>
           </div>
           <div id="usersTable">加载中...</div>
           <div class="pagination" id="usersPagination"></div>
@@ -487,6 +488,8 @@
     let reportsCurrentPage = 1;
     let marketItemsPage = 1;
     let showGuests = false;
+    let showMarket = false;
+
 
     if (!token) window.location.href = '/';
 
@@ -592,7 +595,7 @@
       currentPage = page;
       const search = document.getElementById('userSearch')?.value || '';
       try {
-        const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}&showGuests=${showGuests}`, {
+          const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}&showGuests=${showGuests}&showMarket=${showMarket}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -628,9 +631,9 @@
       } catch (e) {}
     }
 
-    function toggleGuests() {
-      showGuests = !showGuests;
-      document.getElementById('toggleGuestsBtn').textContent = showGuests ? '👤 隐藏游客' : '👤 显示游客';
+    function toggleMarket() {
+      showMarket = !showMarket;
+      document.getElementById('toggleMarketBtn').textContent = showMarket ? '🛒 隐藏市场用户' : '🛒 显示市场用户';
       loadUsers(1);
     }
 
