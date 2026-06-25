@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoreXYZ Belt Path Explainer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fb;
+      --ink: #172033;
+      --muted: #647084;
+      --frame: #8a94a6;
+      --z: #2563eb;
+      --y: #f59e0b;
+      --x: #10b981;
+      --a: #ef4444;
+      --b: #22c55e;
+      --c: #3b82f6;
+      --d: #d946ef;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 6px 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid #dde3ed;
+      border-radius: 8px;
+      box-shadow: 0 8px 26px rgba(31, 41, 55, 0.08);
+      padding: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fbfcff;
+      border: 1px solid #e5eaf2;
+      border-radius: 8px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.12);
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-left: 4px solid var(--a);
+      background: #fff7f7;
+      color: #7f1d1d;
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .detail {
+      margin-top: 16px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .steps {
+      display: grid;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .steps li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 7px 8px;
+      border: 1px solid #e5eaf2;
+      border-radius: 6px;
+      background: #fbfcff;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 24px;
+      border-radius: 5px;
+      background: var(--a);
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .formula {
+      font-family: Consolas, "Cascadia Mono", monospace;
+      color: #172033;
+      background: #f1f5f9;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .belt {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 5;
+      stroke-dasharray: 13 9;
+      animation: beltFlow 1.2s linear infinite;
+    }
+
+    .belt-thin {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3;
+      stroke-dasharray: 8 9;
+      animation: beltFlow 1.2s linear infinite;
+      opacity: .42;
+    }
+
+    @keyframes beltFlow {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -44; }
+    }
+
+    .layer {
+      fill: none;
+      stroke-width: 3;
+      rx: 8;
+    }
+
+    .label {
+      font-size: 15px;
+      font-weight: 700;
+      fill: var(--ink);
+    }
+
+    .small {
+      font-size: 12px;
+      font-weight: 600;
+      fill: var(--muted);
+    }
+
+    .node {
+      stroke: #fff;
+      stroke-width: 3;
+    }
+
+    .pulse {
+      transform-origin: center;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .detail-grid { grid-template-columns: 1fr; }
+      main { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>CoreXYZ 绕带直观图</h1>
+    <p>这张图只表达“路径逻辑”：每条 CoreXYZ 皮带都必须依次经过外框、Z gantry、Y bridge、X carriage，再去对角。导轨负责不让平台乱转，皮带负责驱动 XYZ。</p>
+
+    <section class="grid">
+      <div class="panel">
+        <svg viewBox="0 0 920 680" role="img" aria-label="CoreXYZ belt path animated diagram">
+          <defs>
+            <marker id="arrowA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 Z" fill="#ef4444"></path>
+            </marker>
+            <marker id="arrowB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 Z" fill="#22c55e"></path>
+            </marker>
+            <marker id="arrowC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 Z" fill="#3b82f6"></path>
+            </marker>
+            <marker id="arrowD" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 Z" fill="#d946ef"></path>
+            </marker>
+          </defs>
+
+          <!-- top-view layers -->
+          <text x="42" y="36" class="label">俯视图：四条带像四条“穿过小车的空间对角线”</text>
+          <rect x="55" y="65" width="480" height="480" class="layer" stroke="#8a94a6"></rect>
+          <rect x="100" y="110" width="390" height="390" class="layer" stroke="#2563eb"></rect>
+          <line x1="145" y1="305" x2="445" y2="305" stroke="#f59e0b" stroke-width="16" stroke-linecap="round" opacity=".76"></line>
+          <rect x="245" y="255" width="100" height="100" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="4"></rect>
+
+          <text x="62" y="62" class="small">固定外框</text>
+          <text x="108" y="106" class="small">Z gantry 上下动</text>
+          <text x="178" y="292" class="small">Y bridge 前后动</text>
+          <text x="257" y="310" class="label">X 小车</text>
+
+          <!-- all four simplified top-view belts -->
+          <path class="belt-thin" stroke="#22c55e" marker-end="url(#arrowB)"
+                d="M535 65 L490 110 L445 255 L345 292 L245 355 L100 500 L55 545"></path>
+          <path class="belt-thin" stroke="#3b82f6" marker-end="url(#arrowC)"
+                d="M55 545 L100 500 L145 355 L245 318 L345 255 L490 110 L535 65"></path>
+          <path class="belt-thin" stroke="#d946ef" marker-end="url(#arrowD)"
+                d="M535 545 L490 500 L445 355 L345 318 L245 255 L100 110 L55 65"></path>
+
+          <!-- Highlight Belt A -->
+          <path id="beltAPath" class="belt" stroke="#ef4444" marker-end="url(#arrowA)"
+                d="M55 65 L100 110 L145 255 L245 292 L345 355 L490 500 L535 545"></path>
+
+          <circle r="9" fill="#ef4444">
+            <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#beltAPath"></mpath>
+            </animateMotion>
+          </circle>
+
+          <!-- nodes for A path -->
+          <g>
+            <circle class="node pulse" cx="55" cy="65" r="10" fill="#8a94a6"></circle>
+            <text x="20" y="55" class="small">A 固定前左</text>
+            <circle class="node" cx="100" cy="110" r="10" fill="#2563eb"></circle>
+            <text x="108" y="132" class="small">Z 前左</text>
+            <circle class="node" cx="145" cy="255" r="10" fill="#f59e0b"></circle>
+            <text x="98" y="246" class="small">Y 左前</text>
+            <circle class="node" cx="295" cy="305" r="13" fill="#10b981"></circle>
+            <circle class="node" cx="445" cy="355" r="10" fill="#f59e0b"></circle>
+            <text x="452" y="354" class="small">Y 右后</text>
+            <circle class="node" cx="490" cy="500" r="10" fill="#2563eb"></circle>
+            <text x="500" y="502" class="small">Z 后右</text>
+            <circle class="node pulse" cx="535" cy="545" r="10" fill="#8a94a6"></circle>
+            <text x="546" y="552" class="small">固定后右</text>
+          </g>
+
+          <!-- side stack view -->
+          <text x="610" y="36" class="label">侧视图：同一条带穿过三层运动件</text>
+          <line x1="665" y1="92" x2="665" y2="528" stroke="#cbd5e1" stroke-width="4"></line>
+          <rect x="620" y="88" width="230" height="52" rx="8" fill="#f1f5f9" stroke="#8a94a6" stroke-width="3"></rect>
+          <text x="642" y="121" class="label">固定外框，不动</text>
+
+          <rect x="620" y="190" width="230" height="52" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></rect>
+          <text x="645" y="223" class="label">Z gantry，上下动</text>
+
+          <rect x="620" y="292" width="230" height="52" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"></rect>
+          <text x="648" y="325" class="label">Y bridge，前后动</text>
+
+          <rect x="620" y="394" width="230" height="52" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="3"></rect>
+          <text x="662" y="427" class="label">X 小车，左右动</text>
+
+          <path id="sidePath" class="belt" stroke="#ef4444"
+                d="M650 114 C600 158 705 174 650 216 C600 260 705 276 650 318 C600 362 705 378 650 420"></path>
+          <circle r="8" fill="#ef4444">
+            <animateMotion dur="3.2s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#sidePath"></mpath>
+            </animateMotion>
+          </circle>
+
+          <text x="610" y="500" class="small">如果皮带没有经过 Z gantry，它就不会“感知”Z，</text>
+          <text x="610" y="520" class="small">那就只是 CoreXY，不是 CoreXYZ。</text>
+        </svg>
+      </div>
+
+      <aside class="panel">
+        <div class="legend">
+          <div class="item"><span class="swatch" style="background:var(--frame)"></span><span>固定外框：不动，放电机和顶角转向</span></div>
+          <div class="item"><span class="swatch" style="background:var(--z)"></span><span>Z gantry：整套 XY 架上下动</span></div>
+          <div class="item"><span class="swatch" style="background:var(--y)"></span><span>Y bridge：在 gantry 上前后动</span></div>
+          <div class="item"><span class="swatch" style="background:var(--x)"></span><span>X carriage：在 X 梁上左右动</span></div>
+          <div class="item"><span class="swatch" style="background:var(--a)"></span><span>A 带：前左穿过小车到后右</span></div>
+          <div class="item"><span class="swatch" style="background:var(--b)"></span><span>B 带：前右穿过小车到后左</span></div>
+          <div class="item"><span class="swatch" style="background:var(--c)"></span><span>C 带：后左穿过小车到前右</span></div>
+          <div class="item"><span class="swatch" style="background:var(--d)"></span><span>D 带：后右穿过小车到前左</span></div>
+        </div>
+
+        <div class="note">
+          最小判断方法：拿一根线模拟 A 带。如果它依次经过“固定外框 -> Z 框 -> Y 梁 -> X 小车 -> 对侧 Y 梁 -> 对侧 Z 框 -> 对侧固定外框”，这条带的拓扑才是 CoreXYZ。
+        </div>
+
+        <p style="margin-top:14px;color:#172033;font-weight:700;">电机组合：</p>
+        <p><strong>+Z</strong>：A+B+C+D 同向<br>
+        <strong>+X</strong>：A+B 收，C+D 放<br>
+        <strong>+Y</strong>：A+D 收，B+C 放</p>
+      </aside>
+    </section>
+
+    <section class="panel detail">
+      <h1>A 带具体怎么绕</h1>
+      <p>真实皮带要形成闭合回路。可以用开口 GT2 带，但最后要用皮带夹/张紧器把两端接起来，让它在 A 电机主动轮上连续循环。</p>
+
+      <div class="detail-grid">
+        <svg viewBox="0 0 760 430" role="img" aria-label="Belt A numbered route">
+          <defs>
+            <marker id="arrowDetailA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 Z" fill="#ef4444"></path>
+            </marker>
+          </defs>
+
+          <text x="24" y="30" class="label">A 带编号路线：A1 出发，A9 回到 A1，形成闭合回路</text>
+
+          <rect x="42" y="58" width="560" height="300" rx="8" fill="none" stroke="#8a94a6" stroke-width="3"></rect>
+          <rect x="92" y="100" width="460" height="220" rx="8" fill="none" stroke="#2563eb" stroke-width="3"></rect>
+          <line x1="150" y1="210" x2="495" y2="210" stroke="#f59e0b" stroke-width="14" stroke-linecap="round" opacity=".75"></line>
+          <rect x="282" y="176" width="70" height="70" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="4"></rect>
+
+          <path id="beltADetail" class="belt" stroke="#ef4444" marker-end="url(#arrowDetailA)"
+                d="M88 382 L88 70 L120 110 L170 190 L315 185 L465 230 L535 318 L585 350 L88 382"></path>
+
+          <circle r="8" fill="#ef4444">
+            <animateMotion dur="5.2s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#beltADetail"></mpath>
+            </animateMotion>
+          </circle>
+
+          <g class="label">
+            <circle class="node" cx="88" cy="382" r="12" fill="#ef4444"></circle>
+            <text x="68" y="410" class="small">A1/A9 电机</text>
+
+            <circle class="node" cx="88" cy="70" r="11" fill="#8a94a6"></circle>
+            <text x="98" y="74" class="small">A2 固定前左顶角</text>
+
+            <circle class="node" cx="120" cy="110" r="11" fill="#2563eb"></circle>
+            <text x="128" y="126" class="small">A3 Z框前左</text>
+
+            <circle class="node" cx="170" cy="190" r="11" fill="#f59e0b"></circle>
+            <text x="110" y="186" class="small">A4 Y梁左前</text>
+
+            <circle class="node" cx="315" cy="185" r="13" fill="#10b981"></circle>
+            <text x="286" y="172" class="small">A5 X小车</text>
+
+            <circle class="node" cx="465" cy="230" r="11" fill="#f59e0b"></circle>
+            <text x="472" y="230" class="small">A6 Y梁右后</text>
+
+            <circle class="node" cx="535" cy="318" r="11" fill="#2563eb"></circle>
+            <text x="542" y="320" class="small">A7 Z框后右</text>
+
+            <circle class="node" cx="585" cy="350" r="11" fill="#8a94a6"></circle>
+            <text x="594" y="354" class="small">A8 固定后右顶角</text>
+          </g>
+
+          <text x="625" y="92" class="small">灰：固定外框</text>
+          <text x="625" y="118" class="small">蓝：Z gantry</text>
+          <text x="625" y="144" class="small">黄：Y bridge</text>
+          <text x="625" y="170" class="small">绿：X carriage</text>
+          <text x="625" y="210" class="small">A1 和 A9 是同一个</text>
+          <text x="625" y="230" class="small">电机/张紧位置</text>
+        </svg>
+
+        <div>
+          <ul class="steps">
+            <li><span class="badge">A1</span><span>从 A 电机主动轮出发。A 电机固定在前左底部。</span></li>
+            <li><span class="badge">A2</span><span>上到固定外框前左顶角惰轮。这个点不随 gantry 动。</span></li>
+            <li><span class="badge">A3</span><span>进入 Z gantry 前左角惰轮。Z gantry 上下动，所以这段让 A 带“感知 Z”。</span></li>
+            <li><span class="badge">A4</span><span>经过 Y bridge 左前端惰轮。Y bridge 前后动，所以这段让 A 带“感知 Y”。</span></li>
+            <li><span class="badge">A5</span><span>绕过 X carriage 上的 A 转向点。X 小车左右动，所以这段让 A 带“感知 X”。</span></li>
+            <li><span class="badge">A6</span><span>去 Y bridge 右后端惰轮，和 A4 成对，保持力路对称。</span></li>
+            <li><span class="badge">A7</span><span>去 Z gantry 后右角惰轮，和 A3 成对。</span></li>
+            <li><span class="badge">A8</span><span>到固定外框后右顶角惰轮，完成从前左到后右的空间对角。</span></li>
+            <li><span class="badge">A9</span><span>回到底部 A 电机/张紧器，和 A1 接成闭合回路。</span></li>
+          </ul>
+
+          <div class="note">
+            闭环答案：要闭合。你可以买闭口带，也可以用开口 GT2 带绕完整路径后，用皮带夹把两端接在张紧滑块上。只要电机主动轮能连续带动整条带循环，它在机械上就是闭合回路。
+          </div>
+
+          <p><span class="formula">B/C/D</span> 不需要重新理解，只是把 A 的路线按四角对称复制。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
