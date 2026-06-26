@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoreXYZ 完整绕带动图说明</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #d8e0ec;
+      --frame: #7b8496;
+      --z: #2563eb;
+      --y: #f59e0b;
+      --x: #10b981;
+      --a: #ef4444;
+      --b: #22c55e;
+      --c: #3b82f6;
+      --d: #d946ef;
+      --warn: #f97316;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+    }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 { font-size: 25px; }
+    h2 { font-size: 18px; margin-bottom: 10px; }
+    h3 { font-size: 15px; margin-bottom: 8px; }
+
+    p {
+      margin: 8px 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: inherit;
+    }
+
+    button.active {
+      color: #fff;
+      border-color: transparent;
+    }
+
+    button[data-belt="A"].active { background: var(--a); }
+    button[data-belt="B"].active { background: var(--b); }
+    button[data-belt="C"].active { background: var(--c); }
+    button[data-belt="D"].active { background: var(--d); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(330px, .9fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .07);
+      padding: 14px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fbfcff;
+      border: 1px solid #e4eaf4;
+      border-radius: 8px;
+    }
+
+    .subgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .layer {
+      fill: none;
+      stroke-width: 3;
+    }
+
+    .belt {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 6;
+      stroke-dasharray: 16 10;
+      animation: flow 1.15s linear infinite;
+    }
+
+    .belt-shadow {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 13;
+      opacity: .1;
+    }
+
+    .belt-muted {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3;
+      stroke-dasharray: 9 9;
+      animation: flow 1.25s linear infinite;
+      opacity: .28;
+    }
+
+    @keyframes flow {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -52; }
+    }
+
+    .node {
+      stroke: #fff;
+      stroke-width: 3;
+    }
+
+    .node.active {
+      stroke: #111827;
+      stroke-width: 4;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.25));
+    }
+
+    .label {
+      font-size: 13px;
+      font-weight: 800;
+      fill: var(--ink);
+    }
+
+    .small {
+      font-size: 11px;
+      font-weight: 700;
+      fill: var(--muted);
+    }
+
+    .white {
+      fill: #fff;
+      font-weight: 900;
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      max-height: 530px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcff;
+      cursor: default;
+    }
+
+    .step.current {
+      border-color: currentColor;
+      background: #fff7f7;
+    }
+
+    .badge {
+      display: inline-grid;
+      place-items: center;
+      height: 28px;
+      min-width: 34px;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .desc {
+      font-size: 13px;
+      line-height: 1.48;
+    }
+
+    .desc strong {
+      color: var(--ink);
+    }
+
+    .callout {
+      border-left: 4px solid var(--warn);
+      background: #fff7ed;
+      color: #7c2d12;
+      padding: 10px 12px;
+      border-radius: 6px;
+      line-height: 1.55;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .ok {
+      border-left-color: var(--x);
+      background: #ecfdf5;
+      color: #064e3b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      overflow: hidden;
+      border-radius: 7px;
+    }
+
+    th, td {
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: var(--ink);
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .legend div {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 7px;
+      background: #fff;
+    }
+
+    .sw {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 5px;
+      vertical-align: -1px;
+    }
+
+    @media (max-width: 980px) {
+      main { padding: 12px; }
+      .topbar { align-items: start; flex-direction: column; }
+      .grid, .subgrid { grid-template-columns: 1fr; }
+      .legend { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <div>
+      <h1>CoreXYZ 完整绕带动图说明</h1>
+      <p>按 A/B/C/D 选择一条带，看它如何闭合、经过哪些运动层、每个转向点应使用什么惰轮方向。</p>
+    </div>
+    <div class="tabs" aria-label="选择皮带">
+      <button class="active" data-belt="A">A 带</button>
+      <button data-belt="B">B 带</button>
+      <button data-belt="C">C 带</button>
+      <button data-belt="D">D 带</button>
+    </div>
+  </div>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>1. 俯视动画：闭合回路与编号点</h2>
+      <svg viewBox="0 0 840 620" role="img" aria-label="CoreXYZ closed belt route top view">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path id="arrowPath" d="M0,0 L0,6 L7,3 Z" fill="#ef4444"></path>
+          </marker>
+        </defs>
+
+        <rect x="70" y="70" width="520" height="420" rx="8" class="layer" stroke="#7b8496"></rect>
+        <rect x="118" y="118" width="424" height="326" rx="8" class="layer" stroke="#2563eb"></rect>
+        <line x1="160" y1="280" x2="500" y2="280" stroke="#f59e0b" stroke-width="18" stroke-linecap="round" opacity=".72"></line>
+        <rect x="285" y="238" width="90" height="84" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="4"></rect>
+
+        <text x="76" y="63" class="small">固定外框</text>
+        <text x="126" y="112" class="small">Z gantry</text>
+        <text x="170" y="268" class="small">Y bridge</text>
+        <text x="302" y="285" class="label">X 小车</text>
+
+        <g id="mutedBelts"></g>
+        <path id="activeShadow" class="belt-shadow" stroke="#ef4444"></path>
+        <path id="activeBelt" class="belt" stroke="#ef4444" marker-end="url(#arrow)"></path>
+        <circle id="runner" r="9" fill="#ef4444">
+          <animateMotion id="runnerMotion" dur="5.4s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#activeBelt"></mpath>
+          </animateMotion>
+        </circle>
+
+        <g id="nodes"></g>
+
+        <text x="632" y="94" class="label">闭环说明</text>
+        <text x="632" y="124" class="small">A1 与 A9 是同一个电机/张紧区域。</text>
+        <text x="632" y="146" class="small">开口 GT2 带可以用皮带夹接回。</text>
+        <text x="632" y="168" class="small">皮带夹不要经过任何惰轮。</text>
+
+        <text x="632" y="220" class="label">为什么是 CoreXYZ</text>
+        <text x="632" y="250" class="small">经过 Z gantry：带长受 Z 影响</text>
+        <text x="632" y="272" class="small">经过 Y bridge：带长受 Y 影响</text>
+        <text x="632" y="294" class="small">经过 X 小车：带长受 X 影响</text>
+
+        <text x="632" y="365" class="label">电机组合</text>
+        <text x="632" y="395" class="small">+X：A+B 收，C+D 放</text>
+        <text x="632" y="417" class="small">+Y：A+D 收，B+C 放</text>
+        <text x="632" y="439" class="small">+Z：A+B+C+D 同向</text>
+      </svg>
+      <div class="legend">
+        <div><span class="sw" style="background:var(--frame)"></span>固定外框，不动</div>
+        <div><span class="sw" style="background:var(--z)"></span>Z gantry，上下动</div>
+        <div><span class="sw" style="background:var(--y)"></span>Y bridge，前后动</div>
+        <div><span class="sw" style="background:var(--x)"></span>X carriage，左右动</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 id="routeTitle">A 带编号步骤</h2>
+      <ul class="card-list" id="stepList"></ul>
+      <div class="callout ok">
+        真实同步带必须闭合。闭口带可以直接套；开口带则绕完整路径后，在电机/张紧器附近用皮带夹把两端接成闭合回路。
+      </div>
+    </div>
+  </section>
+
+  <section class="subgrid">
+    <div class="panel">
+      <h2>2. 侧视动画：同一条带穿过三层运动件</h2>
+      <svg viewBox="0 0 640 430" role="img" aria-label="CoreXYZ side stack">
+        <rect x="80" y="42" width="360" height="52" rx="8" fill="#f1f5f9" stroke="#7b8496" stroke-width="3"></rect>
+        <rect x="80" y="132" width="360" height="52" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="3"></rect>
+        <rect x="80" y="222" width="360" height="52" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"></rect>
+        <rect x="80" y="312" width="360" height="52" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="3"></rect>
+        <text x="110" y="75" class="label">固定外框：电机/固定顶角</text>
+        <text x="110" y="165" class="label">Z gantry：上下移动</text>
+        <text x="110" y="255" class="label">Y bridge：前后移动</text>
+        <text x="110" y="345" class="label">X carriage：左右移动</text>
+        <path id="sidePath" class="belt" stroke="#ef4444"
+          d="M490 68 C545 104 430 122 490 158 C545 194 430 212 490 248 C545 284 430 302 490 338"></path>
+        <circle id="sideRunner" r="8" fill="#ef4444">
+          <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#sidePath"></mpath>
+          </animateMotion>
+        </circle>
+        <text x="60" y="402" class="small">如果皮带不经过 Z gantry，它就不能驱动 Z，只是 CoreXY。</text>
+      </svg>
+    </div>
+
+    <div class="panel">
+      <h2>3. 惰轮实现规则：别让 GT2 带硬扭</h2>
+      <table>
+        <thead>
+          <tr><th>转向情况</th><th>应该用什么</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>在 XY 水平面转 90°</td><td>竖轴惰轮，轴向 Z</td></tr>
+          <tr><td>Z 向转 X 向</td><td>横轴惰轮，轴向 Y</td></tr>
+          <tr><td>Z 向转 Y 向</td><td>横轴惰轮，轴向 X</td></tr>
+          <tr><td>齿面接触轮子</td><td>带齿 GT2 惰轮/同步轮</td></tr>
+          <tr><td>背面接触轮子</td><td>光面惰轮</td></tr>
+          <tr><td>皮带自身要扭 90°</td><td>不要硬扭，拆成两个正交转向</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        V2 彩色线是拓扑路线，不是最终 GT2 工程图。每个转向点都要检查皮带平面、惰轮轴向、齿面/背面接触。
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const colors = { A: "#ef4444", B: "#22c55e", C: "#3b82f6", D: "#d946ef" };
+
+const routes = {
+  A: {
+    d: "M96 536 L96 74 L126 120 L172 248 L330 238 L488 318 L540 444 L590 490 L96 536",
+    points: [
+      [96,536,"A1","A 电机主动轮，前左底部，起点/终点","motor"],
+      [96,74,"A2","固定外框前左顶角惰轮","fixed"],
+      [126,120,"A3","Z gantry 前左角惰轮","z"],
+      [172,248,"A4","Y bridge 左前端惰轮","y"],
+      [330,238,"A5","X carriage 上的 A 转向点","x"],
+      [488,318,"A6","Y bridge 右后端惰轮","y"],
+      [540,444,"A7","Z gantry 后右角惰轮","z"],
+      [590,490,"A8","固定外框后右顶角惰轮","fixed"],
+      [96,536,"A9","回到 A 电机/张紧器，接回 A1 闭合","motor"]
+    ]
+  },
+  B: {
+    d: "M590 536 L590 74 L540 120 L488 248 L350 238 L172 318 L126 444 L96 490 L590 536",
+    points: [
+      [590,536,"B1","B 电机主动轮，前右底部，起点/终点","motor"],
+      [590,74,"B2","固定外框前右顶角惰轮","fixed"],
+      [540,120,"B3","Z gantry 前右角惰轮","z"],
+      [488,248,"B4","Y bridge 右前端惰轮","y"],
+      [350,238,"B5","X carriage 上的 B 转向点","x"],
+      [172,318,"B6","Y bridge 左后端惰轮","y"],
+      [126,444,"B7","Z gantry 后左角惰轮","z"],
+      [96,490,"B8","固定外框后左顶角惰轮","fixed"],
+      [590,536,"B9","回到 B 电机/张紧器，接回 B1 闭合","motor"]
+    ]
+  },
+  C: {
+    d: "M96 536 L96 490 L126 444 L172 318 L310 322 L488 248 L540 120 L590 74 L96 536",
+    points: [
+      [96,536,"C1","C 电机主动轮，后左底部，起点/终点","motor"],
+      [96,490,"C2","固定外框后左顶角惰轮","fixed"],
+      [126,444,"C3","Z gantry 后左角惰轮","z"],
+      [172,318,"C4","Y bridge 左后端惰轮","y"],
+      [310,322,"C5","X carriage 上的 C 转向点","x"],
+      [488,248,"C6","Y bridge 右前端惰轮","y"],
+      [540,120,"C7","Z gantry 前右角惰轮","z"],
+      [590,74,"C8","固定外框前右顶角惰轮","fixed"],
+      [96,536,"C9","回到 C 电机/张紧器，接回 C1 闭合","motor"]
+    ]
+  },
+  D: {
+    d: "M590 536 L590 490 L540 444 L488 318 L350 322 L172 248 L126 120 L96 74 L590 536",
+    points: [
+      [590,536,"D1","D 电机主动轮，后右底部，起点/终点","motor"],
+      [590,490,"D2","固定外框后右顶角惰轮","fixed"],
+      [540,444,"D3","Z gantry 后右角惰轮","z"],
+      [488,318,"D4","Y bridge 右后端惰轮","y"],
+      [350,322,"D5","X carriage 上的 D 转向点","x"],
+      [172,248,"D6","Y bridge 左前端惰轮","y"],
+      [126,120,"D7","Z gantry 前左角惰轮","z"],
+      [96,74,"D8","固定外框前左顶角惰轮","fixed"],
+      [590,536,"D9","回到 D 电机/张紧器，接回 D1 闭合","motor"]
+    ]
+  }
+};
+
+const fillFor = kind => ({
+  motor: "#111827",
+  fixed: "#7b8496",
+  z: "#2563eb",
+  y: "#f59e0b",
+  x: "#10b981"
+}[kind] || "#64748b");
+
+const activeBelt = document.getElementById("activeBelt");
+const activeShadow = document.getElementById("activeShadow");
+const runner = document.getElementById("runner");
+const sidePath = document.getElementById("sidePath");
+const sideRunner = document.getElementById("sideRunner");
+const arrowPath = document.getElementById("arrowPath");
+const nodes = document.getElementById("nodes");
+const mutedBelts = document.getElementById("mutedBelts");
+const stepList = document.getElementById("stepList");
+const routeTitle = document.getElementById("routeTitle");
+
+function renderMuted(current) {
+  mutedBelts.innerHTML = "";
+  for (const [name, route] of Object.entries(routes)) {
+    if (name === current) continue;
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("class", "belt-muted");
+    p.setAttribute("d", route.d);
+    p.setAttribute("stroke", colors[name]);
+    mutedBelts.appendChild(p);
+  }
+}
+
+function renderNodes(name) {
+  nodes.innerHTML = "";
+  routes[name].points.forEach((pt, i) => {
+    const [x, y, label, desc, kind] = pt;
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("cx", x);
+    c.setAttribute("cy", y);
+    c.setAttribute("r", i === 8 ? 10 : 12);
+    c.setAttribute("fill", fillFor(kind));
+    c.setAttribute("class", "node");
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", x);
+    t.setAttribute("y", y + 1);
+    t.setAttribute("class", "white");
+    t.textContent = label;
+    g.appendChild(c);
+    g.appendChild(t);
+    nodes.appendChild(g);
+  });
+}
+
+function renderSteps(name) {
+  const route = routes[name];
+  routeTitle.textContent = `${name} 带编号步骤`;
+  stepList.innerHTML = "";
+  route.points.forEach(([x, y, label, desc, kind], i) => {
+    const li = document.createElement("li");
+    li.className = "step";
+    li.style.color = colors[name];
+    li.innerHTML = `<span class="badge" style="background:${colors[name]}">${label}</span><span class="desc"><strong>${desc}</strong><br>${idlerText(kind, i)}</span>`;
+    stepList.appendChild(li);
+  });
+}
+
+function idlerText(kind, i) {
+  if (kind === "motor") return i === 0 ? "主动轮：带齿同步轮。电机附近预留张紧器。" : "闭合点：用皮带夹/张紧滑块接回起点。";
+  if (kind === "fixed") return "固定点：通常需要框架角惰轮组，检查竖直段到水平段的转向。";
+  if (kind === "z") return "Z 点：在 gantry 上，建议用成对惰轮模块处理 Z 到 XY 的换向。";
+  if (kind === "y") return "Y 点：在 Y bridge 端部，按皮带平面选择横轴或竖轴惰轮。";
+  if (kind === "x") return "X 点：在 X carriage 上，四条带分层，避免互相摩擦。";
+  return "";
+}
+
+function setBelt(name) {
+  const color = colors[name];
+  document.querySelectorAll("button[data-belt]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.belt === name);
+  });
+  activeBelt.setAttribute("d", routes[name].d);
+  activeBelt.setAttribute("stroke", color);
+  activeShadow.setAttribute("d", routes[name].d);
+  activeShadow.setAttribute("stroke", color);
+  runner.setAttribute("fill", color);
+  sidePath.setAttribute("stroke", color);
+  sideRunner.setAttribute("fill", color);
+  arrowPath.setAttribute("fill", color);
+  renderMuted(name);
+  renderNodes(name);
+  renderSteps(name);
+  const anim = document.getElementById("runnerMotion");
+  if (anim && anim.beginElement) anim.beginElement();
+}
+
+document.querySelectorAll("button[data-belt]").forEach(btn => {
+  btn.addEventListener("click", () => setBelt(btn.dataset.belt));
+});
+
+setBelt("A");
+</script>
+</body>
+</html>
