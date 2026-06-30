@@ -1043,6 +1043,14 @@
         return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
     }
 
+    function urlArg(value) {
+        return encodeURIComponent(String(value || ''));
+    }
+
+    function jsonArg(value) {
+        return encodeURIComponent(JSON.stringify(value || {}));
+    }
+
     function authHeaders() {
         refreshAuth();
         return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
@@ -1170,6 +1178,7 @@
             const sellerId = item.userId?._id || item.userId;
             const isMine = myId && sellerId === myId;
             const image = item.images?.length ? `<img src="${item.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : getCatIcon(item.category);
+            const titleArg = urlArg(item.title);
             return `
                 <div class="item-card" onclick="openDetail('${item._id}')">
                     <div class="item-img">${image}</div>
@@ -1189,7 +1198,7 @@
                         <div class="item-actions" onclick="event.stopPropagation()">
                             <button class="btn-sm" onclick="${isMine ? `openDetail('${item._id}')` : `addToCart('${item._id}')`}"><i class="fas fa-cart-plus"></i> ${isMine ? '查看' : '加购'}</button>
                             <button class="btn-sm" onclick="toggleFavorite('${item._id}', this)"><i class="far fa-heart"></i> 收藏</button>
-                            <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}','${jsArg(item.title)}')"><i class="fas fa-comment-dots"></i> 私聊</button>
+                            <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}',decodeURIComponent('${titleArg}'))"><i class="fas fa-comment-dots"></i> 私聊</button>
                         </div>
                     </div>
                 </div>
@@ -1208,6 +1217,7 @@
             if (!data.success || !data.items?.length) return;
             const item = data.items[0];
             const sellerId = item.userId?._id || item.userId;
+            const titleArg = urlArg(item.title);
             const mainImage = item.images?.[0] ? `<img class="detail-cover" src="${item.images[0]}">` : `<div class="detail-cover" style="display:grid;place-items:center;font-size:62px;">${getCatIcon(item.category)}</div>`;
             const thumbnails = item.images?.length > 1 ? `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;">${item.images.slice(1).map(img => `<img src="${img}" style="width:92px;height:92px;border-radius:10px;object-fit:cover;">`).join('')}</div>` : '';
             const isMine = currentUser.id && sellerId === currentUser.id;
@@ -1231,9 +1241,9 @@
                 </div>
                 <div class="detail-actions">
                     <button class="btn-sm" onclick="${isMine ? `closeModal('detailModal')` : `addToCart('${item._id}')`}" style="background:#28a745;color:#fff;border:none;"><i class="fas fa-cart-plus"></i> ${isMine ? '这是我的商品' : '加入购物车'}</button>
-                    <button class="btn-sm" onclick="${isMine ? `closeModal('detailModal')` : `openBuyModal('${item._id}','${jsArg(item.title)}',${Number(item.price)},'${sellerId}','${item.productNo||''}')`}" style="background:var(--primary);color:#fff;border:none;"><i class="fas fa-receipt"></i> ${isMine ? '管理商品' : '立即下单'}</button>
+                    <button class="btn-sm" onclick="${isMine ? `closeModal('detailModal')` : `openBuyModal('${item._id}',decodeURIComponent('${titleArg}'),${Number(item.price)},'${sellerId}','${item.productNo||''}')`}" style="background:var(--primary);color:#fff;border:none;"><i class="fas fa-receipt"></i> ${isMine ? '管理商品' : '立即下单'}</button>
                     <button class="btn-sm" onclick="showContact('${item._id}')"><i class="fas fa-address-book"></i> 联系方式</button>
-                    <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}','${jsArg(item.title)}')"><i class="fas fa-comment-dots"></i> 私聊卖家</button>
+                    <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}',decodeURIComponent('${titleArg}'))"><i class="fas fa-comment-dots"></i> 私聊卖家</button>
                     <button class="btn-sm" onclick="reportSeller('${sellerId}','${item._id}')"><i class="fas fa-flag"></i> 举报</button>
                     <button class="btn-sm" onclick="blockSeller('${sellerId}')"><i class="fas fa-ban"></i> 拉黑</button>
                 </div>
@@ -1290,6 +1300,7 @@
     function openBuyModal(productId, title, price, sellerId, productNo) {
         if (!requireMarketLogin()) return;
         currentBuyProductId = productId;
+        window.currentBuyContext = { productId, title, price, sellerId, productNo };
         document.getElementById('buyProductInfo').innerHTML = `
             <strong>${escapeHTML(title)}</strong> <span style="font-size:10px;color:var(--text-muted);">#${productNo||''}</span><br>
             <span style="font-size:20px;font-weight:800;color:#e05050;">¥${Number(price).toFixed(2)}</span>
@@ -1317,6 +1328,7 @@
                 document.getElementById('buyName').value = '';
                 document.getElementById('buyPhone').value = '';
                 document.getElementById('buyAddress').value = '';
+                showPaymentGuide(data.order, window.currentBuyContext?.sellerId);
                 document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
                 document.querySelector('[data-tab="orders"]').classList.add('active');
                 activeView = 'orders';
@@ -1328,12 +1340,75 @@
         } catch(e) { showToast('网络错误', 'error'); }
     }
 
+    function ensurePaymentModal() {
+        if (document.getElementById('paymentModal')) return;
+        document.body.insertAdjacentHTML('beforeend', `
+            <div class="modal" id="paymentModal">
+                <div class="modal-card">
+                    <h3><i class="fas fa-qrcode"></i> 扫码付款</h3>
+                    <div id="paymentModalBody"></div>
+                    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+                        <button class="btn btn-white" id="paymentChatBtn" style="flex:1;">付款后联系卖家</button>
+                        <button class="btn btn-outline" onclick="closeModal('paymentModal')" style="flex:1;background:#f0f2f6;color:var(--text);border-color:var(--border);">关闭</button>
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+
+    async function showPaymentGuide(order, sellerId) {
+        ensurePaymentModal();
+        const body = document.getElementById('paymentModalBody');
+        const chatBtn = document.getElementById('paymentChatBtn');
+        const productNo = order.productNo || window.currentBuyContext?.productNo || '';
+        body.innerHTML = `
+            <div style="background:#f8f9fc;padding:12px;border-radius:12px;margin-bottom:12px;">
+                <strong>${escapeHTML(order.title || window.currentBuyContext?.title || '商品')}</strong>
+                <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:var(--text-secondary);">
+                    <span>订单号：${order.orderNo || ''}</span>
+                    <span style="font-weight:800;color:#e05050;">¥${Number(order.price || window.currentBuyContext?.price || 0).toFixed(2)}</span>
+                </div>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">付款备注建议填写：${productNo || order.orderNo || '商品专号'}</p>
+            </div>
+            <div id="paymentQrArea" class="pay-grid">正在加载商家收款码...</div>
+            <p class="risk-copy">扫码付款后，请保留截图并点击“付款后联系卖家”，把订单号和付款截图发给卖家确认。</p>
+        `;
+        document.getElementById('paymentModal').classList.add('show');
+        chatBtn.onclick = () => {
+            closeModal('paymentModal');
+            startOrderChat(sellerId, order.productId || window.currentBuyContext?.productId, order.title || window.currentBuyContext?.title, 'buyer');
+        };
+        try {
+            const res = await fetch(`${API_BASE}/user/payqr/${sellerId}`);
+            const data = await res.json();
+            const qr = document.getElementById('paymentQrArea');
+            if (data.success && (data.payQR?.wechat || data.payQR?.alipay)) {
+                qr.innerHTML = `
+                    ${data.payQR.wechat ? `<div class="pay-card"><img src="${data.payQR.wechat}" onclick="window.open('${data.payQR.wechat}')"><p>微信收款码</p></div>` : ''}
+                    ${data.payQR.alipay ? `<div class="pay-card"><img src="${data.payQR.alipay}" onclick="window.open('${data.payQR.alipay}')"><p>支付宝收款码</p></div>` : ''}
+                `;
+            } else {
+                qr.innerHTML = '<p style="font-size:13px;color:#9a6b2e;">商家暂未上传收款码，请先联系卖家确认付款方式。</p>';
+            }
+        } catch(e) {
+            document.getElementById('paymentQrArea').innerHTML = '<p style="font-size:13px;color:#9a6b2e;">收款码加载失败，请联系卖家。</p>';
+        }
+    }
+
     function orderActionButton(order, role) {
-        if (role === 'buyer' && order.status === 'pending') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')">取消订单</button>`;
-        if (role === 'buyer' && order.status === 'shipped') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','completed')" style="background:#28a745;color:#fff;border:none;">确认收货</button>`;
-        if (role === 'seller' && order.status === 'pending') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','confirmed')" style="background:#28a745;color:#fff;border:none;">确认订单</button><button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')" style="background:#dc3545;color:#fff;border:none;">取消</button>`;
-        if (role === 'seller' && order.status === 'confirmed') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','shipped')" style="background:#17a2b8;color:#fff;border:none;">标记发货</button><button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')">取消订单</button>`;
-        return '';
+        const sellerId = order.sellerId?._id || order.sellerId;
+        const buyerId = order.buyerId?._id || order.buyerId;
+        const orderArg = jsonArg(order);
+        const titleArg = urlArg(order.title);
+        const base = role === 'buyer'
+            ? `<button class="btn-sm" onclick="showPaymentGuide(JSON.parse(decodeURIComponent('${orderArg}')),'${sellerId}')" style="background:var(--primary);color:#fff;border:none;">查看付款码</button><button class="btn-sm" onclick="startOrderChat('${sellerId}','${order.productId}',decodeURIComponent('${titleArg}'),'buyer')">联系卖家</button>`
+            : `<button class="btn-sm" onclick="copyOrderInfo(JSON.parse(decodeURIComponent('${orderArg}')))">复制订单信息</button><button class="btn-sm" onclick="startOrderChat('${buyerId}','${order.productId}',decodeURIComponent('${titleArg}'),'seller')">联系买家</button>`;
+        if (role === 'buyer' && order.status === 'pending') return `${base}<button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')">取消订单</button>`;
+        if (role === 'buyer' && order.status === 'shipped') return `${base}<button class="btn-sm" onclick="updateOrderStatus('${order._id}','completed')" style="background:#28a745;color:#fff;border:none;">确认收货</button>`;
+        if (role === 'buyer') return base;
+        if (role === 'seller' && order.status === 'pending') return `${base}<button class="btn-sm" onclick="updateOrderStatus('${order._id}','confirmed')" style="background:#28a745;color:#fff;border:none;">确认订单</button><button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')" style="background:#dc3545;color:#fff;border:none;">取消</button>`;
+        if (role === 'seller' && order.status === 'confirmed') return `${base}<button class="btn-sm" onclick="updateOrderStatus('${order._id}','shipped')" style="background:#17a2b8;color:#fff;border:none;">标记发货</button><button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')">取消订单</button>`;
+        return base;
     }
 
     function renderOrderCard(order, role) {
@@ -1349,11 +1424,27 @@
                 </div>
                 <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">${peer} · #${order.productNo || ''}</div>
                 <div class="order-address">收货人：${escapeHTML(order.address.name)} &nbsp; 手机：${escapeHTML(order.address.phone)}<br>地址：${escapeHTML(order.address.detail)}</div>
-                <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">扫码付款后，请在消息中发送付款截图和订单号给卖家。</p>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">${role === 'buyer' ? '扫码付款后，请在消息中发送付款截图和订单号给卖家。' : '买家收货信息已在上方展示，可复制后直接发货或联系买家确认。'}</p>
                 ${actions ? `<div class="order-actions">${actions}</div>` : ''}
                 <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">${new Date(order.createdAt).toLocaleString()}</div>
             </div>
         `;
+    }
+
+    function copyOrderInfo(order) {
+        const text = [
+            `订单号：${order.orderNo}`,
+            `商品：${order.title}`,
+            `商品专号：${order.productNo || ''}`,
+            `金额：¥${Number(order.price || 0).toFixed(2)}`,
+            `收货人：${order.address?.name || ''}`,
+            `手机：${order.address?.phone || ''}`,
+            `地址：${order.address?.detail || ''}`
+        ].join('\n');
+        navigator.clipboard?.writeText(text).then(
+            () => showToast('订单信息已复制', 'success'),
+            () => alert(text)
+        );
     }
 
     async function loadMyOrders() {
@@ -1367,7 +1458,9 @@
             ]);
             const buyerData = await buyerRes.json();
             const sellerData = await sellerRes.json();
-            let html = '<h4 style="margin-bottom:10px;">我购买的</h4>';
+            const pendingSeller = sellerData.success ? sellerData.orders.filter(o => ['pending','confirmed'].includes(o.status)).length : 0;
+            let html = pendingSeller ? `<div class="trust-banner"><i class="fas fa-bell"></i><div><strong>你有 ${pendingSeller} 个待处理卖家订单。</strong> 买家收货信息已直接展示在订单卡片里，可复制订单信息或联系买家确认付款截图。</div></div>` : '';
+            html += '<h4 style="margin-bottom:10px;">我购买的</h4>';
             html += buyerData.success && buyerData.orders?.length ? buyerData.orders.map(o => renderOrderCard(o, 'buyer')).join('') : '<p style="color:var(--text-muted);margin-bottom:16px;">暂无购买记录</p>';
             html += '<h4 style="margin:16px 0 10px;">我卖出的</h4>';
             html += sellerData.success && sellerData.orders?.length ? sellerData.orders.map(o => renderOrderCard(o, 'seller')).join('') : '<p style="color:var(--text-muted);">暂无卖出记录</p>';
@@ -1395,12 +1488,18 @@
     }
 
     async function startChat(sellerId, productId, productTitle) {
+        return startOrderChat(sellerId, productId, productTitle, 'buyer');
+    }
+
+    async function startOrderChat(peerId, productId, productTitle, role = 'buyer') {
         if (!requireMarketLogin()) return;
         try {
+            const body = { productId };
+            if (role === 'seller') body.buyerId = peerId;
             const res = await fetch(`${API_BASE}/market/chat/create`, {
                 method: 'POST',
                 headers: authHeaders(),
-                body: JSON.stringify({ productId })
+                body: JSON.stringify(body)
             });
             const data = await res.json();
             if (data.success) {
@@ -1410,9 +1509,11 @@
                 document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
                 document.getElementById('view-chats').style.display = 'block';
                 document.getElementById('chatPartnerName').textContent = `私聊 · ${productTitle || '商品'}`;
-                currentChatPartnerId = sellerId;
+                currentChatPartnerId = peerId;
                 enterChat(data.roomId);
                 closeModal('detailModal');
+                const paymentModal = document.getElementById('paymentModal');
+                if (paymentModal) paymentModal.classList.remove('show');
             } else showToast(data.message,'error');
         } catch(e) { showToast('网络错误','error'); }
     }
