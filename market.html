@@ -100,6 +100,41 @@
         .status-shipped { background:#d4edda; color:#155724; } .status-completed { background:#d4edda; color:#155724; }
         .status-cancelled { background:#f8d7da; color:#721c24; }
         .order-address { background:#f8f9fc; padding:10px; border-radius:8px; font-size:13px; margin-top:8px; }
+        .market-hero { background:linear-gradient(135deg,#1d2433 0%,#3d291f 100%); color:#fff; border-radius:22px; padding:22px; margin-bottom:16px; box-shadow:var(--shadow); overflow:hidden; position:relative; }
+        .market-hero:after { content:""; position:absolute; right:-40px; top:-50px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.08); }
+        .market-hero h1 { font-size:26px; line-height:1.2; margin-bottom:8px; position:relative; z-index:1; }
+        .market-hero p { color:rgba(255,255,255,0.78); font-size:14px; max-width:680px; position:relative; z-index:1; }
+        .market-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:18px; position:relative; z-index:1; }
+        .market-stat { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.16); border-radius:14px; padding:12px; }
+        .market-stat strong { display:block; font-size:20px; }
+        .market-stat span { color:rgba(255,255,255,0.7); font-size:12px; }
+        .trade-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
+        .trade-step { background:#fff; border:1px solid var(--border); border-radius:14px; padding:12px; box-shadow:var(--shadow-sm); font-size:13px; }
+        .trade-step strong { display:block; margin-bottom:4px; color:var(--text); }
+        .trade-step span { color:var(--text-muted); }
+        .market-filter { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .market-filter select, .market-filter input { padding:9px 10px; border:2px solid var(--border); border-radius:10px; background:#fff; font-size:13px; outline:none; }
+        .market-filter input { width:92px; }
+        .trust-banner { display:flex; gap:10px; align-items:flex-start; background:#fffef9; border:1px solid #f0d89c; color:#7a4a0d; border-radius:14px; padding:12px 14px; margin-bottom:14px; font-size:13px; }
+        .item-meta-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+        .mini-pill { padding:4px 9px; border-radius:999px; background:#f6f7fb; color:var(--text-muted); font-size:11px; }
+        .detail-cover { width:100%; max-height:280px; object-fit:cover; border-radius:14px; margin:12px 0; background:#f5f6fa; }
+        .pay-panel { background:#fffef9; border:1px solid #f0d89c; border-radius:14px; padding:14px; margin-top:14px; }
+        .pay-grid { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+        .pay-card { text-align:center; background:#fff; border:1px solid #f0d89c; border-radius:12px; padding:10px; }
+        .pay-card img { width:126px; height:126px; object-fit:cover; border-radius:8px; cursor:zoom-in; }
+        .risk-copy { color:#9a6b2e; font-size:12px; line-height:1.7; margin-top:8px; }
+        .detail-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px; }
+        .detail-actions .btn-sm { flex:none; padding:12px; font-size:14px; }
+        .order-actions { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+        .order-actions .btn-sm { flex:1; min-width:110px; }
+        @media(max-width:720px){
+          .market-stats,.trade-steps { grid-template-columns:repeat(2,1fr); }
+          .search-bar { flex-direction:column; }
+          .market-filter { width:100%; }
+          .market-filter select,.market-filter input { flex:1; min-width:0; }
+          .detail-actions { grid-template-columns:1fr; }
+        }
         @media(max-width:640px){ .chat-area { flex-direction:column; } .chat-list { width:100%; max-height:120px; } }
     </style>
 </head>
@@ -1002,6 +1037,430 @@
     }
 
     function openContactModal() { document.getElementById('contactModal').classList.add('show'); }
+
+    // ========== 商城升级层 ==========
+    function jsArg(value) {
+        return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+    }
+
+    function authHeaders() {
+        refreshAuth();
+        return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+    }
+
+    function requireMarketLogin() {
+        refreshAuth();
+        if (!token) {
+            showToast('请先登录市场', 'error');
+            document.getElementById('loginModal').classList.add('show');
+            return false;
+        }
+        return true;
+    }
+
+    function upgradeMarketShell() {
+        document.title = 'AG校园商城 · 扫码支付交易平台';
+        const logoTitle = document.querySelector('.navbar h2');
+        if (logoTitle) logoTitle.textContent = 'AG 校园商城';
+
+        const container = document.querySelector('.container');
+        const searchBar = document.querySelector('.search-bar');
+        if (container && searchBar && !document.getElementById('marketHero')) {
+            searchBar.insertAdjacentHTML('beforebegin', `
+                <section class="market-hero" id="marketHero">
+                    <h1>校园闲置也可以像商城一样好逛</h1>
+                    <p>商家上传微信/支付宝收款码，买家下单后扫码付款并私聊确认。平台提供商品、购物车、订单、消息和举报管理，不托管资金。</p>
+                    <div class="market-stats">
+                        <div class="market-stat"><strong id="statActiveItems">-</strong><span>在售商品</span></div>
+                        <div class="market-stat"><strong id="statSellers">-</strong><span>入驻商家</span></div>
+                        <div class="market-stat"><strong id="statCompletedOrders">-</strong><span>完成订单</span></div>
+                        <div class="market-stat"><strong id="statSoldItems">-</strong><span>已售商品</span></div>
+                    </div>
+                </section>
+                <section class="trade-steps">
+                    <div class="trade-step"><strong>1. 选商品</strong><span>搜索、分类、价格筛选</span></div>
+                    <div class="trade-step"><strong>2. 下订单</strong><span>填写收货信息并锁定商品</span></div>
+                    <div class="trade-step"><strong>3. 扫码付款</strong><span>使用商家上传的收款码</span></div>
+                    <div class="trade-step"><strong>4. 私聊确认</strong><span>商家确认、发货、买家收货</span></div>
+                </section>
+                <div class="trust-banner"><i class="fas fa-shield-alt"></i><div><strong>交易提醒：</strong>平台当前采用商家收款码支付，不托管资金。付款前请核对商品专号、金额和卖家身份，付款后保留截图并通过站内消息确认。</div></div>
+            `);
+        }
+
+        if (searchBar && !document.getElementById('sortSelect')) {
+            searchBar.insertAdjacentHTML('beforeend', `
+                <div class="market-filter">
+                    <select id="sortSelect" onchange="loadMarketItems()">
+                        <option value="latest">最新上架</option>
+                        <option value="popular">最多浏览</option>
+                        <option value="priceAsc">价格从低到高</option>
+                        <option value="priceDesc">价格从高到低</option>
+                    </select>
+                    <input type="number" id="minPrice" placeholder="最低价" min="0" onkeypress="if(event.key==='Enter')loadMarketItems()">
+                    <input type="number" id="maxPrice" placeholder="最高价" min="0" onkeypress="if(event.key==='Enter')loadMarketItems()">
+                </div>
+            `);
+        }
+    }
+
+    async function loadMarketStats() {
+        try {
+            const res = await fetch(`${API_BASE}/market/stats`);
+            const data = await res.json();
+            if (!data.success) return;
+            document.getElementById('statActiveItems').textContent = data.stats.activeItems || 0;
+            document.getElementById('statSellers').textContent = data.stats.sellers || 0;
+            document.getElementById('statCompletedOrders').textContent = data.stats.completedOrders || 0;
+            document.getElementById('statSoldItems').textContent = data.stats.soldItems || 0;
+        } catch(e) {}
+    }
+
+    function initSocket() {
+        if (socket || !currentUser.id) return;
+        socket = io('https://api.agai.online', { transports: ['websocket', 'polling'] });
+        socket.on('connect', () => { socket.emit('bindUser', currentUser.id); });
+        socket.on('newMessage', (data) => {
+            if (currentChatRoom === data.roomId) appendMessage(data);
+            if (activeView === 'chats') loadChatRooms();
+            else showToast('收到一条新消息', 'success');
+        });
+        socket.on('marketOrderCreated', (data) => {
+            showToast(`新订单：${data.title || data.orderNo}`, 'success');
+            if (activeView === 'orders') loadMyOrders();
+        });
+        socket.on('marketOrderUpdated', (data) => {
+            showToast(`订单 ${data.orderNo} 状态已更新`, 'success');
+            if (activeView === 'orders') loadMyOrders();
+            loadMarketStats();
+        });
+    }
+
+    function searchItems() {
+        loadMarketItems(document.getElementById('searchInput').value.trim());
+    }
+
+    async function loadMarketItems(search = '') {
+        upgradeMarketShell();
+        const grid = document.getElementById('itemsGrid');
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>正在加载商品...</p></div>';
+        try {
+            const params = new URLSearchParams({ category: currentCategory, sort: document.getElementById('sortSelect')?.value || 'latest' });
+            const keyword = search || document.getElementById('searchInput')?.value.trim();
+            const min = document.getElementById('minPrice')?.value;
+            const max = document.getElementById('maxPrice')?.value;
+            if (keyword) params.set('search', keyword);
+            if (min) params.set('minPrice', min);
+            if (max) params.set('maxPrice', max);
+            const res = await fetch(`${API_BASE}/market/items?${params.toString()}`);
+            const data = await res.json();
+            if (data.success && data.items?.length) {
+                renderItems(grid, data.items);
+            } else {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>没有找到商品，换个关键词或价格区间试试。</p></div>';
+            }
+            loadMarketStats();
+        } catch(e) {
+            grid.innerHTML = '<div class="empty-state"><i class="fas fa-wifi"></i><p>商品加载失败，请稍后重试。</p></div>';
+        }
+    }
+
+    function renderItems(grid, items) {
+        const myId = currentUser.id;
+        grid.innerHTML = items.map(item => {
+            const sellerId = item.userId?._id || item.userId;
+            const isMine = myId && sellerId === myId;
+            const image = item.images?.length ? `<img src="${item.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : getCatIcon(item.category);
+            return `
+                <div class="item-card" onclick="openDetail('${item._id}')">
+                    <div class="item-img">${image}</div>
+                    <div class="item-badge">${getCatName(item.category)}</div>
+                    <div class="item-body">
+                        <div class="item-title">${escapeHTML(item.title)}</div>
+                        <div class="item-desc">${escapeHTML(item.description)}</div>
+                        <div class="item-footer">
+                            <span class="item-price"><span style="font-size:14px;">¥</span>${Number(item.price).toFixed(2)}</span>
+                            <span class="item-seller" style="font-size:10px;">#${item.productNo || item._id.slice(-6).toUpperCase()}</span>
+                        </div>
+                        <div class="item-meta-row">
+                            <span class="mini-pill">${getDisplayName(item.userId)}</span>
+                            <span class="mini-pill"><i class="fas fa-eye"></i> ${item.views || 0}</span>
+                            <span class="mini-pill">${new Date(item.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div class="item-actions" onclick="event.stopPropagation()">
+                            <button class="btn-sm" onclick="${isMine ? `openDetail('${item._id}')` : `addToCart('${item._id}')`}"><i class="fas fa-cart-plus"></i> ${isMine ? '查看' : '加购'}</button>
+                            <button class="btn-sm" onclick="toggleFavorite('${item._id}', this)"><i class="far fa-heart"></i> 收藏</button>
+                            <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}','${jsArg(item.title)}')"><i class="fas fa-comment-dots"></i> 私聊</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    async function openDetail(id) {
+        const modal = document.getElementById('detailModal');
+        const content = document.getElementById('detailContent');
+        modal.classList.add('show');
+        content.innerHTML = '<p style="text-align:center;padding:30px;">加载中...</p>';
+        try {
+            const res = await fetch(`${API_BASE}/market/items?id=${id}`);
+            const data = await res.json();
+            if (!data.success || !data.items?.length) return;
+            const item = data.items[0];
+            const sellerId = item.userId?._id || item.userId;
+            const mainImage = item.images?.[0] ? `<img class="detail-cover" src="${item.images[0]}">` : `<div class="detail-cover" style="display:grid;place-items:center;font-size:62px;">${getCatIcon(item.category)}</div>`;
+            const thumbnails = item.images?.length > 1 ? `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;">${item.images.slice(1).map(img => `<img src="${img}" style="width:92px;height:92px;border-radius:10px;object-fit:cover;">`).join('')}</div>` : '';
+            const isMine = currentUser.id && sellerId === currentUser.id;
+            content.innerHTML = `
+                <span style="background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;">${getCatName(item.category)}</span>
+                <span style="font-size:11px;color:var(--text-muted);margin-left:8px;">#${item.productNo || item._id.slice(-6).toUpperCase()}</span>
+                <h3 style="font-size:22px;margin:10px 0;">${escapeHTML(item.title)}</h3>
+                <div style="font-size:30px;font-weight:800;color:#e05050;">¥${Number(item.price).toFixed(2)}</div>
+                ${mainImage}
+                ${thumbnails}
+                <div style="color:var(--text-secondary);white-space:pre-wrap;margin:10px 0;">${escapeHTML(item.description)}</div>
+                <div class="item-meta-row">
+                    <span class="mini-pill">卖家：${getDisplayName(item.userId)}</span>
+                    <span class="mini-pill">浏览 ${item.views || 0}</span>
+                    <span class="mini-pill">${new Date(item.createdAt).toLocaleString()}</span>
+                </div>
+                <div class="pay-panel">
+                    <strong><i class="fas fa-qrcode"></i> 扫码支付</strong>
+                    <div id="payQRContent" class="pay-grid">正在加载商家收款码...</div>
+                    <p class="risk-copy">请支付 ¥${Number(item.price).toFixed(2)}，备注商品专号 ${item.productNo || ''}。平台不托管资金，付款后请保留截图并通过私聊发送给卖家确认。</p>
+                </div>
+                <div class="detail-actions">
+                    <button class="btn-sm" onclick="${isMine ? `closeModal('detailModal')` : `addToCart('${item._id}')`}" style="background:#28a745;color:#fff;border:none;"><i class="fas fa-cart-plus"></i> ${isMine ? '这是我的商品' : '加入购物车'}</button>
+                    <button class="btn-sm" onclick="${isMine ? `closeModal('detailModal')` : `openBuyModal('${item._id}','${jsArg(item.title)}',${Number(item.price)},'${sellerId}','${item.productNo||''}')`}" style="background:var(--primary);color:#fff;border:none;"><i class="fas fa-receipt"></i> ${isMine ? '管理商品' : '立即下单'}</button>
+                    <button class="btn-sm" onclick="showContact('${item._id}')"><i class="fas fa-address-book"></i> 联系方式</button>
+                    <button class="btn-sm" onclick="startChat('${sellerId}','${item._id}','${jsArg(item.title)}')"><i class="fas fa-comment-dots"></i> 私聊卖家</button>
+                    <button class="btn-sm" onclick="reportSeller('${sellerId}','${item._id}')"><i class="fas fa-flag"></i> 举报</button>
+                    <button class="btn-sm" onclick="blockSeller('${sellerId}')"><i class="fas fa-ban"></i> 拉黑</button>
+                </div>
+                <button class="btn btn-outline" onclick="closeModal('detailModal')" style="margin-top:12px;width:100%;background:#f0f2f6;color:var(--text);border-color:var(--border);">关闭</button>
+            `;
+            if (sellerId) loadSellerPayQR(sellerId, item.price, item.productNo);
+        } catch(e) {
+            content.innerHTML = '<p style="text-align:center;padding:30px;">加载失败</p>';
+        }
+    }
+
+    async function loadSellerPayQR(sellerId, price, productNo) {
+        const qrArea = document.getElementById('payQRContent');
+        if (!qrArea) return;
+        try {
+            const res = await fetch(`${API_BASE}/user/payqr/${sellerId}`);
+            const data = await res.json();
+            if (data.success && (data.payQR?.wechat || data.payQR?.alipay)) {
+                qrArea.innerHTML = `
+                    ${data.payQR.wechat ? `<div class="pay-card"><img src="${data.payQR.wechat}" onclick="window.open('${data.payQR.wechat}')"><p>微信收款码</p></div>` : ''}
+                    ${data.payQR.alipay ? `<div class="pay-card"><img src="${data.payQR.alipay}" onclick="window.open('${data.payQR.alipay}')"><p>支付宝收款码</p></div>` : ''}
+                `;
+            } else {
+                qrArea.innerHTML = '<p style="font-size:13px;color:#9a6b2e;">商家暂未上传收款码，请先私聊确认支付方式。</p>';
+            }
+        } catch(e) {
+            qrArea.innerHTML = '<p style="font-size:13px;color:#9a6b2e;">收款码加载失败，请私聊卖家。</p>';
+        }
+    }
+
+    async function showContact(id) {
+        if (!requireMarketLogin()) return;
+        try {
+            const res = await fetch(`${API_BASE}/market/contact/${id}`, { headers: authHeaders() });
+            const data = await res.json();
+            if (!data.success) { showToast(data.message || '获取失败','error'); return; }
+            alert(`卖家联系方式：\n\nQQ：${data.contact.qq||'未填写'}\n微信：${data.contact.wechat||'未填写'}\n\n请礼貌沟通，付款前核对商品专号和金额。`);
+        } catch(e) { showToast('网络错误','error'); }
+    }
+
+    async function addToCart(productId) {
+        if (!requireMarketLogin()) return;
+        try {
+            const res = await fetch(`${API_BASE}/market/cart`, {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ productId })
+            });
+            const data = await res.json();
+            showToast(data.success ? '已加入购物车' : (data.message || '操作失败'), data.success ? 'success' : 'error');
+        } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    function openBuyModal(productId, title, price, sellerId, productNo) {
+        if (!requireMarketLogin()) return;
+        currentBuyProductId = productId;
+        document.getElementById('buyProductInfo').innerHTML = `
+            <strong>${escapeHTML(title)}</strong> <span style="font-size:10px;color:var(--text-muted);">#${productNo||''}</span><br>
+            <span style="font-size:20px;font-weight:800;color:#e05050;">¥${Number(price).toFixed(2)}</span>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">提交订单后商品会被锁定。请扫码付款并私聊卖家发送付款截图。</p>
+        `;
+        document.getElementById('buyModal').classList.add('show');
+    }
+
+    async function submitOrder() {
+        const name = document.getElementById('buyName').value.trim();
+        const phone = document.getElementById('buyPhone').value.trim();
+        const detail = document.getElementById('buyAddress').value.trim();
+        if (!name || !phone || !detail) { showToast('请填写完整收货信息', 'error'); return; }
+        try {
+            const res = await fetch(`${API_BASE}/market/orders`, {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ productId: currentBuyProductId, address: { name, phone, detail } })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('下单成功，请扫码付款并私聊商家确认', 'success');
+                closeModal('buyModal');
+                closeModal('detailModal');
+                document.getElementById('buyName').value = '';
+                document.getElementById('buyPhone').value = '';
+                document.getElementById('buyAddress').value = '';
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.querySelector('[data-tab="orders"]').classList.add('active');
+                activeView = 'orders';
+                document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+                document.getElementById('view-orders').style.display = 'block';
+                loadMyOrders();
+                loadMarketItems();
+            } else showToast(data.message || '下单失败', 'error');
+        } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    function orderActionButton(order, role) {
+        if (role === 'buyer' && order.status === 'pending') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')">取消订单</button>`;
+        if (role === 'buyer' && order.status === 'shipped') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','completed')" style="background:#28a745;color:#fff;border:none;">确认收货</button>`;
+        if (role === 'seller' && order.status === 'pending') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','confirmed')" style="background:#28a745;color:#fff;border:none;">确认订单</button><button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')" style="background:#dc3545;color:#fff;border:none;">取消</button>`;
+        if (role === 'seller' && order.status === 'confirmed') return `<button class="btn-sm" onclick="updateOrderStatus('${order._id}','shipped')" style="background:#17a2b8;color:#fff;border:none;">标记发货</button><button class="btn-sm" onclick="updateOrderStatus('${order._id}','cancelled')">取消订单</button>`;
+        return '';
+    }
+
+    function renderOrderCard(order, role) {
+        const statusNames = { pending:'待付款/确认', confirmed:'商家已确认', shipped:'已发货/待收货', completed:'已完成', cancelled:'已取消' };
+        const statusClasses = { pending:'status-pending', confirmed:'status-confirmed', shipped:'status-shipped', completed:'status-completed', cancelled:'status-cancelled' };
+        const peer = role === 'buyer' ? `卖家：${getDisplayName(order.sellerId)}` : `买家：${getDisplayName(order.buyerId)}`;
+        const actions = orderActionButton(order, role);
+        return `
+            <div class="order-card">
+                <div class="order-header"><strong>${escapeHTML(order.title)}</strong><span class="order-status ${statusClasses[order.status]}">${statusNames[order.status]}</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);">
+                    <span>订单号：${order.orderNo}</span><span style="font-weight:700;color:#e05050;">¥${Number(order.price).toFixed(2)}</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">${peer} · #${order.productNo || ''}</div>
+                <div class="order-address">收货人：${escapeHTML(order.address.name)} &nbsp; 手机：${escapeHTML(order.address.phone)}<br>地址：${escapeHTML(order.address.detail)}</div>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">扫码付款后，请在消息中发送付款截图和订单号给卖家。</p>
+                ${actions ? `<div class="order-actions">${actions}</div>` : ''}
+                <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">${new Date(order.createdAt).toLocaleString()}</div>
+            </div>
+        `;
+    }
+
+    async function loadMyOrders() {
+        if (!requireMarketLogin()) return;
+        const container = document.getElementById('ordersList');
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>正在加载订单...</p></div>';
+        try {
+            const [buyerRes, sellerRes] = await Promise.all([
+                fetch(`${API_BASE}/market/orders/buyer`, { headers: authHeaders() }),
+                fetch(`${API_BASE}/market/orders/seller`, { headers: authHeaders() })
+            ]);
+            const buyerData = await buyerRes.json();
+            const sellerData = await sellerRes.json();
+            let html = '<h4 style="margin-bottom:10px;">我购买的</h4>';
+            html += buyerData.success && buyerData.orders?.length ? buyerData.orders.map(o => renderOrderCard(o, 'buyer')).join('') : '<p style="color:var(--text-muted);margin-bottom:16px;">暂无购买记录</p>';
+            html += '<h4 style="margin:16px 0 10px;">我卖出的</h4>';
+            html += sellerData.success && sellerData.orders?.length ? sellerData.orders.map(o => renderOrderCard(o, 'seller')).join('') : '<p style="color:var(--text-muted);">暂无卖出记录</p>';
+            container.innerHTML = html;
+        } catch(e) {
+            container.innerHTML = '<p style="color:var(--text-muted);">订单加载失败</p>';
+        }
+    }
+
+    async function updateOrderStatus(orderId, status) {
+        try {
+            const res = await fetch(`${API_BASE}/market/orders/${orderId}`, {
+                method: 'PUT',
+                headers: authHeaders(),
+                body: JSON.stringify({ status })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('订单状态已更新', 'success');
+                loadMyOrders();
+                loadMarketItems();
+                loadMarketStats();
+            } else showToast(data.message || '操作失败', 'error');
+        } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    async function startChat(sellerId, productId, productTitle) {
+        if (!requireMarketLogin()) return;
+        try {
+            const res = await fetch(`${API_BASE}/market/chat/create`, {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ productId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                activeView = 'chats';
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.querySelector('[data-tab="chats"]').classList.add('active');
+                document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+                document.getElementById('view-chats').style.display = 'block';
+                document.getElementById('chatPartnerName').textContent = `私聊 · ${productTitle || '商品'}`;
+                currentChatPartnerId = sellerId;
+                enterChat(data.roomId);
+                closeModal('detailModal');
+            } else showToast(data.message,'error');
+        } catch(e) { showToast('网络错误','error'); }
+    }
+
+    async function reportSeller(userId, productId) {
+        if (!requireMarketLogin()) return;
+        const reason = prompt('请填写举报原因');
+        if (!reason) return;
+        try {
+            const res = await fetch(`${API_BASE}/market/report`, {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ userId, productId, reason })
+            });
+            const data = await res.json();
+            showToast(data.message || (data.success ? '举报已提交' : '举报失败'), data.success ? 'success' : 'error');
+        } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    async function blockSeller(userId) {
+        if (!requireMarketLogin()) return;
+        if (!confirm('拉黑后你和对方将暂不可聊天或交易，确定继续？')) return;
+        try {
+            const res = await fetch(`${API_BASE}/market/block`, {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ userId })
+            });
+            const data = await res.json();
+            showToast(data.message || '操作完成', data.success ? 'success' : 'error');
+        } catch(e) { showToast('网络错误', 'error'); }
+    }
+
+    function handlePayQRSelect(event, type) {
+        const file = event.target.files[0];
+        if (!file || !file.type.startsWith('image/')) return;
+        if (file.size > 1024 * 1024) { showToast('收款码图片请控制在 1MB 内', 'error'); return; }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            payQRImages[type] = e.target.result;
+            const previewId = type === 'wechat' ? 'wechatPayPreview' : 'alipayPayPreview';
+            document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    upgradeMarketShell();
+    loadMarketStats();
 
     // ========== 初始化 ==========
     loadMarketItems();
