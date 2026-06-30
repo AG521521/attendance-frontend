@@ -156,7 +156,10 @@
           <i class="fas fa-tachometer-alt"></i> 仪表盘
         </div>
         <div class="menu-item" data-page="users">
-          <i class="fas fa-users"></i> 用户管理
+          <i class="fas fa-user-check"></i> 考勤用户
+        </div>
+        <div class="menu-item" data-page="market-users">
+          <i class="fas fa-store-alt"></i> 交易用户
         </div>
         <div class="menu-item" data-page="cards">
           <i class="fas fa-ticket-alt"></i> 卡密管理
@@ -200,10 +203,10 @@
       <!-- ===== 仪表盘 ===== -->
       <div id="page-dashboard">
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">注册用户</div></div>
+          <div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">考勤用户</div></div>
           <div class="stat-card"><div class="stat-value" id="statVipUsers">0</div><div class="stat-label">VIP 用户</div></div>
           <div class="stat-card"><div class="stat-value" id="statTodaySigns">0</div><div class="stat-label">今日签到</div></div>
-          <div class="stat-card"><div class="stat-value" id="statSuccessRate">0%</div><div class="stat-label">成功率</div></div>
+          <div class="stat-card"><div class="stat-value" id="statMarketUsers">0</div><div class="stat-label">交易用户</div></div>
         </div>
         <div class="content-card">
           <div class="card-header"><h3><i class="fas fa-chart-line"></i> 系统概览</h3></div>
@@ -229,18 +232,33 @@
       <div id="page-users" class="hidden">
         <div class="content-card">
           <div class="card-header">
-            <h3><i class="fas fa-users"></i> 用户列表</h3>
+            <h3><i class="fas fa-user-check"></i> 考勤系统用户</h3>
             <button class="btn btn-primary" onclick="exportUsers()"><i class="fas fa-download"></i> 导出用户</button>
           </div>
           <div class="search-box">
             <input type="text" id="userSearch" placeholder="搜索学号、姓名、邮箱..." onkeypress="if(event.key==='Enter')searchUsers()">
             <button class="btn btn-primary" onclick="searchUsers()"><i class="fas fa-search"></i> 搜索</button>
             <button class="btn btn-outline" onclick="loadUsers()"><i class="fas fa-sync-alt"></i> 刷新</button>
-            <button class="btn btn-outline btn-sm" id="toggleGuestsBtn" onclick="toggleGuests()">👤 显示游客</button>
-            <button class="btn btn-outline btn-sm" id="toggleMarketBtn" onclick="toggleMarket()" style="margin-left:6px">🛒 显示市场用户</button>
           </div>
           <div id="usersTable">加载中...</div>
           <div class="pagination" id="usersPagination"></div>
+        </div>
+      </div>
+
+      <!-- ===== 交易平台用户管理 ===== -->
+      <div id="page-market-users" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-store-alt"></i> 交易平台用户</h3>
+            <a href="/market" target="_blank" class="btn btn-outline"><i class="fas fa-store"></i> 打开交易平台</a>
+          </div>
+          <div class="search-box">
+            <input type="text" id="marketUserSearch" placeholder="搜索昵称、市场ID..." onkeypress="if(event.key==='Enter')searchMarketUsers()">
+            <button class="btn btn-primary" onclick="searchMarketUsers()"><i class="fas fa-search"></i> 搜索</button>
+            <button class="btn btn-outline" onclick="loadMarketUsers()"><i class="fas fa-sync-alt"></i> 刷新</button>
+          </div>
+          <div id="marketUsersTable">加载中...</div>
+          <div class="pagination" id="marketUsersPagination"></div>
         </div>
       </div>
 
@@ -487,8 +505,7 @@
     let ordersCurrentPage = 1;
     let reportsCurrentPage = 1;
     let marketItemsPage = 1;
-    let showGuests = false;
-    let showMarket = false;
+    let marketUsersPage = 1;
 
 
     if (!token) window.location.href = '/';
@@ -524,7 +541,7 @@
         item.classList.add('active');
 
         const titles = {
-          dashboard: '仪表盘', users: '用户管理', cards: '卡密管理',
+          dashboard: '仪表盘', users: '考勤用户管理', 'market-users': '交易平台用户管理', cards: '卡密管理',
           reports: '举报管理', orders: '订单管理', 'market-items': '商品管理',
           feedback: '留言管理', email: '群发邮件', settings: '系统设置'
         };
@@ -532,6 +549,7 @@
 
         if (page === 'dashboard') loadDashboardStats();
         else if (page === 'users') loadUsers();
+        else if (page === 'market-users') loadMarketUsers();
         else if (page === 'cards') loadCards();
         else if (page === 'reports') loadReports();
         else if (page === 'orders') loadOrders();
@@ -551,7 +569,7 @@
           document.getElementById('statTotalUsers').textContent = data.stats.users.total;
           document.getElementById('statVipUsers').textContent = data.stats.users.vip;
           document.getElementById('statTodaySigns').textContent = data.stats.signs.today;
-          document.getElementById('statSuccessRate').textContent = data.stats.signs.successRate + '%';
+          document.getElementById('statMarketUsers').textContent = data.stats.users.market || 0;
 
           const todaySigns = data.stats.signs.today || 0;
           const totalUsers = data.stats.users.total || 1;
@@ -562,7 +580,9 @@
             <table>
               <tr><td>总签到次数</td><td><strong>${data.stats.signs.total}</strong></td></tr>
               <tr><td>成功签到</td><td><strong>${data.stats.signs.success}</strong></td></tr>
+              <tr><td>今日成功率</td><td><strong>${data.stats.signs.successRate}%</strong></td></tr>
               <tr><td>活跃订阅</td><td><strong>${data.stats.subscriptions.active}</strong></td></tr>
+              <tr><td>交易平台用户</td><td><strong>${data.stats.users.market || 0}</strong></td></tr>
               <tr><td>今日新增用户</td><td><strong>${data.stats.users.today}</strong></td></tr>
               <tr><td>总邀请次数</td><td><strong>${data.stats.invites?.total || 0}</strong></td></tr>
             </table>
@@ -595,7 +615,7 @@
       currentPage = page;
       const search = document.getElementById('userSearch')?.value || '';
       try {
-          const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&search=${encodeURIComponent(search)}&showGuests=${showGuests}&showMarket=${showMarket}`, {
+          const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&scope=attendance&search=${encodeURIComponent(search)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -605,7 +625,7 @@
               <thead><tr><th>学号</th><th>姓名</th><th>邮箱</th><th>VIP</th><th>角色</th><th>签到统计</th><th>操作</th></tr></thead>
               <tbody>${data.users.map(u => `
                 <tr>
-                  <td>${u.studentId} ${u.isGuest?'👤':''}</td>
+                  <td>${u.studentId}</td>
                   <td>${(u.name && u.name !== u.studentId) ? u.name : '未实名'}</td>
                   <td>${u.email || '-'} ${u.emailVerified ? '✓' : ''}</td>
                   <td>${u.isVip ? `<span class="badge badge-success">VIP ${u.vipExpireAt ? new Date(u.vipExpireAt).toLocaleDateString() : ''}</span>` : '<span class="badge badge-danger">普通</span>'}</td>
@@ -631,13 +651,57 @@
       } catch (e) {}
     }
 
-    function toggleMarket() {
-      showMarket = !showMarket;
-      document.getElementById('toggleMarketBtn').textContent = showMarket ? '🛒 隐藏市场用户' : '🛒 显示市场用户';
-      loadUsers(1);
+    function searchUsers() { loadUsers(1); }
+
+    async function loadMarketUsers(page = 1) {
+      marketUsersPage = page;
+      const search = document.getElementById('marketUserSearch')?.value || '';
+      try {
+        const res = await fetch(`${API_BASE}/admin/users?page=${page}&limit=20&scope=market&search=${encodeURIComponent(search)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('marketUsersTable').innerHTML = `
+            <table>
+              <thead><tr><th>市场ID</th><th>昵称</th><th>来源</th><th>收款码</th><th>注册时间</th><th>最近登录</th><th>操作</th></tr></thead>
+              <tbody>${data.users.map(u => `
+                <tr>
+                  <td>${u.studentId || '-'}</td>
+                  <td>${(u.name && u.name !== u.studentId) ? u.name : '未设置'}</td>
+                  <td><span class="badge badge-info">${u.isGuest ? '市场游客' : '市场账号'}</span></td>
+                  <td>
+                    ${u.payQR?.wechat ? '<span class="badge badge-success">微信</span>' : ''}
+                    ${u.payQR?.alipay ? '<span class="badge badge-success">支付宝</span>' : ''}
+                    ${!u.payQR?.wechat && !u.payQR?.alipay ? '<span class="badge badge-warning">未上传</span>' : ''}
+                  </td>
+                  <td>${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '-'}</td>
+                  <td>${u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn btn-outline btn-sm" onclick="viewUser('${u._id}')" title="查看详情"><i class="fas fa-eye"></i></button>
+                      <button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}', '${u.studentId}')" title="删除用户"><i class="fas fa-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}</tbody>
+            </table>
+          `;
+          const totalPages = Math.ceil(data.total / 20);
+          document.getElementById('marketUsersPagination').innerHTML = Array.from({length: totalPages}, (_, i) =>
+            `<button class="btn ${i+1 === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadMarketUsers(${i+1})">${i+1}</button>`
+          ).join('');
+        }
+      } catch (e) {}
     }
 
-    function searchUsers() { loadUsers(1); }
+    function searchMarketUsers() { loadMarketUsers(1); }
+
+    function reloadActiveUserPage() {
+      const marketPageVisible = !document.getElementById('page-market-users')?.classList.contains('hidden');
+      if (marketPageVisible) loadMarketUsers(marketUsersPage);
+      else loadUsers(currentPage);
+    }
 
     async function adminSign(userId, studentId) {
       const password = prompt(`请输入 ${studentId} 的考勤密码（留空使用已保存的密码）:`);
@@ -718,7 +782,7 @@
           })
         });
         const data = await res.json();
-        if (data.success) { showToast('保存成功', 'success'); closeUserModal(); loadUsers(currentPage); }
+        if (data.success) { showToast('保存成功', 'success'); closeUserModal(); reloadActiveUserPage(); }
         else showToast(data.message || '保存失败', 'error');
       } catch (e) { showToast('保存失败', 'error'); }
     }
@@ -734,7 +798,7 @@
           method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ isVip: true, vipExpireAt: expireAt.toISOString() })
         });
-        if ((await res.json()).success) { showToast(`已添加 ${days} 天 VIP`, 'success'); viewUser(currentUserId); loadUsers(currentPage); }
+        if ((await res.json()).success) { showToast(`已添加 ${days} 天 VIP`, 'success'); viewUser(currentUserId); reloadActiveUserPage(); }
       } catch (e) { showToast('操作失败', 'error'); }
     }
 
@@ -765,7 +829,7 @@
         const res = await fetch(`${API_BASE}/admin/users/${userId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
         if ((await res.json()).success) {
           showToast(`✅ 用户 ${studentId} 已删除`, 'success');
-          closeUserModal(); loadUsers(currentPage); loadDashboardStats();
+          closeUserModal(); reloadActiveUserPage(); loadDashboardStats();
         } else showToast('删除失败', 'error');
       } catch (e) { showToast('网络错误', 'error'); }
     }
