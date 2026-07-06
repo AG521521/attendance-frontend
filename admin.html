@@ -1271,6 +1271,115 @@
       }
     }
 
+    function adminEscapeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = value == null ? '' : String(value);
+      return div.innerHTML;
+    }
+
+    async function loadReportBadge() {
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports?page=1&limit=1`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!data.success) return;
+        const badge = document.getElementById('reportBadge');
+        if (!badge) return;
+        if ((data.pendingCount || 0) > 0) {
+          badge.textContent = data.pendingCount;
+          badge.style.display = 'block';
+        } else {
+          badge.style.display = 'none';
+        }
+      } catch (e) {}
+    }
+
+    async function loadReports(page = 1) {
+      reportsCurrentPage = page;
+      const status = document.getElementById('reportStatusFilter')?.value || '';
+      const table = document.getElementById('reportsTable');
+      if (table) table.innerHTML = '加载中...';
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports?page=${page}&limit=20&status=${encodeURIComponent(status)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!data.success) {
+          showToast(data.message || '举报列表加载失败', 'error');
+          return;
+        }
+
+        const badge = document.getElementById('reportBadge');
+        if (badge) {
+          if ((data.pendingCount || 0) > 0) {
+            badge.textContent = data.pendingCount;
+            badge.style.display = 'block';
+          } else {
+            badge.style.display = 'none';
+          }
+        }
+
+        document.getElementById('reportsStats').innerHTML =
+          `<span class="badge badge-warning">待处理：${data.pendingCount || 0}</span> ` +
+          `<span class="badge badge-info">总计：${data.total || 0}</span>`;
+
+        const statusMap = {
+          pending: '<span class="badge badge-warning">待处理</span>',
+          handled: '<span class="badge badge-success">已处理</span>',
+          dismissed: '<span class="badge badge-danger">已驳回</span>'
+        };
+
+        const rows = (data.reports || []).map(r => `
+          <tr>
+            <td>${adminEscapeHTML(r.reporterId?.name || r.reporterId?.studentId || '未知')}</td>
+            <td>${adminEscapeHTML(r.targetUserId?.name || r.targetUserId?.studentId || '未知')}</td>
+            <td style="max-width:260px; white-space:normal;">${adminEscapeHTML(r.reason || '-')}</td>
+            <td>${adminEscapeHTML(r.productId?.title || '-')}</td>
+            <td>${statusMap[r.status] || statusMap.pending}</td>
+            <td>${r.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}</td>
+            <td>
+              ${r.status === 'pending'
+                ? `<button class="btn btn-success btn-sm" onclick="handleReport('${r._id}','handled')">标记已处理</button>
+                   <button class="btn btn-danger btn-sm" onclick="handleReport('${r._id}','dismissed')">驳回</button>`
+                : '<span class="badge badge-info">已完结</span>'}
+            </td>
+          </tr>
+        `).join('');
+
+        document.getElementById('reportsTable').innerHTML = rows
+          ? `<table><thead><tr><th>举报人</th><th>被举报人</th><th>原因</th><th>商品</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody>${rows}</tbody></table>`
+          : '<div style="padding:30px; text-align:center; color:#888;">暂无举报</div>';
+
+        const totalPages = Math.ceil((data.total || 0) / 20);
+        document.getElementById('reportsPagination').innerHTML = Array.from({ length: totalPages }, (_, i) =>
+          `<button class="btn ${i + 1 === page ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="loadReports(${i + 1})">${i + 1}</button>`
+        ).join('');
+      } catch (e) {
+        showToast('举报列表加载失败', 'error');
+        if (table) table.innerHTML = '<div style="padding:30px; text-align:center; color:#888;">加载失败</div>';
+      }
+    }
+
+    async function handleReport(id, status) {
+      try {
+        const res = await fetch(`${API_BASE}/admin/reports/${id}`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          showToast(data.message || '操作失败', 'error');
+          return;
+        }
+        showToast(status === 'handled' ? '已标记为已处理' : '已驳回举报', 'success');
+        loadReports(reportsCurrentPage);
+      } catch (e) {
+        showToast('操作失败', 'error');
+      }
+    }
+
     function logout() { localStorage.clear(); window.location.href = '/'; }
 
     // ========== 事件绑定 ==========
@@ -1280,6 +1389,7 @@
     // ========== 初始化 ==========
     checkAdmin();
     loadDashboardStats();
+    loadReportBadge();
   </script>
 </body>
 </html>
