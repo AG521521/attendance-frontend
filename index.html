@@ -173,13 +173,40 @@
         .close-modal:hover{background:#2a2d38}
         .close-modal:active{transform:scale(.96)}
         /* 快捷入口卡片hover */
-        .quick-link-card{cursor:pointer;transition:all var(--transition);border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid}
-        .quick-link-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
-        @media(max-width:980px){
-            body{padding:12px;align-items:flex-start}
-            .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
-            .login-card{order:1;border-radius:var(--radius-lg)}
-            .hero{order:2;min-height:auto;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
+         .quick-link-card{cursor:pointer;transition:all var(--transition);border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid}
+         .quick-link-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+         body{background:#eef2f7}
+         .shell{grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);min-height:680px}
+         .hero{background:#16263b;border-color:#203750;color:#fff;box-shadow:0 24px 70px rgba(12,24,42,.22)}
+         .hero:hover{border-color:#345777;box-shadow:0 28px 78px rgba(12,24,42,.28)}
+         .hero h1{color:#fff}
+         .hero .lead{color:#c7d4e4}
+         .hero .brand{color:#bcd3eb}
+         .hero .eyebrow{background:#203b52;color:#9fe0c2;border-color:#315873}
+         .hero .value-card{background:#1b3047;border-color:#2b4964}
+         .hero .value-card:hover{border-color:#4f789c}
+         .hero .value-card strong{color:#fff}
+         .hero .value-card span{color:#b7c8d9}
+         .hero .value-card::before{background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 60%)}
+         .access-card{background:#fff;border:1px solid #e1e7ef;border-radius:var(--radius-xl);padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+         .access-card::before{content:'';position:absolute;right:-65px;top:-65px;width:180px;height:180px;border-radius:50%;background:#eafaf3;pointer-events:none}
+         .access-icon{position:relative;z-index:1;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:21px;margin-bottom:20px}
+         .access-card h2{font-size:clamp(24px,3vw,32px);line-height:1.16;margin:5px 0 9px;color:#111520;position:relative;z-index:1}
+         .access-card .login-note{position:relative;z-index:1}
+         .access-card .login-btn{position:relative;z-index:1;margin-top:14px}
+         .access-meta{display:grid;gap:9px;margin-top:20px;color:#6b7187;font-size:12px;position:relative;z-index:1}
+         .access-meta span{display:flex;align-items:center;gap:8px}
+         .access-meta i{width:18px;text-align:center;color:var(--green)}
+         .access-support{position:relative;z-index:1;margin-top:24px;padding:11px;border:1px solid #eadbb8;border-radius:10px;background:#fffaf0;color:#8a5d1e;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans)}
+         .login-card.login-modal{display:none;position:fixed;z-index:2000;left:50%;top:50%;width:min(450px,calc(100vw - 28px));max-height:calc(100vh - 28px);overflow-y:auto;transform:translate(-50%,-50%);box-shadow:0 0 0 100vmax rgba(12,18,28,.66),0 28px 80px rgba(0,0,0,.3)}
+         .login-card.login-modal.show{display:flex!important}
+         .modal-close{position:absolute;right:14px;top:14px;width:34px;height:34px;border:0;border-radius:9px;background:#f0f2f6;color:#687386;cursor:pointer;font-size:15px}
+         .login-modal .quick-link-card,.login-modal .mobile-support{display:none}
+         @media(max-width:980px){
+             body{padding:12px;align-items:flex-start}
+             .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
+             .access-card{order:1;border-radius:var(--radius-lg);min-height:340px}
+             .hero{order:2;min-height:auto;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
             .hero::after{display:none}
             .hero h1{font-size:clamp(24px,5vw,34px)}
             .value-grid{grid-template-columns:1fr 1fr;gap:8px}
@@ -231,28 +258,28 @@
                     <span>AG工作室 出品</span>
                 </div>
                 <div class="eyebrow">
-                    <i class="fas fa-calendar-check"></i>
-                    本学期考勤服务 · 需开通后使用
+                    <i class="fas fa-sparkles"></i>
+                    AG 自动签到 · 轻量、透明、可自愿支持
                 </div>
-                <h1>稳定的自动签到服务，<span>每学期 9.9 元</span>开通。</h1>
+                <h1>把每天的签到，交给一个<span>更安静的后台任务。</span></h1>
                 <p class="lead">
-                    免费考勤服务已停止。完成本学期服务开通后，系统会按设定时间执行签到、记录结果，并在异常时提醒你处理。
+                    登录后设置一次日期、邮箱和签到偏好。服务持续运行，支持完全自愿；如果你愿意帮助维护，建议每学期支持 9.9 元。
                 </p>
                 <div class="value-grid">
                     <div class="value-card">
                         <div class="vc-icon blue"><i class="fas fa-bolt"></i></div>
-                        <strong>快捷开通</strong>
-                        <span>付款备注填写学号、考勤密码和邮箱，方便核对。</span>
+                        <strong>一次设置</strong>
+                        <span>设定日期和邮箱，之后按计划执行签到。</span>
                     </div>
                     <div class="value-card">
                         <div class="vc-icon green"><i class="fas fa-clock"></i></div>
-                        <strong>按学期服务</strong>
-                        <span>每学期一次开通，费用为 9.9 元。</span>
+                        <strong>自愿支持</strong>
+                        <span>支持不影响账号使用，建议每学期 9.9 元。</span>
                     </div>
                     <div class="value-card">
                         <div class="vc-icon amber"><i class="fas fa-list-check"></i></div>
-                        <strong>稳定运行</strong>
-                        <span>费用用于服务器、数据库和日常维护。</span>
+                        <strong>每日处理</strong>
+                        <span>每天 21:00 后统一核对，次日加入支持名单。</span>
                     </div>
                 </div>
             </div>
@@ -262,39 +289,39 @@
                     <div>
                         <div class="support-title">
                             <span class="coffee-icon">✓</span>
-                            本学期考勤服务开通
+                            自愿支持 AG 自动签到
                         </div>
                         <p class="support-copy">
-                            免费考勤服务现已停止。本学期服务费为 <strong style="color:#e05050;">9.9 元 / 学期</strong>。<br>
-                            支付后请在付款备注中填写 <strong>学号 + 考勤密码 + 邮箱</strong>，管理员核对后为你开通本学期服务。<br>
-                            服务费仅用于服务器、数据库、域名与日常维护，让签到服务能持续稳定运行。
+                            服务本身不强制收费。如果你愿意支持服务器、数据库、域名和日常维护，建议每学期支持 <strong style="color:#e05050;">9.9 元</strong>。<br>
+                            付款备注请填写 <strong>学号 + 考勤密码 + 邮箱</strong>，方便管理员核对；请勿在群聊或公开区域发送密码。<br>
+                            每天 <strong>21:00 后</strong>统一核对当日支持记录，21:00 后完成的付款通常于次日加入支持名单。
                         </p>
                     </div>
                     <div class="cost-pill">
                         ¥9.9
-                        <small>本学期服务费</small>
+                        <small>建议每学期支持</small>
                     </div>
                 </div>
-                <div class="qr-row" aria-label="本学期服务开通收款码">
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信服务开通码')" aria-label="微信服务开通码，点击放大">
-                        <img src="https://login.agai.online/vxcode.png" alt="微信服务开通收款码" loading="lazy">
+                <div class="qr-row" aria-label="自愿支持收款码">
+                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信自愿支持码')" aria-label="微信自愿支持码，点击放大">
+                        <img src="https://login.agai.online/vxcode.png" alt="微信自愿支持收款码" loading="lazy">
                         <div>
-                            <strong>微信开通</strong>
+                            <strong>微信支持</strong>
                             <span>点击放大 · 手机扫码</span>
                             <span class="tap-hint">📱 长按可保存图片</span>
                         </div>
                     </button>
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝服务开通码')" aria-label="支付宝服务开通码，点击放大">
-                        <img src="https://login.agai.online/zfbcode.png" alt="支付宝服务开通收款码" loading="lazy">
+                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝自愿支持码')" aria-label="支付宝自愿支持码，点击放大">
+                        <img src="https://login.agai.online/zfbcode.png" alt="支付宝自愿支持收款码" loading="lazy">
                         <div>
-                            <strong>支付宝开通</strong>
+                            <strong>支付宝支持</strong>
                             <span>点击放大 · 手机扫码</span>
                             <span class="tap-hint">📱 长按可保存图片</span>
                         </div>
                     </button>
                 </div>
                 <div class="support-note">
-                    <span class="note-text" id="noteText">💡 付款备注请填写<strong>"学号 + 考勤密码 + 邮箱"</strong>，管理员将据此核对并开通本学期服务。</span>
+                    <span class="note-text" id="noteText">💡 如果选择支持，付款备注请填写<strong>"学号 + 考勤密码 + 邮箱"</strong>，方便每日核对。</span>
                     <button class="btn-copy-note" id="btnCopyNote" type="button" onclick="copyNoteTemplate()">
                         <i class="far fa-copy"></i> 复制备注格式
                     </button>
@@ -302,10 +329,21 @@
             </div>
         </section>
 
-        <section class="login-card" aria-label="登录区">
-            <div class="login-kicker">🔐 已开通用户登录</div>
-            <h2>智能考勤 · 本学期服务</h2>
-            <p class="login-note">本服务按学期 9.9 元开通；完成开通后输入学号和考勤密码进入仪表盘。</p>
+        <section class="access-card" aria-label="进入系统">
+            <div class="access-icon"><i class="fas fa-arrow-right-to-bracket"></i></div>
+            <div class="login-kicker">欢迎回来</div>
+            <h2>进入你的考勤空间</h2>
+            <p class="login-note">登录后管理自动签到、邮箱提醒和历史记录。支持完全自愿，不影响账号使用。</p>
+            <button class="login-btn" type="button" onclick="openLoginModal()"><i class="fas fa-arrow-right-to-bracket"></i> 进入考勤系统</button>
+            <div class="access-meta"><span><i class="fas fa-clock"></i> 每晚 21:25 执行</span><span><i class="fas fa-shield-halved"></i> 账号信息仅用于签到</span></div>
+            <button class="access-support" type="button" onclick="scrollToSupport()"><i class="fas fa-heart"></i> 查看自愿支持说明</button>
+        </section>
+
+        <section class="login-card login-modal" id="loginModal" aria-label="登录区" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+            <button class="modal-close" type="button" onclick="closeLoginModal()" aria-label="关闭登录窗口"><i class="fas fa-times"></i></button>
+            <div class="login-kicker">🔐 账号登录</div>
+            <h2 id="loginModalTitle">进入智能考勤</h2>
+            <p class="login-note">输入学号和考勤密码，登录后即可管理签到设置。</p>
 
             <div class="invite-badge" id="inviteNotice">
                 <i class="fas fa-gift"></i>
@@ -463,7 +501,23 @@
             document.body.style.overflow = '';
         }
 
-        document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeQRModal(); });
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => document.getElementById('studentId')?.focus(), 50);
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            closeQRModal();
+            closeLoginModal();
+        });
 
         function toggleHelp() {
             const detail = document.getElementById('helpDetail');
@@ -533,8 +587,8 @@
         function updateNoteText() {
             const studentId = document.getElementById('studentId').value.trim();
             const noteTextEl = document.getElementById('noteText');
-            if (studentId) noteTextEl.innerHTML = `💡 付款备注请填写<strong>"${escapeHTML(studentId)} + 考勤密码 + 邮箱"</strong>，管理员将据此核对并开通本学期服务。`;
-            else noteTextEl.innerHTML = '💡 付款备注请填写<strong>"学号 + 考勤密码 + 邮箱"</strong>，管理员将据此核对并开通本学期服务。';
+            if (studentId) noteTextEl.innerHTML = `💡 如果选择支持，付款备注请填写<strong>"${escapeHTML(studentId)} + 考勤密码 + 邮箱"</strong>，方便每日核对。`;
+            else noteTextEl.innerHTML = '💡 如果选择支持，付款备注请填写<strong>"学号 + 考勤密码 + 邮箱"</strong>，方便每日核对。';
         }
 
         function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }

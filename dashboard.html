@@ -283,11 +283,11 @@
         <button onclick="closeSponsorModal()" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">&times;</button>
         <div style="font-size:48px; margin-bottom:12px;">📌</div>
         <h2 style="font-size:20px; font-weight:800; color:#1a1a2e; margin-bottom:8px;">
-          本学期考勤服务已转为付费开通
+          关于本学期自愿支持
         </h2>
         <div style="text-align:left; background:#fff9f0; border-radius:12px; padding:16px; margin-bottom:16px; font-size:14px; color:#5a4a3a; line-height:1.7;">
-          <p style="margin-bottom:8px;">免费考勤服务已停止，现按学期开通。</p>
-          <p style="margin-bottom:8px;">本学期服务费为 <strong style="color:#e05050;">¥9.9 / 学期</strong>，用于服务器、数据库和日常维护。</p>
+          <p style="margin-bottom:8px;">服务支持完全自愿，不影响账号使用。</p>
+          <p style="margin-bottom:8px;">如果你愿意帮助维护，建议支持 <strong style="color:#e05050;">¥9.9 / 学期</strong>，用于服务器、数据库和日常维护。</p>
           <p style="margin-bottom:8px; background:#fff3e0; padding:8px 12px; border-radius:8px; border-left:3px solid #ff9800;">
             💡 <strong>付款备注请填写：学号 + 考勤密码 + 邮箱。核对后开通本学期服务。</strong>
           </p>
@@ -295,14 +295,14 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:10px;">
           <button onclick="goToSponsor()" style="width:100%; padding:14px; background:linear-gradient(135deg, #ff9800, #f57c00); color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer;">
-            查看付款码并开通
+            查看自愿支持码
           </button>
           <button onclick="closeSponsorModal()" style="width:100%; padding:12px; background:none; border:1px solid #ddd; border-radius:10px; color:#999; font-size:14px; cursor:pointer;">
             我知道了
           </button>
         </div>
         <p style="margin-top:12px; font-size:11px; color:#bbb;">
-          弹窗仅出现一次 · 已开通用户不会看到此提示
+          弹窗仅出现一次 · 已加入支持名单的用户不会看到此提示
         </p>
       </div>
     </div>
@@ -342,7 +342,7 @@
           <li class="menu-item" onclick="window.location.href='/market'">
             <i class="fas fa-store"></i> 二手市场
           </li>
-          <li class="menu-item" data-page="buy"><i class="fas fa-unlock-alt"></i> 本学期开通</li>
+          <li class="menu-item" data-page="buy"><i class="fas fa-heart"></i> 自愿支持</li>
           <li class="menu-item" data-page="logs"><i class="fas fa-history"></i> 记录</li>
           <li class="menu-item" data-page="profile"><i class="fas fa-user"></i> 我的</li>
         </ul>
@@ -356,9 +356,9 @@
             <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
               <div>
                 <h2 style="margin-bottom:5px;color:#6b3a0a;"><i class="fas fa-circle-info" style="color:#f59e0b;"></i> 本学期考勤服务开通</h2>
-                <p style="color:#7a5a35;font-size:13px;">免费考勤服务已停止。本学期服务费 ¥9.9，付款备注请填写：学号 + 考勤密码 + 邮箱。</p>
+                <p style="color:#7a5a35;font-size:13px;">支持完全自愿，建议每学期 ¥9.9。每天 21:00 后统一核对，次日加入支持名单。</p>
               </div>
-              <button class="btn btn-warning" onclick="document.querySelector('.menu-item[data-page=buy]').click()"><i class="fas fa-qrcode"></i> 查看付款码</button>
+              <button class="btn btn-warning" onclick="document.querySelector('.menu-item[data-page=buy]').click()"><i class="fas fa-qrcode"></i> 查看支持码</button>
             </div>
           </div>
           <!-- 🆕 VIP 专属通知横幅 -->
@@ -492,15 +492,15 @@
           <div class="card"><h2>我的留言</h2><div id="myFeedbackList"></div></div>
         </div>
 
-        <!-- 本学期服务开通 -->
+        <!-- 自愿支持 -->
         <div id="page-buy" class="page">
           <div class="card">
-            <h2><i class="fas fa-unlock-alt" style="color:var(--warning);"></i> 本学期考勤服务</h2>
+            <h2><i class="fas fa-heart" style="color:var(--warning);"></i> 自愿支持 AG 自动签到</h2>
             <div style="margin:12px 0 18px;padding:14px 16px;background:#fff9f0;border:1px solid #f2d5a7;border-radius:12px;color:#5a4a3a;line-height:1.75;">
               <p style="font-size:18px;font-weight:800;color:#e05050;">¥9.9 / 学期</p>
-              <p style="margin-top:4px;">免费考勤服务已停止。完成本学期服务开通后，可继续使用自动签到、手动签到、邮件通知和记录查询。</p>
+              <p style="margin-top:4px;">支持完全自愿，不影响自动签到、手动签到、邮件通知和记录查询。</p>
               <p style="margin-top:8px;font-size:13px;"><strong>付款备注：</strong>学号 + 考勤密码 + 邮箱</p>
-              <p style="font-size:12px;color:#8a6b4d;">管理员会按备注核对并开通；请勿把考勤密码发送到群聊或公开区域。</p>
+              <p style="font-size:12px;color:#8a6b4d;">每天 21:00 后统一核对，21:00 后完成的支持通常于次日加入名单；请勿把考勤密码发送到公开区域。</p>
             </div>
             <button class="btn btn-outline" onclick="copySemesterPaymentNote()" style="margin-bottom:14px;"><i class="far fa-copy"></i> 复制付款备注</button>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;text-align:center;">
@@ -547,8 +547,8 @@
   <div id="semesterQrModal" onclick="closeSemesterQr()" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72);">
     <div onclick="event.stopPropagation()" style="width:min(380px,100%);padding:22px;background:#fff;border-radius:16px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.28);">
       <h3 id="semesterQrTitle" style="margin-bottom:12px;">服务开通码</h3>
-      <img id="semesterQrImage" src="" alt="服务开通收款码" style="width:min(280px,76vw);height:min(280px,76vw);margin:0 auto;object-fit:contain;border-radius:12px;border:1px solid var(--border);">
-      <p style="margin-top:10px;font-size:12px;color:#777;">付款金额：¥9.9 · 备注：学号 + 考勤密码 + 邮箱</p>
+      <img id="semesterQrImage" src="" alt="自愿支持收款码" style="width:min(280px,76vw);height:min(280px,76vw);margin:0 auto;object-fit:contain;border-radius:12px;border:1px solid var(--border);">
+      <p style="margin-top:10px;font-size:12px;color:#777;">建议支持：¥9.9 · 备注：学号 + 考勤密码 + 邮箱</p>
       <button class="btn btn-primary" onclick="closeSemesterQr()" style="width:100%;margin-top:14px;">关闭</button>
     </div>
   </div>
@@ -1038,8 +1038,8 @@
       document.getElementById('profileName').value = currentUser.name || '';
       document.getElementById('profileAttendancePassword').value = '';
       document.getElementById('profileEmail').value = currentUser.email || '未绑定';
-      let vt = '未开通本学期服务';
-      if (currentUser.isVip) { const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null; vt = d && d > new Date() ? '本学期服务已开通 · 至 '+d.toLocaleDateString() : '服务已到期，请重新开通'; }
+      let vt = '尚未加入本学期支持名单';
+      if (currentUser.isVip) { const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null; vt = d && d > new Date() ? '已加入支持名单 · 至 '+d.toLocaleDateString() : '支持名单已到期'; }
       document.getElementById('profileVip').value = vt;
     }
     async function updateProfile() {
