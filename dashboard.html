@@ -277,33 +277,32 @@
   </div>
 
   <div class="container">
-    <!-- ========== 赞助提醒弹窗 ========== -->
+    <!-- ========== 本学期服务开通提醒 ========== -->
     <div id="sponsorModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; border-radius:20px; padding:28px 24px; max-width:420px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); position:relative; animation:popIn 0.3s ease-out;">
         <button onclick="closeSponsorModal()" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:22px; color:#aaa; cursor:pointer;">&times;</button>
-        <div style="font-size:48px; margin-bottom:12px;">🏠</div>
+        <div style="font-size:48px; margin-bottom:12px;">📌</div>
         <h2 style="font-size:20px; font-weight:800; color:#1a1a2e; margin-bottom:8px;">
-          快放假了，下学期还能用吗？
+          本学期考勤服务已转为付费开通
         </h2>
         <div style="text-align:left; background:#fff9f0; border-radius:12px; padding:16px; margin-bottom:16px; font-size:14px; color:#5a4a3a; line-height:1.7;">
-          <p style="margin-bottom:8px;">👋 同学们好，我是这个签到工具的维护者。</p>
-          <p style="margin-bottom:8px;">最近使用人数增多，服务器和数据库成本每月约 <strong style="color:#e05050;">¥55</strong>，一个人承担确实有点吃力。</p>
-          <p style="margin-bottom:8px;">如果你觉得这个工具确实帮你省了不少心，希望能支持一下。</p>
+          <p style="margin-bottom:8px;">免费考勤服务已停止，现按学期开通。</p>
+          <p style="margin-bottom:8px;">本学期服务费为 <strong style="color:#e05050;">¥9.9 / 学期</strong>，用于服务器、数据库和日常维护。</p>
           <p style="margin-bottom:8px; background:#fff3e0; padding:8px 12px; border-radius:8px; border-left:3px solid #ff9800;">
-            💡 <strong>6月12日前赞助>=5，下学期开学自动激活签到服务，无需重新注册。</strong>
+            💡 <strong>付款备注请填写：学号 + 考勤密码 + 邮箱。核对后开通本学期服务。</strong>
           </p>
-          <p style="margin:0; font-size:12px; color:#999;">🙏 不赞助也不会影响本学期剩余签到的使用，感谢信任。</p>
+          <p style="margin:0; font-size:12px; color:#999;">请不要在群聊或公开区域发送考勤密码。</p>
         </div>
         <div style="display:flex; flex-direction:column; gap:10px;">
           <button onclick="goToSponsor()" style="width:100%; padding:14px; background:linear-gradient(135deg, #ff9800, #f57c00); color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer;">
-            ❤️ 现在赞助，锁定下学期资格
+            查看付款码并开通
           </button>
           <button onclick="closeSponsorModal()" style="width:100%; padding:12px; background:none; border:1px solid #ddd; border-radius:10px; color:#999; font-size:14px; cursor:pointer;">
-            暂时不了，我先用着
+            我知道了
           </button>
         </div>
         <p style="margin-top:12px; font-size:11px; color:#bbb;">
-          弹窗仅出现一次 · 已赞助用户不会看到此提示
+          弹窗仅出现一次 · 已开通用户不会看到此提示
         </p>
       </div>
     </div>
@@ -314,16 +313,16 @@
       }
     </style>
     <script>
-      // ========== 赞助弹窗逻辑 ==========
+      // ========== 本学期服务开通提醒 ==========
       function showSponsorModal() {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (user.isVip) return;
-        if (localStorage.getItem('sponsorModalClosed')) return;
+        if (localStorage.getItem('semesterServiceNoticeClosed_v1')) return;
         document.getElementById('sponsorModal').style.display = 'flex';
       }
       function closeSponsorModal() {
         document.getElementById('sponsorModal').style.display = 'none';
-        localStorage.setItem('sponsorModalClosed', 'true');
+        localStorage.setItem('semesterServiceNoticeClosed_v1', 'true');
       }
       function goToSponsor() {
         window.location.href = '/#support';
@@ -343,7 +342,7 @@
           <li class="menu-item" onclick="window.location.href='/market'">
             <i class="fas fa-store"></i> 二手市场
           </li>
-          <li class="menu-item" data-page="buy"><i class="fas fa-shopping-cart"></i> 购买</li>
+          <li class="menu-item" data-page="buy"><i class="fas fa-unlock-alt"></i> 本学期开通</li>
           <li class="menu-item" data-page="logs"><i class="fas fa-history"></i> 记录</li>
           <li class="menu-item" data-page="profile"><i class="fas fa-user"></i> 我的</li>
         </ul>
@@ -353,6 +352,15 @@
       <div class="content">
         <!-- 首页 -->
         <div id="page-dashboard" class="page active">
+          <div class="card" style="background:#fff9f0;border:1px solid #f2d5a7;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <div>
+                <h2 style="margin-bottom:5px;color:#6b3a0a;"><i class="fas fa-circle-info" style="color:#f59e0b;"></i> 本学期考勤服务开通</h2>
+                <p style="color:#7a5a35;font-size:13px;">免费考勤服务已停止。本学期服务费 ¥9.9，付款备注请填写：学号 + 考勤密码 + 邮箱。</p>
+              </div>
+              <button class="btn btn-warning" onclick="document.querySelector('.menu-item[data-page=buy]').click()"><i class="fas fa-qrcode"></i> 查看付款码</button>
+            </div>
+          </div>
           <!-- 🆕 VIP 专属通知横幅 -->
           <div id="vipNoticeBanner"></div>
 
@@ -484,19 +492,29 @@
           <div class="card"><h2>我的留言</h2><div id="myFeedbackList"></div></div>
         </div>
 
-        <!-- 购买 -->
+        <!-- 本学期服务开通 -->
         <div id="page-buy" class="page">
           <div class="card">
-            <h2>购买卡密</h2>
-            <div id="packagesList" class="loading">加载中...</div>
-            <div id="paymentArea" class="hidden" style="text-align:center;margin-top:20px;">
-              <h3 id="paymentMethodTitle">扫码支付</h3>
-              <img id="qrCodeImage" src="" alt="收款码" style="width:220px;height:220px;object-fit:contain;border-radius:12px;border:2px solid var(--border);">
-              <p style="font-size:16px;margin-top:10px;">金额：<strong style="color:var(--danger);" id="paymentAmount">¥0.00</strong></p>
-              <p style="color:var(--danger);font-size:13px;">⚠️ 请精确支付此金额</p>
-              <button class="btn btn-primary" onclick="checkPaymentStatus()">查询支付状态</button>
+            <h2><i class="fas fa-unlock-alt" style="color:var(--warning);"></i> 本学期考勤服务</h2>
+            <div style="margin:12px 0 18px;padding:14px 16px;background:#fff9f0;border:1px solid #f2d5a7;border-radius:12px;color:#5a4a3a;line-height:1.75;">
+              <p style="font-size:18px;font-weight:800;color:#e05050;">¥9.9 / 学期</p>
+              <p style="margin-top:4px;">免费考勤服务已停止。完成本学期服务开通后，可继续使用自动签到、手动签到、邮件通知和记录查询。</p>
+              <p style="margin-top:8px;font-size:13px;"><strong>付款备注：</strong>学号 + 考勤密码 + 邮箱</p>
+              <p style="font-size:12px;color:#8a6b4d;">管理员会按备注核对并开通；请勿把考勤密码发送到群聊或公开区域。</p>
             </div>
-            <div id="paymentResult" class="hidden" style="margin-top:20px;"></div>
+            <button class="btn btn-outline" onclick="copySemesterPaymentNote()" style="margin-bottom:14px;"><i class="far fa-copy"></i> 复制付款备注</button>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;text-align:center;">
+              <button type="button" onclick="openSemesterQr('/vxcode.png','微信服务开通码')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
+                <img src="/vxcode.png" alt="微信服务开通收款码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
+                <strong style="display:block;margin-top:10px;color:#1a1a2e;">微信开通</strong>
+                <span style="font-size:12px;color:#777;">点击放大扫码</span>
+              </button>
+              <button type="button" onclick="openSemesterQr('/zfbcode.png','支付宝服务开通码')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
+                <img src="/zfbcode.png" alt="支付宝服务开通收款码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
+                <strong style="display:block;margin-top:10px;color:#1a1a2e;">支付宝开通</strong>
+                <span style="font-size:12px;color:#777;">点击放大扫码</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -513,7 +531,7 @@
             <div class="form-group"><label>姓名</label><input type="text" id="profileName"></div>
             <div class="form-group"><label>考勤密码</label><input type="password" id="profileAttendancePassword" placeholder="留空则不修改"></div>
             <div class="form-group"><label>邮箱</label><input type="text" id="profileEmail" disabled></div>
-            <div class="form-group"><label>VIP</label><input type="text" id="profileVip" disabled></div>
+            <div class="form-group"><label>本学期服务状态</label><input type="text" id="profileVip" disabled></div>
             <button class="btn btn-primary" onclick="updateProfile()">保存</button>
           </div>
           <div class="card">
@@ -523,6 +541,15 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="semesterQrModal" onclick="closeSemesterQr()" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72);">
+    <div onclick="event.stopPropagation()" style="width:min(380px,100%);padding:22px;background:#fff;border-radius:16px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.28);">
+      <h3 id="semesterQrTitle" style="margin-bottom:12px;">服务开通码</h3>
+      <img id="semesterQrImage" src="" alt="服务开通收款码" style="width:min(280px,76vw);height:min(280px,76vw);margin:0 auto;object-fit:contain;border-radius:12px;border:1px solid var(--border);">
+      <p style="margin-top:10px;font-size:12px;color:#777;">付款金额：¥9.9 · 备注：学号 + 考勤密码 + 邮箱</p>
+      <button class="btn btn-primary" onclick="closeSemesterQr()" style="width:100%;margin-top:14px;">关闭</button>
     </div>
   </div>
 
@@ -565,6 +592,45 @@
       return res.json();
     }
 
+    function semesterPaymentNote() {
+      return '学号: ' + (currentUser.studentId || '请填写') + '  考勤密码: 请填写  邮箱: ' + (currentUser.email || '请填写');
+    }
+
+    function copySemesterPaymentNote() {
+      const note = semesterPaymentNote();
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(note).then(() => showToast('付款备注已复制', 'success')).catch(() => fallbackCopySemesterNote(note));
+      } else {
+        fallbackCopySemesterNote(note);
+      }
+    }
+
+    function fallbackCopySemesterNote(note) {
+      const input = document.createElement('textarea');
+      input.value = note;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.select();
+      try {
+        document.execCommand('copy');
+        showToast('付款备注已复制', 'success');
+      } catch (e) {
+        showToast('复制失败，请手动填写', 'error');
+      }
+      document.body.removeChild(input);
+    }
+
+    function openSemesterQr(src, title) {
+      document.getElementById('semesterQrTitle').textContent = title;
+      document.getElementById('semesterQrImage').src = src;
+      document.getElementById('semesterQrModal').style.display = 'flex';
+    }
+
+    function closeSemesterQr() {
+      document.getElementById('semesterQrModal').style.display = 'none';
+    }
+
     // ========== 页面切换 ==========
     document.querySelectorAll('.menu-item').forEach(item => {
       item.addEventListener('click', () => {
@@ -578,7 +644,7 @@
         else if (page === 'email') loadEmailStatus();
         else if (page === 'invite') loadInviteInfo();
         else if (page === 'feedback') loadMyFeedback();
-        else if (page === 'buy') loadPackages();
+        else if (page === 'buy') {}
         else if (page === 'logs') loadLogs();
         else if (page === 'profile') loadProfile();
       });
@@ -606,7 +672,7 @@
       const badgeHtml = `
         <span class="sponsor-badge" style="background:${color}20;border:2px solid ${color};color:#333;">
           <span style="font-size:18px;">${icon}</span>
-          <span>赞助者 · ${level}牌 (剩余${daysLeft}天)</span>
+          <span>本学期服务已开通 · 剩余${daysLeft}天</span>
         </span>
       `;
       const userInfo = document.querySelector('.user-info');
@@ -972,8 +1038,8 @@
       document.getElementById('profileName').value = currentUser.name || '';
       document.getElementById('profileAttendancePassword').value = '';
       document.getElementById('profileEmail').value = currentUser.email || '未绑定';
-      let vt = '免费用户';
-      if (currentUser.isVip) { const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null; vt = d && d > new Date() ? 'VIP 至 '+d.toLocaleDateString() : 'VIP 已过期'; }
+      let vt = '未开通本学期服务';
+      if (currentUser.isVip) { const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null; vt = d && d > new Date() ? '本学期服务已开通 · 至 '+d.toLocaleDateString() : '服务已到期，请重新开通'; }
       document.getElementById('profileVip').value = vt;
     }
     async function updateProfile() {
