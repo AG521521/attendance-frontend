@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>AG工作室 - 智能考勤签到</title>
+    <title>AG工作室 - 服务维护中</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -68,14 +68,14 @@
         @keyframes orbFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-20px) scale(1.07)} }
 
         .shell { position: relative; z-index: 1; width: min(1200px, 100%); min-height: clamp(580px, 78vh, 760px); min-height: clamp(580px, 78dvh, 760px); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.08fr) 440px; align-items: stretch; gap: clamp(20px, 3vw, 32px); }
-        .hero, .login-card { background: rgba(255,255,255,0.82); border: 1px solid rgba(229,233,240,0.7); box-shadow: var(--shadow-lg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: var(--radius-xl); transition: box-shadow var(--transition-slow), border-color var(--transition-slow); }
-        .hero:hover, .login-card:hover { box-shadow: var(--shadow-xl); border-color: rgba(200,210,225,0.7); }
+        .hero, .info-card { background: rgba(255,255,255,0.82); border: 1px solid rgba(229,233,240,0.7); box-shadow: var(--shadow-lg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: var(--radius-xl); transition: box-shadow var(--transition-slow), border-color var(--transition-slow); }
+        .hero:hover, .info-card:hover { box-shadow: var(--shadow-xl); border-color: rgba(200,210,225,0.7); }
         .hero { padding: clamp(26px,4vw,44px) clamp(22px,4vw,40px); display: flex; flex-direction: column; justify-content: space-between; gap: 28px; overflow: hidden; position: relative; }
         .hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(59,109,240,0.05) 0%, transparent 70%); pointer-events: none; }
         .hero-top { position: relative; z-index: 1; }
         .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--primary-dark); font-weight: 800; font-size: 15px; margin-bottom: 24px; letter-spacing: -0.01em; }
         .brand-badge { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: linear-gradient(135deg,#e8f0ff,#dce7fd); color: var(--primary); font-weight: 900; font-size: 16px; letter-spacing: -0.02em; box-shadow: 0 2px 8px rgba(59,109,240,0.12); }
-        .eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; background: var(--green-soft); color: #087a56; font-size: 12.5px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.01em; border: 1px solid rgba(13,158,108,0.13); }
+        .eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; background: var(--amber-soft); color: #7a4e0a; font-size: 12.5px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.01em; border: 1px solid rgba(194,120,10,0.13); }
         .eyebrow i { font-size: 11px; }
         .hero h1 { max-width: 700px; font-size: clamp(28px,4.2vw,50px); line-height: 1.12; letter-spacing: -0.025em; margin-bottom: 14px; font-weight: 800; color: #111520; }
         .hero h1 span { background: linear-gradient(135deg,var(--primary),#5b8af7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -87,6 +87,7 @@
         .value-card .vc-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; margin-bottom: 8px; font-size: 14px; font-weight: 700; }
         .value-card .vc-icon.blue{background:#eef4ff;color:var(--primary)} .value-card .vc-icon.green{background:var(--green-soft);color:var(--green)} .value-card .vc-icon.amber{background:var(--amber-soft);color:var(--amber)}
         .value-card strong{display:block;font-size:15px;margin-bottom:3px;font-weight:750;letter-spacing:-0.01em} .value-card span{color:var(--muted);font-size:12.5px;line-height:1.45}
+
         .support-card{position:relative;z-index:1;margin-top:6px;border-radius:var(--radius-lg);border:1px solid var(--amber-border);background:linear-gradient(175deg,#fffcf5,#fef9ee 40%,#fffdf9 100%);padding:clamp(18px,2.2vw,24px);box-shadow:0 2px 12px rgba(194,120,10,0.06);transition:all var(--transition)}
         .support-card:hover{box-shadow:0 6px 24px rgba(194,120,10,0.10);border-color:#e2c88a}
         .support-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
@@ -110,53 +111,22 @@
         .btn-copy-note:hover{background:#fff8e8;border-color:#c29a3a;box-shadow:0 2px 8px rgba(194,120,10,0.1)}
         .btn-copy-note:active{transform:scale(.95);background:#fef3d8}
         .btn-copy-note.copied{background:#eafaf3;border-color:#0d9e6c;color:#087a56}
-        .login-card{padding:clamp(24px,3vw,36px) clamp(20px,2.8vw,32px);display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative}
-        .login-kicker{color:var(--green);font-size:12.5px;font-weight:800;margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase}
-        .login-card h2{font-size:clamp(24px,3vw,30px);letter-spacing:-0.02em;margin-bottom:4px;font-weight:800;color:#111520}
-        .login-note{color:var(--muted);font-size:13.5px;margin-bottom:18px;letter-spacing:-0.01em}
-        .invite-badge{display:none;background:#fffdf5;border:1px solid #f0d89c;color:#7a4e0a;padding:10px 13px;border-radius:var(--radius-sm);font-size:13px;margin-bottom:14px;font-weight:650;align-items:center;gap:7px;animation:fadeInDown .4s ease-out}
-        @keyframes fadeInDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-        .invite-badge i{color:var(--amber);font-size:14px}
-        .input-group{margin-bottom:14px;position:relative}
-        .input-group label{display:block;margin-bottom:6px;color:#3a3f50;font-size:13px;font-weight:700;letter-spacing:-0.01em}
-        .input-wrapper{position:relative;display:flex;align-items:center}
-        .input-group input{width:100%;height:50px;padding:0 85px 0 14px;border:1.5px solid #dde3ed;border-radius:var(--radius-sm);background:#fafcfe;color:var(--ink);font-size:15.5px;font-family:var(--font-sans);outline:none;transition:all var(--transition);letter-spacing:-0.01em}
-        .input-group input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,109,240,0.10),0 0 0 1px rgba(59,109,240,0.06);background:#fff}
-        .input-group input::placeholder{color:#bcc3d0}
-        .input-actions{position:absolute;right:4px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:0;z-index:2}
-        .btn-input-action{width:28px;height:28px;border:0;border-radius:6px;background:transparent;color:#a0a9b8;cursor:pointer;font-size:12px;display:grid;place-items:center;transition:all var(--transition-fast);-webkit-tap-highlight-color:transparent}
-        .btn-input-action:hover{background:#eef2f8;color:#555d6e}
-        .btn-input-action:active{background:#dde3ee;transform:scale(.9)}
-        .btn-input-action.copied-flash{color:var(--green);background:var(--green-soft)}
-        .login-btn{width:100%;min-height:52px;border:0;border-radius:var(--radius-sm);background:linear-gradient(135deg,#3b6df0 0%,#2851c5 100%);color:#fff;font-size:16px;font-weight:750;cursor:pointer;transition:all var(--transition);box-shadow:0 6px 20px rgba(59,109,240,0.28),0 2px 6px rgba(40,81,197,0.15);letter-spacing:-0.01em;position:relative;overflow:hidden;font-family:var(--font-sans)}
-        .login-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.12) 0%,transparent 50%);pointer-events:none;border-radius:inherit}
-        .login-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(59,109,240,0.35),0 4px 10px rgba(40,81,197,0.2)}
-        .login-btn:active{transform:scale(.97);transition:transform .1s;box-shadow:0 4px 14px rgba(59,109,240,0.22)}
-        .login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:0 4px 14px rgba(59,109,240,0.14);filter:grayscale(15%)}
-        .help-section{margin-top:14px}
-        .help-trigger{display:inline-flex;align-items:center;gap:6px;background:transparent;border:0;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;padding:6px 10px;border-radius:8px;transition:all var(--transition-fast);-webkit-tap-highlight-color:transparent;font-family:var(--font-sans);letter-spacing:-0.01em}
-        .help-trigger i{font-size:14px;color:var(--primary);transition:transform .2s}
-        .help-trigger:hover{color:var(--primary);background:rgba(59,109,240,0.06)}
-        .help-trigger.active i{transform:rotate(180deg)}
-        .help-trigger.active{color:var(--primary)}
-        .help-detail{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(0.4,0,0.2,1),margin .3s;margin-top:0}
-        .help-detail.open{max-height:200px;margin-top:10px}
-        .help-card{background:#f8fafd;border:1px solid #e0e7f2;border-radius:var(--radius-sm);padding:14px 15px;box-shadow:var(--shadow-xs)}
-        .help-text{font-size:13px;color:var(--ink-secondary);margin-bottom:12px;line-height:1.5}
-        .help-text strong{color:var(--primary-dark);word-break:break-all}
-        .help-jump-btn{display:inline-flex;align-items:center;gap:7px;background:var(--primary);color:#fff;font-weight:700;font-size:13px;padding:9px 16px;border-radius:8px;text-decoration:none;transition:all var(--transition-fast);box-shadow:0 2px 8px rgba(59,109,240,0.2);font-family:var(--font-sans)}
-        .help-jump-btn i{font-size:12px}
-        .help-jump-btn:hover{background:var(--primary-dark);box-shadow:0 4px 14px rgba(59,109,240,0.3);transform:translateY(-1px)}
-        .help-jump-btn:active{transform:scale(.96)}
-        .help-mobile-tip{font-size:11px;color:var(--muted);margin-top:8px;display:flex;align-items:center;gap:4px}
-        .micro-list{margin-top:18px;display:grid;gap:9px}
-        .micro-item{display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em}
-        .check{flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px}
-        .mobile-support{display:none;margin-top:16px;border-radius:var(--radius);padding:13px 15px;background:var(--amber-soft);border:1px solid var(--amber-border);color:#6b3a0a;font-size:13px;font-weight:600;align-items:center;gap:10px;flex-wrap:wrap}
-        .mobile-support .ms-text{flex:1;min-width:0}
-        .mobile-support button{flex:0 0 auto;border:0;border-radius:8px;padding:9px 15px;background:#c2780a;color:#fff;font-weight:700;cursor:pointer;font-size:13px;white-space:nowrap;transition:all var(--transition-fast);font-family:var(--font-sans)}
-        .mobile-support button:hover{background:#a56608}
-        .mobile-support button:active{transform:scale(.95)}
+
+        .info-card{padding:clamp(24px,3vw,36px) clamp(20px,2.8vw,32px);display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative;overflow:hidden}
+        .info-card::before{content:'';position:absolute;right:-65px;top:-65px;width:180px;height:180px;border-radius:50%;background:#eafaf3;pointer-events:none}
+        .info-icon{position:relative;z-index:1;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--amber-soft);color:var(--amber);font-size:21px;margin-bottom:20px;border:1px solid var(--amber-border)}
+        .info-card h2{font-size:clamp(24px,3vw,32px);line-height:1.16;margin:5px 0 9px;color:#111520;position:relative;z-index:1}
+        .info-card .info-note{position:relative;z-index:1;color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:18px}
+        .status-badge{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--radius-sm);background:var(--rose-soft);border:1px solid rgba(224,80,96,0.15);color:var(--rose);font-size:13px;font-weight:700;margin-bottom:18px;width:fit-content}
+        .status-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--rose);animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+        .quick-link-card{cursor:pointer;transition:all var(--transition);border-radius:14px;padding:14px 16px;margin-bottom:12px;border:1px solid;position:relative;z-index:1}
+        .quick-link-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+        .contact-list{position:relative;z-index:1;display:grid;gap:10px;margin-top:8px}
+        .contact-item{display:flex;align-items:center;gap:10px;color:var(--ink-secondary);font-size:13.5px;padding:10px 12px;background:#f8fafd;border-radius:10px;border:1px solid var(--line-light)}
+        .contact-item i{width:22px;text-align:center;color:var(--primary)}
+        .contact-item strong{color:var(--ink);font-weight:700}
+
         .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#1a1d28;color:#fff;padding:11px 18px;border-radius:10px;z-index:10000;opacity:0;pointer-events:none;box-shadow:0 10px 32px rgba(18,20,30,0.28);font-size:13.5px;font-weight:600;letter-spacing:-0.01em;transition:all .28s cubic-bezier(0.4,0,0.2,1);font-family:var(--font-sans)}
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
         .toast.error{background:#b91c1c;box-shadow:0 10px 32px rgba(185,28,28,0.3)}
@@ -172,46 +142,16 @@
         .close-modal{width:100%;margin-top:14px;border:0;border-radius:10px;padding:11px 14px;background:#1a1d28;color:#fff;font-weight:700;cursor:pointer;font-size:14px;transition:all var(--transition-fast);font-family:var(--font-sans)}
         .close-modal:hover{background:#2a2d38}
         .close-modal:active{transform:scale(.96)}
-        /* 快捷入口卡片hover */
-         .quick-link-card{cursor:pointer;transition:all var(--transition);border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid}
-         .quick-link-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
-         body{background:#eef2f7}
-         .shell{grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);min-height:680px}
-         .hero{background:#16263b;border-color:#203750;color:#fff;box-shadow:0 24px 70px rgba(12,24,42,.22)}
-         .hero:hover{border-color:#345777;box-shadow:0 28px 78px rgba(12,24,42,.28)}
-         .hero h1{color:#fff}
-         .hero .lead{color:#c7d4e4}
-         .hero .brand{color:#bcd3eb}
-         .hero .eyebrow{background:#203b52;color:#9fe0c2;border-color:#315873}
-         .hero .value-card{background:#1b3047;border-color:#2b4964}
-         .hero .value-card:hover{border-color:#4f789c}
-         .hero .value-card strong{color:#fff}
-         .hero .value-card span{color:#b7c8d9}
-         .hero .value-card::before{background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 60%)}
-         .access-card{background:#fff;border:1px solid #e1e7ef;border-radius:var(--radius-xl);padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-         .access-card::before{content:'';position:absolute;right:-65px;top:-65px;width:180px;height:180px;border-radius:50%;background:#eafaf3;pointer-events:none}
-         .access-icon{position:relative;z-index:1;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:21px;margin-bottom:20px}
-         .access-card h2{font-size:clamp(24px,3vw,32px);line-height:1.16;margin:5px 0 9px;color:#111520;position:relative;z-index:1}
-         .access-card .login-note{position:relative;z-index:1}
-         .access-card .login-btn{position:relative;z-index:1;margin-top:14px}
-         .access-meta{display:grid;gap:9px;margin-top:20px;color:#6b7187;font-size:12px;position:relative;z-index:1}
-         .access-meta span{display:flex;align-items:center;gap:8px}
-         .access-meta i{width:18px;text-align:center;color:var(--green)}
-         .access-support{position:relative;z-index:1;margin-top:24px;padding:11px;border:1px solid #eadbb8;border-radius:10px;background:#fffaf0;color:#8a5d1e;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans)}
-         .login-card.login-modal{display:none;position:fixed;z-index:2000;left:50%;top:50%;width:min(450px,calc(100vw - 28px));max-height:calc(100vh - 28px);overflow-y:auto;transform:translate(-50%,-50%);box-shadow:0 0 0 100vmax rgba(12,18,28,.66),0 28px 80px rgba(0,0,0,.3)}
-         .login-card.login-modal.show{display:flex!important}
-         .modal-close{position:absolute;right:14px;top:14px;width:34px;height:34px;border:0;border-radius:9px;background:#f0f2f6;color:#687386;cursor:pointer;font-size:15px}
-         .login-modal .quick-link-card,.login-modal .mobile-support{display:none}
-         @media(max-width:980px){
-             body{padding:12px;align-items:flex-start}
-             .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
-             .access-card{order:1;border-radius:var(--radius-lg);min-height:340px}
-             .hero{order:2;min-height:auto;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
+
+        @media(max-width:980px){
+            body{padding:12px;align-items:flex-start}
+            .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
+            .info-card{order:1;border-radius:var(--radius-lg);min-height:auto}
+            .hero{order:2;min-height:auto;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
             .hero::after{display:none}
             .hero h1{font-size:clamp(24px,5vw,34px)}
             .value-grid{grid-template-columns:1fr 1fr;gap:8px}
             .value-grid .value-card:last-child{grid-column:1/-1}
-            .mobile-support{display:flex}
             .qr-row{grid-template-columns:1fr 1fr;gap:10px}
             .qr-card img{width:clamp(100px,28vw,140px);height:clamp(100px,28vw,140px)}
             .support-top{flex-direction:column}
@@ -222,7 +162,7 @@
         }
         @media(max-width:560px){
             body{padding:8px}
-            .hero,.login-card{border-radius:var(--radius);padding:20px 15px}
+            .hero,.info-card{border-radius:var(--radius);padding:20px 15px}
             .hero h1{font-size:25px}
             .lead{font-size:14px}
             .value-grid{grid-template-columns:1fr;gap:7px}
@@ -235,13 +175,9 @@
             .qr-card .tap-hint{font-size:10px}
             .support-note{flex-direction:column;align-items:stretch;gap:6px}
             .btn-copy-note{justify-content:center;width:100%}
-            .input-group input{height:46px;font-size:15px}
-            .login-btn{min-height:48px;font-size:15px}
             .brand{font-size:13px;gap:7px}
             .brand-badge{width:30px;height:30px;border-radius:8px;font-size:13px}
             .bg-orb{display:none}
-            .help-card{padding:12px}
-            .help-jump-btn{width:100%;justify-content:center}
         }
     </style>
 </head>
@@ -251,35 +187,35 @@
     <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
 
     <main class="shell">
-        <section class="hero" aria-label="智能考勤签到服务介绍">
+        <section class="hero" aria-label="服务介绍与支持">
             <div class="hero-top">
                 <div class="brand">
                     <span class="brand-badge">AG</span>
                     <span>AG工作室 出品</span>
                 </div>
                 <div class="eyebrow">
-                    <i class="fas fa-sparkles"></i>
-                    AG 自动签到 · 轻量、透明、可自愿支持
+                    <i class="fas fa-pause-circle"></i>
+                    服务维护中 · 考研冲刺阶段
                 </div>
-                <h1>把每天的签到，交给一个<span>更安静的后台任务。</span></h1>
+                <h1>服务器暂停期间，<span>仍接受自愿支持。</span></h1>
                 <p class="lead">
-                    登录后设置一次日期、邮箱和签到偏好。服务持续运行，支持完全自愿；如果你愿意帮助维护，建议每学期支持 9.9 元。
+                    近期在准备考研，服务器暂时停止续费，后台功能无法访问。如果你之前用过本服务并愿意支持，可以通过下方二维码自愿付款。恢复时间预计为考研结束后。
                 </p>
                 <div class="value-grid">
                     <div class="value-card">
-                        <div class="vc-icon blue"><i class="fas fa-bolt"></i></div>
-                        <strong>一次设置</strong>
-                        <span>设定日期和邮箱，之后按计划执行签到。</span>
+                        <div class="vc-icon blue"><i class="fas fa-book-open"></i></div>
+                        <strong>考研闭关</strong>
+                        <span>暂停服务器续费，专注备考，预计考后恢复。</span>
                     </div>
                     <div class="value-card">
-                        <div class="vc-icon green"><i class="fas fa-clock"></i></div>
+                        <div class="vc-icon green"><i class="fas fa-heart"></i></div>
                         <strong>自愿支持</strong>
-                        <span>支持不影响账号使用，建议每学期 9.9 元。</span>
+                        <span>不影响任何功能（当前已暂停），完全自愿。</span>
                     </div>
                     <div class="value-card">
-                        <div class="vc-icon amber"><i class="fas fa-list-check"></i></div>
-                        <strong>每日处理</strong>
-                        <span>每天 21:00 后统一核对，次日加入支持名单。</span>
+                        <div class="vc-icon amber"><i class="fas fa-clock"></i></div>
+                        <strong>恢复通知</strong>
+                        <span>考后会在 QQ 频道通知恢复进度。</span>
                     </div>
                 </div>
             </div>
@@ -288,18 +224,17 @@
                 <div class="support-top">
                     <div>
                         <div class="support-title">
-                            <span class="coffee-icon">✓</span>
-                            自愿支持 AG 自动签到
+                            <span class="coffee-icon">☕</span>
+                            自愿支持 AG 工作室
                         </div>
                         <p class="support-copy">
-                            服务本身不强制收费。如果你愿意支持服务器、数据库、域名和日常维护，建议每学期支持 <strong style="color:#e05050;">9.9 元</strong>。<br>
-                            付款备注请填写 <strong>学号 + 考勤密码 + 邮箱</strong>，方便管理员核对；请勿在群聊或公开区域发送密码。<br>
-                            每天 <strong>21:00 后</strong>统一核对当日支持记录，21:00 后完成的付款通常于次日加入支持名单。
+                            服务器、域名和日常维护都需要成本。如果你愿意支持，金额随意，扫码即可。<br>
+                            付款备注可填写 <strong style="color:#e05050;">你的昵称或留言</strong>，方便我记录感谢名单。
                         </p>
                     </div>
                     <div class="cost-pill">
-                        ¥9.9
-                        <small>建议每学期支持</small>
+                        随意金额
+                        <small>完全自愿</small>
                     </div>
                 </div>
                 <div class="qr-row" aria-label="自愿支持收款码">
@@ -321,152 +256,82 @@
                     </button>
                 </div>
                 <div class="support-note">
-                    <span class="note-text" id="noteText">💡 如果选择支持，付款备注请填写<strong>"学号 + 考勤密码 + 邮箱"</strong>，方便每日核对。</span>
+                    <span class="note-text">💡 付款备注可填写你的昵称或留言，方便管理员记录感谢名单。</span>
                     <button class="btn-copy-note" id="btnCopyNote" type="button" onclick="copyNoteTemplate()">
-                        <i class="far fa-copy"></i> 复制备注格式
+                        <i class="far fa-copy"></i> 复制备注
                     </button>
                 </div>
             </div>
         </section>
 
-        <section class="access-card" aria-label="进入系统">
-            <div class="access-icon"><i class="fas fa-arrow-right-to-bracket"></i></div>
-            <div class="login-kicker">欢迎回来</div>
-            <h2>进入你的考勤空间</h2>
-            <p class="login-note">登录后管理自动签到、邮箱提醒和历史记录。支持完全自愿，不影响账号使用。</p>
-            <button class="login-btn" type="button" onclick="openLoginModal()"><i class="fas fa-arrow-right-to-bracket"></i> 进入考勤系统</button>
-            <div class="access-meta"><span><i class="fas fa-clock"></i> 每晚 21:25 执行</span><span><i class="fas fa-shield-halved"></i> 账号信息仅用于签到</span></div>
-            <button class="access-support" type="button" onclick="scrollToSupport()"><i class="fas fa-heart"></i> 查看自愿支持说明</button>
-        </section>
-
-        <section class="login-card login-modal" id="loginModal" aria-label="登录区" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
-            <button class="modal-close" type="button" onclick="closeLoginModal()" aria-label="关闭登录窗口"><i class="fas fa-times"></i></button>
-            <div class="login-kicker">🔐 账号登录</div>
-            <h2 id="loginModalTitle">进入智能考勤</h2>
-            <p class="login-note">输入学号和考勤密码，登录后即可管理签到设置。</p>
-
-            <div class="invite-badge" id="inviteNotice">
-                <i class="fas fa-gift"></i>
-                <span>通过邀请链接注册，双方均可获得 <strong id="inviteRewardPreview">10</strong> 天VIP！</span>
+        <section class="info-card" aria-label="联系方式">
+            <div class="info-icon"><i class="fas fa-circle-info"></i></div>
+            <div style="position:relative;z-index:1;">
+                <div style="color:var(--amber);font-size:12.5px;font-weight:800;margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase">当前状态</div>
+                <h2>服务暂停中</h2>
             </div>
+            <div class="status-badge">
+                <span>服务器已到期，后台不可访问</span>
+            </div>
+            <p class="info-note">
+                所有自动签到、登录、查询功能均已随服务器下线下架。如果你之前付过学期费，服务恢复后会自动顺延时长，无需重新付费。
+            </p>
 
-            <div class="input-group">
-                <label for="studentId">学号</label>
-                <div class="input-wrapper">
-                    <input type="text" id="studentId" placeholder="例如：269955099" autocomplete="username" inputmode="text" required>
+            <div class="contact-list">
+                <div class="contact-item">
+                    <i class="fab fa-qq"></i>
+                    <span>QQ 频道：<strong>aggzs66666</strong></span>
                 </div>
-            </div>
-            <div class="input-group">
-                <label for="password">考勤密码</label>
-                <div class="input-wrapper">
-                    <input type="password" id="password" placeholder="默认为 Ahgydx@920" autocomplete="current-password" required>
-                    <div class="input-actions">
-                        <button class="btn-input-action" type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility()" aria-label="切换密码可见性">
-                            <i class="far fa-eye" id="togglePasswordIcon"></i>
-                        </button>
-                        <button class="btn-input-action" type="button" onclick="fillDefaultPassword()" aria-label="填入默认密码" title="一键填入默认密码 Ahgydx@920">
-                            <i class="fas fa-key"></i>
-                        </button>
-                        <button class="btn-input-action copied-flash" type="button" id="copyPasswordBtn" onclick="copyInputValue('password','copyPasswordBtn')" aria-label="复制密码">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <button class="login-btn" id="loginBtn" type="button" onclick="login()">
-                登录并进入仪表盘
-            </button>
-
-            <div class="help-section">
-                <button class="help-trigger" id="helpTrigger" type="button" onclick="toggleHelp()" aria-expanded="false" aria-controls="helpDetail">
-                    <i class="fas fa-circle-question"></i>
-                    不知道考勤密码怎么办？
-                </button>
-                <div class="help-detail" id="helpDetail">
-                    <div class="help-card">
-                        <p class="help-text">
-                            如果你还没有登录过，可以直接使用默认密码 <strong>Ahgydx@920</strong> 登录。<br>
-                            如果你忘记了已修改的密码，请进入内部网站重新设置考勤签到密码。
-                        </p>
-                        <a class="help-jump-btn" href="https://xskq.ahut.edu.cn/" target="_blank" rel="noopener">
-                            <i class="fas fa-external-link-alt"></i>
-                            前往内部网站更改密码
-                        </a>
-                        <p class="help-mobile-tip">
-                            <i class="fas fa-info-circle"></i>
-                            更改后即可在这里使用新密码登录。
-                        </p>
-                    </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>邮箱：admin@agai.online</span>
                 </div>
             </div>
 
-            <!-- QQ频道入口 -->
-            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f8ff,#e8f0fe);border-color:#c8ddf8;"
+            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f8ff,#e8f0fe);border-color:#c8ddf8;margin-top:18px;"
                  onclick="window.open('https://pd.qq.com/s/9fkh0w8xw','_blank')">
                 <div style="display:flex;align-items:center;gap:12px;">
                     <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#12b7f5,#0d8bd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
                         <i class="fab fa-qq"></i>
                     </div>
                     <div style="flex:1;">
-                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">💬 加入QQ频道</div>
-                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">反馈问题 · 交流经验 · 签到提醒</div>
+                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">💬 加入 QQ 频道</div>
+                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">频道号：aggzs66666 · 恢复通知 · 交流</div>
                     </div>
                     <i class="fas fa-chevron-right" style="color:#aaa;"></i>
                 </div>
             </div>
 
-            <!-- 🛒 二手市场入口 -->
-            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f5ff,#fff7f0);border-color:#e0e8f5;margin-bottom:0;"
-                 onclick="window.location.href='/market'">
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#667eea,#f39c12);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
-                        <i class="fas fa-store"></i>
-                    </div>
-                    <div style="flex:1;">
-                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">🛒 AG校园二手</div>
-                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">教材 · 数码 · 毕业甩卖 · 闲置交易</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color:#aaa;"></i>
+            <div style="position:relative;z-index:1;margin-top:18px;display:grid;gap:9px">
+                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em">
+                    <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
+                    <span>考研结束后会第一时间恢复服务器。</span>
                 </div>
-            </div>
-
-            <div class="micro-list">
-                <div class="micro-item">
-                    <span class="check">✓</span>
-                    <span>登录后可以设置签到时间、星期和重试次数。</span>
+                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em">
+                    <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
+                    <span>已付费用户的时长会在恢复后自动顺延。</span>
                 </div>
-                <div class="micro-item">
-                    <span class="check">✓</span>
-                    <span>绑定邮箱后可接收签到结果通知，异常更容易发现。</span>
+                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em">
+                    <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
+                    <span>有任何问题可在 QQ 频道留言，考后统一处理。</span>
                 </div>
-                <div class="micro-item">
-                    <span class="check">✓</span>
-                    <span>服务开通后可设置自动签到、邮件提醒和签到记录。</span>
-                </div>
-            </div>
-
-            <div class="mobile-support" id="mobileSupport">
-                <span class="ms-text">本学期服务费 9.9 元，付款后人工开通</span>
-                <button type="button" onclick="scrollToSupport()">查看付款码</button>
             </div>
         </section>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true" aria-label="服务开通码放大查看">
+    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true" aria-label="收款码放大查看">
         <div class="qr-modal-card" onclick="event.stopPropagation()">
-            <h3 id="qrModalTitle">服务开通码</h3>
-            <img id="qrModalImage" src="" alt="服务开通收款码">
+            <h3 id="qrModalTitle">收款码</h3>
+            <img id="qrModalImage" src="" alt="收款码">
             <p class="modal-hint">📱 截图或长按保存，用对应App扫码</p>
             <button class="close-modal" type="button" onclick="closeQRModal()">关闭</button>
         </div>
     </div>
 
     <script>
-        const API_BASE = 'https://api.agai.online/api';
         let toastTimer = null;
-        let passwordVisible = false;
 
         function showToast(message, type = '') {
             const toast = document.getElementById('toast');
@@ -474,16 +339,6 @@
             toast.className = `toast show ${type}`.trim();
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => { toast.className = 'toast'; }, 2800);
-        }
-
-        function scrollToSupport() {
-            const supportEl = document.getElementById('support');
-            if (supportEl) {
-                supportEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                supportEl.style.boxShadow = '0 0 0 4px rgba(194,120,10,0.25), 0 6px 24px rgba(194,120,10,0.12)';
-                supportEl.style.borderColor = '#d4a74a';
-                setTimeout(() => { supportEl.style.boxShadow = ''; supportEl.style.borderColor = ''; }, 1800);
-            }
         }
 
         function openQRModal(imgSrc, title) {
@@ -501,173 +356,38 @@
             document.body.style.overflow = '';
         }
 
-        function openLoginModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => document.getElementById('studentId')?.focus(), 50);
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
         document.addEventListener('keydown', (event) => {
-            if (event.key !== 'Escape') return;
-            closeQRModal();
-            closeLoginModal();
+            if (event.key === 'Escape') closeQRModal();
         });
 
-        function toggleHelp() {
-            const detail = document.getElementById('helpDetail');
-            const trigger = document.getElementById('helpTrigger');
-            const isOpen = detail.classList.contains('open');
-            if (isOpen) { detail.classList.remove('open'); trigger.classList.remove('active'); trigger.setAttribute('aria-expanded', 'false'); }
-            else { detail.classList.add('open'); trigger.classList.add('active'); trigger.setAttribute('aria-expanded', 'true'); }
-        }
-
-        function fillDefaultPassword() {
-            const pwd = document.getElementById('password');
-            pwd.type = 'text';
-            pwd.value = 'Ahgydx@920';
-            passwordVisible = true;
-            document.getElementById('togglePasswordIcon').className = 'far fa-eye-slash';
-            pwd.focus();
-            showToast('已填入默认密码 Ahgydx@920', 'success-flash');
-        }
-
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const icon = document.getElementById('togglePasswordIcon');
-            passwordVisible = !passwordVisible;
-            passwordInput.type = passwordVisible ? 'text' : 'password';
-            icon.className = passwordVisible ? 'far fa-eye-slash' : 'far fa-eye';
-            passwordInput.focus();
-            const len = passwordInput.value.length;
-            passwordInput.setSelectionRange(len, len);
-        }
-
-        function copyInputValue(inputId, btnId) {
-            const input = document.getElementById(inputId);
-            const btn = document.getElementById(btnId);
-            const value = input.value.trim();
-            if (!value) { showToast('输入框为空，请先输入内容', 'error'); return; }
-            navigator.clipboard.writeText(value).then(() => {
-                btn.classList.add('copied-flash');
-                setTimeout(() => btn.classList.remove('copied-flash'), 800);
-                showToast('已复制到剪贴板 ✓', 'success-flash');
-            }).catch(() => {
-                input.select(); input.setSelectionRange(0, 99999);
-                try { document.execCommand('copy'); btn.classList.add('copied-flash'); setTimeout(() => btn.classList.remove('copied-flash'), 800); showToast('已复制到剪贴板 ✓', 'success-flash'); }
-                catch(e) { showToast('复制失败，请手动选择复制', 'error'); }
-            });
-        }
-
         function copyNoteTemplate() {
-            const studentId = document.getElementById('studentId').value.trim();
-            let noteTemplate = studentId ? `学号: ${studentId}  考勤密码: 请填写  邮箱: 请填写` : '学号: 请填写  考勤密码: 请填写  邮箱: 请填写';
+            const noteTemplate = 'AG工作室支持 - 昵称/留言：请填写';
             const btn = document.getElementById('btnCopyNote');
-            navigator.clipboard.writeText(noteTemplate).then(() => {
-                btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                showToast('备注模板已复制，粘贴到支付备注即可 ✓', 'success-flash');
-                setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式'; }, 2000);
-            }).catch(() => {
-                const tempTextarea = document.createElement('textarea'); tempTextarea.value = noteTemplate;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(noteTemplate).then(() => {
+                    btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                    showToast('备注已复制，粘贴到支付备注即可 ✓', 'success-flash');
+                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注'; }, 2000);
+                }).catch(() => fallbackCopy());
+            } else {
+                fallbackCopy();
+            }
+            function fallbackCopy() {
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = noteTemplate;
                 tempTextarea.style.position = 'fixed'; tempTextarea.style.opacity = '0';
                 document.body.appendChild(tempTextarea); tempTextarea.select();
-                try { document.execCommand('copy'); btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                    showToast('备注模板已复制 ✓', 'success-flash');
-                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式'; }, 2000); }
-                catch(e) { showToast('复制失败', 'error'); }
+                try {
+                    document.execCommand('copy');
+                    btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                    showToast('备注已复制 ✓', 'success-flash');
+                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注'; }, 2000);
+                } catch(e) {
+                    showToast('复制失败', 'error');
+                }
                 document.body.removeChild(tempTextarea);
-            });
-        }
-
-        function updateNoteText() {
-            const studentId = document.getElementById('studentId').value.trim();
-            const noteTextEl = document.getElementById('noteText');
-            if (studentId) noteTextEl.innerHTML = `💡 如果选择支持，付款备注请填写<strong>"${escapeHTML(studentId)} + 考勤密码 + 邮箱"</strong>，方便每日核对。`;
-            else noteTextEl.innerHTML = '💡 如果选择支持，付款备注请填写<strong>"学号 + 考勤密码 + 邮箱"</strong>，方便每日核对。';
-        }
-
-        function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
-
-        document.getElementById('studentId').addEventListener('input', updateNoteText);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const inviteCode = urlParams.get('invite');
-        if (inviteCode) {
-            localStorage.setItem('pendingInviteCode', inviteCode.toUpperCase());
-            const inviteNotice = document.getElementById('inviteNotice');
-            inviteNotice.style.display = 'flex';
-            fetch(`${API_BASE}/admin/config`, { headers: { 'Content-Type': 'application/json' } })
-                .then(res => res.json())
-                .then(data => { if (data.success && data.configs?.invite_reward_days) { document.getElementById('inviteRewardPreview').textContent = data.configs.invite_reward_days; } })
-                .catch(() => {});
-        }
-
-        async function login() {
-            const studentId = document.getElementById('studentId').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const btn = document.getElementById('loginBtn');
-
-            // 禁止游客学号通过签到页登录
-            if (studentId.startsWith('guest_')) {
-                showToast('该账号为市场游客，请前往二手市场登录', 'error');
-                return;
             }
-
-            if (!studentId) { showToast('请输入学号', 'error'); const input = document.getElementById('studentId'); input.focus(); input.style.borderColor = 'var(--rose)'; input.style.boxShadow = '0 0 0 4px rgba(224,80,96,0.12)'; setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 1500); return; }
-            btn.disabled = true; btn.textContent = '正在登录...';
-            try {
-                const res = await fetch(`${API_BASE}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ studentId, attendancePassword: password || 'Ahgydx@920' })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    localStorage.setItem('attendancePassword', password || 'Ahgydx@920');
-                    const pendingCode = localStorage.getItem('pendingInviteCode');
-                    if (pendingCode) {
-                        try { const inviteRes = await fetch(`${API_BASE}/invite/apply`, { method: 'POST', headers: { 'Authorization': `Bearer ${data.token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ inviteCode: pendingCode }) }); await inviteRes.json(); }
-                        catch(e) {} finally { localStorage.removeItem('pendingInviteCode'); }
-                    }
-                    showToast('登录成功，正在跳转...', 'success-flash');
-                    setTimeout(() => { window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard'; }, 400);
-                } else { showToast(data.message || '登录失败', 'error'); btn.disabled = false; btn.textContent = '登录并进入仪表盘'; }
-            } catch(error) { showToast('网络错误', 'error'); btn.disabled = false; btn.textContent = '登录并进入仪表盘'; }
         }
-
-        document.getElementById('studentId').addEventListener('keypress', (event) => { if (event.key === 'Enter') { event.preventDefault(); document.getElementById('password').focus(); } });
-        document.getElementById('password').addEventListener('keypress', (event) => { if (event.key === 'Enter') { event.preventDefault(); login(); } });
-
-        (function checkLoginStatus() {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            fetch(`${API_BASE}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        // 市场游客不自动跳转签到系统
-                        if (data.user.studentId && data.user.studentId.startsWith('guest_')) {
-                            localStorage.removeItem('token');
-                            localStorage.removeItem('user');
-                            return;
-                        }
-                        window.location.href = data.user.role === 'admin' ? '/admin' : '/dashboard';
-                    } else {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('user');
-                    }
-                })
-                .catch(() => {});
-        })();
-
-        updateNoteText();
     </script>
 </body>
 </html>
