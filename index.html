@@ -32,88 +32,88 @@
             --radius: 16px;
             --radius-lg: 22px;
             --radius-xl: 28px;
-            --shadow-xs: 0 1px 2px rgba(18, 20, 30, 0.04);
-            --shadow-sm: 0 2px 8px rgba(18, 20, 30, 0.05), 0 1px 3px rgba(18, 20, 30, 0.04);
-            --shadow: 0 8px 28px rgba(18, 20, 30, 0.07), 0 2px 10px rgba(18, 20, 30, 0.04);
-            --shadow-lg: 0 18px 50px rgba(18, 20, 30, 0.10), 0 4px 18px rgba(18, 20, 30, 0.05);
-            --shadow-xl: 0 28px 72px rgba(18, 20, 30, 0.13), 0 6px 24px rgba(18, 20, 30, 0.06);
+            --shadow-xs: 0 1px 2px rgba(18,20,30,0.04);
+            --shadow-sm: 0 2px 8px rgba(18,20,30,0.05), 0 1px 3px rgba(18,20,30,0.04);
+            --shadow: 0 8px 28px rgba(18,20,30,0.07), 0 2px 10px rgba(18,20,30,0.04);
+            --shadow-lg: 0 18px 50px rgba(18,20,30,0.10), 0 4px 18px rgba(18,20,30,0.05);
+            --shadow-xl: 0 28px 72px rgba(18,20,30,0.13), 0 6px 24px rgba(18,20,30,0.06);
             --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.15s cubic-bezier(0.4,0,0.2,1);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+            --transition-slow: 0.35s cubic-bezier(0.4,0,0.2,1);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html {
-            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-            -webkit-tap-highlight-color: transparent; scroll-behavior: smooth;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; -webkit-tap-highlight-color:transparent; scroll-behavior:smooth; }
         body {
-            min-height: 100vh; min-height: 100dvh;
+            min-height:100vh; min-height:100dvh;
             background:
-                radial-gradient(ellipse 80% 60% at 15% 8%, rgba(59, 109, 240, 0.10), transparent 45%),
-                radial-gradient(ellipse 60% 50% at 82% 12%, rgba(13, 158, 108, 0.08), transparent 40%),
-                radial-gradient(ellipse 70% 55% at 50% 90%, rgba(194, 120, 10, 0.05), transparent 45%),
-                linear-gradient(175deg, #f3f6fc 0%, #f8fafd 35%, #fafbfd 65%, #fdfaf5 100%);
-            color: var(--ink); font-family: var(--font-sans); line-height: 1.55;
-            padding: clamp(14px, 3vw, 34px); display: flex; align-items: center;
-            justify-content: center; overflow-x: hidden;
+                radial-gradient(ellipse 80% 60% at 15% 8%, rgba(59,109,240,0.10), transparent 45%),
+                radial-gradient(ellipse 60% 50% at 82% 12%, rgba(13,158,108,0.08), transparent 40%),
+                radial-gradient(ellipse 70% 55% at 50% 90%, rgba(194,120,10,0.05), transparent 45%),
+                linear-gradient(175deg,#f3f6fc 0%,#f8fafd 35%,#fafbfd 65%,#fdfaf5 100%);
+            color:var(--ink); font-family:var(--font-sans); line-height:1.55;
+            padding:clamp(14px,3vw,34px); display:flex; align-items:center; justify-content:center; overflow-x:hidden;
         }
-        .bg-orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px); opacity: 0.38; will-change: transform; }
-        .bg-orb--1 { width: 320px; height: 320px; background: rgba(59, 109, 240, 0.14); top: -8%; left: -6%; animation: orbFloat1 18s ease-in-out infinite; }
-        .bg-orb--2 { width: 260px; height: 260px; background: rgba(13, 158, 108, 0.11); top: 55%; right: -7%; animation: orbFloat2 22s ease-in-out infinite; }
-        .bg-orb--3 { width: 200px; height: 200px; background: rgba(194, 120, 10, 0.09); bottom: -5%; left: 30%; animation: orbFloat3 20s ease-in-out infinite; }
+        .bg-orb { position:fixed; border-radius:50%; pointer-events:none; z-index:0; filter:blur(90px); opacity:0.38; will-change:transform; }
+        .bg-orb--1 { width:320px; height:320px; background:rgba(59,109,240,0.14); top:-8%; left:-6%; animation:orbFloat1 18s ease-in-out infinite; }
+        .bg-orb--2 { width:260px; height:260px; background:rgba(13,158,108,0.11); top:55%; right:-7%; animation:orbFloat2 22s ease-in-out infinite; }
+        .bg-orb--3 { width:200px; height:200px; background:rgba(194,120,10,0.09); bottom:-5%; left:30%; animation:orbFloat3 20s ease-in-out infinite; }
         @keyframes orbFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 25%{transform:translate(40px,-30px) scale(1.08)} 50%{transform:translate(-20px,20px) scale(.94)} 75%{transform:translate(30px,10px) scale(1.04)} }
         @keyframes orbFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-35px,-25px) scale(1.06)} 66%{transform:translate(25px,30px) scale(.93)} }
         @keyframes orbFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-20px) scale(1.07)} }
 
-        .shell { position: relative; z-index: 1; width: min(1200px, 100%); min-height: clamp(580px, 78vh, 760px); min-height: clamp(580px, 78dvh, 760px); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.08fr) 440px; align-items: stretch; gap: clamp(20px, 3vw, 32px); }
-        .hero, .info-card { background: rgba(255,255,255,0.82); border: 1px solid rgba(229,233,240,0.7); box-shadow: var(--shadow-lg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: var(--radius-xl); transition: box-shadow var(--transition-slow), border-color var(--transition-slow); }
-        .hero:hover, .info-card:hover { box-shadow: var(--shadow-xl); border-color: rgba(200,210,225,0.7); }
-        .hero { padding: clamp(26px,4vw,44px) clamp(22px,4vw,40px); display: flex; flex-direction: column; justify-content: space-between; gap: 28px; overflow: hidden; position: relative; }
-        .hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(59,109,240,0.05) 0%, transparent 70%); pointer-events: none; }
-        .hero-top { position: relative; z-index: 1; }
-        .status-banner{display:flex;align-items:center;gap:9px;margin:0 0 18px;padding:11px 14px;border-radius:11px;background:#fff3e8;border:1px solid #ffd2b8;color:#9a431f;font-size:13px;font-weight:750;line-height:1.45}
-        .status-banner i{color:#ff6b35;font-size:14px;flex:0 0 auto}
-        .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--primary-dark); font-weight: 800; font-size: 15px; margin-bottom: 24px; letter-spacing: -0.01em; }
-        .brand-badge { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: linear-gradient(135deg,#e8f0ff,#dce7fd); color: var(--primary); font-weight: 900; font-size: 16px; letter-spacing: -0.02em; box-shadow: 0 2px 8px rgba(59,109,240,0.12); }
-        .eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; background: var(--amber-soft); color: #7a4e0a; font-size: 12.5px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.01em; border: 1px solid rgba(194,120,10,0.13); }
-        .eyebrow i { font-size: 11px; }
-        .hero h1 { max-width: 700px; font-size: clamp(28px,4.2vw,50px); line-height: 1.12; letter-spacing: -0.025em; margin-bottom: 14px; font-weight: 800; color: #111520; }
-        .hero h1 span { background: linear-gradient(135deg,var(--primary),#5b8af7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .lead { max-width: 640px; color: var(--ink-secondary); font-size: clamp(15px,1.4vw,17px); letter-spacing: -0.01em; }
-        .value-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 28px; }
-        .value-card { background: #fafcfe; border: 1px solid var(--line-light); border-radius: var(--radius); padding: clamp(13px,1.6vw,17px) clamp(12px,1.4vw,15px); transition: all var(--transition); position: relative; overflow: hidden; }
-        .value-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(59,109,240,0.03) 0%,transparent 60%); pointer-events: none; }
-        .value-card:hover { border-color: #cdd7ea; box-shadow: var(--shadow-sm); transform: translateY(-2px); }
-        .value-card .vc-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; margin-bottom: 8px; font-size: 14px; font-weight: 700; }
+        .shell { position:relative; z-index:1; width:min(1200px,100%); min-height:clamp(580px,78vh,760px); min-height:clamp(580px,78dvh,760px); margin:0 auto; display:grid; grid-template-columns:minmax(0,1.08fr) 440px; align-items:stretch; gap:clamp(20px,3vw,32px); }
+        .hero, .info-card { background:rgba(255,255,255,0.82); border:1px solid rgba(229,233,240,0.7); box-shadow:var(--shadow-lg); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-radius:var(--radius-xl); transition:box-shadow var(--transition-slow),border-color var(--transition-slow); }
+        .hero:hover, .info-card:hover { box-shadow:var(--shadow-xl); border-color:rgba(200,210,225,0.7); }
+        .hero { padding:clamp(26px,4vw,44px) clamp(22px,4vw,40px); display:flex; flex-direction:column; justify-content:space-between; gap:28px; overflow:hidden; position:relative; }
+        .hero::after { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(59,109,240,0.05) 0%, transparent 70%); pointer-events:none; }
+        .hero-top { position:relative; z-index:1; }
+        .brand { display:inline-flex; align-items:center; gap:10px; color:var(--primary-dark); font-weight:800; font-size:15px; margin-bottom:20px; letter-spacing:-0.01em; }
+        .brand-badge { width:38px; height:38px; border-radius:11px; display:grid; place-items:center; background:linear-gradient(135deg,#e8f0ff,#dce7fd); color:var(--primary); font-weight:900; font-size:16px; box-shadow:0 2px 8px rgba(59,109,240,0.12); }
+
+        /* 状态横幅 */
+        .status-banner {
+            display:flex; align-items:center; gap:10px;
+            background:linear-gradient(135deg,#ff9800,#f57c00); color:#fff;
+            border-radius:12px; padding:12px 16px; margin-bottom:18px;
+            font-weight:700; font-size:14px; box-shadow:0 4px 14px rgba(255,152,0,0.25);
+        }
+        .status-banner i { font-size:16px; }
+
+        .eyebrow { display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:999px; background:var(--amber-soft); color:#7a4e0a; font-size:12.5px; font-weight:700; margin-bottom:14px; border:1px solid rgba(194,120,10,0.13); }
+        .eyebrow i { font-size:11px; }
+        .hero h1 { max-width:700px; font-size:clamp(28px,4.2vw,50px); line-height:1.12; letter-spacing:-0.025em; margin-bottom:14px; font-weight:800; color:#111520; }
+        .hero h1 span { background:linear-gradient(135deg,var(--primary),#5b8af7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .lead { max-width:640px; color:var(--ink-secondary); font-size:clamp(15px,1.4vw,17px); letter-spacing:-0.01em; }
+        .value-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:24px; }
+        .value-card { background:#fafcfe; border:1px solid var(--line-light); border-radius:var(--radius); padding:clamp(13px,1.6vw,17px) clamp(12px,1.4vw,15px); transition:all var(--transition); position:relative; overflow:hidden; }
+        .value-card::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(59,109,240,0.03) 0%,transparent 60%); pointer-events:none; }
+        .value-card:hover { border-color:#cdd7ea; box-shadow:var(--shadow-sm); transform:translateY(-2px); }
+        .value-card .vc-icon { width:32px; height:32px; border-radius:8px; display:grid; place-items:center; margin-bottom:8px; font-size:14px; font-weight:700; }
         .value-card .vc-icon.blue{background:#eef4ff;color:var(--primary)} .value-card .vc-icon.green{background:var(--green-soft);color:var(--green)} .value-card .vc-icon.amber{background:var(--amber-soft);color:var(--amber)}
-        .value-card strong{display:block;font-size:15px;margin-bottom:3px;font-weight:750;letter-spacing:-0.01em} .value-card span{color:var(--muted);font-size:12.5px;line-height:1.45}
+        .value-card strong{display:block;font-size:15px;margin-bottom:3px;font-weight:750} .value-card span{color:var(--muted);font-size:12.5px;line-height:1.45}
 
         .support-card{position:relative;z-index:1;margin-top:6px;border-radius:var(--radius-lg);border:1px solid var(--amber-border);background:linear-gradient(175deg,#fffcf5,#fef9ee 40%,#fffdf9 100%);padding:clamp(18px,2.2vw,24px);box-shadow:0 2px 12px rgba(194,120,10,0.06);transition:all var(--transition)}
         .support-card:hover{box-shadow:0 6px 24px rgba(194,120,10,0.10);border-color:#e2c88a}
         .support-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
-        .support-title{font-size:clamp(16px,1.6vw,19px);font-weight:800;color:#6b3a0a;margin-bottom:6px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px}
+        .support-title{font-size:clamp(16px,1.6vw,19px);font-weight:800;color:#6b3a0a;margin-bottom:6px;display:flex;align-items:center;gap:8px}
         .support-title .coffee-icon{font-size:18px;animation:steam 2.5s ease-in-out infinite}
         @keyframes steam{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-5px);opacity:.7}}
-        .support-copy{color:#7a5018;font-size:13.5px;line-height:1.55}
+        .support-copy{color:#7a5018;font-size:13.5px;line-height:1.6}
+        .support-copy strong{color:#e05050;}
         .cost-pill{flex:0 0 auto;padding:10px 14px;border-radius:var(--radius-sm);background:#fffefb;border:1px solid #ecd9a8;color:#6b3a0a;font-weight:800;text-align:center;min-width:90px;font-size:14px;white-space:nowrap}
         .cost-pill small{display:block;color:#9a6b2e;font-weight:600;margin-top:2px;font-size:11px}
         .qr-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
         .qr-card{border:1px solid #ecd9a8;border-radius:var(--radius);background:#fffefb;padding:13px;text-align:center;cursor:pointer;transition:all var(--transition);-webkit-tap-highlight-color:transparent;user-select:none;position:relative}
         .qr-card:hover{transform:translateY(-3px);border-color:#d4a74a;box-shadow:0 10px 30px rgba(194,120,10,0.14)}
-        .qr-card:active{transform:scale(.97);transition:transform .1s}
         .qr-card img{width:clamp(120px,15vw,150px);height:clamp(120px,15vw,150px);object-fit:contain;border-radius:10px;background:#fff;border:1px solid #f5eedf;pointer-events:none}
-        .qr-card strong{display:block;margin-top:9px;color:#6b3a0a;font-size:14px;font-weight:750;letter-spacing:-0.01em}
+        .qr-card strong{display:block;margin-top:9px;color:#6b3a0a;font-size:14px;font-weight:750}
         .qr-card span{display:block;margin-top:3px;color:#9a6b2e;font-size:11.5px}
         .qr-card .tap-hint{display:inline-block;margin-top:5px;padding:3px 8px;border-radius:6px;background:rgba(194,120,10,0.06);font-size:10.5px;color:#8a5c20;font-weight:600}
         .support-note{margin-top:13px;color:#7a5018;font-size:12.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,0.6);border-radius:8px;padding:8px 12px;border:1px dashed #e8d5a8}
         .support-note .note-text{flex:1;min-width:0}
         .btn-copy-note{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;border:1px solid #d4b87a;border-radius:7px;padding:6px 11px;background:#fffef9;color:#6b3a0a;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all var(--transition-fast);font-family:var(--font-sans)}
-        .btn-copy-note:hover{background:#fff8e8;border-color:#c29a3a;box-shadow:0 2px 8px rgba(194,120,10,0.1)}
-        .support-contact{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:#2777b8;font-size:12.5px;font-weight:700;text-decoration:none}
-        .support-contact:hover{text-decoration:underline}
-        .btn-copy-note:active{transform:scale(.95);background:#fef3d8}
+        .btn-copy-note:hover{background:#fff8e8;border-color:#c29a3a}
         .btn-copy-note.copied{background:#eafaf3;border-color:#0d9e6c;color:#087a56}
 
         .info-card{padding:clamp(24px,3vw,36px) clamp(20px,2.8vw,32px);display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative;overflow:hidden}
@@ -131,27 +131,21 @@
         .contact-item i{width:22px;text-align:center;color:var(--primary)}
         .contact-item strong{color:var(--ink);font-weight:700}
 
-        .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#1a1d28;color:#fff;padding:11px 18px;border-radius:10px;z-index:10000;opacity:0;pointer-events:none;box-shadow:0 10px 32px rgba(18,20,30,0.28);font-size:13.5px;font-weight:600;letter-spacing:-0.01em;transition:all .28s cubic-bezier(0.4,0,0.2,1);font-family:var(--font-sans)}
+        .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#1a1d28;color:#fff;padding:11px 18px;border-radius:10px;z-index:10000;opacity:0;pointer-events:none;box-shadow:0 10px 32px rgba(18,20,30,0.28);font-size:13.5px;font-weight:600;transition:all .28s;font-family:var(--font-sans)}
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-        .toast.error{background:#b91c1c;box-shadow:0 10px 32px rgba(185,28,28,0.3)}
-        .toast.success-flash{background:#087a56;box-shadow:0 10px 32px rgba(8,122,86,0.3)}
-        .qr-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,14,22,0.88);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-        .qr-modal.show{display:flex;animation:modalFadeIn .25s ease-out}
-        @keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
-        .qr-modal-card{width:min(420px,94vw);border-radius:var(--radius-lg);background:#fff;padding:clamp(18px,3vw,24px);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.4);animation:modalScaleIn .3s cubic-bezier(0.34,1.56,0.64,1)}
-        @keyframes modalScaleIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+        .toast.success-flash{background:#087a56}
+        .qr-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,14,22,0.88);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
+        .qr-modal.show{display:flex}
+        .qr-modal-card{width:min(420px,94vw);border-radius:var(--radius-lg);background:#fff;padding:clamp(18px,3vw,24px);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.4)}
         .qr-modal-card img{width:min(300px,78vw);height:min(300px,78vw);object-fit:contain;border-radius:14px;border:1px solid var(--line);background:#fff}
-        .qr-modal-card h3{margin-bottom:14px;font-size:19px;font-weight:800;letter-spacing:-0.01em}
-        .qr-modal-card .modal-hint{font-size:12px;color:var(--muted);margin-top:8px}
-        .close-modal{width:100%;margin-top:14px;border:0;border-radius:10px;padding:11px 14px;background:#1a1d28;color:#fff;font-weight:700;cursor:pointer;font-size:14px;transition:all var(--transition-fast);font-family:var(--font-sans)}
-        .close-modal:hover{background:#2a2d38}
-        .close-modal:active{transform:scale(.96)}
+        .qr-modal-card h3{margin-bottom:14px;font-size:19px;font-weight:800}
+        .close-modal{width:100%;margin-top:14px;border:0;border-radius:10px;padding:11px 14px;background:#1a1d28;color:#fff;font-weight:700;cursor:pointer;font-size:14px;font-family:var(--font-sans)}
 
         @media(max-width:980px){
             body{padding:12px;align-items:flex-start}
             .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
-            .info-card{order:1;border-radius:var(--radius-lg);min-height:auto}
-            .hero{order:2;min-height:auto;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
+            .info-card{order:1;border-radius:var(--radius-lg)}
+            .hero{order:2;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
             .hero::after{display:none}
             .hero h1{font-size:clamp(24px,5vw,34px)}
             .value-grid{grid-template-columns:1fr 1fr;gap:8px}
@@ -160,9 +154,6 @@
             .qr-card img{width:clamp(100px,28vw,140px);height:clamp(100px,28vw,140px)}
             .support-top{flex-direction:column}
             .cost-pill{align-self:flex-start}
-            .bg-orb--1{width:180px;height:180px;top:-5%;left:-8%}
-            .bg-orb--2{width:150px;height:150px;top:65%;right:-10%}
-            .bg-orb--3{width:120px;height:120px;bottom:-3%;left:20%}
         }
         @media(max-width:560px){
             body{padding:8px}
@@ -176,12 +167,9 @@
             .qr-card img{width:80px;height:80px;flex:0 0 80px;border-radius:8px}
             .qr-card strong{margin-top:0;font-size:13px}
             .qr-card span{font-size:11px}
-            .qr-card .tap-hint{font-size:10px}
             .support-note{flex-direction:column;align-items:stretch;gap:6px}
             .btn-copy-note{justify-content:center;width:100%}
-            .brand{font-size:13px;gap:7px}
-            .brand-badge{width:30px;height:30px;border-radius:8px;font-size:13px}
-            .bg-orb{display:none}
+            .status-banner{font-size:12px;padding:10px 12px;}
         }
     </style>
 </head>
@@ -191,43 +179,45 @@
     <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
 
     <main class="shell">
+        <!-- 左侧主区域 -->
         <section class="hero" aria-label="服务介绍与支持">
             <div class="hero-top">
                 <div class="brand">
                     <span class="brand-badge">AG</span>
                     <span>AG工作室 出品</span>
                 </div>
-                <div class="status-banner" role="status">
-                    <i class="fas fa-circle-info"></i>
-                    <span>考研闭关期间 · 服务按支持名单处理 · 每天 21:00 后核对，次日处理</span>
+
+                <!-- 状态横幅 -->
+                <div class="status-banner">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>考研闭关中 · 已付费用户服务正常 · 新用户自愿赞助后开通</span>
                 </div>
-                <div class="eyebrow">
-                    <i class="fas fa-pause-circle"></i>
-                    服务维护中 · 考研冲刺阶段
-                </div>
-                <h1>考研冲刺期间，<span>非赞助用户停止服务</span></h1>
+
+                <h1>考研冲刺期间，<span>服务暂缓</span></h1>
                 <p class="lead">
-                    考研冲刺期间，服务器暂停续费，当前服务按支持名单进行人工维护。支持完全自愿；新的支持记录每天 21:00 后统一核对，通常次日处理。
+                    近期在准备考研，服务器暂时停止续费，免费服务暂停。如果您需要自动化考勤服务并愿意支持，可通过下方二维码自愿赞助，备注好信息后人工维护考勤。一杯奶茶钱就是最大的鼓励 🙏
                 </p>
+
                 <div class="value-grid">
                     <div class="value-card">
                         <div class="vc-icon blue"><i class="fas fa-book-open"></i></div>
                         <strong>考研闭关</strong>
-                        <span>暂停服务器续费，专注备考，预计考后恢复。</span>
+                        <span>暂停服务器续费，专注备考，考后恢复。</span>
                     </div>
                     <div class="value-card">
                         <div class="vc-icon green"><i class="fas fa-heart"></i></div>
-                        <strong>自愿支持</strong>
-                        <span>支持完全自愿；当前服务安排和支持选项请扫码查看。</span>
+                        <strong>自愿赞助</strong>
+                        <span>金额随意，完全自愿，已付费用户不受影响。</span>
                     </div>
                     <div class="value-card">
                         <div class="vc-icon amber"><i class="fas fa-clock"></i></div>
                         <strong>恢复通知</strong>
-                        <span>考后会在 QQ 频道通知恢复进度。</span>
+                        <span>考后会在 QQ 频道第一时间通知。</span>
                     </div>
                 </div>
             </div>
 
+            <!-- 赞助区域 -->
             <div class="support-card" id="support">
                 <div class="support-top">
                     <div>
@@ -236,56 +226,54 @@
                             自愿支持 AG 工作室
                         </div>
                         <p class="support-copy">
-                            服务器、域名和日常维护都需要成本。如果您愿意帮助维护，请扫码查看支持菜单，支持完全自愿。个性化需求请先通过 QQ 频道或邮件咨询。<br>
-                            付款备注请填写 <strong style="color:#e05050;">学号 + 考勤密码 + 邮箱</strong>，方便管理员核对；请勿在群聊或公开区域发送密码。每天 <strong>21:00 后</strong>统一核对当日支持记录，通常次日处理。
+                            服务器、域名和日常维护都需要成本。多少都是心意，完全自愿。每日21：33后赞助的用户当日默认不发邮件通知。个性化需要（自定义日期，时间等）需开通VIP（VX扫码查看详情）<br>
+                            付款备注请填写 <strong>学号，密码，邮箱</strong>，方便完成考勤需求及记录感谢名单。
                         </p>
                     </div>
                     <div class="cost-pill">
-                        自选支持
+                        随意金额
                         <small>完全自愿</small>
                     </div>
                 </div>
-                <div class="qr-row" aria-label="自愿支持收款码">
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信支持菜单')" aria-label="微信支持菜单，点击放大">
-                        <img src="https://login.agai.online/vxcode.png" alt="微信自愿支持收款码" loading="lazy">
+                <div class="qr-row" aria-label="自愿赞助收款码">
+                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信自愿赞助码')" aria-label="微信收款码">
+                        <img src="https://login.agai.online/vxcode.png" alt="微信收款码" loading="lazy">
                         <div>
-                            <strong>微信扫码</strong>
-                            <span>扫码查看支持菜单</span>
+                            <strong>微信赞助（菜单版）</strong>
+                            <span>点击放大 · 手机扫码</span>
                             <span class="tap-hint">📱 长按可保存图片</span>
                         </div>
                     </button>
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝支持菜单')" aria-label="支付宝支持菜单，点击放大">
-                        <img src="https://login.agai.online/zfbcode.png" alt="支付宝自愿支持收款码" loading="lazy">
+                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝自愿赞助码')" aria-label="支付宝收款码">
+                        <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码" loading="lazy">
                         <div>
-                            <strong>支付宝扫码</strong>
-                            <span>扫码查看支持菜单</span>
+                            <strong>支付宝赞助</strong>
+                            <span>点击放大 · 手机扫码</span>
                             <span class="tap-hint">📱 长按可保存图片</span>
                         </div>
                     </button>
                 </div>
                 <div class="support-note">
-                    <span class="note-text">💡 如果选择支持，备注请填写“学号 + 考勤密码 + 通知邮箱”，方便管理员核对；请勿在公开区域发送密码。</span>
+                    <span class="note-text">💡 备注格式：<strong>学号 + 密码 + 邮箱</strong>（邮箱可选）</span>
                     <button class="btn-copy-note" id="btnCopyNote" type="button" onclick="copyNoteTemplate()">
-                        <i class="far fa-copy"></i> 复制备注
+                        <i class="far fa-copy"></i> 复制备注格式
                     </button>
                 </div>
-                <a class="support-contact" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener">
-                    <i class="fab fa-qq"></i> 有疑问？联系管理员
-                </a>
             </div>
         </section>
 
-        <section class="info-card" aria-label="联系方式">
+        <!-- 右侧信息区 -->
+        <section class="info-card" aria-label="联系方式与状态">
             <div class="info-icon"><i class="fas fa-circle-info"></i></div>
             <div style="position:relative;z-index:1;">
                 <div style="color:var(--amber);font-size:12.5px;font-weight:800;margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase">当前状态</div>
-                <h2>服务暂停中</h2>
+                <h2>服务暂缓中</h2>
             </div>
             <div class="status-badge">
-                <span>服务器已到期，后台不可访问</span>
+                <span>免费服务已暂停 · 已付费用户不受影响</span>
             </div>
             <p class="info-note">
-                所有自动签到、登录、查询功能均已随服务器下线下架。现已暂停免费服务，如果您之前付过费，服务不受影响（感谢一开始支持主包的好朋友）。
+                所有自动签到、登录、查询功能均已随服务器下线下架。之前付过费的朋友服务不受影响，感谢你们一开始的信任和支持。
             </p>
 
             <div class="contact-list">
@@ -314,38 +302,29 @@
             </div>
 
             <div style="position:relative;z-index:1;margin-top:18px;display:grid;gap:9px">
-                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em">
+                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px">
                     <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
                     <span>考研结束后会第一时间恢复服务器。</span>
                 </div>
-                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em">
+                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px">
                     <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
                     <span>之前（2026年7月前）已付费用户不受影响。</span>
                 </div>
-                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px;letter-spacing:-0.01em">
+                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px">
                     <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
                     <span>有任何问题可在 QQ 频道留言或发送邮件。</span>
                 </div>
-                <div class="micro-item">
-                    <span class="check">✓</span>
-                    <span>具体服务安排请以当前状态说明和 QQ 频道通知为准。</span>
-                </div>
-            </div>
-
-            <div class="mobile-support" id="mobileSupport">
-                <span class="ms-text">支持完全自愿，扫码查看支持菜单；每天 21:00 后核对</span>
-                <button type="button" onclick="scrollToSupport()">查看支持码</button>
             </div>
         </section>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true" aria-label="支持菜单二维码放大查看">
+    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true">
         <div class="qr-modal-card" onclick="event.stopPropagation()">
-            <h3 id="qrModalTitle">支持菜单</h3>
-            <img id="qrModalImage" src="" alt="自愿支持二维码">
-            <p class="modal-hint">📱 使用对应 App 扫码，在菜单中查看支持选项</p>
+            <h3 id="qrModalTitle">收款码</h3>
+            <img id="qrModalImage" src="" alt="收款码">
+            <p class="modal-hint" style="font-size:12px;color:var(--muted);margin-top:8px;">📱 截图或长按保存，用对应App扫码</p>
             <button class="close-modal" type="button" onclick="closeQRModal()">关闭</button>
         </div>
     </div>
@@ -362,51 +341,33 @@
         }
 
         function openQRModal(imgSrc, title) {
-            const modal = document.getElementById('qrModal');
             document.getElementById('qrModalImage').src = imgSrc;
             document.getElementById('qrModalTitle').textContent = title;
-            modal.classList.add('show');
+            document.getElementById('qrModal').classList.add('show');
             document.body.style.overflow = 'hidden';
-            modal.querySelector('.close-modal').focus();
         }
 
         function closeQRModal() {
-            const modal = document.getElementById('qrModal');
-            modal.classList.remove('show');
+            document.getElementById('qrModal').classList.remove('show');
             document.body.style.overflow = '';
         }
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') closeQRModal();
-        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeQRModal(); });
 
         function copyNoteTemplate() {
-            const noteTemplate = 'AG工作室支持 - 昵称/留言：请填写';
+            const noteTemplate = 'AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：';
             const btn = document.getElementById('btnCopyNote');
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(noteTemplate).then(() => {
-                    btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                    showToast('备注已复制，粘贴到支付备注即可 ✓', 'success-flash');
-                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注'; }, 2000);
-                }).catch(() => fallbackCopy());
-            } else {
-                fallbackCopy();
-            }
-            function fallbackCopy() {
-                const tempTextarea = document.createElement('textarea');
-                tempTextarea.value = noteTemplate;
-                tempTextarea.style.position = 'fixed'; tempTextarea.style.opacity = '0';
-                document.body.appendChild(tempTextarea); tempTextarea.select();
-                try {
-                    document.execCommand('copy');
-                    btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                    showToast('备注已复制 ✓', 'success-flash');
-                    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="far fa-copy"></i> 复制备注'; }, 2000);
-                } catch(e) {
-                    showToast('复制失败', 'error');
-                }
-                document.body.removeChild(tempTextarea);
-            }
+            navigator.clipboard.writeText(noteTemplate).then(() => {
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                showToast('备注格式已复制 ✓', 'success-flash');
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式';
+                }, 2000);
+            }).catch(() => {
+                showToast('复制失败，请手动记录', '');
+            });
         }
     </script>
 </body>
