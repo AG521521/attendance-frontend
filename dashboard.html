@@ -287,9 +287,9 @@
         </h2>
         <div style="text-align:left; background:#fff9f0; border-radius:12px; padding:16px; margin-bottom:16px; font-size:14px; color:#5a4a3a; line-height:1.7;">
           <p style="margin-bottom:8px;">服务支持完全自愿，不影响账号使用。</p>
-          <p style="margin-bottom:8px;">如果你愿意帮助维护，建议支持 <strong style="color:#e05050;">¥9.9 / 学期</strong>，用于服务器、数据库和日常维护。</p>
+          <p style="margin-bottom:8px;">如果你愿意帮助维护服务器、数据库和日常运行，请扫码查看支持菜单。</p>
           <p style="margin-bottom:8px; background:#fff3e0; padding:8px 12px; border-radius:8px; border-left:3px solid #ff9800;">
-            💡 <strong>付款备注请填写：学号 + 考勤密码 + 邮箱。核对后开通本学期服务。</strong>
+            💡 <strong>支持完全自愿。若选择支持，备注请填写：学号 + 考勤密码 + 邮箱，便于核对。</strong>
           </p>
           <p style="margin:0; font-size:12px; color:#999;">请不要在群聊或公开区域发送考勤密码。</p>
         </div>
@@ -355,8 +355,8 @@
           <div class="card" style="background:#fff9f0;border:1px solid #f2d5a7;margin-bottom:16px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
               <div>
-                <h2 style="margin-bottom:5px;color:#6b3a0a;"><i class="fas fa-circle-info" style="color:#f59e0b;"></i> 本学期考勤服务开通</h2>
-                <p style="color:#7a5a35;font-size:13px;">支持完全自愿，建议每学期 ¥9.9。每天 21:00 后统一核对，次日加入支持名单。</p>
+                <h2 style="margin-bottom:5px;color:#6b3a0a;"><i class="fas fa-circle-info" style="color:#f59e0b;"></i> 本学期考勤服务说明</h2>
+                <p style="color:#7a5a35;font-size:13px;">支持完全自愿，不影响账号使用。每天 21:00 后统一核对，次日处理。</p>
               </div>
               <button class="btn btn-warning" onclick="document.querySelector('.menu-item[data-page=buy]').click()"><i class="fas fa-qrcode"></i> 查看支持码</button>
             </div>
@@ -497,22 +497,22 @@
           <div class="card">
             <h2><i class="fas fa-heart" style="color:var(--warning);"></i> 自愿支持 AG 自动签到</h2>
             <div style="margin:12px 0 18px;padding:14px 16px;background:#fff9f0;border:1px solid #f2d5a7;border-radius:12px;color:#5a4a3a;line-height:1.75;">
-              <p style="font-size:18px;font-weight:800;color:#e05050;">¥9.9 / 学期</p>
+              <p style="font-size:18px;font-weight:800;color:#e05050;">扫码查看支持菜单</p>
               <p style="margin-top:4px;">支持完全自愿，不影响自动签到、手动签到、邮件通知和记录查询。</p>
               <p style="margin-top:8px;font-size:13px;"><strong>付款备注：</strong>学号 + 考勤密码 + 邮箱</p>
               <p style="font-size:12px;color:#8a6b4d;">每天 21:00 后统一核对，21:00 后完成的支持通常于次日加入名单；请勿把考勤密码发送到公开区域。</p>
             </div>
             <button class="btn btn-outline" onclick="copySemesterPaymentNote()" style="margin-bottom:14px;"><i class="far fa-copy"></i> 复制付款备注</button>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;text-align:center;">
-              <button type="button" onclick="openSemesterQr('/vxcode.png','微信服务开通码')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
-                <img src="/vxcode.png" alt="微信服务开通收款码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
-                <strong style="display:block;margin-top:10px;color:#1a1a2e;">微信开通</strong>
-                <span style="font-size:12px;color:#777;">点击放大扫码</span>
+              <button type="button" onclick="openSemesterQr('/vxcode.png','微信支持菜单')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
+                <img src="/vxcode.png" alt="微信自愿支持二维码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
+                <strong style="display:block;margin-top:10px;color:#1a1a2e;">微信扫码</strong>
+                <span style="font-size:12px;color:#777;">扫码查看支持菜单</span>
               </button>
-              <button type="button" onclick="openSemesterQr('/zfbcode.png','支付宝服务开通码')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
-                <img src="/zfbcode.png" alt="支付宝服务开通收款码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
-                <strong style="display:block;margin-top:10px;color:#1a1a2e;">支付宝开通</strong>
-                <span style="font-size:12px;color:#777;">点击放大扫码</span>
+              <button type="button" onclick="openSemesterQr('/zfbcode.png','支付宝支持菜单')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
+                <img src="/zfbcode.png" alt="支付宝自愿支持二维码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
+                <strong style="display:block;margin-top:10px;color:#1a1a2e;">支付宝扫码</strong>
+                <span style="font-size:12px;color:#777;">扫码查看支持菜单</span>
               </button>
             </div>
           </div>
@@ -546,9 +546,9 @@
 
   <div id="semesterQrModal" onclick="closeSemesterQr()" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72);">
     <div onclick="event.stopPropagation()" style="width:min(380px,100%);padding:22px;background:#fff;border-radius:16px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.28);">
-      <h3 id="semesterQrTitle" style="margin-bottom:12px;">服务开通码</h3>
+      <h3 id="semesterQrTitle" style="margin-bottom:12px;">支持菜单</h3>
       <img id="semesterQrImage" src="" alt="自愿支持收款码" style="width:min(280px,76vw);height:min(280px,76vw);margin:0 auto;object-fit:contain;border-radius:12px;border:1px solid var(--border);">
-      <p style="margin-top:10px;font-size:12px;color:#777;">建议支持：¥9.9 · 备注：学号 + 考勤密码 + 邮箱</p>
+      <p style="margin-top:10px;font-size:12px;color:#777;">扫码后查看支持选项 · 备注：学号 + 考勤密码 + 邮箱</p>
       <button class="btn btn-primary" onclick="closeSemesterQr()" style="width:100%;margin-top:14px;">关闭</button>
     </div>
   </div>

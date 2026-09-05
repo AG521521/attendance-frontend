@@ -73,6 +73,8 @@
         .hero { padding: clamp(26px,4vw,44px) clamp(22px,4vw,40px); display: flex; flex-direction: column; justify-content: space-between; gap: 28px; overflow: hidden; position: relative; }
         .hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(59,109,240,0.05) 0%, transparent 70%); pointer-events: none; }
         .hero-top { position: relative; z-index: 1; }
+        .status-banner{display:flex;align-items:center;gap:9px;margin:0 0 18px;padding:11px 14px;border-radius:11px;background:#fff3e8;border:1px solid #ffd2b8;color:#9a431f;font-size:13px;font-weight:750;line-height:1.45}
+        .status-banner i{color:#ff6b35;font-size:14px;flex:0 0 auto}
         .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--primary-dark); font-weight: 800; font-size: 15px; margin-bottom: 24px; letter-spacing: -0.01em; }
         .brand-badge { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: linear-gradient(135deg,#e8f0ff,#dce7fd); color: var(--primary); font-weight: 900; font-size: 16px; letter-spacing: -0.02em; box-shadow: 0 2px 8px rgba(59,109,240,0.12); }
         .eyebrow { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; background: var(--amber-soft); color: #7a4e0a; font-size: 12.5px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.01em; border: 1px solid rgba(194,120,10,0.13); }
@@ -109,6 +111,8 @@
         .support-note .note-text{flex:1;min-width:0}
         .btn-copy-note{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;border:1px solid #d4b87a;border-radius:7px;padding:6px 11px;background:#fffef9;color:#6b3a0a;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all var(--transition-fast);font-family:var(--font-sans)}
         .btn-copy-note:hover{background:#fff8e8;border-color:#c29a3a;box-shadow:0 2px 8px rgba(194,120,10,0.1)}
+        .support-contact{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:#2777b8;font-size:12.5px;font-weight:700;text-decoration:none}
+        .support-contact:hover{text-decoration:underline}
         .btn-copy-note:active{transform:scale(.95);background:#fef3d8}
         .btn-copy-note.copied{background:#eafaf3;border-color:#0d9e6c;color:#087a56}
 
@@ -193,13 +197,17 @@
                     <span class="brand-badge">AG</span>
                     <span>AG工作室 出品</span>
                 </div>
+                <div class="status-banner" role="status">
+                    <i class="fas fa-circle-info"></i>
+                    <span>考研闭关期间 · 服务按支持名单处理 · 每天 21:00 后核对，次日处理</span>
+                </div>
                 <div class="eyebrow">
                     <i class="fas fa-pause-circle"></i>
                     服务维护中 · 考研冲刺阶段
                 </div>
                 <h1>考研冲刺期间，<span>非赞助用户停止服务</span></h1>
                 <p class="lead">
-                    近期在准备考研，压力巨大，服务器暂时停止续费，后台功能无法访问。如果您想要自动化考勤服务并愿意支持，可以通过下方二维码自愿付款备注好信息，后台人工维护考勤，感谢对主包的大力支持。
+                    考研冲刺期间，服务器暂停续费，当前服务按支持名单进行人工维护。支持完全自愿；新的支持记录每天 21:00 后统一核对，通常次日处理。
                 </p>
                 <div class="value-grid">
                     <div class="value-card">
@@ -210,7 +218,7 @@
                     <div class="value-card">
                         <div class="vc-icon green"><i class="fas fa-heart"></i></div>
                         <strong>自愿支持</strong>
-                        <span>不影响任何功能（当前已暂停），完全自愿。</span>
+                        <span>支持完全自愿；当前服务安排和支持选项请扫码查看。</span>
                     </div>
                     <div class="value-card">
                         <div class="vc-icon amber"><i class="fas fa-clock"></i></div>
@@ -228,39 +236,42 @@
                             自愿支持 AG 工作室
                         </div>
                         <p class="support-copy">
-                            服务器、域名和日常维护都需要成本。如果您愿意支持，扫码即可（微信有菜单）。如果您需要更加个性化的需求，比如自定义签到日期，时间等（更多需求请尽管提出），需开通VIP（详情请扫微信二维码看菜单）；每日21：33后赞助的用户当日默认不发送邮件通知。<br>
-                            付款备注可填写 <strong style="color:#e05050;">您的学号，密码，邮箱</strong>，方便完成考勤需求及记录感谢名单。
+                            服务器、域名和日常维护都需要成本。如果您愿意帮助维护，请扫码查看支持菜单，支持完全自愿。个性化需求请先通过 QQ 频道或邮件咨询。<br>
+                            付款备注请填写 <strong style="color:#e05050;">学号 + 考勤密码 + 邮箱</strong>，方便管理员核对；请勿在群聊或公开区域发送密码。每天 <strong>21:00 后</strong>统一核对当日支持记录，通常次日处理。
                         </p>
                     </div>
                     <div class="cost-pill">
-                        随意金额
+                        自选支持
                         <small>完全自愿</small>
                     </div>
                 </div>
                 <div class="qr-row" aria-label="自愿支持收款码">
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信自愿支持码')" aria-label="微信自愿支持码，点击放大">
+                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信支持菜单')" aria-label="微信支持菜单，点击放大">
                         <img src="https://login.agai.online/vxcode.png" alt="微信自愿支持收款码" loading="lazy">
                         <div>
-                            <strong>微信支持（菜单版）</strong>
-                            <span>点击放大 · 手机扫码</span>
+                            <strong>微信扫码</strong>
+                            <span>扫码查看支持菜单</span>
                             <span class="tap-hint">📱 长按可保存图片</span>
                         </div>
                     </button>
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝自愿支持码')" aria-label="支付宝自愿支持码，点击放大">
+                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝支持菜单')" aria-label="支付宝支持菜单，点击放大">
                         <img src="https://login.agai.online/zfbcode.png" alt="支付宝自愿支持收款码" loading="lazy">
                         <div>
-                            <strong>支付宝支持</strong>
-                            <span>点击放大 · 手机扫码</span>
+                            <strong>支付宝扫码</strong>
+                            <span>扫码查看支持菜单</span>
                             <span class="tap-hint">📱 长按可保存图片</span>
                         </div>
                     </button>
                 </div>
                 <div class="support-note">
-                    <span class="note-text">💡 付款备注填写学号，密码，通知邮箱（怕打扰可不填，不建议），方便管理员记录感谢名单。</span>
+                    <span class="note-text">💡 如果选择支持，备注请填写“学号 + 考勤密码 + 通知邮箱”，方便管理员核对；请勿在公开区域发送密码。</span>
                     <button class="btn-copy-note" id="btnCopyNote" type="button" onclick="copyNoteTemplate()">
                         <i class="far fa-copy"></i> 复制备注
                     </button>
                 </div>
+                <a class="support-contact" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener">
+                    <i class="fab fa-qq"></i> 有疑问？联系管理员
+                </a>
             </div>
         </section>
 
@@ -315,17 +326,26 @@
                     <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
                     <span>有任何问题可在 QQ 频道留言或发送邮件。</span>
                 </div>
+                <div class="micro-item">
+                    <span class="check">✓</span>
+                    <span>具体服务安排请以当前状态说明和 QQ 频道通知为准。</span>
+                </div>
+            </div>
+
+            <div class="mobile-support" id="mobileSupport">
+                <span class="ms-text">支持完全自愿，扫码查看支持菜单；每天 21:00 后核对</span>
+                <button type="button" onclick="scrollToSupport()">查看支持码</button>
             </div>
         </section>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true" aria-label="收款码放大查看">
+    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true" aria-label="支持菜单二维码放大查看">
         <div class="qr-modal-card" onclick="event.stopPropagation()">
-            <h3 id="qrModalTitle">收款码</h3>
-            <img id="qrModalImage" src="" alt="收款码">
-            <p class="modal-hint">📱 截图或长按保存，用对应App扫码</p>
+            <h3 id="qrModalTitle">支持菜单</h3>
+            <img id="qrModalImage" src="" alt="自愿支持二维码">
+            <p class="modal-hint">📱 使用对应 App 扫码，在菜单中查看支持选项</p>
             <button class="close-modal" type="button" onclick="closeQRModal()">关闭</button>
         </div>
     </div>
