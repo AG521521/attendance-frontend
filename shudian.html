@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数电通 · 序列发生器实验室</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .app {
+            max-width: 1100px;
+            width: 100%;
+        }
+        /* 顶栏：返回 + 标题 */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 20px;
+            border-bottom: 2px solid #e5edf5;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .top-bar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0b2b4a;
+        }
+        .top-bar .logo span { color: #1d4ed8; }
+        .btn-back {
+            background: #eef3f9;
+            color: #1f3a57;
+            padding: 8px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.15s;
+            border: 1px solid #d0dce8;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-back:hover {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        /* ---- 序列发生器核心样式（从之前的 Demo 移植） ---- */
+        .lab-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 28px 30px 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+            border: 1px solid #e5edf5;
+        }
+        .lab-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0b2b4a;
+            margin-bottom: 6px;
+        }
+        .lab-card .sub {
+            color: #4b6a8b;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .seq-bits { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 6px 0 10px; }
+        .seq-bit { width: 46px; height: 54px; border-radius: 12px; border: 2px solid #d0dce8; background: #fafcfe; font-size: 22px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; user-select: none; color: #1e2f44; position: relative; }
+        .seq-bit:hover { border-color: #8aa9c9; transform: scale(1.02); background: #f5f9ff; }
+        .seq-bit.val-1 { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .seq-bit.active { box-shadow: 0 0 0 3px #2563eb, 0 4px 12px rgba(37,99,235,0.25); border-color: #2563eb; transform: scale(1.05); z-index: 2; }
+        .seq-bit .index-label { position: absolute; bottom: -18px; font-size: 10px; font-weight: 400; color: #7a94b0; }
+        .seq-label-row { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .seq-label-row span { width: 46px; text-align: center; font-size: 11px; color: #6b8aaa; font-weight: 500; }
+
+        .ctrl-group { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: 16px 0 8px; }
+        .btn { border: none; padding: 8px 20px; border-radius: 40px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.15s; background: #eef3f9; color: #1f3a57; }
+        .btn-primary { background: #1d4ed8; color: #fff; box-shadow: 0 2px 8px rgba(29,78,216,0.2); }
+        .btn-primary:hover { background: #1e40af; }
+        .btn-danger { background: #dc2626; color: #fff; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-outline { background: transparent; border: 1px solid #cbdae8; }
+        .btn-outline:hover { background: #f0f5fc; }
+
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 20px; }
+        @media (max-width: 720px) { .grid-2col { grid-template-columns: 1fr; gap: 18px; } }
+
+        .led { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; font-weight: 700; font-size: 24px; background: #e5edf5; color: #1f3a57; border: 2px solid #bccddc; transition: 0.2s; }
+        .led.on { background: #dbeafe; border-color: #2563eb; color: #1d4ed8; box-shadow: 0 0 20px rgba(37,99,235,0.25); }
+        .addr-display { font-family: 'Courier New', monospace; font-size: 22px; font-weight: 600; letter-spacing: 4px; background: #f1f5f9; padding: 4px 16px; border-radius: 40px; color: #0b2b4a; }
+        .d-list { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 4px; }
+        .d-item { padding: 4px 10px; border-radius: 30px; font-size: 13px; font-weight: 600; background: #f1f5f9; color: #1f3a57; border: 1px solid #dce6f0; transition: 0.2s; }
+        .d-item.active-d { background: #dbeafe; border-color: #2563eb; color: #1d4ed8; box-shadow: 0 0 0 2px #93bbfc; }
+
+        .truth-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+        .truth-table th { background: #f1f6fb; color: #1f3a57; padding: 8px 4px; border-bottom: 2px solid #d0dce8; }
+        .truth-table td { padding: 8px 4px; border-bottom: 1px solid #e5edf5; font-weight: 500; color: #1e2f44; }
+        .truth-table .active-row { background: #dbeafe; }
+        .pulse-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #94a3b8; transition: 0.15s; margin-right: 4px; }
+        .pulse-dot.active { background: #22c55e; box-shadow: 0 0 12px #22c55e88; }
+
+        .footnote { margin-top: 24px; font-size: 13px; color: #6b8aaa; text-align: center; border-top: 1px solid #eef3f9; padding-top: 18px; }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- 顶栏 -->
+    <div class="top-bar">
+        <div class="logo">⚡ 数电<span>通</span></div>
+        <a href="/" class="btn-back">← 返回首页</a>
+    </div>
+
+    <!-- 序列发生器主体 -->
+    <div class="lab-card">
+        <h2>🔁 序列信号发生器 (74LS161 + 74151)</h2>
+        <div class="sub">点击序列位切换 0/1，观察地址、D端和输出的联动 —— 考研核心设计题</div>
+
+        <div class="seq-bits" id="seqBitsContainer"></div>
+        <div class="seq-label-row" id="seqLabels"></div>
+        <div style="margin:10px 0 6px;font-size:13px;color:#4b6a8b;text-align:center;">
+            <span id="seqDisplayStr">00010111</span> &nbsp;·&nbsp; 当前输出位高亮
+        </div>
+
+        <div class="ctrl-group">
+            <button class="btn btn-primary" id="btnAuto">▶ 自动走时钟</button>
+            <button class="btn btn-outline" id="btnStep">⏭ 单步</button>
+            <button class="btn btn-outline" id="btnReset">⟲ 复位</button>
+            <button class="btn btn-outline" id="btnRandom">🎲 随机序列</button>
+            <span style="font-size:13px;color:#4b6a8b;margin-left:auto;">速度</span>
+            <select id="speedSelect" style="padding:4px 8px;border-radius:30px;border:1px solid #dce6f0;background:#fafcfe;font-size:13px;">
+                <option value="1500">慢</option>
+                <option value="1000" selected>中</option>
+                <option value="500">快</option>
+                <option value="250">极快</option>
+            </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:2px;">
+            <span style="font-size:13px;color:#4b6a8b;">时钟脉冲</span>
+            <span class="pulse-dot" id="pulseDot"></span>
+            <span id="clockStatus" style="font-size:13px;font-weight:600;color:#4b6a8b;">⏸ 停止</span>
+        </div>
+
+        <div class="grid-2col">
+            <div>
+                <h4 style="font-size:14px; color:#1f3a57; margin-bottom:6px;">📊 当前状态</h4>
+                <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+                    <div><span style="font-size:12px;color:#6b8aaa;">输出 Y</span><br><span class="led off" id="outputLed">0</span></div>
+                    <div><span style="font-size:12px;color:#6b8aaa;">计数器 Q₂Q₁Q₀</span><br><span class="addr-display" id="addrDisplay">000</span></div>
+                    <div><span style="font-size:12px;color:#6b8aaa;">当前选中 D</span><br><span style="font-size:20px;font-weight:600;color:#1d4ed8;" id="currentDLabel">D₀</span></div>
+                </div>
+                <div style="margin-top:10px;">
+                    <span style="font-size:12px;color:#6b8aaa;">数据输入端 D₀ ~ D₇</span>
+                    <div class="d-list" id="dListContainer"></div>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size:14px; color:#1f3a57; margin-bottom:6px;">📋 真值表</h4>
+                <div style="overflow-x:auto;">
+                    <table class="truth-table" id="truthTable">
+                        <thead><tr><th>地址 A₂A₁A₀</th><th>选中 D</th><th>输出 Y</th></tr></thead>
+                        <tbody id="truthBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#4b6a8b;background:#f1f6fb;padding:8px 14px;border-radius:12px;text-align:center;">
+            💡 <strong>规律：</strong> Y = D<sub>地址</sub> ，地址由计数器循环产生
+        </div>
+    </div>
+    <div class="footnote">🧩 纯前端交互 · 无需服务器 · 序列可自由编辑</div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 核心状态 ----------
+        let seq = [0, 0, 0, 1, 0, 1, 1, 1];
+        let counter = 0;
+        let autoTimer = null;
+        let isAutoRunning = false;
+        let speedMs = 1000;
+
+        // DOM 引用
+        const seqContainer = document.getElementById('seqBitsContainer');
+        const seqLabels = document.getElementById('seqLabels');
+        const truthBody = document.getElementById('truthBody');
+        const dListContainer = document.getElementById('dListContainer');
+        const addrDisplay = document.getElementById('addrDisplay');
+        const outputLed = document.getElementById('outputLed');
+        const currentDLabel = document.getElementById('currentDLabel');
+        const seqDisplayStr = document.getElementById('seqDisplayStr');
+        const pulseDot = document.getElementById('pulseDot');
+        const clockStatus = document.getElementById('clockStatus');
+
+        const btnAuto = document.getElementById('btnAuto');
+        const btnStep = document.getElementById('btnStep');
+        const btnReset = document.getElementById('btnReset');
+        const btnRandom = document.getElementById('btnRandom');
+        const speedSelect = document.getElementById('speedSelect');
+
+        // ---------- 渲染函数 ----------
+        function renderAll() {
+            renderSeqBits();
+            renderDLabels();
+            renderTruthTable();
+            renderDList();
+            updateOutput();
+            updateAddrDisplay();
+            updateSeqDisplayStr();
+        }
+
+        function renderSeqBits() {
+            let html = '';
+            for (let i = 0; i < 8; i++) {
+                const val = seq[i];
+                const activeClass = (i === counter) ? 'active' : '';
+                html += `<div class="seq-bit val-${val} ${activeClass}" data-index="${i}">${val}<span class="index-label">D${i}</span></div>`;
+            }
+            seqContainer.innerHTML = html;
+            document.querySelectorAll('.seq-bit').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index, 10);
+                    seq[idx] = seq[idx] === 0 ? 1 : 0;
+                    renderAll();
+                });
+            });
+            let labelHtml = '';
+            for (let i = 0; i < 8; i++) labelHtml += `<span>D${i}</span>`;
+            seqLabels.innerHTML = labelHtml;
+        }
+
+        function renderDList() {
+            let html = '';
+            for (let i = 0; i < 8; i++) {
+                const active = (i === counter) ? 'active-d' : '';
+                html += `<span class="d-item ${active}"><span class="d-label">D${i}</span> ${seq[i]}</span>`;
+            }
+            dListContainer.innerHTML = html;
+        }
+
+        function renderTruthTable() {
+            let rows = '';
+            for (let i = 0; i < 8; i++) {
+                const addr = i.toString(2).padStart(3, '0');
+                const activeRow = (i === counter) ? 'active-row' : '';
+                rows += `<tr class="${activeRow}"><td class="addr-cell">${addr}</td><td>D${i}</td><td class="y-cell">${seq[i]}</td></tr>`;
+            }
+            truthBody.innerHTML = rows;
+        }
+
+        function updateOutput() {
+            const val = seq[counter];
+            outputLed.textContent = val;
+            outputLed.className = `led ${val === 1 ? 'on' : 'off'}`;
+            currentDLabel.textContent = `D${counter}`;
+        }
+
+        function updateAddrDisplay() {
+            addrDisplay.textContent = counter.toString(2).padStart(3, '0');
+        }
+
+        function updateSeqDisplayStr() {
+            seqDisplayStr.textContent = seq.join('');
+        }
+
+        // ---------- 步进与控制 ----------
+        function stepCounter() {
+            counter = (counter + 1) % 8;
+            renderAll();
+            pulseDot.classList.add('active');
+            setTimeout(() => pulseDot.classList.remove('active'), 150);
+        }
+
+        function resetCounter() {
+            counter = 0;
+            renderAll();
+        }
+
+        function startAuto() {
+            if (isAutoRunning) return;
+            isAutoRunning = true;
+            btnAuto.textContent = '⏹ 停止时钟';
+            btnAuto.className = 'btn btn-danger';
+            clockStatus.textContent = '▶ 运行中';
+            stepCounter();
+            autoTimer = setInterval(stepCounter, speedMs);
+        }
+
+        function stopAuto() {
+            if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+            isAutoRunning = false;
+            btnAuto.textContent = '▶ 自动走时钟';
+            btnAuto.className = 'btn btn-primary';
+            clockStatus.textContent = '⏸ 停止';
+            pulseDot.classList.remove('active');
+        }
+
+        function toggleAuto() {
+            isAutoRunning ? stopAuto() : startAuto();
+        }
+
+        function randomSeq() {
+            for (let i = 0; i < 8; i++) seq[i] = Math.random() < 0.5 ? 0 : 1;
+            renderAll();
+        }
+
+        // ---------- 事件绑定 ----------
+        btnAuto.addEventListener('click', toggleAuto);
+        btnStep.addEventListener('click', () => { if (!isAutoRunning) stepCounter(); });
+        btnReset.addEventListener('click', () => { if (!isAutoRunning) resetCounter(); });
+        btnRandom.addEventListener('click', randomSeq);
+        speedSelect.addEventListener('change', () => {
+            speedMs = parseInt(speedSelect.value, 10);
+            if (isAutoRunning) { stopAuto(); startAuto(); }
+        });
+
+        // 键盘快捷键（空格切换，右箭头单步）
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); toggleAuto(); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); if (!isAutoRunning) stepCounter(); }
+        });
+
+        // 初始化
+        renderAll();
+    })();
+</script>
+</body>
+</html>
