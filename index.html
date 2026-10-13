@@ -1,410 +1,670 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>AG工作室 - 服务维护中</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --bg: #f6f8fb;
-            --panel: #ffffff;
-            --ink: #1a1d28;
-            --ink-secondary: #4a4f60;
-            --muted: #6b7187;
-            --line: #e5e9f0;
-            --line-light: #f0f2f6;
-            --primary: #3b6df0;
-            --primary-soft: #eef3ff;
-            --primary-dark: #2851c5;
-            --green: #0d9e6c;
-            --green-soft: #eafaf3;
-            --amber: #c2780a;
-            --amber-soft: #fef9ee;
-            --amber-border: #f0d89c;
-            --rose: #e05060;
-            --rose-soft: #fef5f6;
-            --radius-sm: 10px;
-            --radius: 16px;
-            --radius-lg: 22px;
-            --radius-xl: 28px;
-            --shadow-xs: 0 1px 2px rgba(18,20,30,0.04);
-            --shadow-sm: 0 2px 8px rgba(18,20,30,0.05), 0 1px 3px rgba(18,20,30,0.04);
-            --shadow: 0 8px 28px rgba(18,20,30,0.07), 0 2px 10px rgba(18,20,30,0.04);
-            --shadow-lg: 0 18px 50px rgba(18,20,30,0.10), 0 4px 18px rgba(18,20,30,0.05);
-            --shadow-xl: 0 28px 72px rgba(18,20,30,0.13), 0 6px 24px rgba(18,20,30,0.06);
-            --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-            --transition-fast: 0.15s cubic-bezier(0.4,0,0.2,1);
-            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
-            --transition-slow: 0.35s cubic-bezier(0.4,0,0.2,1);
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; -webkit-tap-highlight-color:transparent; scroll-behavior:smooth; }
-        body {
-            min-height:100vh; min-height:100dvh;
-            background:
-                radial-gradient(ellipse 80% 60% at 15% 8%, rgba(59,109,240,0.10), transparent 45%),
-                radial-gradient(ellipse 60% 50% at 82% 12%, rgba(13,158,108,0.08), transparent 40%),
-                radial-gradient(ellipse 70% 55% at 50% 90%, rgba(194,120,10,0.05), transparent 45%),
-                linear-gradient(175deg,#f3f6fc 0%,#f8fafd 35%,#fafbfd 65%,#fdfaf5 100%);
-            color:var(--ink); font-family:var(--font-sans); line-height:1.55;
-            padding:clamp(14px,3vw,34px); display:flex; align-items:center; justify-content:center; overflow-x:hidden;
-        }
-        .bg-orb { position:fixed; border-radius:50%; pointer-events:none; z-index:0; filter:blur(90px); opacity:0.38; will-change:transform; }
-        .bg-orb--1 { width:320px; height:320px; background:rgba(59,109,240,0.14); top:-8%; left:-6%; animation:orbFloat1 18s ease-in-out infinite; }
-        .bg-orb--2 { width:260px; height:260px; background:rgba(13,158,108,0.11); top:55%; right:-7%; animation:orbFloat2 22s ease-in-out infinite; }
-        .bg-orb--3 { width:200px; height:200px; background:rgba(194,120,10,0.09); bottom:-5%; left:30%; animation:orbFloat3 20s ease-in-out infinite; }
-        @keyframes orbFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 25%{transform:translate(40px,-30px) scale(1.08)} 50%{transform:translate(-20px,20px) scale(.94)} 75%{transform:translate(30px,10px) scale(1.04)} }
-        @keyframes orbFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-35px,-25px) scale(1.06)} 66%{transform:translate(25px,30px) scale(.93)} }
-        @keyframes orbFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-20px) scale(1.07)} }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AG工作室 · 服务维护中</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-        .shell { position:relative; z-index:1; width:min(1200px,100%); min-height:clamp(580px,78vh,760px); min-height:clamp(580px,78dvh,760px); margin:0 auto; display:grid; grid-template-columns:minmax(0,1.08fr) 440px; align-items:stretch; gap:clamp(20px,3vw,32px); }
-        .hero, .info-card { background:rgba(255,255,255,0.82); border:1px solid rgba(229,233,240,0.7); box-shadow:var(--shadow-lg); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-radius:var(--radius-xl); transition:box-shadow var(--transition-slow),border-color var(--transition-slow); }
-        .hero:hover, .info-card:hover { box-shadow:var(--shadow-xl); border-color:rgba(200,210,225,0.7); }
-        .hero { padding:clamp(26px,4vw,44px) clamp(22px,4vw,40px); display:flex; flex-direction:column; justify-content:space-between; gap:28px; overflow:hidden; position:relative; }
-        .hero::after { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(59,109,240,0.05) 0%, transparent 70%); pointer-events:none; }
-        .hero-top { position:relative; z-index:1; }
-        .brand { display:inline-flex; align-items:center; gap:10px; color:var(--primary-dark); font-weight:800; font-size:15px; margin-bottom:20px; letter-spacing:-0.01em; }
-        .brand-badge { width:38px; height:38px; border-radius:11px; display:grid; place-items:center; background:linear-gradient(135deg,#e8f0ff,#dce7fd); color:var(--primary); font-weight:900; font-size:16px; box-shadow:0 2px 8px rgba(59,109,240,0.12); }
+:root{
+  --paper:#f7f4ee;
+  --paper-2:#fffdf9;
+  --ink:#141414;
+  --ink-2:#5c5c5c;
+  --ink-3:#9a948a;
+  --line:#e3ddd1;
+  --line-strong:#cfc6b4;
+  --accent:#9a3412;
+  --font:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",
+         "PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;
+}
 
-        /* 状态横幅 */
-        .status-banner {
-            display:flex; align-items:center; gap:10px;
-            background:linear-gradient(135deg,#ff9800,#f57c00); color:#fff;
-            border-radius:12px; padding:12px 16px; margin-bottom:18px;
-            font-weight:700; font-size:14px; box-shadow:0 4px 14px rgba(255,152,0,0.25);
-        }
-        .status-banner i { font-size:16px; }
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
 
-        .eyebrow { display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:999px; background:var(--amber-soft); color:#7a4e0a; font-size:12.5px; font-weight:700; margin-bottom:14px; border:1px solid rgba(194,120,10,0.13); }
-        .eyebrow i { font-size:11px; }
-        .hero h1 { max-width:700px; font-size:clamp(28px,4.2vw,50px); line-height:1.12; letter-spacing:-0.025em; margin-bottom:14px; font-weight:800; color:#111520; }
-        .hero h1 span { background:linear-gradient(135deg,var(--primary),#5b8af7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .lead { max-width:640px; color:var(--ink-secondary); font-size:clamp(15px,1.4vw,17px); letter-spacing:-0.01em; }
-        .value-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:24px; }
-        .value-card { background:#fafcfe; border:1px solid var(--line-light); border-radius:var(--radius); padding:clamp(13px,1.6vw,17px) clamp(12px,1.4vw,15px); transition:all var(--transition); position:relative; overflow:hidden; }
-        .value-card::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(59,109,240,0.03) 0%,transparent 60%); pointer-events:none; }
-        .value-card:hover { border-color:#cdd7ea; box-shadow:var(--shadow-sm); transform:translateY(-2px); }
-        .value-card .vc-icon { width:32px; height:32px; border-radius:8px; display:grid; place-items:center; margin-bottom:8px; font-size:14px; font-weight:700; }
-        .value-card .vc-icon.blue{background:#eef4ff;color:var(--primary)} .value-card .vc-icon.green{background:var(--green-soft);color:var(--green)} .value-card .vc-icon.amber{background:var(--amber-soft);color:var(--amber)}
-        .value-card strong{display:block;font-size:15px;margin-bottom:3px;font-weight:750} .value-card span{color:var(--muted);font-size:12.5px;line-height:1.45}
+body{
+  min-height:100vh;min-height:100dvh;
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--paper);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -20%,#fffdf9 0%,transparent 55%);
+  line-height:1.6;
+  display:flex;justify-content:center;
+}
 
-        .support-card{position:relative;z-index:1;margin-top:6px;border-radius:var(--radius-lg);border:1px solid var(--amber-border);background:linear-gradient(175deg,#fffcf5,#fef9ee 40%,#fffdf9 100%);padding:clamp(18px,2.2vw,24px);box-shadow:0 2px 12px rgba(194,120,10,0.06);transition:all var(--transition)}
-        .support-card:hover{box-shadow:0 6px 24px rgba(194,120,10,0.10);border-color:#e2c88a}
-        .support-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
-        .support-title{font-size:clamp(16px,1.6vw,19px);font-weight:800;color:#6b3a0a;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-        .support-title .coffee-icon{font-size:18px;animation:steam 2.5s ease-in-out infinite}
-        @keyframes steam{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-5px);opacity:.7}}
-        .support-copy{color:#7a5018;font-size:13.5px;line-height:1.6}
-        .support-copy strong{color:#e05050;}
-        .cost-pill{flex:0 0 auto;padding:10px 14px;border-radius:var(--radius-sm);background:#fffefb;border:1px solid #ecd9a8;color:#6b3a0a;font-weight:800;text-align:center;min-width:90px;font-size:14px;white-space:nowrap}
-        .cost-pill small{display:block;color:#9a6b2e;font-weight:600;margin-top:2px;font-size:11px}
-        .qr-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
-        .qr-card{border:1px solid #ecd9a8;border-radius:var(--radius);background:#fffefb;padding:13px;text-align:center;cursor:pointer;transition:all var(--transition);-webkit-tap-highlight-color:transparent;user-select:none;position:relative}
-        .qr-card:hover{transform:translateY(-3px);border-color:#d4a74a;box-shadow:0 10px 30px rgba(194,120,10,0.14)}
-        .qr-card img{width:clamp(120px,15vw,150px);height:clamp(120px,15vw,150px);object-fit:contain;border-radius:10px;background:#fff;border:1px solid #f5eedf;pointer-events:none}
-        .qr-card strong{display:block;margin-top:9px;color:#6b3a0a;font-size:14px;font-weight:750}
-        .qr-card span{display:block;margin-top:3px;color:#9a6b2e;font-size:11.5px}
-        .qr-card .tap-hint{display:inline-block;margin-top:5px;padding:3px 8px;border-radius:6px;background:rgba(194,120,10,0.06);font-size:10.5px;color:#8a5c20;font-weight:600}
-        .support-note{margin-top:13px;color:#7a5018;font-size:12.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,0.6);border-radius:8px;padding:8px 12px;border:1px dashed #e8d5a8}
-        .support-note .note-text{flex:1;min-width:0}
-        .btn-copy-note{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;border:1px solid #d4b87a;border-radius:7px;padding:6px 11px;background:#fffef9;color:#6b3a0a;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all var(--transition-fast);font-family:var(--font-sans)}
-        .btn-copy-note:hover{background:#fff8e8;border-color:#c29a3a}
-        .btn-copy-note.copied{background:#eafaf3;border-color:#0d9e6c;color:#087a56}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.012) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.008) 0 1px,transparent 1px 4px);
+  mix-blend-mode:multiply;
+}
 
-        .info-card{padding:clamp(24px,3vw,36px) clamp(20px,2.8vw,32px);display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative;overflow:hidden}
-        .info-card::before{content:'';position:absolute;right:-65px;top:-65px;width:180px;height:180px;border-radius:50%;background:#eafaf3;pointer-events:none}
-        .info-icon{position:relative;z-index:1;width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--amber-soft);color:var(--amber);font-size:21px;margin-bottom:20px;border:1px solid var(--amber-border)}
-        .info-card h2{font-size:clamp(24px,3vw,32px);line-height:1.16;margin:5px 0 9px;color:#111520;position:relative;z-index:1}
-        .info-card .info-note{position:relative;z-index:1;color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:18px}
-        .status-badge{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--radius-sm);background:var(--rose-soft);border:1px solid rgba(224,80,96,0.15);color:var(--rose);font-size:13px;font-weight:700;margin-bottom:18px;width:fit-content}
-        .status-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--rose);animation:pulse 2s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-        .quick-link-card{cursor:pointer;transition:all var(--transition);border-radius:14px;padding:14px 16px;margin-bottom:12px;border:1px solid;position:relative;z-index:1}
-        .quick-link-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
-        .contact-list{position:relative;z-index:1;display:grid;gap:10px;margin-top:8px}
-        .contact-item{display:flex;align-items:center;gap:10px;color:var(--ink-secondary);font-size:13.5px;padding:10px 12px;background:#f8fafd;border-radius:10px;border:1px solid var(--line-light)}
-        .contact-item i{width:22px;text-align:center;color:var(--primary)}
-        .contact-item strong{color:var(--ink);font-weight:700}
+.page{
+  position:relative;z-index:1;
+  width:min(1120px,100%);
+  padding:clamp(24px,4vw,64px) clamp(22px,5vw,80px) clamp(30px,4vw,56px);
+  display:flex;flex-direction:column;
+  min-height:100vh;min-height:100dvh;
+}
 
-        .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#1a1d28;color:#fff;padding:11px 18px;border-radius:10px;z-index:10000;opacity:0;pointer-events:none;box-shadow:0 10px 32px rgba(18,20,30,0.28);font-size:13.5px;font-weight:600;transition:all .28s;font-family:var(--font-sans)}
-        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-        .toast.success-flash{background:#087a56}
-        .qr-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,14,22,0.88);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
-        .qr-modal.show{display:flex}
-        .qr-modal-card{width:min(420px,94vw);border-radius:var(--radius-lg);background:#fff;padding:clamp(18px,3vw,24px);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.4)}
-        .qr-modal-card img{width:min(300px,78vw);height:min(300px,78vw);object-fit:contain;border-radius:14px;border:1px solid var(--line);background:#fff}
-        .qr-modal-card h3{margin-bottom:14px;font-size:19px;font-weight:800}
-        .close-modal{width:100%;margin-top:14px;border:0;border-radius:10px;padding:11px 14px;background:#1a1d28;color:#fff;font-weight:700;cursor:pointer;font-size:14px;font-family:var(--font-sans)}
+/* 顶栏 */
+.header{
+  display:flex;align-items:center;gap:14px;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--line);
+  animation:fadeUp .55s cubic-bezier(.22,1,.36,1) both;
+}
+.logo{
+  width:42px;height:42px;flex:0 0 auto;
+  border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--ink);color:var(--paper);
+  font-weight:800;font-size:13px;letter-spacing:.03em;
+}
+.brand-name{font-size:15px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.brand-sub{font-size:11.5px;color:var(--ink-3);line-height:1.3;margin-top:1px}
+.header-status{
+  margin-left:auto;
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;
+  color:var(--accent);
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+.header-status .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  animation:blink 2s ease-in-out infinite;
+}
 
-        @media(max-width:980px){
-            body{padding:12px;align-items:flex-start}
-            .shell{min-height:auto;grid-template-columns:1fr;gap:18px}
-            .info-card{order:1;border-radius:var(--radius-lg)}
-            .hero{order:2;padding:26px 20px;border-radius:var(--radius-lg);gap:22px}
-            .hero::after{display:none}
-            .hero h1{font-size:clamp(24px,5vw,34px)}
-            .value-grid{grid-template-columns:1fr 1fr;gap:8px}
-            .value-grid .value-card:last-child{grid-column:1/-1}
-            .qr-row{grid-template-columns:1fr 1fr;gap:10px}
-            .qr-card img{width:clamp(100px,28vw,140px);height:clamp(100px,28vw,140px)}
-            .support-top{flex-direction:column}
-            .cost-pill{align-self:flex-start}
-        }
-        @media(max-width:560px){
-            body{padding:8px}
-            .hero,.info-card{border-radius:var(--radius);padding:20px 15px}
-            .hero h1{font-size:25px}
-            .lead{font-size:14px}
-            .value-grid{grid-template-columns:1fr;gap:7px}
-            .value-grid .value-card:last-child{grid-column:auto}
-            .qr-row{grid-template-columns:1fr;gap:10px}
-            .qr-card{display:flex;align-items:center;gap:12px;text-align:left;padding:10px 12px}
-            .qr-card img{width:80px;height:80px;flex:0 0 80px;border-radius:8px}
-            .qr-card strong{margin-top:0;font-size:13px}
-            .qr-card span{font-size:11px}
-            .support-note{flex-direction:column;align-items:stretch;gap:6px}
-            .btn-copy-note{justify-content:center;width:100%}
-            .status-banner{font-size:12px;padding:10px 12px;}
-        }
-    </style>
+/* Hero */
+.hero{
+  padding:clamp(36px,6vw,80px) 0 clamp(34px,5vw,60px);
+  animation:fadeUp .55s cubic-bezier(.22,1,.36,1) .06s both;
+}
+.hero h1{
+  font-size:clamp(40px,7.5vw,84px);
+  font-weight:800;
+  line-height:1.02;
+  letter-spacing:-.045em;
+  color:var(--ink);
+  margin-bottom:clamp(20px,3vw,32px);
+}
+.hero h1 .mark{position:relative;display:inline-block}
+.hero h1 .mark::after{
+  content:'';position:absolute;left:0;right:0;bottom:.06em;
+  height:.14em;background:var(--accent);opacity:.22;
+  border-radius:2px;
+}
+.hero-text{
+  font-size:clamp(14.5px,1.5vw,16.5px);
+  line-height:1.85;
+  color:var(--ink-2);
+  max-width:56ch;
+  letter-spacing:-.005em;
+}
+.hero-note{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-top:clamp(18px,2.4vw,26px);
+  font-size:12.5px;color:var(--ink-3);
+  letter-spacing:.01em;
+}
+.hero-note::before{
+  content:'';width:22px;height:1px;background:var(--line-strong);
+}
+
+/* 分区标题 */
+.section-label{
+  display:flex;align-items:center;gap:12px;
+  font-size:11px;font-weight:800;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);
+  margin-bottom:20px;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;background:var(--line);
+}
+.section-label .num{
+  font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  color:var(--accent);
+  font-weight:700;
+}
+
+/* 两栏 */
+.lower{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:clamp(28px,5vw,72px);
+  padding-top:clamp(28px,4vw,44px);
+  border-top:1px solid var(--line);
+  animation:fadeUp .55s cubic-bezier(.22,1,.36,1) .14s both;
+}
+
+/* 赞助 */
+.sponsor h2{
+  font-size:clamp(20px,2.2vw,26px);
+  font-weight:800;
+  letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.sponsor p{
+  font-size:13.5px;
+  line-height:1.8;
+  color:var(--ink-2);
+}
+.sponsor p strong{color:var(--ink);font-weight:750}
+
+.qr-strip{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(12px,2vw,20px);
+  margin-top:clamp(20px,2.6vw,28px);
+}
+.qr-shot{
+  position:relative;
+  display:block;width:100%;
+  padding:10px 10px 12px;
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:2px;
+  font-family:inherit;
+  cursor:pointer;user-select:none;
+  text-align:center;
+  transition:transform .25s cubic-bezier(.4,0,.2,1),border-color .2s,box-shadow .25s;
+}
+.qr-shot::before{
+  content:'';position:absolute;left:50%;bottom:6px;
+  width:34px;height:2px;border-radius:2px;
+  background:var(--line-strong);
+  transform:translateX(-50%);
+  transition:background .2s;
+}
+.qr-shot:hover{
+  transform:translateY(-5px) rotate(-.6deg);
+  border-color:var(--line-strong);
+  box-shadow:0 22px 44px -28px rgba(20,20,20,.5);
+}
+.qr-shot:hover::before{background:var(--accent)}
+.qr-shot img{
+  display:block;width:100%;
+  aspect-ratio:1/1;object-fit:contain;
+  border-radius:1px;background:#fff;
+  pointer-events:none;
+}
+.qr-shot .cap{
+  margin-top:10px;
+  font-size:12.5px;font-weight:750;
+  color:var(--ink);
+  letter-spacing:-.01em;
+}
+.qr-shot .cap-sub{
+  display:block;margin-top:2px;
+  font-size:10.5px;color:var(--ink-3);
+  font-weight:500;letter-spacing:.02em;
+}
+
+.note-line{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  margin-top:clamp(18px,2.4vw,24px);
+  padding-top:16px;
+  border-top:1px dashed var(--line-strong);
+  font-size:12.5px;color:var(--ink-2);
+}
+.note-line .lbl{
+  font-size:10.5px;font-weight:800;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);
+}
+.note-line code{
+  font-family:inherit;
+  font-size:12.5px;font-weight:700;
+  color:var(--ink);
+  letter-spacing:-.01em;
+}
+.btn-copy{
+  margin-left:auto;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+  background:transparent;color:var(--ink);
+  font-family:inherit;
+  font-size:11.5px;font-weight:700;
+  letter-spacing:.02em;
+  cursor:pointer;
+  transition:background .16s,border-color .16s,color .16s;
+}
+.btn-copy:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn-copy.copied{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 联系 */
+.contact h2{
+  font-size:clamp(20px,2.2vw,26px);
+  font-weight:800;
+  letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.contact-list{
+  list-style:none;
+  display:flex;flex-direction:column;
+  border-top:1px solid var(--line);
+}
+.contact-list li{border-bottom:1px solid var(--line)}
+
+/* a 和 button 通用 */
+.contact-link{
+  display:flex;align-items:center;gap:14px;
+  width:100%;
+  padding:14px 2px;
+  text-decoration:none;color:inherit;
+  background:transparent;
+  border:0;
+  font-family:inherit;
+  font-size:inherit;
+  text-align:left;
+  cursor:pointer;
+  transition:padding-left .2s,color .18s;
+}
+.contact-link:hover{padding-left:10px;color:var(--accent)}
+.contact-link i.ico{
+  flex:0 0 18px;text-align:center;
+  font-size:14px;color:var(--ink-3);
+  transition:color .18s;
+}
+.contact-link:hover i.ico{color:var(--accent)}
+.contact-link .k{
+  font-size:10.5px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);
+  min-width:62px;
+  flex:0 0 auto;
+}
+.contact-link .v{
+  font-size:13.5px;font-weight:600;
+  letter-spacing:-.005em;
+  flex:1;
+  word-break:break-all;
+}
+.contact-link .tail{
+  font-size:11px;color:var(--ink-3);
+  opacity:0;
+  transition:opacity .18s,transform .18s;
+  flex:0 0 auto;
+}
+.contact-link:hover .tail{opacity:1;transform:translateX(3px)}
+
+/* 邮箱：悬停时显示"点击复制" */
+.contact-link.is-copy .tail{
+  font-size:10.5px;font-weight:700;
+  letter-spacing:.06em;
+}
+.contact-link.is-copy:hover .tail{opacity:1;transform:none}
+
+/* 群二维码 */
+.group-qr{
+  display:flex;align-items:center;gap:14px;
+  margin-top:clamp(20px,2.6vw,26px);
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:2px;
+  background:var(--paper-2);
+}
+.group-qr img{
+  flex:0 0 auto;
+  width:76px;height:76px;
+  object-fit:contain;
+  border-radius:1px;background:#fff;
+  border:1px solid var(--line);
+}
+.group-qr-fb{
+  flex:0 0 76px;width:76px;height:76px;
+  display:none;place-items:center;
+  font-size:10px;color:var(--ink-3);
+  background:var(--paper);border:1px dashed var(--line-strong);
+  text-align:center;padding:6px;
+}
+.group-qr-text .k{
+  font-size:10.5px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);
+  margin-bottom:3px;
+}
+.group-qr-text .v{
+  font-size:13.5px;font-weight:750;
+  letter-spacing:-.01em;
+}
+.group-qr-text .s{
+  font-size:11.5px;color:var(--ink-3);
+  margin-top:2px;line-height:1.45;
+}
+
+/* 底部注记 */
+.footnotes{
+  margin-top:auto;
+  padding-top:clamp(30px,4vw,44px);
+  display:flex;flex-wrap:wrap;gap:8px 26px;
+  font-size:12px;color:var(--ink-3);
+  animation:fadeUp .55s cubic-bezier(.22,1,.36,1) .2s both;
+}
+.footnotes span{display:inline-flex;align-items:center;gap:8px}
+.footnotes span::before{content:'—';color:var(--line-strong)}
+
+/* Toast */
+.toast{
+  position:fixed;left:50%;bottom:26px;z-index:10000;
+  transform:translateX(-50%) translateY(20px);
+  padding:11px 20px;
+  background:var(--ink);color:var(--paper);
+  border-radius:999px;
+  font-family:var(--font);font-size:13px;font-weight:600;
+  letter-spacing:.01em;
+  box-shadow:0 20px 50px -18px rgba(0,0,0,.7);
+  opacity:0;pointer-events:none;
+  transition:opacity .26s,transform .26s;
+  max-width:calc(100vw - 40px);
+  text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.toast.ok{background:var(--accent)}
+
+/* 弹窗 */
+.modal{
+  position:fixed;inset:0;z-index:9999;display:none;
+  align-items:center;justify-content:center;padding:20px;
+  background:rgba(20,20,20,.85);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.modal.show{display:flex;animation:fadeIn .2s ease both}
+.modal-card{
+  width:min(400px,94vw);
+  padding:clamp(18px,3vw,24px);
+  background:var(--paper-2);
+  border-radius:4px;
+  text-align:center;
+  box-shadow:0 40px 100px -30px rgba(0,0,0,.9);
+  animation:pop .28s cubic-bezier(.22,1,.36,1) both;
+}
+.modal-card h3{
+  margin-bottom:14px;font-size:16px;font-weight:800;
+  letter-spacing:.02em;color:var(--ink);
+}
+.modal-card img{
+  width:min(300px,78vw);height:min(300px,78vw);
+  object-fit:contain;border-radius:2px;
+  border:1px solid var(--line);background:#fff;
+}
+.modal-card p{margin-top:10px;font-size:11.5px;color:var(--ink-3)}
+.modal-close{
+  width:100%;margin-top:16px;padding:12px 14px;
+  border:0;border-radius:2px;
+  background:var(--ink);color:var(--paper);
+  font-family:inherit;font-size:13.5px;font-weight:700;
+  letter-spacing:.03em;cursor:pointer;
+  transition:background .16s;
+}
+.modal-close:hover{background:var(--accent)}
+
+/* 动画 */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.28}}
+
+/* 响应式 */
+@media(max-width:900px){
+  .lower{grid-template-columns:1fr;gap:40px}
+}
+@media(max-width:600px){
+  .page{padding:22px 18px 30px}
+  .header{padding-bottom:18px;gap:11px}
+  .logo{width:36px;height:36px;font-size:12px}
+  .header-status{font-size:11px}
+  .hero{padding:30px 0 36px}
+  .hero h1{letter-spacing:-.035em}
+  .hero-text{font-size:14px;line-height:1.8}
+  .qr-strip{gap:12px}
+  .qr-shot{padding:8px 8px 10px}
+  .qr-shot .cap{font-size:11.5px}
+  .qr-shot .cap-sub{font-size:10px}
+  .note-line{gap:8px}
+  .btn-copy{margin-left:0;width:100%;justify-content:center}
+  .contact-link{padding:13px 2px;gap:11px}
+  .contact-link .k{min-width:54px;font-size:10px}
+  .contact-link .v{font-size:13px}
+  .contact-link .tail{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
-    <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
 
-    <main class="shell">
-        <!-- 左侧主区域 -->
-        <section class="hero" aria-label="服务介绍与支持">
-            <div class="hero-top">
-                <div class="brand">
-                    <span class="brand-badge">AG</span>
-                    <span>AG工作室 出品</span>
-                </div>
+<main class="page">
 
-                <!-- 状态横幅 -->
-                <div class="status-banner">
-                    <i class="fas fa-bullhorn"></i>
-                    <span>考研闭关中 · 已付费用户服务正常 · 新用户自愿赞助后开通</span>
-                </div>
+  <!-- 顶栏 -->
+  <header class="header">
+    <div class="logo">AG</div>
+    <div>
+      <div class="brand-name">AG工作室</div>
+      <div class="brand-sub">自动化考勤服务</div>
+    </div>
+    <div class="header-status">
+      <span class="dot"></span>
+      维护中
+    </div>
+  </header>
 
-                <h1>考研冲刺期间，<span>服务暂缓</span></h1>
-                <!-- 在 <h1> 下面插入这个跳转入口 -->
-                <div style="margin: 18px 0 12px;">
-                    <a href="/shudian.html" 
-                       style="display:inline-flex;align-items:center;gap:10px;background:#1d4ed8;color:#fff;padding:12px 28px;border-radius:60px;font-weight:700;font-size:16px;text-decoration:none;box-shadow:0 4px 16px rgba(29,78,216,0.3);transition:0.2s;border:1px solid rgba(255,255,255,0.2);"
-                       onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(29,78,216,0.4)'"
-                       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 16px rgba(29,78,216,0.3)'">
-                       <span style="font-size:20px;">🧪</span> 进入「数电通」交互实验室
-                       <span style="font-size:14px;opacity:0.8;">→</span>
-                    </a>
-                </div>
-                <p class="lead">
-                    近期在准备考研，服务器暂时停止续费，免费服务暂停。如果您需要自动化考勤服务并愿意支持，可通过下方二维码自愿赞助，备注好信息后人工维护考勤。一杯奶茶钱就是最大的鼓励 🙏
-                </p>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>服务<span class="mark">暂缓</span>中。</h1>
 
-                <div class="value-grid">
-                    <div class="value-card">
-                        <div class="vc-icon blue"><i class="fas fa-book-open"></i></div>
-                        <strong>考研闭关</strong>
-                        <span>暂停服务器续费，专注备考，考后恢复。</span>
-                    </div>
-                    <div class="value-card">
-                        <div class="vc-icon green"><i class="fas fa-heart"></i></div>
-                        <strong>自愿赞助</strong>
-                        <span>金额随意，完全自愿，已付费用户不受影响。</span>
-                    </div>
-                    <div class="value-card">
-                        <div class="vc-icon amber"><i class="fas fa-clock"></i></div>
-                        <strong>恢复通知</strong>
-                        <span>考后会在 QQ 频道第一时间通知。</span>
-                    </div>
-                </div>
-            </div>
+    <p class="hero-text">
+      近期服务器暂停续费，免费服务暂停，预计下学期恢复。如果您需要自动化考勤服务并愿意支持，可通过下方二维码自愿赞助，备注好信息后人工维护考勤。一杯奶茶钱就是最大的鼓励 🙏
+    </p>
 
-            <!-- 赞助区域 -->
-            <div class="support-card" id="support">
-                <div class="support-top">
-                    <div>
-                        <div class="support-title">
-                            <span class="coffee-icon">☕</span>
-                            自愿支持 AG 工作室
-                        </div>
-                        <p class="support-copy">
-                            服务器、域名和日常维护都需要成本。多少都是心意，完全自愿。每日21：33后赞助的用户当日默认不发邮件通知。如有个性化需求（自定义日期，时间等）需开通VIP（VX扫码查看详情）。<br>
-                            付款备注请填写 <strong>学号，密码，邮箱</strong>，方便完成考勤需求及记录感谢名单。
-                        </p>
-                    </div>
-                    <div class="cost-pill">
-                        随意金额
-                        <small>完全自愿</small>
-                    </div>
-                </div>
-                <div class="qr-row" aria-label="自愿赞助收款码">
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/vxcode.png', '微信自愿赞助码')" aria-label="微信收款码">
-                        <img src="https://login.agai.online/vxcode.png" alt="微信收款码" loading="lazy">
-                        <div>
-                            <strong>微信赞助（菜单版）</strong>
-                            <span>点击放大 · 手机扫码</span>
-                            <span class="tap-hint">📱 长按可保存图片</span>
-                        </div>
-                    </button>
-                    <button class="qr-card" type="button" onclick="openQRModal('https://login.agai.online/zfbcode.png', '支付宝自愿赞助码')" aria-label="支付宝收款码">
-                        <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码" loading="lazy">
-                        <div>
-                            <strong>支付宝赞助</strong>
-                            <span>点击放大 · 手机扫码</span>
-                            <span class="tap-hint">📱 长按可保存图片</span>
-                        </div>
-                    </button>
-                </div>
-                <div class="support-note">
-                    <span class="note-text">💡 备注格式：<strong>学号 + 密码 + 邮箱</strong>（邮箱可选）</span>
-                    <button class="btn-copy-note" id="btnCopyNote" type="button" onclick="copyNoteTemplate()">
-                        <i class="far fa-copy"></i> 复制备注格式
-                    </button>
-                </div>
-            </div>
-        </section>
+    <p class="hero-note">已付费用户服务不受影响</p>
+  </section>
 
-        <!-- 右侧信息区 -->
-        <section class="info-card" aria-label="联系方式与状态">
-            <div class="info-icon"><i class="fas fa-circle-info"></i></div>
-            <div style="position:relative;z-index:1;">
-                <div style="color:var(--amber);font-size:12.5px;font-weight:800;margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase">当前状态</div>
-                <h2>服务暂缓中</h2>
-            </div>
-            <div class="status-badge">
-                <span>免费服务已暂停 · 已付费用户不受影响</span>
-            </div>
-            <p class="info-note">
-                所有自动签到、登录、查询功能均已随服务器下线下架。之前付过费的朋友服务不受影响，感谢你们一开始的信任和支持。
-            </p>
+  <!-- 两栏 -->
+  <section class="lower">
 
-            <div class="contact-list">
-                <div class="contact-item">
-                    <i class="fab fa-qq"></i>
-                    <span>QQ 频道：<strong>aggzs66666</strong></span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>邮箱：support@agai.online</span>
-                </div>
-            </div>
+    <!-- 左：赞助 -->
+    <div class="sponsor">
+      <div class="section-label">
+        <span class="num">01</span>
+        自愿赞助
+      </div>
+      <h2>支持 AG 工作室</h2>
 
-            <!-- 原来的 QQ 频道卡片 -->
-            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f8ff,#e8f0fe);border-color:#c8ddf8;margin-top:18px;"
-                 onclick="window.open('https://pd.qq.com/s/9fkh0w8xw','_blank')">
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#12b7f5,#0d8bd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
-                        <i class="fab fa-qq"></i>
-                    </div>
-                    <div style="flex:1;">
-                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">💬 加入 QQ 频道</div>
-                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">频道号：aggzs66666 · 通知 · 交流</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color:#aaa;"></i>
-                </div>
-            </div>
+      <p>
+        服务器、域名和日常维护都需要成本。多少都是心意，完全自愿。每日 21:33 后赞助的用户当日默认不发邮件通知。如有个性化需求（自定义日期、时间等）需开通 VIP（VX 扫码查看详情）。<br>
+        付款备注请填写 <strong>学号、密码、邮箱</strong>，方便完成考勤需求及记录感谢名单。
+      </p>
 
-            <!-- 新增：QQ 群入口与二维码 -->
-            <div class="quick-link-card" style="background:linear-gradient(135deg,#f0f8ff,#e8f0fe);border-color:#c8ddf8;margin-top:12px;"
-                 onclick="window.open('https://qm.qq.com/q/yBoRfiIT8k','_blank')">
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#12b7f5,#0d8bd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div style="flex:1;">
-                        <div style="font-weight:700;font-size:15px;color:#1a1d28;">👥 加入 QQ 群聊</div>
-                        <div style="font-size:12px;color:#6b7187;margin-top:2px;">AG工作室股东大会 · 群号：1107914277</div>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color:#aaa;"></i>
-                </div>
-            </div>
-            
-            <!-- 群二维码展示区 -->
-            <div style="position:relative;z-index:1;text-align:center;margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow-xs);">
-                <div style="font-size:12.5px;font-weight:700;color:var(--primary-dark);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px;">
-                    <i class="fas fa-qrcode"></i> 扫码加入「AG工作室股东大会」
-                </div>
-                <!-- 请确保将上传的图片保存为 qq_group_qr.png 并放在同级目录下 -->
-                <img src="qq_group_qr.png" alt="AG工作室股东大会群二维码" style="width:100%; max-width:200px; border-radius:8px; border:1px solid var(--line-light); display:block; margin:0 auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div style="display:none; color:var(--muted); font-size:12px; padding:20px 0;">二维码图片加载失败，请检查图片路径（qq_group_qr.png）</div>
-            </div>
+      <div class="qr-strip">
+        <button class="qr-shot" type="button"
+                onclick="openQR('https://login.agai.online/vxcode.png','微信自愿赞助码')"
+                aria-label="微信收款码">
+          <img src="https://login.agai.online/vxcode.png" alt="微信收款码" loading="lazy">
+          <span class="cap">微信赞助（菜单版）
+            <span class="cap-sub">点击放大 · 手机扫码</span>
+          </span>
+        </button>
 
-            <div style="position:relative;z-index:1;margin-top:18px;display:grid;gap:9px">
-                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px">
-                    <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
-                    <span>考研结束后会第一时间恢复服务器。</span>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px">
-                    <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
-                    <span>之前（2026年7月前）已付费用户不受影响。</span>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:13px">
-                    <span style="flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#eafaf3;color:var(--green);font-size:11px;font-weight:900;margin-top:1px">✓</span>
-                    <span>有任何问题可在 QQ 频道留言或发送邮件。</span>
-                </div>
-            </div>
-        </section>
-    </main>
+        <button class="qr-shot" type="button"
+                onclick="openQR('https://login.agai.online/zfbcode.png','支付宝自愿赞助码')"
+                aria-label="支付宝收款码">
+          <img src="https://login.agai.online/zfbcode.png" alt="支付宝收款码" loading="lazy">
+          <span class="cap">支付宝赞助
+            <span class="cap-sub">点击放大 · 手机扫码</span>
+          </span>
+        </button>
+      </div>
 
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-    <div class="qr-modal" id="qrModal" onclick="closeQRModal()" role="dialog" aria-modal="true">
-        <div class="qr-modal-card" onclick="event.stopPropagation()">
-            <h3 id="qrModalTitle">收款码</h3>
-            <img id="qrModalImage" src="" alt="收款码">
-            <p class="modal-hint" style="font-size:12px;color:var(--muted);margin-top:8px;">📱 截图或长按保存，用对应App扫码</p>
-            <button class="close-modal" type="button" onclick="closeQRModal()">关闭</button>
-        </div>
+      <div class="note-line">
+        <span class="lbl">备注</span>
+        <code>学号 + 密码 + 邮箱（可选）</code>
+        <button class="btn-copy" id="copyBtn" type="button" onclick="copyNote()">
+          <i class="far fa-copy"></i>
+          复制备注格式
+        </button>
+      </div>
     </div>
 
-    <script>
-        let toastTimer = null;
+    <!-- 右：联系 -->
+    <div class="contact">
+      <div class="section-label">
+        <span class="num">02</span>
+        联系方式
+      </div>
+      <h2>找到我们</h2>
 
-        function showToast(message, type = '') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast show ${type}`.trim();
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => { toast.className = 'toast'; }, 2800);
-        }
+      <ul class="contact-list">
+        <li>
+          <a class="contact-link" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener">
+            <i class="fab fa-qq ico"></i>
+            <span class="k">频道</span>
+            <span class="v">aggzs66666</span>
+            <i class="fas fa-arrow-right tail"></i>
+          </a>
+        </li>
+        <li>
+          <a class="contact-link" href="https://qm.qq.com/q/yBoRfiIT8k" target="_blank" rel="noopener">
+            <i class="fas fa-users ico"></i>
+            <span class="k">群聊</span>
+            <span class="v">1107914277</span>
+            <i class="fas fa-arrow-right tail"></i>
+          </a>
+        </li>
+        <li>
+          <button class="contact-link is-copy" type="button" onclick="copyEmail()">
+            <i class="fas fa-envelope ico"></i>
+            <span class="k">邮箱</span>
+            <span class="v">support@agai.online</span>
+            <span class="tail">点击复制</span>
+          </button>
+        </li>
+      </ul>
 
-        function openQRModal(imgSrc, title) {
-            document.getElementById('qrModalImage').src = imgSrc;
-            document.getElementById('qrModalTitle').textContent = title;
-            document.getElementById('qrModal').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
+      <div class="group-qr">
+        <img src="qq_group_qr.png" alt="AG工作室股东大会群二维码"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+        <div class="group-qr-fb">二维码<br>加载失败</div>
+        <div class="group-qr-text">
+          <div class="k">扫码加入</div>
+          <div class="v">AG工作室股东大会</div>
+          <div class="s">QQ 群 · 通知 · 交流</div>
+        </div>
+      </div>
+    </div>
 
-        function closeQRModal() {
-            document.getElementById('qrModal').classList.remove('show');
-            document.body.style.overflow = '';
-        }
+  </section>
 
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeQRModal(); });
+  <!-- 底部注记 -->
+  <div class="footnotes">
+    <span>服务恢复后会第一时间在 QQ 频道通知</span>
+    <span>之前（2026 年 7 月前）已付费用户不受影响</span>
+    <span>有任何问题可在 QQ 频道留言或发送邮件</span>
+  </div>
 
-        function copyNoteTemplate() {
-            const noteTemplate = 'AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：';
-            const btn = document.getElementById('btnCopyNote');
-            navigator.clipboard.writeText(noteTemplate).then(() => {
-                btn.classList.add('copied');
-                btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                showToast('备注格式已复制 ✓', 'success-flash');
-                setTimeout(() => {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式';
-                }, 2000);
-            }).catch(() => {
-                showToast('复制失败，请手动记录', '');
-            });
-        }
-    </script>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal" onclick="closeQR()" role="dialog" aria-modal="true">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h3 id="qrTitle">收款码</h3>
+    <img id="qrImage" src="" alt="收款码">
+    <p>📱 截图或长按保存，用对应 App 扫码</p>
+    <button class="modal-close" type="button" onclick="closeQR()">关 闭</button>
+  </div>
+</div>
+
+<script>
+let toastTimer = null;
+
+function showToast(msg, type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.className = 'toast'; }, 2800);
+}
+
+function openQR(src, title){
+  document.getElementById('qrImage').src = src;
+  document.getElementById('qrTitle').textContent = title;
+  document.getElementById('qrModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQR(){
+  document.getElementById('qrModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeQR(); });
+
+/* 兼容复制 */
+function doCopy(text, onOk, onFail){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(onOk).catch(()=>{
+      fallback();
+    });
+  }else{
+    fallback();
+  }
+  function fallback(){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.top = '0';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try{
+      const ok = document.execCommand('copy');
+      ok ? onOk() : onFail();
+    }catch(e){ onFail(); }
+    document.body.removeChild(ta);
+  }
+}
+
+/* 复制备注格式 */
+function copyNote(){
+  const text = 'AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：';
+  const btn = document.getElementById('copyBtn');
+
+  doCopy(text, ()=>{
+    btn.classList.add('copied');
+    btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+    showToast('备注格式已复制','ok');
+    setTimeout(()=>{
+      btn.classList.remove('copied');
+      btn.innerHTML = '<i class="far fa-copy"></i> 复制备注格式';
+    }, 2000);
+  }, ()=>{
+    showToast('复制失败，请手动记录');
+  });
+}
+
+/* 复制邮箱 */
+function copyEmail(){
+  const email = 'support@agai.online';
+  doCopy(email, ()=>{
+    showToast('邮箱已复制：' + email, 'ok');
+  }, ()=>{
+    showToast('复制失败，请手动记录');
+  });
+}
+</script>
 </body>
 </html>
