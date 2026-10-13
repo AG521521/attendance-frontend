@@ -49,7 +49,7 @@ body::before{
 .page{
   position:relative;z-index:1;
   width:min(1120px,100%);
-  padding:clamp(24px,4vw,64px) clamp(22px,5vw,80px) clamp(30px,4vw,56px);
+  padding:clamp(20px,3.4vw,52px) clamp(22px,5vw,80px) clamp(24px,3vw,40px);
   display:flex;flex-direction:column;
   min-height:100vh;min-height:100dvh;
 }
@@ -57,7 +57,7 @@ body::before{
 /* 顶栏 */
 .header{
   display:flex;align-items:center;gap:14px;
-  padding-bottom:22px;
+  padding-bottom:18px;
   border-bottom:1px solid var(--line);
   animation:fadeUp .55s cubic-bezier(.22,1,.36,1) both;
 }
@@ -84,18 +84,18 @@ body::before{
   animation:blink 2s ease-in-out infinite;
 }
 
-/* Hero */
+/* ====== Hero ====== */
 .hero{
-  padding:clamp(36px,6vw,80px) 0 clamp(34px,5vw,60px);
+  padding:clamp(30px,4.5vw,64px) 0 clamp(30px,4vw,52px);
   animation:fadeUp .55s cubic-bezier(.22,1,.36,1) .06s both;
 }
 .hero h1{
-  font-size:clamp(40px,7.5vw,84px);
+  font-size:clamp(38px,7vw,78px);
   font-weight:800;
   line-height:1.02;
   letter-spacing:-.045em;
   color:var(--ink);
-  margin-bottom:clamp(20px,3vw,32px);
+  margin-bottom:clamp(18px,2.4vw,26px);
 }
 .hero h1 .mark{position:relative;display:inline-block}
 .hero h1 .mark::after{
@@ -104,20 +104,39 @@ body::before{
   border-radius:2px;
 }
 .hero-text{
-  font-size:clamp(14.5px,1.5vw,16.5px);
-  line-height:1.85;
+  font-size:clamp(14.5px,1.5vw,16px);
+  line-height:1.8;
   color:var(--ink-2);
-  max-width:56ch;
+  max-width:58ch;
   letter-spacing:-.005em;
 }
 .hero-note{
   display:inline-flex;align-items:center;gap:10px;
-  margin-top:clamp(18px,2.4vw,26px);
+  margin-top:16px;
   font-size:12.5px;color:var(--ink-3);
   letter-spacing:.01em;
 }
 .hero-note::before{
   content:'';width:22px;height:1px;background:var(--line-strong);
+}
+
+/* 桌面端：Hero 横排，大幅降低高度 */
+@media(min-width:901px){
+  .hero{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:0 clamp(36px,5vw,72px);
+    align-items:end;
+    padding:clamp(26px,3.2vw,42px) 0 clamp(24px,2.8vw,36px);
+  }
+  .hero h1{
+    font-size:clamp(44px,4.8vw,68px);
+    margin-bottom:0;
+    white-space:nowrap;
+  }
+  .hero-body{padding-bottom:5px}
+  .hero-text{font-size:clamp(13.5px,1.15vw,15px);line-height:1.75;max-width:64ch}
+  .hero-note{margin-top:12px}
 }
 
 /* 分区标题 */
@@ -126,7 +145,7 @@ body::before{
   font-size:11px;font-weight:800;
   letter-spacing:.18em;text-transform:uppercase;
   color:var(--ink-3);
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 .section-label::after{
   content:'';flex:1;height:1px;background:var(--line);
@@ -142,30 +161,31 @@ body::before{
   display:grid;
   grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
   gap:clamp(28px,5vw,72px);
-  padding-top:clamp(28px,4vw,44px);
+  padding-top:clamp(22px,3vw,34px);
   border-top:1px solid var(--line);
   animation:fadeUp .55s cubic-bezier(.22,1,.36,1) .14s both;
 }
 
 /* 赞助 */
 .sponsor h2{
-  font-size:clamp(20px,2.2vw,26px);
+  font-size:clamp(19px,2vw,24px);
   font-weight:800;
   letter-spacing:-.02em;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 .sponsor p{
   font-size:13.5px;
   line-height:1.8;
   color:var(--ink-2);
 }
+.sponsor p + p{margin-top:8px}
 .sponsor p strong{color:var(--ink);font-weight:750}
 
 .qr-strip{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:clamp(12px,2vw,20px);
-  margin-top:clamp(20px,2.6vw,28px);
+  margin-top:clamp(18px,2.4vw,26px);
 }
 .qr-shot{
   position:relative;
@@ -212,8 +232,8 @@ body::before{
 
 .note-line{
   display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-  margin-top:clamp(18px,2.4vw,24px);
-  padding-top:16px;
+  margin-top:clamp(16px,2.2vw,22px);
+  padding-top:14px;
   border-top:1px dashed var(--line-strong);
   font-size:12.5px;color:var(--ink-2);
 }
@@ -246,10 +266,10 @@ body::before{
 
 /* 联系 */
 .contact h2{
-  font-size:clamp(20px,2.2vw,26px);
+  font-size:clamp(19px,2vw,24px);
   font-weight:800;
   letter-spacing:-.02em;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 .contact-list{
   list-style:none;
@@ -258,11 +278,10 @@ body::before{
 }
 .contact-list li{border-bottom:1px solid var(--line)}
 
-/* a 和 button 通用 */
 .contact-link{
   display:flex;align-items:center;gap:14px;
   width:100%;
-  padding:14px 2px;
+  padding:13px 2px;
   text-decoration:none;color:inherit;
   background:transparent;
   border:0;
@@ -299,22 +318,30 @@ body::before{
   flex:0 0 auto;
 }
 .contact-link:hover .tail{opacity:1;transform:translateX(3px)}
-
-/* 邮箱：悬停时显示"点击复制" */
 .contact-link.is-copy .tail{
   font-size:10.5px;font-weight:700;
   letter-spacing:.06em;
 }
-.contact-link.is-copy:hover .tail{opacity:1;transform:none}
+.contact-link.is-copy:hover .tail{transform:none}
 
-/* 群二维码 */
+/* QQ群二维码：可点击放大 */
 .group-qr{
   display:flex;align-items:center;gap:14px;
-  margin-top:clamp(20px,2.6vw,26px);
+  width:100%;
+  margin-top:clamp(18px,2.4vw,24px);
   padding:14px;
   border:1px solid var(--line);
   border-radius:2px;
   background:var(--paper-2);
+  font-family:inherit;
+  cursor:pointer;
+  text-align:left;
+  transition:border-color .18s,background .18s,transform .22s cubic-bezier(.4,0,.2,1);
+}
+.group-qr:hover{
+  border-color:var(--line-strong);
+  background:#fffefb;
+  transform:translateY(-2px);
 }
 .group-qr img{
   flex:0 0 auto;
@@ -322,7 +349,9 @@ body::before{
   object-fit:contain;
   border-radius:1px;background:#fff;
   border:1px solid var(--line);
+  transition:transform .22s;
 }
+.group-qr:hover img{transform:scale(1.03)}
 .group-qr-fb{
   flex:0 0 76px;width:76px;height:76px;
   display:none;place-items:center;
@@ -330,6 +359,7 @@ body::before{
   background:var(--paper);border:1px dashed var(--line-strong);
   text-align:center;padding:6px;
 }
+.group-qr-text{flex:1;min-width:0}
 .group-qr-text .k{
   font-size:10.5px;font-weight:800;
   letter-spacing:.14em;text-transform:uppercase;
@@ -344,11 +374,19 @@ body::before{
   font-size:11.5px;color:var(--ink-3);
   margin-top:2px;line-height:1.45;
 }
+.group-qr .zoom{
+  flex:0 0 auto;
+  font-size:11px;color:var(--ink-3);
+  display:inline-flex;align-items:center;gap:6px;
+  opacity:0;
+  transition:opacity .18s;
+}
+.group-qr:hover .zoom{opacity:1}
 
 /* 底部注记 */
 .footnotes{
   margin-top:auto;
-  padding-top:clamp(30px,4vw,44px);
+  padding-top:clamp(24px,3vw,36px);
   display:flex;flex-wrap:wrap;gap:8px 26px;
   font-size:12px;color:var(--ink-3);
   animation:fadeUp .55s cubic-bezier(.22,1,.36,1) .2s both;
@@ -419,15 +457,15 @@ body::before{
 
 /* 响应式 */
 @media(max-width:900px){
-  .lower{grid-template-columns:1fr;gap:40px}
+  .lower{grid-template-columns:1fr;gap:36px}
 }
 @media(max-width:600px){
   .page{padding:22px 18px 30px}
   .header{padding-bottom:18px;gap:11px}
   .logo{width:36px;height:36px;font-size:12px}
   .header-status{font-size:11px}
-  .hero{padding:30px 0 36px}
-  .hero h1{letter-spacing:-.035em}
+  .hero{padding:28px 0 34px}
+  .hero h1{letter-spacing:-.035em;margin-bottom:16px}
   .hero-text{font-size:14px;line-height:1.8}
   .qr-strip{gap:12px}
   .qr-shot{padding:8px 8px 10px}
@@ -439,6 +477,7 @@ body::before{
   .contact-link .k{min-width:54px;font-size:10px}
   .contact-link .v{font-size:13px}
   .contact-link .tail{opacity:1;transform:none}
+  .group-qr .zoom{opacity:1}
 }
 </style>
 </head>
@@ -462,12 +501,12 @@ body::before{
   <!-- Hero -->
   <section class="hero">
     <h1>服务<span class="mark">暂缓</span>中。</h1>
-
-    <p class="hero-text">
-      近期服务器暂停续费，免费服务暂停，预计下学期恢复。如果您需要自动化考勤服务并愿意支持，可通过下方二维码自愿赞助，备注好信息后人工维护考勤。一杯奶茶钱就是最大的鼓励 🙏
-    </p>
-
-    <p class="hero-note">已付费用户服务不受影响</p>
+    <div class="hero-body">
+      <p class="hero-text">
+        近期服务器暂停续费，免费服务暂停，预计下学期恢复。如果您需要自动化考勤服务并愿意支持，可通过下方二维码自愿赞助，备注好信息后人工维护考勤。一杯奶茶钱就是最大的鼓励 🙏
+      </p>
+      <p class="hero-note">已付费用户服务不受影响</p>
+    </div>
   </section>
 
   <!-- 两栏 -->
@@ -482,8 +521,11 @@ body::before{
       <h2>支持 AG 工作室</h2>
 
       <p>
-        服务器、域名和日常维护都需要成本。多少都是心意，完全自愿。每日 21:33 后赞助的用户当日默认不发邮件通知。如有个性化需求（自定义日期、时间等）需开通 VIP（VX 扫码查看详情）。<br>
-        付款备注请填写 <strong>学号、密码、邮箱</strong>，方便完成考勤需求及记录感谢名单。
+        服务器、域名和日常维护都需要成本。金额随意，完全出于自愿，多少都是心意。
+        付款备注请填写 <strong>学号、密码、邮箱</strong>（邮箱可选），方便完成考勤需求，也用于记录感谢名单。
+      </p>
+      <p>
+        每日 21:33 后赞助的用户，当日默认不发邮件通知；如需个性化服务（自定义日期、时间等），请开通 VIP（VX 扫码查看详情）。
       </p>
 
       <div class="qr-strip">
@@ -551,7 +593,9 @@ body::before{
         </li>
       </ul>
 
-      <div class="group-qr">
+      <button class="group-qr" type="button"
+              onclick="openQR('qq_group_qr.png','AG工作室股东大会 · 群二维码')"
+              aria-label="点击放大群二维码">
         <img src="qq_group_qr.png" alt="AG工作室股东大会群二维码"
              onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
         <div class="group-qr-fb">二维码<br>加载失败</div>
@@ -560,7 +604,8 @@ body::before{
           <div class="v">AG工作室股东大会</div>
           <div class="s">QQ 群 · 通知 · 交流</div>
         </div>
-      </div>
+        <span class="zoom"><i class="fas fa-expand"></i> 放大</span>
+      </button>
     </div>
 
   </section>
@@ -577,11 +622,11 @@ body::before{
 <!-- Toast -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- 二维码弹窗 -->
+<!-- 弹窗 -->
 <div class="modal" id="qrModal" onclick="closeQR()" role="dialog" aria-modal="true">
   <div class="modal-card" onclick="event.stopPropagation()">
-    <h3 id="qrTitle">收款码</h3>
-    <img id="qrImage" src="" alt="收款码">
+    <h3 id="qrTitle">二维码</h3>
+    <img id="qrImage" src="" alt="二维码">
     <p>📱 截图或长按保存，用对应 App 扫码</p>
     <button class="modal-close" type="button" onclick="closeQR()">关 闭</button>
   </div>
@@ -615,9 +660,7 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeQR(); });
 /* 兼容复制 */
 function doCopy(text, onOk, onFail){
   if(navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(text).then(onOk).catch(()=>{
-      fallback();
-    });
+    navigator.clipboard.writeText(text).then(onOk).catch(fallback);
   }else{
     fallback();
   }
@@ -638,7 +681,6 @@ function doCopy(text, onOk, onFail){
   }
 }
 
-/* 复制备注格式 */
 function copyNote(){
   const text = 'AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：';
   const btn = document.getElementById('copyBtn');
@@ -656,7 +698,6 @@ function copyNote(){
   });
 }
 
-/* 复制邮箱 */
 function copyEmail(){
   const email = 'support@agai.online';
   doCopy(email, ()=>{
