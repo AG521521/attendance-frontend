@@ -29,12 +29,15 @@ button{font:inherit;color:inherit}
 .top b{font-size:17px;font-weight:800}
 .top span{font-size:13px;font-weight:600}
 .heroin{margin-top:clamp(30px,8vw,76px)}
-h1{font-size:clamp(78px,25vw,176px);font-weight:900;line-height:.98;letter-spacing:-.03em}
+h1{font-size:clamp(64px,22vw,120px);font-weight:900;line-height:.98;letter-spacing:-.03em}
 .lead{margin-top:22px;max-width:25em;font-size:clamp(16px,2.2vw,19px);font-weight:600}
 .tape{height:18px;background:repeating-linear-gradient(-45deg,var(--g) 0 14px,var(--y) 14px 28px)}
 @media(min-width:860px){
-  .heroin{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end}
-  .lead{margin:0 0 14px}
+  .hero .wrap{padding-bottom:30px}
+  .heroin{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:end;margin-top:34px}
+  h1{font-size:92px}
+  h1 br{display:none}
+  .lead{margin:0 0 8px;font-size:17px}
 }
 
 /* 2 · 学期时间线 */
@@ -61,7 +64,9 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .tabs button{padding:7px 24px;border:0;border-radius:99px;background:none;font-weight:800;cursor:pointer}
 .tabs button[aria-selected=true]{background:var(--g);color:var(--y)}
 
-.frame{position:relative;width:min(262px,78vw);margin:22px 0 10px;padding:20px;background:#fff}
+.frame{display:block;position:relative;width:min(262px,78vw);margin:22px 0 10px;padding:20px;border:0;background:#fff;cursor:zoom-in}
+.frame:hover{outline:3px solid var(--y)}
+.qrs{display:block}
 .frame::before,.frame::after,.qrs::before,.qrs::after{content:'';position:absolute;width:30px;height:30px;border:4px solid var(--g)}
 .frame::before{top:0;left:0;border-right:0;border-bottom:0}
 .frame::after{bottom:0;right:0;border-left:0;border-top:0}
@@ -102,9 +107,9 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 
 .modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,28,24,.86)}
 .modal.show{display:flex}
-.card{width:min(380px,100%);padding:22px;background:var(--y);text-align:center}
+.card{width:min(440px,100%);padding:22px;background:var(--y);text-align:center}
 .card h3{margin-bottom:14px;font-size:17px;font-weight:900}
-.card img{width:min(300px,76vw);aspect-ratio:1;object-fit:contain;background:#fff;padding:10px}
+.card img{width:min(380px,76vw);aspect-ratio:1;object-fit:contain;background:#fff;padding:10px}
 .card p{margin-top:10px;font-size:13px;font-weight:600}
 .card button{width:100%;margin-top:14px;padding:11px;border:0;background:var(--g);color:var(--y);font-weight:800;cursor:pointer}
 
@@ -129,7 +134,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
     <div class="heads"><span>本学期<em>现在</em></span><span>下学期</span></div>
     <p class="who">免费用户</p>
     <div class="bar"><i class="seg off">暂停</i><i class="seg on">恢复</i></div>
-    <p class="who">付费用户</p>
+    <p class="who">已付费用户</p>
     <div class="bar"><i class="seg on all">正常使用，不受影响</i></div>
   </div>
 </section>
@@ -145,18 +150,22 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
         <button type="button" role="tab" aria-selected="true" onclick="pick(0)">微信</button>
         <button type="button" role="tab" aria-selected="false" onclick="pick(1)">支付宝</button>
       </div>
-      <div class="frame"><div class="qrs">
+      <button class="frame" type="button" onclick="zoomPay()" aria-label="点击放大二维码"><span class="qrs">
         <img src="https://login.agai.online/vxcode.png" alt="微信赞助码">
         <img src="https://login.agai.online/zfbcode.png" alt="支付宝赞助码" hidden>
-      </div></div>
-      <p class="hint">手机上请长按二维码识别，或截图后用扫一扫选相册。</p>
+      </span></button>
+      <p class="hint">点击二维码可放大。手机上也可长按识别，或截图后用扫一扫选相册。</p>
 
       <ol class="steps">
         <li>扫码赞助</li>
-        <li><div>付款备注里填好信息，微信可以直接付款界面填写。
-          <div class="ticket"><b>学号 + 密码 + 邮箱</b>
-            <button class="copy" id="copyBtn" type="button" onclick="copyNote()">复制</button></div></div></li>
-        <li>我们按备注人工维护你的考勤</li>
+        <li><div>
+          <div data-pay="0">在微信付款页面下方直接填写，无需手动备注
+            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b></div></div>
+          <div data-pay="1" hidden>付款时在备注里填写
+            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b>
+              <button class="copy" id="copyBtn" type="button" onclick="copyNote()">复制</button></div></div>
+        </div></li>
+        <li>我们按你填写的信息人工维护考勤</li>
       </ol>
       <p class="note">每日 21:33 后赞助的用户，当日默认不发邮件通知。个性化需求（自定义日期、时间等）请开通 VIP。</p>
     </section>
@@ -181,13 +190,12 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<div class="modal" id="modal" onclick="closeGroup()" role="dialog" aria-modal="true" aria-label="群二维码">
+<div class="modal" id="modal" onclick="closeQR()" role="dialog" aria-modal="true" aria-label="二维码">
   <div class="card" onclick="event.stopPropagation()">
-    <h3>AG工作室股东大会</h3>
-    <img src="qq_group_qr.png" alt="群二维码"
-         onerror="this.style.display='none';this.nextElementSibling.textContent='二维码加载失败，请用群号加入'">
-    <p>长按识别或截图保存，用 QQ 扫码加入</p>
-    <button type="button" onclick="closeGroup()">关闭</button>
+    <h3 id="mTitle"></h3>
+    <img id="mImg" alt="二维码" onerror="this.style.display='none';document.getElementById('mTip').textContent='二维码加载失败，请稍后重试'">
+    <p id="mTip"></p>
+    <button type="button" onclick="closeQR()">关闭</button>
   </div>
 </div>
 
@@ -198,13 +206,28 @@ function toast(m){
   t.textContent=m;t.classList.add('show');
   clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},2400);
 }
+var cur=0;
 function pick(i){
+  cur=i;
   document.querySelectorAll('.tabs button').forEach(function(b,j){b.setAttribute('aria-selected',j===i)});
   document.querySelectorAll('.qrs img').forEach(function(m,j){m.hidden=j!==i});
+  document.querySelectorAll('[data-pay]').forEach(function(d){d.hidden=d.getAttribute('data-pay')!==String(i)});
 }
-function openGroup(){document.getElementById('modal').classList.add('show');document.body.style.overflow='hidden'}
-function closeGroup(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeGroup()});
+function openQR(src,title,tip){
+  var im=document.getElementById('mImg');
+  im.style.display='';im.src=src;
+  document.getElementById('mTitle').textContent=title;
+  document.getElementById('mTip').textContent=tip;
+  document.getElementById('modal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function zoomPay(){
+  var m=document.querySelectorAll('.qrs img')[cur];
+  openQR(m.src,cur?'支付宝赞助码':'微信赞助码','长按识别或截图保存，用对应 App 扫码');
+}
+function openGroup(){openQR('qq_group_qr.png','AG工作室股东大会','长按识别或截图保存，用 QQ 扫码加入')}
+function closeQR(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeQR()});
 
 function doCopy(text,ok,fail){
   function fallback(){
