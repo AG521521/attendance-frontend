@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
+<meta name="description" content="AG工作室晚寝签到辅助服务：服务状态、赞助方式与联系方式。">
 <title>AG工作室 · 服务暂缓中</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -16,21 +17,24 @@
   --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
-html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{background:var(--soft);color:var(--g);font:15px/1.7 var(--font)}
 :focus-visible{outline:3px solid var(--g);outline-offset:2px}
 button{font:inherit;color:inherit}
+a{color:var(--g)}
 .wrap{width:min(1040px,100%);margin:0 auto;padding:0 max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}
 
 /* 1 · 黄色警示区 */
 .hero{background:var(--y)}
 .hero .wrap{padding-top:max(18px,env(safe-area-inset-top));padding-bottom:clamp(26px,5vw,46px)}
-.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
 .top b{font-size:17px;font-weight:800}
-.top span{font-size:13px;font-weight:600}
+.topnav{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:700}
+.topnav a{text-decoration:none;border-bottom:2px solid transparent;padding-bottom:1px}
+.topnav a:hover{border-color:var(--g)}
 .heroin{margin-top:clamp(30px,8vw,76px)}
 h1{font-size:clamp(64px,22vw,120px);font-weight:900;line-height:.98;letter-spacing:-.03em}
-.lead{margin-top:22px;max-width:25em;font-size:clamp(16px,2.2vw,19px);font-weight:600}
+.lead{margin-top:22px;max-width:27em;font-size:clamp(16px,2.2vw,19px);font-weight:600}
 .tape{height:18px;background:repeating-linear-gradient(-45deg,var(--g) 0 14px,var(--y) 14px 28px)}
 @media(min-width:860px){
   .hero .wrap{padding-bottom:30px}
@@ -40,7 +44,13 @@ h1{font-size:clamp(64px,22vw,120px);font-weight:900;line-height:.98;letter-spaci
   .lead{margin:0 0 8px;font-size:17px}
 }
 
-/* 2 · 学期时间线 */
+/* 2 · 服务说明条 */
+.noticebar{background:#fff;border-bottom:3px solid var(--g)}
+.noticebar .wrap{display:flex;gap:12px;align-items:flex-start;padding-top:12px;padding-bottom:12px}
+.noticebar b{flex:none;background:var(--g);color:var(--y);padding:2px 10px;border-radius:99px;font-size:12px;line-height:1.6;margin-top:2px}
+.noticebar p{font-size:13.5px;line-height:1.65;color:var(--mute)}
+
+/* 3 · 学期时间线 */
 .band{background:var(--g);color:#dcece6;padding:clamp(26px,5vw,44px) 0 clamp(30px,5vw,48px)}
 .heads,.bar{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .heads{font-size:13px;color:#9fc4b9;font-weight:600}
@@ -53,7 +63,7 @@ h1{font-size:clamp(64px,22vw,120px);font-weight:900;line-height:.98;letter-spaci
 .bar .seg:nth-child(2){animation-delay:.4s}
 @keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
 
-/* 3 · 赞助 + 联系 */
+/* 4 · 赞助 + 联系 */
 .low{padding:clamp(32px,6vw,58px) 0 max(44px,env(safe-area-inset-bottom))}
 .two{display:grid;gap:48px}
 @media(min-width:860px){.two{grid-template-columns:1.05fr .95fr;gap:72px;align-items:start}}
@@ -76,14 +86,16 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .qrs img[hidden]{display:none}
 .hint{font-size:13px;color:var(--mute)}
 
-.steps{list-style:none;counter-reset:s;margin-top:26px;display:grid;gap:14px;font-size:14.5px}
+.steps{list-style:none;counter-reset:s;margin-top:22px;display:grid;gap:14px;font-size:14.5px}
 .steps li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start}
 .steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--y);font:800 13px var(--mono)}
 .ticket{display:flex;align-items:center;gap:10px;margin-top:8px;padding:9px 9px 9px 14px;border:2px dashed var(--g);background:#fff}
 .ticket b{flex:1;min-width:0;font-size:14px}
 .copy{padding:6px 14px;border:0;border-radius:99px;background:var(--g);color:var(--y);font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
 .copy.done{background:var(--y);color:var(--g)}
-.note{margin-top:22px;padding:12px 14px;border-left:5px solid var(--y);background:#fff;font-size:13.5px;color:var(--mute)}
+.note{margin-top:18px;padding:12px 14px;border-left:5px solid var(--y);background:#fff;font-size:13.5px;color:var(--mute)}
+.agree-note{margin-top:14px;font-size:13px;color:var(--mute);line-height:1.65}
+.agree-note a{font-weight:800;text-underline-offset:3px}
 
 .cts{margin-top:14px;border-top:3px solid var(--g)}
 .ct{
@@ -113,28 +125,55 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .card p{margin-top:10px;font-size:13px;font-weight:600}
 .card button{width:100%;margin-top:14px;padding:11px;border:0;background:var(--g);color:var(--y);font-weight:800;cursor:pointer}
 
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* 6 · 页脚 */
+.foot{background:var(--g);color:#b9d4cc;padding:26px 0;font-size:13.5px}
+.foot .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.foot b{color:#fff}
+.foot a{color:var(--y);text-decoration:none;margin-left:16px}
+.foot a:hover{text-decoration:underline}
+.foot .fine{width:100%;color:#8fb3a8;font-size:12.5px;line-height:1.7}
+#pay,#contact{scroll-margin-top:18px}
+
+@media(max-width:600px){
+  .foot a{margin-left:0;margin-right:14px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
 <header class="hero">
   <div class="wrap">
-    <div class="top"><b>AG工作室</b><span>自动化考勤服务</span></div>
+    <div class="top">
+      <b>AG工作室</b>
+      <nav class="topnav" aria-label="页面导航">
+        <a href="#pay">赞助</a>
+        <a href="#contact">联系</a>
+        <a href="terms.html">用户协议</a>
+        <a href="privacy.html">隐私政策</a>
+      </nav>
+    </div>
     <div class="heroin">
       <h1>服务<br>暂缓中</h1>
-      <p class="lead">近期服务器暂停续费，免费服务暂停，预计下学期恢复。恢复后会第一时间在 QQ 频道等进行通知。</p>
+      <p class="lead">近期服务器调整，免费服务暂缓，赞助用户正常使用。恢复后会第一时间在 QQ 频道通知。</p>
     </div>
   </div>
   <div class="tape" aria-hidden="true"></div>
 </header>
+
+<section class="noticebar" aria-label="服务说明">
+  <div class="wrap">
+    <b>服务说明</b>
+    <p>本服务由个人开发者运营。赞助或登录前，请阅读并同意<a href="terms.html">《用户协议》</a>与<a href="privacy.html">《隐私政策》</a>。</p>
+  </div>
+</section>
 
 <section class="band" aria-label="服务时间线">
   <div class="wrap">
     <div class="heads"><span>本学期<em>现在</em></span><span>下学期</span></div>
     <p class="who">免费用户</p>
     <div class="bar"><i class="seg off">暂停</i><i class="seg on">恢复</i></div>
-    <p class="who">付费用户</p>
+    <p class="who">赞助用户</p>
     <div class="bar"><i class="seg on all">正常使用，不受影响</i></div>
   </div>
 </section>
@@ -142,11 +181,11 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 <main class="low">
   <div class="wrap two">
 
-    <section aria-labelledby="payT">
-      <h2 id="payT">自愿赞助，人工维护考勤</h2>
-      <p class="sub">服务器、域名和日常维护都需要成本。完全自愿，一杯奶茶钱就是最大的鼓励。</p>
+    <section id="pay" aria-labelledby="payT">
+      <h2 id="payT">赞助支持</h2>
+      <p class="sub">扫码赞助后，按提示提交信息，管理员会为你安排。</p>
 
-      <div class="tabs" role="tablist">
+      <div class="tabs" role="tablist" aria-label="选择赞助方式">
         <button type="button" role="tab" aria-selected="true" onclick="pick(0)">微信</button>
         <button type="button" role="tab" aria-selected="false" onclick="pick(1)">支付宝</button>
       </div>
@@ -159,18 +198,20 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
       <ol class="steps">
         <li>扫码赞助</li>
         <li><div>
-          <div data-pay="0">在微信付款页面下方直接填写，无需手动备注
-            <div class="ticket"><b>学号 + 密码（默认密码可写0） + 邮箱</b></div></div>
-          <div data-pay="1" hidden>付款时在备注里填写
-            <div class="ticket"><b>学号 + 密码（默认密码可写0） + 邮箱</b>
+          <div data-pay="0">在微信扫码后的页面下方直接填写，无需手动备注
+            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b></div></div>
+          <div data-pay="1" hidden>在备注里填写
+            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b>
               <button class="copy" id="copyBtn" type="button" onclick="copyNote()">复制</button></div></div>
         </div></li>
-        <li>我们按你填写的信息人工维护考勤</li>
+        <li>管理员核对后为你安排</li>
       </ol>
-      <p class="note">每日 20：00后赞助的用户，默认次日开通，可通过发邮件，QQ，微信等强提醒方式免费加急，当日默认不发邮件通知。个性化需求（自定义日期、时间等）请开通 VIP。</p>
+
+      <p class="note">每日 20:00 后赞助的用户默认次日开通；当日默认不发邮件通知，可通过 QQ、微信、邮箱等强提醒方式免费加急。自定义签到时间、日期等需求请开通 VIP。</p>
+      <p class="agree-note">扫码赞助即表示你已阅读并同意<a href="terms.html">《用户协议》</a>和<a href="privacy.html">《隐私政策》</a>；以后登录时，登录行为同样视为你同意上述协议。</p>
     </section>
 
-    <section aria-labelledby="ctT">
+    <section id="contact" aria-labelledby="ctT">
       <h2 id="ctT">联系我们</h2>
       <p class="sub">有任何问题，可在 QQ 频道留言或发送邮件。</p>
       <div class="cts">
@@ -187,6 +228,17 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 
   </div>
 </main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><b>AG工作室</b> · 个人开发者运营</p>
+    <nav aria-label="法律信息">
+      <a href="terms.html">用户协议</a>
+      <a href="privacy.html">隐私政策</a>
+    </nav>
+    <p class="fine">协议版本 2026-10-21-2 · 赞助与价格请私聊管理员</p>
+  </div>
+</footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -206,6 +258,7 @@ function toast(m){
   t.textContent=m;t.classList.add('show');
   clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},2400);
 }
+
 var cur=0;
 function pick(i){
   cur=i;
@@ -243,7 +296,7 @@ function doCopy(text,ok,fail){
 function copyNote(){
   var b=document.getElementById('copyBtn');
   doCopy('AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：',function(){
-    b.classList.add('done');b.textContent='已复制';toast('备注格式已复制');
+    b.classList.add('done');b.textContent='已复制';toast('格式已复制');
     setTimeout(function(){b.classList.remove('done');b.textContent='复制'},2000);
   },function(){toast('复制失败，请手动记录')});
 }
