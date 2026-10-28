@@ -272,6 +272,8 @@
 .welcome-actions{display:flex;gap:10px;flex-wrap:wrap}
 .welcome-actions .btn{background:#fff;color:#1b2a4a;border-color:#fff}
 .welcome-actions .btn-primary{background:#ffd23f;border-color:#ffd23f;color:#1b2a4a}
+#shareCard .btn-primary{background:#153a2e;border-color:#153a2e}
+#shareCode{font-family:var(--mono,monospace)}
 </style>
 </head>
 <body>
@@ -380,6 +382,20 @@
               <button class="btn btn-primary" onclick="quickSign()"><i class="fas fa-pen"></i> 立即签到</button>
               <button class="btn btn-outline" onclick="document.querySelector('.menu-item[data-page=logs]').click()">查看记录</button>
             </div>
+          </div>
+          <div class="card" id="shareCard" style="background:#f7fbf9;border:1px solid #cfe8dc;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:240px;">
+                <h2 style="margin-bottom:6px;color:#153a2e;"><i class="fas fa-share-nodes"></i> 邀请同学一起用</h2>
+                <p style="font-size:13.5px;line-height:1.8;color:#41635a;margin:0;">把你的专属链接分享给同学，邀请成功后双方都有奖励。</p>
+              </div>
+              <button class="btn btn-primary" onclick="shareInvite()" style="white-space:nowrap;"><i class="fas fa-share"></i> 一键分享</button>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+              <input id="shareLink" readonly style="flex:1;min-width:220px;padding:10px 12px;border:1px solid #cfe8dc;border-radius:10px;background:#fff;color:#41635a;font-size:12.5px;">
+              <button class="btn btn-outline" onclick="copyShareLink()">复制链接</button>
+            </div>
+            <p style="margin-top:10px;font-size:12.5px;color:#6b8a80;">邀请码：<b id="shareCode" style="color:#153a2e;">----</b></p>
           </div>
           <div class="card" id="newbieGuide" style="background:#eef7ff;border:1px solid #b9d9ff;margin-bottom:16px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
@@ -1116,6 +1132,7 @@
           localStorage.setItem('user', JSON.stringify(currentUser));
           document.getElementById('userName').textContent = (currentUser.name||currentUser.studentId)+' ('+currentUser.studentId+')';
           const wn=document.getElementById('welcomeName'); if (wn) wn.textContent = currentUser.name || currentUser.studentId || '同学';
+          loadShareCard();
           renderSponsorBadge();
         }
       } catch(e) {}
@@ -1136,6 +1153,42 @@
       if (guideEl) guideEl.style.display = 'none';
     }
 
+    function loadShareCard() {
+      const code = (currentUser && currentUser.inviteCode) || '';
+      const input = document.getElementById('shareLink');
+      const codeEl = document.getElementById('shareCode');
+      if (input) input.value = code ? 'https://login.agai.online?invite=' + encodeURIComponent(code) : '';
+      if (codeEl) codeEl.textContent = code || '----';
+      const pending = localStorage.getItem('pendingInviteCode');
+      if (pending && currentUser && !currentUser.invitedBy) {
+        api('/invite/apply', { method: 'POST', body: { inviteCode: pending } })
+          .then(function(data){ if (data && data.success) { localStorage.removeItem('pendingInviteCode'); showToast('邀请码已自动绑定', 'success'); } })
+          .catch(function(){});
+      }
+    }
+    async function shareInvite() {
+      const code = (currentUser && currentUser.inviteCode) || '';
+      if (!code) { showToast('邀请码加载中，请稍后再试', 'error'); return; }
+      const url = 'https://login.agai.online?invite=' + encodeURIComponent(code);
+      const text = '我在用 AG 智能考勤，晚寝签到更方便。用我的邀请码 ' + code + ' 注册，我们都有奖励：';
+      if (navigator.share) {
+        try { await navigator.share({ title: 'AG 智能考勤', text: text, url: url }); return; } catch (e) { return; }
+      }
+      copyShareText(url);
+      showToast('邀请链接已复制，发给同学即可', 'success');
+    }
+    function copyShareLink() {
+      const input = document.getElementById('shareLink');
+      if (!input || !input.value) { showToast('邀请链接还没有加载好', 'error'); return; }
+      copyShareText(input.value);
+      showToast('邀请链接已复制', 'success');
+    }
+    function copyShareText(text) {
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).catch(function(){}); return; }
+      const ta = document.createElement('textarea'); ta.value = text; ta.style.cssText='position:fixed;top:0;opacity:0'; document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
     // ========== 初始化 ==========
     initAutoSignExperience();
     loadUserInfo();
