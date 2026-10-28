@@ -732,7 +732,7 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
         <div id="page-buy" class="page">
           <div class="card" style="background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;border:none;">
             <h2 style="color:#fff;"><i class="fas fa-heart" style="color:#fbbf24;"></i> 自愿赞助 AG 智能考勤</h2>
-            <p style="color:#cbd5e1;font-size:13.5px;line-height:1.85;margin-top:6px;">赞助用于覆盖服务器、域名和邮件成本。完全自愿，不影响免费功能；赞助后对应等级权益自动发放。</p>
+            
           </div>
           <div class="card" style="margin-top:14px;">
             <h2><i class="fas fa-gift"></i> 选择赞助档位</h2>
@@ -742,7 +742,7 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
             <h2><i class="fas fa-qrcode"></i> 扫码赞助</h2>
             <div style="text-align:center;margin:10px 0;">
               <div style="font-size:26px;font-weight:900;color:#0f766e;" id="paymentAmount">¥0.00</div>
-              <p style="font-size:12px;color:#64748b;margin-top:6px;">请精确支付此金额，短码 <strong id="paymentOrderNo" style="font-size:16px;color:#0f766e;"></strong></p>
+              <p style="font-size:12.5px;color:#64748b;line-height:1.7;margin-top:6px;">因支付通道会收取通道费，请准确支付上方显示的金额，否则可能无法匹配订单、不能及时到账。</p><p style="font-size:13px;color:#64748b;margin-top:6px;">备注短码 <strong id="paymentOrderNo" style="font-size:16px;color:#0f766e;"></strong></p>
             </div>
             <div class="qr-wrap" id="qrWrap" onclick="openQrModal()">
               <img id="qrCodeImage" class="qr-blur" src="" alt="收款码">
@@ -750,8 +750,8 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
             </div>
             
             <div id="claimSection" class="hidden" style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
-              <p style="font-size:13px;color:#475569;line-height:1.8;margin:0 0 8px;">支付后请在下方备注栏填写短码，然后点“确认我已支付”。</p>
-              <div class="form-group"><input type="text" id="paymentRef" placeholder="支付备注/交易单号后 4 位" maxlength="60"></div>
+              
+              <div class="form-group"><input type="text" id="paymentRef" placeholder="填写支付备注/短码" maxlength="60"></div>
               <button class="btn btn-primary" onclick="claimPayment()" id="claimBtn" style="width:100%;">确认我已支付</button>
               <p style="font-size:11.5px;color:#94a3b8;margin-top:8px;">未匹配到付款的订单可能被取消，并通过邮件通知。</p>
             </div>
