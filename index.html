@@ -188,6 +188,10 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .login-panel .login-submit{border-radius:12px;background:var(--g);color:var(--y);margin-top:6px}
 .login-panel .login-submit:disabled{background:#c7d6d0;color:#fff}
 .login-foot{font-size:11.5px;text-align:center;margin-top:12px}
+.password-row{display:flex;gap:8px;align-items:stretch}
+.password-row input{flex:1;min-width:0}
+.pwd-fill{flex:none;padding:0 12px;border:1px solid #cfe8dc;border-radius:12px;background:#f2faf6;color:#153a2e;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.pwd-fill:hover{background:#e4f6ed}
 </style>
 </head>
 <body>
@@ -226,7 +230,13 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
       </div>
       <form id="loginForm" onsubmit="submitLogin(event)">
         <div class="login-field"><label for="loginStudentId">学号</label><input id="loginStudentId" name="studentId" autocomplete="username" inputmode="numeric" placeholder="请输入学号" required></div>
-        <div class="login-field"><label for="loginPassword">考勤密码</label><input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required></div>
+        <div class="login-field">
+          <label for="loginPassword">考勤密码</label>
+          <div class="password-row">
+            <input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required>
+            <button type="button" class="pwd-fill" onclick="fillDefaultPassword()" title="一键填入默认考勤密码"><i class="fas fa-key"></i> 默认密码</button>
+          </div>
+        </div>
         <p class="login-hint">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
         <label class="login-agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"> <span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 和 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
         <div class="login-error" id="loginError"></div>
@@ -373,6 +383,16 @@ function copyEmail(){
 }
 
 var API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE) || 'https://api.agai.online/api';
+
+(function(){ try { var p = new URLSearchParams(location.search).get('invite'); if (p) localStorage.setItem('pendingInviteCode', p.trim().toUpperCase()); } catch(e) {} })();
+
+function fillDefaultPassword(){
+  var el = document.getElementById('loginPassword');
+  if (!el) return;
+  el.value = 'Ahgydx@920';
+  el.focus();
+  toast('已填入默认考勤密码');
+}
 
 function openLogin(){
   var m = document.getElementById('loginModal');
