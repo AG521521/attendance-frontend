@@ -274,6 +274,93 @@
 .welcome-actions .btn-primary{background:#ffd23f;border-color:#ffd23f;color:#1b2a4a}
 #shareCard .btn-primary{background:#153a2e;border-color:#153a2e}
 #shareCode{font-family:var(--mono,monospace)}
+/* ===== 2026-10 用户仪表盘重设计：延续晚寝签到深蓝/珊瑚/金色视觉 ===== */
+:root{
+  --brand:#14223b;--brand-2:#213755;--brand-light:#e8eef5;
+  --bg:#eef2f6;--card:#ffffff;--border:#d8e0eb;
+  --text:#14223b;--text-secondary:#617089;
+  --success:#087e7c;--warning:#ec6a4d;--danger:#bd271d;
+  --radius:14px;--shadow:0 14px 36px rgba(20,34,59,.08);
+  --mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif}
+.sidebar{background:var(--brand);border-right:1px solid rgba(255,255,255,.06)}
+.sidebar-header{border-bottom:1px solid rgba(255,255,255,.1);padding:0 18px;height:70px;display:flex;align-items:center}
+.sidebar-header h2{font-size:15px;letter-spacing:.01em;color:#fff;display:flex;align-items:center;gap:9px}
+.sidebar-header h2 i{color:#f2bb41}
+.sidebar-menu{padding:12px 10px}
+.menu-item{color:#aebfd4;border-radius:10px;margin:3px 0;padding:11px 13px;font-size:13px;font-weight:700}
+.menu-item i{width:20px;color:#8fa5bf}
+.menu-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.menu-item.active{background:var(--warning);color:#fff;box-shadow:0 10px 20px rgba(236,106,77,.24)}
+.menu-item.active i{color:#fff}
+.main-content{background:var(--bg)}
+.topbar{background:rgba(255,255,255,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);height:70px;padding:0 26px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.card h2{font-size:16px;color:var(--brand);letter-spacing:0;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.card h2 i{color:var(--warning)}
+.btn{border-radius:9px;font-weight:800;font-size:13px;padding:9px 15px;border:1px solid transparent}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-2)}
+.btn-success{background:var(--success);border-color:var(--success);color:#fff}
+.btn-warning{background:var(--warning);border-color:var(--warning);color:#fff}
+.btn-outline{background:#fff;border-color:var(--border);color:var(--brand)}
+.btn-outline:hover{border-color:var(--brand)}
+.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--text);padding:10px 12px;font-size:13px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--focus,#356ae6);box-shadow:0 0 0 3px rgba(53,106,230,.1);outline:0}
+.form-group label{font-size:12.5px;color:var(--text-secondary);font-weight:800}
+.stats-grid{gap:12px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 20px rgba(20,34,59,.05);padding:16px}
+.stat-value{color:var(--brand);font-size:26px;font-weight:900;letter-spacing:-.03em}
+.stat-label{color:var(--text-secondary);font-size:12px;font-weight:700}
+.welcome-hero{background:linear-gradient(135deg,#14223b 0%,#213755 55%,#2f4a6e 100%);border-radius:18px;padding:26px;box-shadow:0 18px 40px rgba(20,34,59,.2)}
+.welcome-kicker{color:#aac8d5;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;font-weight:800}
+.welcome-hero h2{color:#fff;font-size:clamp(23px,3vw,30px);letter-spacing:-.03em}
+.welcome-hero h2 span{color:#f2bb41}
+.welcome-status{color:#cbd7e8;font-size:13px}
+.welcome-actions .btn{background:#fff;border-color:#fff;color:#14223b}
+.welcome-actions .btn-primary{background:#f2bb41;border-color:#f2bb41;color:#14223b}
+#newbieGuide{background:#f9fbfd!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#newbieGuide h2{color:var(--brand)!important}
+#newbieGuide .btn-primary{background:var(--brand)!important;border-color:var(--brand)!important;color:#fff!important}
+#shareCard{background:#fff!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#shareCard h2{color:var(--brand)!important}
+#shareCard .btn-primary{background:var(--brand)!important;border-color:var(--brand)!important;color:#fff!important}
+#shareCard input{border-color:var(--border)!important;background:#f9fbfd!important;color:var(--text-secondary)!important;border-radius:9px!important}
+.qq-link-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 20px rgba(20,34,59,.05)}
+.qq-link-card:hover{border-color:var(--warning)}
+.list-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.list-item h4{color:var(--brand)}
+.log-row{border-bottom:1px solid var(--border)}
+.badge{border-radius:999px;font-weight:800}
+.badge-success{background:#e5f4f2;color:var(--success)}
+.table th{background:#f9fbfd;color:var(--text-secondary);font-size:12px;font-weight:800}
+.table td{border-bottom:1px solid var(--border)}
+#page-buy > .card:first-child{background:linear-gradient(135deg,#14223b 0%,#213755 60%,#2f4a6e 100%)!important;border:0!important;box-shadow:0 18px 40px rgba(20,34,59,.18)}
+#page-buy > .card:first-child h2{color:#fff!important}
+#page-buy > .card:first-child p{color:#cbd7e8!important}
+#packagesList > div{gap:12px!important}
+#packagesList > div > div{border:1px solid var(--border)!important;border-radius:14px!important;background:#fff!important;box-shadow:0 8px 20px rgba(20,34,59,.05)}
+#packagesList h3{color:var(--brand)!important}
+#packagesList .btn-primary{background:var(--brand)!important;border-color:var(--brand)!important}
+#paymentArea{border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#paymentArea h2{color:var(--brand)!important}
+#paymentArea #paymentAmount{color:var(--brand)!important}
+#paymentArea .form-group input{border-color:var(--border)!important;border-radius:9px!important}
+#paymentArea .btn-primary{background:var(--warning)!important;border-color:var(--warning)!important;color:#fff!important}
+#paymentResult > div{background:#e5f4f2!important;border-color:#b7dcd6!important}
+#paymentResult p{color:#0b5d58!important}
+.toast{background:var(--brand);color:#fff;border-radius:9px}
+.content{padding:24px 26px 40px}
+@media(max-width:820px){
+  .sidebar{background:var(--brand)}
+  .topbar{padding:0 16px}
+  .content{padding:16px 14px 32px}
+  .card{padding:16px}
+  .welcome-hero{padding:20px}
+  .sidebar-header{height:62px}
+  .menu-item{font-size:13px}
+}
 </style>
 </head>
 <body>

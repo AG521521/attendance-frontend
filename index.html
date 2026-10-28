@@ -1,454 +1,219 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="description" content="AG工作室晚寝签到辅助服务：登录、手动签到、自动签到与赞助方式。">
-<title>AG工作室 · 登录</title>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --y:#ffd23f;--g:#0f3d36;--soft:#eef5f2;--mute:#44625b;--line:#c3d7cf;
-  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
-  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-}
-html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{background:var(--soft);color:var(--g);font:15px/1.7 var(--font)}
-:focus-visible{outline:3px solid var(--g);outline-offset:2px}
-button{font:inherit;color:inherit}
-a{color:var(--g)}
-.wrap{width:min(1040px,100%);margin:0 auto;padding:0 max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}
-
-/* 1 · 黄色警示区 */
-.hero{background:var(--y)}
-.hero .wrap{padding-top:max(18px,env(safe-area-inset-top));padding-bottom:clamp(26px,5vw,46px)}
-.top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
-.top b{font-size:17px;font-weight:800}
-.topnav{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:700}
-.topnav a{text-decoration:none;border-bottom:2px solid transparent;padding-bottom:1px}
-.topnav a:hover{border-color:var(--g)}
-.heroin{margin-top:clamp(30px,8vw,76px)}
-h1{font-size:clamp(64px,22vw,120px);font-weight:900;line-height:.98;letter-spacing:-.03em}
-.lead{margin-top:22px;max-width:27em;font-size:clamp(16px,2.2vw,19px);font-weight:600}
-.tape{height:18px;background:repeating-linear-gradient(-45deg,var(--g) 0 14px,var(--y) 14px 28px)}
-@media(min-width:860px){
-  .hero .wrap{padding-bottom:30px}
-  .heroin{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:end;margin-top:34px}
-  h1{font-size:92px}
-  h1 br{display:none}
-  .lead{margin:0 0 8px;font-size:17px}
-}
-
-/* 2 · 服务说明条 */
-.noticebar{background:#fff;border-bottom:3px solid var(--g)}
-.noticebar .wrap{display:flex;gap:12px;align-items:flex-start;padding-top:12px;padding-bottom:12px}
-.noticebar b{flex:none;background:var(--g);color:var(--y);padding:2px 10px;border-radius:99px;font-size:12px;line-height:1.6;margin-top:2px}
-.noticebar p{font-size:13.5px;line-height:1.65;color:var(--mute)}
-
-/* 3 · 学期时间线 */
-.band{background:var(--g);color:#dcece6;padding:clamp(26px,5vw,44px) 0 clamp(30px,5vw,48px)}
-.heads,.bar{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.heads{font-size:13px;color:#9fc4b9;font-weight:600}
-.heads em{margin-left:8px;padding:1px 9px;border-radius:99px;background:var(--y);color:var(--g);font-size:12px;font-style:normal;font-weight:800}
-.who{margin:14px 0 6px;font-size:14px;font-weight:700;color:#fff}
-.seg{display:flex;align-items:center;min-height:48px;padding:0 14px;font-style:normal;font-weight:800;animation:wipe .8s cubic-bezier(.2,.7,.2,1) both}
-.seg.on{background:var(--y);color:var(--g)}
-.seg.off{border:2px dashed var(--y);color:var(--y);background:repeating-linear-gradient(-45deg,rgba(255,210,63,.22) 0 7px,transparent 7px 14px)}
-.seg.all{grid-column:1/-1;animation-delay:.2s}
-.bar .seg:nth-child(2){animation-delay:.4s}
-@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
-
-/* 4 · 赞助 + 联系 */
-.low{padding:clamp(32px,6vw,58px) 0 max(44px,env(safe-area-inset-bottom))}
-.two{display:grid;gap:48px}
-@media(min-width:860px){.two{grid-template-columns:1.05fr .95fr;gap:72px;align-items:start}}
-h2{font-size:24px;font-weight:900;line-height:1.3}
-.sub{margin:6px 0 18px;color:var(--mute);font-size:14.5px;max-width:30em}
-
-.tabs{display:inline-flex;padding:4px;border:2px solid var(--g);border-radius:99px}
-.tabs button{padding:7px 24px;border:0;border-radius:99px;background:none;font-weight:800;cursor:pointer}
-.tabs button[aria-selected=true]{background:var(--g);color:var(--y)}
-
-.frame{display:block;position:relative;width:min(262px,78vw);margin:22px 0 10px;padding:20px;border:0;background:#fff;cursor:zoom-in}
-.frame:hover{outline:3px solid var(--y)}
-.qrs{display:block}
-.frame::before,.frame::after,.qrs::before,.qrs::after{content:'';position:absolute;width:30px;height:30px;border:4px solid var(--g)}
-.frame::before{top:0;left:0;border-right:0;border-bottom:0}
-.frame::after{bottom:0;right:0;border-left:0;border-top:0}
-.qrs::before{top:0;right:0;border-left:0;border-bottom:0}
-.qrs::after{bottom:0;left:0;border-right:0;border-top:0}
-.qrs img{display:block;width:100%;aspect-ratio:1;object-fit:contain}
-.qrs img[hidden]{display:none}
-.hint{font-size:13px;color:var(--mute)}
-
-.steps{list-style:none;counter-reset:s;margin-top:22px;display:grid;gap:14px;font-size:14.5px}
-.steps li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start}
-.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--y);font:800 13px var(--mono)}
-.ticket{display:flex;align-items:center;gap:10px;margin-top:8px;padding:9px 9px 9px 14px;border:2px dashed var(--g);background:#fff}
-.ticket b{flex:1;min-width:0;font-size:14px}
-.copy{padding:6px 14px;border:0;border-radius:99px;background:var(--g);color:var(--y);font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
-.copy.done{background:var(--y);color:var(--g)}
-.note{margin-top:18px;padding:12px 14px;border-left:5px solid var(--y);background:#fff;font-size:13.5px;color:var(--mute)}
-.agree-note{margin-top:14px;font-size:13px;color:var(--mute);line-height:1.65}
-.agree-note a{font-weight:800;text-underline-offset:3px}
-
-.cts{margin-top:14px;border-top:3px solid var(--g)}
-.ct{
-  display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px;
-  width:100%;padding:15px 0;border:0;border-bottom:1px solid var(--line);
-  background:none;text-align:left;text-decoration:none;cursor:pointer;
-}
-.ct .k{font-size:13px;color:var(--mute)}
-.ct .v{font-size:18px;font-weight:800;word-break:break-all}
-.ct .v.m{font-family:var(--mono);font-size:17px}
-.ct .a{grid-column:2;grid-row:1/3;padding:5px 14px;border:2px solid var(--g);border-radius:99px;font-size:13px;font-weight:800}
-.ct:hover .a{background:var(--g);color:var(--y)}
-
-.toast{
-  position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));z-index:10000;
-  transform:translate(-50%,16px);padding:10px 20px;border-radius:99px;background:var(--g);color:var(--y);
-  font-size:14px;font-weight:800;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;
-  max-width:calc(100vw - 40px);text-align:center;
-}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-
-.modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,28,24,.86)}
-.modal.show{display:flex}
-.card{width:min(440px,100%);padding:22px;background:var(--y);text-align:center}
-.card h3{margin-bottom:14px;font-size:17px;font-weight:900}
-.card img{width:min(380px,76vw);aspect-ratio:1;object-fit:contain;background:#fff;padding:10px}
-.card p{margin-top:10px;font-size:13px;font-weight:600}
-.card button{width:100%;margin-top:14px;padding:11px;border:0;background:var(--g);color:var(--y);font-weight:800;cursor:pointer}
-
-/* 6 · 页脚 */
-.login-card{width:min(420px,100%);padding:24px;background:#fff;border:3px solid var(--g);text-align:left;max-height:calc(100vh - 40px);overflow:auto}
-.login-card h3{font-size:22px;font-weight:900;margin-bottom:4px}
-.login-sub{font-size:13.5px;color:var(--mute);margin-bottom:18px}
-.login-field{margin-bottom:14px}
-.login-field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
-.login-field input{width:100%;padding:11px 12px;border:2px solid var(--g);background:#fff;font:inherit;color:var(--g)}
-.login-field input:focus{outline:3px solid var(--y);outline-offset:0}
-.login-hint{font-size:12.5px;color:var(--mute);line-height:1.6;margin-top:6px}
-.login-agree{display:flex;gap:9px;align-items:flex-start;margin:14px 0 10px;font-size:13px;line-height:1.6;color:var(--mute)}
-.login-agree input{width:17px;height:17px;margin-top:2px;accent-color:var(--g);flex:none}
-.login-agree a{font-weight:800}
-.login-error{min-height:18px;color:#b42318;font-size:13px;font-weight:700;margin-bottom:6px}
-.login-submit{width:100%;padding:12px;border:0;background:var(--g);color:var(--y);font-weight:900;font-size:15px;cursor:pointer}
-.login-submit:disabled{opacity:.45;cursor:not-allowed}
-.login-cancel{width:100%;margin-top:10px;padding:10px;border:0;background:transparent;color:var(--mute);font-weight:700;cursor:pointer}
-.nav-login{background:var(--g);color:var(--y);border-radius:99px;padding:5px 14px;text-decoration:none}
-.nav-login:hover{background:#0b2f2a;border-color:transparent}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
-.login-cta{padding:12px 24px;border:0;background:var(--g);color:var(--y);font-weight:900;font-size:15px;cursor:pointer}
-.login-cta:hover{background:#0b2f2a}
-.hero-link{display:inline-flex;align-items:center;padding:12px 4px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
-.foot{background:var(--g);color:#b9d4cc;padding:26px 0;font-size:13.5px}
-.foot .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
-.foot b{color:#fff}
-.foot a{color:var(--y);text-decoration:none;margin-left:16px}
-.foot a:hover{text-decoration:underline}
-.foot .fine{width:100%;color:#8fb3a8;font-size:12.5px;line-height:1.7}
-#pay,#contact{scroll-margin-top:18px}
-
-@media(max-width:600px){
-  .foot a{margin-left:0;margin-right:14px}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
-/* ===== 2026-10 登录页重设计 ===== */
-.topbar{background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(15,61,54,.08);position:sticky;top:0;z-index:50}
-.topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap}
-.brand{font-size:17px;font-weight:900;text-decoration:none;letter-spacing:-.02em}
-.nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:700}
-.nav a{text-decoration:none;color:var(--mute)}
-.nav a:hover{color:var(--g)}
-.auth{background:radial-gradient(circle at 12% 18%,#fff2bd 0,transparent 36%),radial-gradient(circle at 92% 8%,#d9f3e8 0,transparent 42%),linear-gradient(180deg,#f8fcfa 0%,#edf7f2 100%);padding:clamp(34px,6vw,70px) 0 clamp(40px,7vw,78px)}
-.auth-grid{display:grid;gap:34px;align-items:center}
-@media(min-width:880px){.auth-grid{grid-template-columns:1.06fr .94fr;gap:72px}}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font:800 11px/1 var(--mono);letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
-.eyebrow::before{content:'';width:26px;height:2px;background:var(--g)}
-.auth-copy h1{font-size:clamp(40px,6vw,64px);line-height:1.06;letter-spacing:-.045em;margin:16px 0 18px;font-weight:900}
-.auth-lead{font-size:clamp(15px,1.6vw,17px);line-height:1.85;color:var(--mute);max-width:30em;font-weight:600}
-.auth-points{list-style:none;margin:26px 0 0;display:grid;gap:12px;font-size:14px;font-weight:700}
-.auth-points li{display:flex;align-items:center;gap:10px;color:var(--g)}
-.auth-points .dot{width:8px;height:8px;border-radius:50%;background:var(--y);box-shadow:0 0 0 4px rgba(255,210,63,.22);flex:none}
-.auth-note{margin-top:24px;font-size:12.5px;line-height:1.7;color:var(--mute);max-width:30em}
-.login-panel{background:#fff;border:1px solid rgba(15,61,54,.08);border-radius:24px;padding:clamp(22px,3vw,32px);box-shadow:0 24px 70px rgba(15,61,54,.12);position:relative;overflow:hidden;text-align:left}
-.login-panel::before{content:'';position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--y),#8fd9c3,var(--g))}
-.login-panel-head{margin-bottom:18px}
-.login-mark{width:42px;height:42px;border-radius:14px;background:var(--g);color:var(--y);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
-.login-panel-head h2{font-size:22px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
-.login-panel-head p{font-size:13px;color:var(--mute)}
-.login-panel .login-field input{border-color:#d7e6df;border-radius:12px;background:#fbfdfc}
-.login-panel .login-field input:focus{border-color:var(--g);outline:none;box-shadow:0 0 0 4px rgba(15,61,54,.08)}
-.login-panel .login-submit{border-radius:12px;background:var(--g);color:var(--y);margin-top:6px}
-.login-panel .login-submit:disabled{background:#c7d6d0;color:#fff}
-.login-foot{font-size:11.5px;text-align:center;margin-top:12px}
-.password-row{display:flex;gap:8px;align-items:stretch}
-.password-row input{flex:1;min-width:0}
-.pwd-fill{flex:none;padding:0 12px;border:1px solid #cfe8dc;border-radius:12px;background:#f2faf6;color:#153a2e;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
-.pwd-fill:hover{background:#e4f6ed}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14223b">
+  <meta name="description" content="AG工作室晚寝签到辅助服务：登录、手动签到、自动签到与服务支持。">
+  <title>AG工作室 | 晚寝签到</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <style>
+    :root{
+      --ink:#14223b;--ink-2:#213755;--paper:#ffffff;--page:#eef2f6;--muted:#617089;
+      --line:#d8e0eb;--teal:#087e7c;--teal-soft:#e5f4f2;--coral:#ec6a4d;--coral-soft:#fff0eb;
+      --gold:#f2bb41;--focus:#356ae6;--shadow:0 18px 45px rgba(20,34,59,.12);
+      --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+      --mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
+    }
+    *{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--ink);font:15px/1.65 var(--font)}
+    button,input{font:inherit}button{cursor:pointer}:focus-visible{outline:3px solid rgba(53,106,230,.34);outline-offset:3px}a{color:inherit}.wrap{width:min(1180px,100%);margin:auto;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+    .site-head{height:70px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(14px)}.site-head .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:850;letter-spacing:0}.brand-mark{width:34px;height:34px;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:800 12px var(--mono);letter-spacing:.06em}.nav{display:flex;align-items:center;gap:20px}.nav a{font-size:13px;font-weight:750;color:var(--muted);text-decoration:none}.nav a:hover{color:var(--ink)}.nav .support-link{color:var(--coral)}
+    .login-stage{background:var(--ink);color:#fff}.login-stage .wrap{display:grid;grid-template-columns:minmax(0,1.07fr) minmax(360px,.76fr);min-height:500px}.intro{padding:clamp(50px,8vw,94px) clamp(0px,4vw,55px) clamp(44px,7vw,78px) 0;align-self:center}.overline{display:flex;align-items:center;gap:9px;color:#aac8d5;font:800 11px var(--mono);letter-spacing:.12em}.overline:before{content:"";height:2px;width:30px;background:var(--coral)}h1{margin:17px 0 18px;font-size:clamp(38px,5vw,63px);line-height:1.05;letter-spacing:0;font-weight:900}.intro h1 strong{color:var(--gold);font-weight:900}.intro>p{max-width:36em;margin:0;color:#cbd7e8;font-size:16px}.service-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:35px;border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22)}.fact{padding:14px 13px 14px 0}.fact+.fact{padding-left:14px;border-left:1px solid rgba(255,255,255,.18)}.fact b{display:block;font-size:13px;color:#fff}.fact span{display:block;color:#aebfd4;font-size:12px;line-height:1.45;margin-top:3px}
+    .form-side{background:#f9fbfd;color:var(--ink);display:flex;align-items:center;padding:clamp(28px,4vw,54px)}.login-form{width:100%;max-width:390px;margin:auto}.form-kicker{display:flex;align-items:center;gap:8px;color:var(--teal);font:800 11px var(--mono);letter-spacing:.1em}.form-kicker i{width:8px;height:8px;border-radius:50%;background:var(--teal)}.login-form h2{font-size:27px;line-height:1.2;letter-spacing:0;margin:13px 0 6px}.login-form>p{color:var(--muted);font-size:13px;margin:0 0 24px}.field{margin-top:14px}.field label{display:block;font-size:13px;font-weight:800;margin:0 0 6px}.field input{width:100%;height:48px;border:1px solid #cbd6e4;background:#fff;border-radius:7px;padding:0 12px;color:var(--ink)}.field input:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(53,106,230,.12);outline:0}.password-row{display:flex;gap:8px}.password-row input{min-width:0;flex:1}.pwd-fill{min-width:88px;padding:0 10px;border:1px solid #cbd6e4;border-radius:7px;background:#fff;color:var(--ink);font-size:12px;font-weight:800;white-space:nowrap}.pwd-fill:hover{background:#eff4f9}.helper{margin:6px 0 0;color:var(--muted);font-size:12px}.agree{display:flex;align-items:flex-start;gap:9px;margin:18px 0 10px;color:var(--muted);font-size:12px;line-height:1.55}.agree input{width:16px;height:16px;accent-color:var(--teal);margin:2px 0 0}.agree a{color:var(--ink);font-weight:800;text-underline-offset:3px}.form-error{min-height:19px;color:#bd271d;font-size:12px;font-weight:700}.submit{width:100%;height:48px;border:0;border-radius:7px;background:var(--coral);color:#fff;font-size:15px;font-weight:850;letter-spacing:.02em}.submit:hover{background:#d9583e}.submit:disabled{cursor:not-allowed;background:#bcc6d5}.form-foot{margin-top:13px;text-align:center;color:var(--muted);font-size:11px}
+    .service-strip{background:var(--paper);border-bottom:1px solid var(--line)}.strip-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:30px;align-items:center;padding:19px 0}.strip-title{display:flex;gap:12px;align-items:flex-start}.strip-icon{width:30px;height:30px;display:grid;place-items:center;flex:none;background:var(--teal-soft);color:var(--teal);font-weight:900}.strip-title b{display:block;font-size:13px}.strip-title p{margin:2px 0 0;color:var(--muted);font-size:12.5px}.strip-items{display:flex;justify-content:flex-end;gap:21px;flex-wrap:wrap}.strip-item{font-size:12.5px;color:var(--muted)}.strip-item b{display:block;color:var(--ink);font-size:13px}
+    .section{padding:clamp(48px,7vw,82px) 0}.section-head{max-width:650px;margin-bottom:28px}.kicker{color:var(--coral);font:850 11px var(--mono);letter-spacing:.11em;text-transform:uppercase}.section h2{margin:7px 0 7px;font-size:clamp(27px,4vw,39px);line-height:1.2;letter-spacing:0}.section-head p{margin:0;color:var(--muted)}.support-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.75fr);gap:50px;align-items:start}.support-steps{margin:0;padding:0;list-style:none;counter-reset:support}.support-steps li{counter-increment:support;display:grid;grid-template-columns:42px 1fr;gap:13px;padding:16px 0;border-top:1px solid var(--line)}.support-steps li:before{content:"0" counter(support);font:800 13px var(--mono);color:var(--coral);padding-top:2px}.support-steps b{display:block;font-size:15px}.support-steps p{margin:3px 0 0;color:var(--muted);font-size:13px}.privacy-note{margin-top:17px;padding:13px 15px;border-left:3px solid var(--teal);background:var(--teal-soft);color:#205653;font-size:12.5px}
+    .pay-box{background:var(--ink);color:#fff;padding:24px}.pay-box h3{font-size:19px;margin:0}.pay-box>p{margin:5px 0 19px;color:#b9cae0;font-size:13px}.pay-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(255,255,255,.33);margin-bottom:16px}.pay-tabs button{height:39px;border:0;background:transparent;color:#c5d3e5;font-size:13px;font-weight:800}.pay-tabs button+button{border-left:1px solid rgba(255,255,255,.33)}.pay-tabs button[aria-selected=true]{background:var(--gold);color:var(--ink)}.qr-button{display:grid;grid-template-columns:144px 1fr;gap:18px;align-items:center;width:100%;border:1px solid rgba(255,255,255,.18);background:#fff;padding:13px;text-align:left;color:var(--ink)}.qr-button img{width:144px;aspect-ratio:1;object-fit:contain}.qr-button strong{display:block;font-size:15px}.qr-button span{display:block;margin-top:5px;color:var(--muted);font-size:12px}.qr-button em{display:inline-block;margin-top:12px;color:var(--teal);font-size:12px;font-style:normal;font-weight:800}.pay-meta{margin:15px 0 0;color:#b9cae0;font-size:12px;line-height:1.75}.copy-line{display:flex;gap:8px;align-items:center;margin-top:11px;padding:8px 9px;background:rgba(255,255,255,.09);font-size:12px}.copy-line span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.copy-line button{border:0;border-radius:4px;padding:5px 8px;background:var(--gold);color:var(--ink);font-size:11px;font-weight:850}
+    .contact{background:#dcebe7}.contact-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:50px;align-items:end}.contact-text p{color:#45635d;max-width:31em;margin:0}.contact-list{border-top:2px solid var(--ink)}.contact-item{display:grid;grid-template-columns:110px 1fr auto;gap:15px;align-items:center;padding:15px 0;border-bottom:1px solid rgba(20,34,59,.18);text-decoration:none}.contact-item .label{color:#506d67;font-size:12px;font-weight:700}.contact-item strong{font:800 15px var(--mono);word-break:break-all}.contact-item .action{border:1px solid var(--ink);padding:5px 10px;font-size:12px;font-weight:800}.contact-item:hover .action{background:var(--ink);color:#fff}.contact-item button{border:0;background:transparent;padding:0;text-align:left;color:var(--ink)}
+    footer{background:var(--ink);color:#aebfd4;padding:25px 0 max(25px,env(safe-area-inset-bottom))}footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px}footer b{color:#fff}footer nav{display:flex;gap:16px}footer a{color:var(--gold);text-decoration:none;font-weight:700}
+    .modal{position:fixed;inset:0;z-index:100;background:rgba(12,22,40,.82);display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(420px,100%);background:#fff;padding:23px;text-align:center;box-shadow:var(--shadow)}.modal-card h3{margin:0;font-size:18px}.modal-card p{margin:6px 0 16px;color:var(--muted);font-size:13px}.modal-card img{width:min(320px,76vw);aspect-ratio:1;object-fit:contain;background:#fff;border:1px solid var(--line)}.modal-card button{width:100%;height:42px;margin-top:16px;border:0;background:var(--ink);color:#fff;font-weight:800}.toast{position:fixed;z-index:200;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;padding:10px 16px;border-radius:7px;font-size:13px;font-weight:700;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:820px){.login-stage .wrap{grid-template-columns:1fr}.intro{padding:50px 0 37px}.form-side{padding:31px 0 40px}.login-form{max-width:none}.strip-grid,.support-layout,.contact-layout{grid-template-columns:1fr;gap:22px}.strip-items{justify-content:flex-start;gap:14px 25px}.contact-layout{align-items:start}.service-facts{max-width:500px}.section{padding:52px 0}}
+    @media(max-width:540px){.site-head{height:auto}.site-head .wrap{min-height:62px;padding-top:11px;padding-bottom:11px}.nav{gap:13px}.nav a:not(.support-link){display:none}.intro h1{font-size:42px}.service-facts{grid-template-columns:1fr}.fact+.fact{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.18)}.qr-button{grid-template-columns:112px 1fr;gap:12px}.qr-button img{width:112px}.contact-item{grid-template-columns:86px 1fr}.contact-item .action{grid-column:2;justify-self:start}.password-row{gap:6px}.pwd-fill{min-width:82px;padding:0 8px}.section-head{margin-bottom:21px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}}
+  </style>
 </head>
-<body>
+<body><header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="AG工作室首页"><span class="brand-mark">AG</span><span>AG工作室</span></a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#login">登录</a>
+        <a class="support-link" href="#support">服务支持</a>
+        <a href="#contact">联系</a>
+      </nav>
+    </div>
+  </header>
 
-<header class="topbar">
-  <div class="wrap topbar-inner">
-    <a class="brand" href="/">AG工作室</a>
-    <nav class="nav" aria-label="页面导航">
-      <a href="#login">登录</a>
-      <a href="#pay">支持</a>
-      <a href="#contact">联系</a>
-      <a href="terms.html">用户协议</a>
-      <a href="privacy.html">隐私政策</a>
-    </nav>
-  </div>
-</header>
-
-<main class="auth">
-  <div class="wrap auth-grid">
-    <section class="auth-copy">
-      <span class="eyebrow">AG ATTENDANCE</span>
-      <h1>晚寝签到，<br>轻松一点。</h1>
-      <p class="auth-lead">登录后即可查看签到状态、完成手动签到和查询记录。整个过程只需要学号和考勤密码。</p>
-      <ul class="auth-points">
-        <li><span class="dot"></span> 学号 + 考勤密码登录</li>
-        <li><span class="dot"></span> 支持每天 21:35 自动签到（按需开启）</li>
-        <li><span class="dot"></span> 签到记录、邮件提醒与反馈</li>
-      </ul>
-      <p class="auth-note">首次登录会自动创建账号。遇到问题可以通过 QQ 频道或邮箱联系我们。</p>
-    </section>
-    <section class="login-panel" id="login">
-      <div class="login-panel-head">
-        <div class="login-mark"><i class="fas fa-moon"></i></div>
-        <h2>登录你的考勤面板</h2>
-        <p>使用学号和考勤密码登录</p>
-      </div>
-      <form id="loginForm" onsubmit="submitLogin(event)">
-        <div class="login-field"><label for="loginStudentId">学号</label><input id="loginStudentId" name="studentId" autocomplete="username" inputmode="numeric" placeholder="请输入学号" required></div>
-        <div class="login-field">
-          <label for="loginPassword">考勤密码</label>
-          <div class="password-row">
-            <input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required>
-            <button type="button" class="pwd-fill" onclick="fillDefaultPassword()" title="一键填入默认考勤密码"><i class="fas fa-key"></i> 默认密码</button>
+  <main>
+    <section class="login-stage" id="login" aria-labelledby="mainTitle">
+      <div class="wrap">
+        <div class="intro">
+          <div class="overline">AG ATTENDANCE / NIGHT CHECK-IN</div>
+          <h1 id="mainTitle">把晚寝签到，<br>留给<strong>更从容</strong>的你。</h1>
+          <p>登录后即可查看签到状态、完成手动签到和查询记录。整个过程只需要学号和考勤密码。</p>
+          <div class="service-facts" aria-label="服务特性">
+            <div class="fact"><b>一次登录</b><span>学号与考勤密码</span></div>
+            <div class="fact"><b>按需自动签到</b><span>每日 21:35 执行</span></div>
+            <div class="fact"><b>记录可追溯</b><span>状态与邮件提醒</span></div>
           </div>
         </div>
-        <p class="login-hint">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
-        <label class="login-agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"> <span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 和 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
-        <div class="login-error" id="loginError"></div>
-        <button type="submit" class="login-submit" id="loginSubmit" disabled>登录</button>
-        <p class="login-hint login-foot">首次登录会自动创建账号；登录即表示你同意上述协议。</p>
-      </form>
-    </section>
-  </div>
-</main>
 
-<section class="noticebar" aria-label="服务说明">
-  <div class="wrap">
-    <b>服务说明</b>
-    <p>本服务由个人开发者运营。赞助或登录前，请阅读并同意<a href="terms.html">《用户协议》</a>与<a href="privacy.html">《隐私政策》</a>。</p>
-  </div>
-</section>
-
-<main class="low">
-  <div class="wrap two">
-
-    <section id="pay" aria-labelledby="payT">
-      <h2 id="payT">赞助支持</h2>
-      <p class="sub">扫码赞助后，按提示提交信息，管理员会为你安排。</p>
-
-      <div class="tabs" role="tablist" aria-label="选择赞助方式">
-        <button type="button" role="tab" aria-selected="true" onclick="pick(0)">微信</button>
-        <button type="button" role="tab" aria-selected="false" onclick="pick(1)">支付宝</button>
-      </div>
-      <button class="frame" type="button" onclick="zoomPay()" aria-label="点击放大二维码"><span class="qrs">
-        <img src="https://login.agai.online/vxcode.png" alt="微信赞助码">
-        <img src="https://login.agai.online/zfbcode.png" alt="支付宝赞助码" hidden>
-      </span></button>
-      <p class="hint">点击二维码可放大。手机上也可长按识别，或截图后用扫一扫选相册。</p>
-
-      <ol class="steps">
-        <li>扫码赞助</li>
-        <li><div>
-          <div data-pay="0">在微信扫码后的页面下方直接填写，无需手动备注
-            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b></div></div>
-          <div data-pay="1" hidden>在备注里填写
-            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b>
-              <button class="copy" id="copyBtn" type="button" onclick="copyNote()">复制</button></div></div>
-        </div></li>
-        <li>管理员核对后为你安排</li>
-      </ol>
-
-      <p class="note">每日 20:00 后支持的用户默认次日处理；当日默认不发邮件通知，可通过 QQ、微信、邮箱等提醒方式加急。</p>
-      <p class="agree-note">扫码赞助即表示你已阅读并同意<a href="terms.html">《用户协议》</a>和<a href="privacy.html">《隐私政策》</a>；以后登录时，登录行为同样视为你同意上述协议。</p>
-    </section>
-
-    <section id="contact" aria-labelledby="ctT">
-      <h2 id="ctT">联系我们</h2>
-      <p class="sub">有任何问题，可在 QQ 频道留言或发送邮件。</p>
-      <div class="cts">
-        <a class="ct" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener">
-          <span class="k">QQ 频道</span><span class="v m">aggzs66666</span><span class="a">打开</span></a>
-        <a class="ct" href="https://qm.qq.com/q/yBoRfiIT8k" target="_blank" rel="noopener">
-          <span class="k">QQ 群</span><span class="v m">1107914277</span><span class="a">打开</span></a>
-        <button class="ct" type="button" onclick="openGroup()">
-          <span class="k">群二维码</span><span class="v">AG工作室股东大会</span><span class="a">放大</span></button>
-        <button class="ct" type="button" onclick="copyEmail()">
-          <span class="k">邮箱</span><span class="v m">support@agai.online</span><span class="a">复制</span></button>
+        <div class="form-side">
+          <form class="login-form" id="loginForm" onsubmit="submitLogin(event)">
+            <div class="form-kicker"><i></i> SECURE ACCESS</div>
+            <h2>登录考勤面板</h2>
+            <p>使用学号和考勤密码登录，首次登录会自动创建账号。</p>
+            <div class="field">
+              <label for="loginStudentId">学号</label>
+              <input id="loginStudentId" name="studentId" autocomplete="username" inputmode="numeric" placeholder="请输入学号" required>
+            </div>
+            <div class="field">
+              <label for="loginPassword">考勤密码</label>
+              <div class="password-row">
+                <input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required>
+                <button class="pwd-fill" type="button" onclick="fillDefaultPassword()" title="一键填入默认考勤密码">🔑 默认密码</button>
+              </div>
+              <p class="helper">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
+            </div>
+            <label class="agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"><span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 与 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
+            <div class="form-error" id="loginError" aria-live="polite"></div>
+            <button type="submit" class="submit" id="loginSubmit" disabled>登录并进入面板</button>
+            <p class="form-foot">首次登录会自动创建账号；登录即表示你同意上述协议。</p>
+          </form>
+        </div>
       </div>
     </section>
 
+    <section class="service-strip" aria-label="服务说明">
+      <div class="wrap strip-grid">
+        <div class="strip-title"><span class="strip-icon">i</span><div><b>服务说明</b><p>本服务由个人开发者维护。使用前请阅读用户协议与隐私政策；自动签到请按自身实际情况设置。</p></div></div>
+        <div class="strip-items">
+          <span class="strip-item"><b>首次使用</b>登录即创建账号</span>
+          <span class="strip-item"><b>服务支持</b>每日 20:00 后次日处理</span>
+          <span class="strip-item"><b>需要帮助</b>QQ 频道或邮箱</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="support" aria-labelledby="supportTitle">
+      <div class="wrap">
+        <header class="section-head"><div class="kicker">Support</div><h2 id="supportTitle">服务支持，流程清楚一点。</h2><p>如果你愿意支持服务器、域名与日常维护，可扫码查看可选支持方式。支持属于自愿行为，请按自身情况决定。</p></header>
+        <div class="support-layout">
+          <div>
+            <ol class="support-steps">
+              <li><div><b>选择扫码方式</b><p>在微信或支付宝中扫码，查看对应页面中的说明。</p></div></li>
+              <li><div><b>提交必要信息</b><p>按页面提示提供学号和联系邮箱，便于核对与通知。</p></div></li>
+              <li><div><b>等待核对安排</b><p>每日 20:00 后提交的信息默认在次日处理；如需了解进度，请通过 QQ 频道或邮箱联系。</p></div></li>
+            </ol>
+            <p class="privacy-note">每日 20:00 后支持的用户默认次日处理；当日默认不发邮件通知，可通过 QQ、微信、邮箱等提醒方式加急。</p>
+          </div>
+          <aside class="pay-box">
+            <h3>扫码查看支持说明</h3>
+            <p>点击二维码可放大；手机端也可长按识别。</p>
+            <div class="pay-tabs" role="tablist" aria-label="选择扫码方式">
+              <button type="button" role="tab" aria-selected="true" data-pay="wechat">微信</button>
+              <button type="button" role="tab" aria-selected="false" data-pay="alipay">支付宝</button>
+            </div>
+            <button class="qr-button" type="button" id="qrOpen" aria-label="放大微信二维码">
+              <img id="payQr" src="https://login.agai.online/vxcode.png" alt="微信支持二维码">
+              <span><strong id="payName">微信支持</strong><span id="payDescription">用微信扫码查看支持说明。</span><em>点击放大二维码</em></span>
+            </button>
+            <div class="copy-line"><span id="supportNote">备注建议：学号 + 通知邮箱</span><button type="button" id="copySupportNote">复制</button></div>
+            <p class="pay-meta">支持完全自愿。扫码或联系管理员前，请先阅读 <a href="terms.html">《用户协议》</a> 与 <a href="privacy.html">《隐私政策》</a>。</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contactTitle">
+      <div class="wrap contact-layout">
+        <div class="contact-text"><div class="kicker">Contact</div><h2 id="contactTitle">有问题，直接找到人。</h2><p>签到异常、服务进度或建议反馈都可以联系。</p></div>
+        <div class="contact-list">
+          <a class="contact-item" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener"><span class="label">QQ 频道</span><strong>aggzs66666</strong><span class="action">打开</span></a>
+          <a class="contact-item" href="https://qm.qq.com/q/yBoRfiIT8k" target="_blank" rel="noopener"><span class="label">QQ 群</span><strong>1107914277</strong><span class="action">打开</span></a>
+          <button class="contact-item" type="button" id="groupQrOpen"><span class="label">群二维码</span><strong>AG工作室股东大会</strong><span class="action">放大</span></button>
+          <button class="contact-item" type="button" id="emailCopy"><span class="label">邮箱</span><strong>support@agai.online</strong><span class="action">复制</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap"><span><b>AG工作室</b> · 个人开发者运营</span><nav aria-label="法律信息"><a href="terms.html">用户协议</a><a href="privacy.html">隐私政策</a></nav><span>服务说明版本 2026-10</span></div>
+  </footer>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="closeModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <h3 id="modalTitle">二维码</h3><p id="modalTip">请使用对应 App 扫码查看。</p>
+      <img id="modalImage" src="" alt="二维码">
+      <button type="button" id="modalClose">关闭</button>
+    </div>
   </div>
-</main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer class="foot">
-  <div class="wrap">
-    <p><b>AG工作室</b> · 个人开发者运营</p>
-    <nav aria-label="法律信息">
-      <a href="terms.html">用户协议</a>
-      <a href="privacy.html">隐私政策</a>
-    </nav>
-    <p class="fine">协议版本 2026-10-21-2 · 赞助与价格请私聊管理员</p>
-  </div>
-</footer>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<div class="modal" id="modal" onclick="closeQR()" role="dialog" aria-modal="true" aria-label="二维码">
-  <div class="card" onclick="event.stopPropagation()">
-    <h3 id="mTitle"></h3>
-    <img id="mImg" alt="二维码" onerror="this.style.display='none';document.getElementById('mTip').textContent='二维码加载失败，请稍后重试'">
-    <p id="mTip"></p>
-    <button type="button" onclick="closeQR()">关闭</button>
-  </div>
-</div>
-
-<script src="shared.js"></script>
-<script>
-var tt;
-function toast(m){
-  var t=document.getElementById('toast');
-  t.textContent=m;t.classList.add('show');
-  clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},2400);
-}
-
-var cur=0;
-function pick(i){
-  cur=i;
-  document.querySelectorAll('.tabs button').forEach(function(b,j){b.setAttribute('aria-selected',j===i)});
-  document.querySelectorAll('.qrs img').forEach(function(m,j){m.hidden=j!==i});
-  document.querySelectorAll('[data-pay]').forEach(function(d){d.hidden=d.getAttribute('data-pay')!==String(i)});
-}
-function openQR(src,title,tip){
-  var im=document.getElementById('mImg');
-  im.style.display='';im.src=src;
-  document.getElementById('mTitle').textContent=title;
-  document.getElementById('mTip').textContent=tip;
-  document.getElementById('modal').classList.add('show');
-  document.body.style.overflow='hidden';
-}
-function zoomPay(){
-  var m=document.querySelectorAll('.qrs img')[cur];
-  openQR(m.src,cur?'支付宝赞助码':'微信赞助码','长按识别或截图保存，用对应 App 扫码');
-}
-function openGroup(){openQR('qq_group_qr.png','AG工作室股东大会','长按识别或截图保存，用 QQ 扫码加入')}
-function closeQR(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeQR()});
-
-function doCopy(text,ok,fail){
-  function fallback(){
-    var ta=document.createElement('textarea');
-    ta.value=text;ta.style.cssText='position:fixed;top:0;opacity:0';
-    document.body.appendChild(ta);ta.focus();ta.select();
-    try{document.execCommand('copy')?ok():fail()}catch(e){fail()}
-    document.body.removeChild(ta);
-  }
-  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok).catch(fallback)}
-  else{fallback()}
-}
-function copyNote(){
-  var b=document.getElementById('copyBtn');
-  doCopy('AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：',function(){
-    b.classList.add('done');b.textContent='已复制';toast('格式已复制');
-    setTimeout(function(){b.classList.remove('done');b.textContent='复制'},2000);
-  },function(){toast('复制失败，请手动记录')});
-}
-function copyEmail(){
-  var e='support@agai.online';
-  doCopy(e,function(){toast('邮箱已复制：'+e)},function(){toast('复制失败，请手动记录')});
-}
-
-var API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE) || 'https://api.agai.online/api';
-
-(function(){ try { var p = new URLSearchParams(location.search).get('invite'); if (p) localStorage.setItem('pendingInviteCode', p.trim().toUpperCase()); } catch(e) {} })();
-
-function fillDefaultPassword(){
-  var el = document.getElementById('loginPassword');
-  if (!el) return;
-  el.value = 'Ahgydx@920';
-  el.focus();
-  toast('已填入默认考勤密码');
-}
-
-function openLogin(){
-  var m = document.getElementById('loginModal');
-  m.classList.add('show');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('loginError').textContent = '';
-  setTimeout(function(){ document.getElementById('loginStudentId').focus(); }, 60);
-}
-function closeLogin(){
-  var m = document.getElementById('loginModal');
-  if (m) m.classList.remove('show');
-  document.body.style.overflow = '';
-}
-function onLoginAgreeChange(){
-  document.getElementById('loginSubmit').disabled = !document.getElementById('loginAgree').checked;
-}
-async function submitLogin(e){
-  e.preventDefault();
-  var sid = document.getElementById('loginStudentId').value.trim();
-  var pwd = document.getElementById('loginPassword').value;
-  var err = document.getElementById('loginError');
-  var btn = document.getElementById('loginSubmit');
-  err.textContent = '';
-  if (!document.getElementById('loginAgree').checked) {
-    err.textContent = '请先阅读并勾选同意《用户协议》和《隐私政策》。';
-    return;
-  }
-  if (!sid || !pwd) {
-    err.textContent = '请输入学号和考勤密码。';
-    return;
-  }
-  var oldText = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = '登录中...';
-  try {
-    var res = await fetch(API_BASE + '/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ studentId: sid, attendancePassword: pwd })
-    });
-    var data = await res.json().catch(function(){ return {}; });
-    if (!res.ok || !data.success) {
-      err.textContent = data.message || '登录失败，请检查学号和考勤密码。';
-      btn.disabled = false;
-      btn.textContent = oldText;
-      return;
+  <script src="shared.js"></script>
+  <script>
+    var API_BASE=(window.APP_CONFIG&&window.APP_CONFIG.API_BASE)||"https://api.agai.online/api";
+    var currentPay="wechat";
+    var payMethods={
+      wechat:{name:"微信支持",image:"https://login.agai.online/vxcode.png",description:"用微信扫码查看支持说明。",note:"备注建议：学号 + 通知邮箱"},
+      alipay:{name:"支付宝支持",image:"https://login.agai.online/zfbcode.png",description:"用支付宝扫码查看支持说明。",note:"备注建议：学号 + 通知邮箱"}
+    };
+    var toastTimer;
+    function showToast(message){
+      var node=document.getElementById("toast");node.textContent=message;node.classList.add("show");
+      clearTimeout(toastTimer);toastTimer=setTimeout(function(){node.classList.remove("show");},2400);
     }
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    window.location.href = data.user.role === 'admin' ? '/admin.html' : '/dashboard.html';
-  } catch (ex) {
-    err.textContent = '网络异常，请稍后重试。';
-    btn.disabled = false;
-    btn.textContent = oldText;
-  }
-}
-</script>
+    function selectPay(method){
+      currentPay=method;var info=payMethods[method];
+      document.querySelectorAll("[data-pay]").forEach(function(button){button.setAttribute("aria-selected",button.dataset.pay===method?"true":"false");});
+      document.getElementById("payQr").src=info.image;document.getElementById("payQr").alt=info.name+"二维码";
+      document.getElementById("payName").textContent=info.name;document.getElementById("payDescription").textContent=info.description;
+      document.getElementById("supportNote").textContent=info.note;document.getElementById("qrOpen").setAttribute("aria-label","放大"+info.name+"二维码");
+    }
+    function openModal(image,title,tip){
+      document.getElementById("modalImage").src=image;document.getElementById("modalImage").alt=title;
+      document.getElementById("modalTitle").textContent=title;document.getElementById("modalTip").textContent=tip;
+      document.getElementById("modal").classList.add("show");document.body.style.overflow="hidden";document.getElementById("modalClose").focus();
+    }
+    function closeModal(event){
+      if(event&&event.target!==document.getElementById("modal"))return;
+      document.getElementById("modal").classList.remove("show");document.body.style.overflow="";
+    }
+    function copyText(value,success){
+      function fallback(){
+        var area=document.createElement("textarea");area.value=value;area.style.cssText="position:fixed;opacity:0";document.body.appendChild(area);area.select();
+        try{document.execCommand("copy");success();}catch(error){showToast("复制失败，请手动记录。");}document.body.removeChild(area);
+      }
+      if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(value).then(success).catch(fallback);}else{fallback();}
+    }
+    document.querySelectorAll("[data-pay]").forEach(function(button){button.addEventListener("click",function(){selectPay(button.dataset.pay);});});
+    document.getElementById("qrOpen").addEventListener("click",function(){var info=payMethods[currentPay];openModal(info.image,info.name+"二维码","请使用对应 App 扫码查看支持说明。");});
+    document.getElementById("groupQrOpen").addEventListener("click",function(){openModal("qq_group_qr.png","AG工作室股东大会","请用 QQ 扫码加入群聊。");});
+    document.getElementById("modalClose").addEventListener("click",closeModal);
+    document.getElementById("copySupportNote").addEventListener("click",function(){copyText("学号：请填写；通知邮箱：请填写",function(){showToast("备注格式已复制。");});});
+    document.getElementById("emailCopy").addEventListener("click",function(){copyText("support@agai.online",function(){showToast("邮箱已复制：support@agai.online");});});
+        function fillDefaultPassword(){var input=document.getElementById("loginPassword");if(!input)return;input.value="Ahgydx@920";input.focus();showToast("已填入默认考勤密码");}
+    document.addEventListener("keydown",function(event){if(event.key==="Escape")closeModal();});
+    function onLoginAgreeChange(){document.getElementById("loginSubmit").disabled=!document.getElementById("loginAgree").checked;}
+    (function(){try{var invite=new URLSearchParams(location.search).get("invite");if(invite)localStorage.setItem("pendingInviteCode",invite.trim().toUpperCase());}catch(error){}})();
+    async function submitLogin(event){
+      event.preventDefault();
+      var sid=document.getElementById("loginStudentId").value.trim(),password=document.getElementById("loginPassword").value;
+      var error=document.getElementById("loginError"),button=document.getElementById("loginSubmit");
+      error.textContent="";
+      if(!document.getElementById("loginAgree").checked){error.textContent="请先阅读并同意《用户协议》与《隐私政策》。";return;}
+      if(!sid||!password){error.textContent="请输入学号和考勤密码。";return;}
+      var original=button.textContent;button.disabled=true;button.textContent="登录中...";
+      try{
+        var response=await fetch(API_BASE+"/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({studentId:sid,attendancePassword:password})});
+        var data=await response.json().catch(function(){return {};});
+        if(!response.ok||!data.success){error.textContent=data.message||"登录失败，请检查学号和考勤密码。";button.disabled=false;button.textContent=original;return;}
+        localStorage.setItem("token",data.token);localStorage.setItem("user",JSON.stringify(data.user));
+        location.href=data.user.role==="admin"?"/admin.html":"/dashboard.html";
+      }catch(networkError){error.textContent="网络异常，请稍后重试。";button.disabled=false;button.textContent=original;}
+    }
+  </script>
 </body>
 </html>
