@@ -396,11 +396,11 @@
           <div class="auto-sign-hero">
             <div>
               <h2><i class="fas fa-moon" style="color:var(--brand);"></i> 自动签到</h2>
-              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:25 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
+              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:35 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
               <div id="autoSignStatus" style="margin-top:14px;"></div>
             </div>
             <div class="auto-sign-time">
-              <strong>21:25</strong>
+              <strong>21:35</strong>
               <span>统一签到时间</span>
             </div>
           </div>
@@ -754,7 +754,7 @@
           if (!setting.enabled) {
             autoContainer.innerHTML = '<p class="empty">自动签到未开启。进入"自动签到"选择日期后保存即可。</p>';
           } else {
-            autoContainer.innerHTML = '<div class="list-item"><div><h4>自动签到已开启</h4><p><i class="fas fa-clock"></i> 21:25 | <i class="fas fa-calendar-alt"></i> '+escapeHTML(selectedDays)+' | <i class="fas fa-envelope"></i> '+(setting.notifyOnSuccess || setting.notifyOnFailure ? '邮件提醒已配置' : '未开启邮件提醒')+'</p></div><span class="badge badge-success">启用</span></div>';
+            autoContainer.innerHTML = '<div class="list-item"><div><h4>自动签到已开启</h4><p><i class="fas fa-clock"></i> 21:35 | <i class="fas fa-calendar-alt"></i> '+escapeHTML(selectedDays)+' | <i class="fas fa-envelope"></i> '+(setting.notifyOnSuccess || setting.notifyOnFailure ? '邮件提醒已配置' : '未开启邮件提醒')+'</p></div><span class="badge badge-success">启用</span></div>';
           }
           return;
         }
@@ -799,7 +799,7 @@
       if (!status) return;
       const selectedDays = (setting.customDays || []).map(d => days[d]).join('、') || '未选择日期';
       status.innerHTML = setting.enabled
-        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' 21:25 自动签到</span>'
+        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' 21:35 自动签到</span>'
         : '<span class="badge badge-warning">未开启</span><span style="margin-left:10px;color:var(--text-secondary);">打开开关并保存后生效</span>';
     }
 

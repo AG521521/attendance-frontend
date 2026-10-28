@@ -663,7 +663,7 @@ const char MAIN_HTML[] PROGMEM = R"rawliteral(
         // 更新数据
         async function updateData() {
             try {
-                const response = await fetch('https://login.agai.online/api/plant/data');
+                const response = await fetch('https://api.agai.online/api/plant/data');
                 const data = await response.json();
                 
                 // 更新传感器数据
@@ -836,7 +836,7 @@ const char MAIN_HTML[] PROGMEM = R"rawliteral(
             const currentState = document.querySelector(`.relay-toggle[data-relay="${relay}"]`).classList.contains('active') ? 0 : 1;
             
             try {
-                const response = await fetch('https://login.agai.online/api/plant/control', {
+                const response = await fetch('https://api.agai.online/api/plant/control', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -862,7 +862,7 @@ const char MAIN_HTML[] PROGMEM = R"rawliteral(
         // 设置控制模式
         async function setControlMode(mode) {
             try {
-                const response = await fetch('https://login.agai.online/api/plant/mode', {
+                const response = await fetch('https://api.agai.online/api/plant/mode', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
