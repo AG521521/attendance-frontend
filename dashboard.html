@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>AG 智能考勤</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Font Awesome：主用 bootcdn（国内），失败时 JS 自动兜底到 staticfile / cdnjs -->
+<link id="faLink" rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 /* ============================================================
    Design Tokens
@@ -156,12 +157,18 @@ body.dark .brand-mark{color:#0b1210}
   border-radius: var(--radius-pill);
   background: var(--surface-secondary);
   border: 1px solid var(--border);
+  min-width: 0;
 }
 .user-name{
   font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.user-id{
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-left: 2px;
 }
 .tier-badge{
   font-size: 10.5px;
@@ -171,6 +178,7 @@ body.dark .brand-mark{color:#0b1210}
   background: var(--gold-subtle);
   color: var(--gold);
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 body.dark .tier-badge{color:var(--gold)}
 .icon-btn{
@@ -630,6 +638,7 @@ body.dark .onboard-step.done .step-dot{color:#0b1210}
   font-weight: 600;
   color: var(--success);
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 /* ============================================================
@@ -1135,8 +1144,9 @@ body.dark .toast.warning{color:#15171b}
   .brand-mark{width:32px;height:32px;border-radius:9px;font-size:14px}
   .topbar-title h1{font-size:14px}
   .topbar-title p{display:none}
-  .user-chip{max-width:30vw;padding:4px 9px}
+  .user-chip{max-width:40vw;padding:4px 9px}
   .user-name{font-size:11.5px}
+  .user-id{display:none} /* 移动端只显示姓名，不显示学号 */
   .tier-badge{font-size:10px;padding:1px 6px}
   .icon-btn{width:32px;height:32px;font-size:14px}
 
@@ -1223,8 +1233,49 @@ body.dark .toast.warning{color:#15171b}
 
   .field-row{grid-template-columns:1fr;gap:0}
 
-  .onboard-step{align-items:flex-start}
-  .onboard-step .btn{width:100%;margin-top:2px}
+  /* ---------- 新手引导：移动端紧凑化 ---------- */
+  .onboard-progress{margin:var(--s-2) 0;height:3px}
+  .onboard-meta{font-size:11px;margin-bottom:var(--s-2)}
+
+  .onboard-step{
+    align-items:center;
+    flex-wrap:nowrap;
+    gap:10px;
+    padding:11px 0;
+  }
+  .step-body strong{
+    font-size:13px;
+    line-height:1.35;
+  }
+  .step-body p{
+    /* 移动端隐藏描述，避免每个步骤占两行 */
+    display:none;
+  }
+  .step-dot{
+    width:22px;
+    height:22px;
+    font-size:10px;
+    flex:0 0 auto;
+  }
+  .onboard-step .btn{
+    flex:0 0 auto;
+    width:auto;
+    margin-top:0;
+    min-height:28px;
+    padding:4px 11px;
+    font-size:11.5px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .step-done-text{
+    flex:0 0 auto;
+    font-size:11px;
+  }
+  .onboard-head .btn-sm{
+    padding:4px 10px;
+    font-size:11px;
+    min-height:26px;
+  }
 
   .more-grid{grid-template-columns:repeat(2,1fr);gap:var(--s-2)}
   .more-item{padding:var(--s-3) var(--s-3)}
@@ -1269,7 +1320,7 @@ body.dark .toast.warning{color:#15171b}
 
     <nav class="side-nav">
       <div class="side-group-label">常用</div>
-      <button class="side-item active" data-nav="dashboard"><i class="fas fa-house"></i> 首页</button>
+      <button class="side-item active" data-nav="dashboard"><i class="fas fa-home"></i> 首页</button>
       <button class="side-item" data-nav="subscriptions"><i class="fas fa-calendar-check"></i> 自动签到</button>
       <button class="side-item" data-nav="profile"><i class="fas fa-user"></i> 我的</button>
 
@@ -1277,7 +1328,7 @@ body.dark .toast.warning{color:#15171b}
       <button class="side-item" data-nav="email"><i class="fas fa-envelope"></i> 邮箱</button>
       <button class="side-item" data-nav="invite"><i class="fas fa-gift"></i> 邀请</button>
       <button class="side-item" data-nav="feedback"><i class="fas fa-comment"></i> 留言</button>
-      <button class="side-item" data-nav="logs"><i class="fas fa-clock-rotate-left"></i> 记录</button>
+      <button class="side-item" data-nav="logs"><i class="fas fa-history"></i> 记录</button>
       <a class="side-item" href="/market"><i class="fas fa-store"></i> 二手市场</a>
 
       <div class="side-group-label">支持</div>
@@ -1297,7 +1348,10 @@ body.dark .toast.warning{color:#15171b}
       </div>
       <div class="topbar-right">
         <div class="user-chip">
-          <span class="user-name" id="userName">加载中</span>
+          <span class="user-name" id="userName">
+            <span id="userNameShort">加载中</span>
+            <span class="user-id">(<span id="userStudentId"></span>)</span>
+          </span>
           <span class="tier-badge" id="headerTier">免费</span>
         </div>
         <button class="icon-btn is-accent" onclick="goPage('buy')" title="赞助支持" aria-label="赞助支持">
@@ -1305,7 +1359,7 @@ body.dark .toast.warning{color:#15171b}
         </button>
         <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="切换主题">🌙</button>
         <button class="icon-btn" onclick="logout()" title="退出登录" aria-label="退出登录">
-          <i class="fas fa-right-from-bracket"></i>
+          <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
     </header>
@@ -1318,7 +1372,7 @@ body.dark .toast.warning{color:#15171b}
         <!-- 新手引导 -->
         <div class="card" id="onboardingCard">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:2px">
-            <h2 class="card-heading" style="margin-bottom:0"><i class="fas fa-sparkles"></i> 新手上手</h2>
+            <h2 class="card-heading" style="margin-bottom:0"><i class="fas fa-star"></i> 新手上手</h2>
             <button class="btn btn-ghost btn-sm" onclick="dismissOnboarding()">跳过</button>
           </div>
           <div class="onboard-progress"><div class="onboard-bar" id="onboardingBar"></div></div>
@@ -1331,7 +1385,7 @@ body.dark .toast.warning{color:#15171b}
           <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
             <div style="min-width:180px">
               <h2 class="card-heading" style="margin-bottom:4px;color:var(--gold)">
-                <i class="fas fa-circle-info"></i> 本学期考勤服务
+                <i class="fas fa-info-circle"></i> 本学期考勤服务
               </h2>
               <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin:0">
                 支持完全自愿，不影响账号使用。每天 21:00 后统一核对，次日处理。
@@ -1365,12 +1419,12 @@ body.dark .toast.warning{color:#15171b}
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s-3);flex-wrap:wrap">
             <div style="flex:1;min-width:200px">
-              <h2 class="card-heading" style="margin-bottom:4px"><i class="fas fa-share-nodes"></i> 邀请同学</h2>
+              <h2 class="card-heading" style="margin-bottom:4px"><i class="fas fa-share-alt"></i> 邀请同学</h2>
               <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;margin:0">
                 分享专属链接，邀请成功后双方都有奖励。
               </p>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="shareInvite()"><i class="fas fa-share"></i> 分享</button>
+            <button class="btn btn-secondary btn-sm" onclick="shareInvite()"><i class="fas fa-share-alt"></i> 分享</button>
           </div>
           <div style="display:flex;gap:8px;margin-top:var(--s-3);flex-wrap:wrap">
             <input id="shareLink" readonly
@@ -1422,7 +1476,7 @@ body.dark .toast.warning{color:#15171b}
 
         <!-- 自动签到状态 -->
         <div class="card">
-          <h2 class="card-heading"><i class="fas fa-list-check"></i> 自动签到状态</h2>
+          <h2 class="card-heading"><i class="fas fa-tasks"></i> 自动签到状态</h2>
           <div id="activeSignBox"><p class="loading">加载中…</p></div>
         </div>
       </div>
@@ -1579,7 +1633,7 @@ body.dark .toast.warning{color:#15171b}
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><i class="fas fa-user-pen"></i> 个人信息</h2>
+          <h2 class="card-heading"><i class="fas fa-user-edit"></i> 个人信息</h2>
           <div class="field"><label>学号</label><input type="text" id="profileStudentId" disabled></div>
           <div class="field"><label>姓名</label><input type="text" id="profileName" placeholder="请输入姓名"></div>
           <div class="field">
@@ -1634,7 +1688,7 @@ body.dark .toast.warning{color:#15171b}
               <small>问题与建议</small>
             </button>
             <button class="more-item" data-nav="logs">
-              <i class="fas fa-clock-rotate-left"></i>
+              <i class="fas fa-history"></i>
               <span>签到记录</span>
               <small>历史明细</small>
             </button>
@@ -1692,7 +1746,7 @@ body.dark .toast.warning{color:#15171b}
         <p class="page-sub">问题和建议都可以写在这里。</p>
 
         <div class="card">
-          <h2 class="card-heading"><i class="fas fa-pen-to-square"></i> 提交反馈</h2>
+          <h2 class="card-heading"><i class="fas fa-edit"></i> 提交反馈</h2>
           <div class="field">
             <label>类型</label>
             <select id="feedbackType">
@@ -1791,7 +1845,7 @@ body.dark .toast.warning{color:#15171b}
 <!-- ================= Tabbar ================= -->
 <nav class="tabbar">
   <button class="tab-item active" data-tab="dashboard" onclick="goPage('dashboard')">
-    <i class="fas fa-house"></i><span>首页</span>
+    <i class="fas fa-home"></i><span>首页</span>
   </button>
   <button class="tab-item tab-sponsor" data-tab="buy" onclick="goPage('buy')">
     <span class="tab-sponsor-icon"><i class="fas fa-heart"></i></span>
@@ -1837,6 +1891,53 @@ body.dark .toast.warning{color:#15171b}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   Font Awesome 自动兜底（主 bootcdn → staticfile → cdnjs）
+   ============================================================ */
+(function () {
+  function checkFA() {
+    var test = document.createElement('i');
+    test.className = 'fas fa-home';
+    test.style.cssText = 'position:absolute;left:-9999px;top:-9999px;visibility:hidden;font-size:14px';
+    document.body.appendChild(test);
+    var w = test.getBoundingClientRect().width;
+    document.body.removeChild(test);
+    return w >= 6;
+  }
+
+  function tryFallback(urls, idx) {
+    if (idx >= urls.length) {
+      console.warn('[AG] Font Awesome 全部 CDN 加载失败，图标可能无法显示。');
+      return;
+    }
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = urls[idx];
+    link.onerror = function () { tryFallback(urls, idx + 1); };
+    link.onload = function () {
+      setTimeout(function () {
+        if (checkFA()) return;
+        tryFallback(urls, idx + 1);
+      }, 700);
+    };
+    document.head.appendChild(link);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () {
+      if (checkFA()) return;
+      console.warn('[AG] 主 CDN Font Awesome 未生效，尝试备用 CDN…');
+      tryFallback([
+        'https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+        'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'
+      ], 0);
+    }, 1200);
+  });
+})();
+</script>
 
 <script>
 /* ============================================================
@@ -2070,10 +2171,10 @@ async function loadUserInfo() {
     currentUser = data.user;
     localStorage.setItem('user', JSON.stringify(currentUser));
 
-    const userNameEl = document.getElementById('userName');
-    if (userNameEl) {
-      userNameEl.textContent = (currentUser.name || currentUser.studentId || '同学') + ' (' + (currentUser.studentId || '') + ')';
-    }
+    const nameShort = document.getElementById('userNameShort');
+    const sid = document.getElementById('userStudentId');
+    if (nameShort) nameShort.textContent = currentUser.name || currentUser.studentId || '同学';
+    if (sid) sid.textContent = currentUser.studentId || '';
 
     const tierNames = { FREE: '免费', MONTHLY: '月卡', TERM: '学期', YEARLY: '学年', VIP: 'VIP', SVIP: 'SVIP', LEGACY: '元老' };
     const headerTier = document.getElementById('headerTier');
@@ -2267,7 +2368,7 @@ async function quickSign() {
     } else {
       const msg = (data.result && data.result.message) || data.message || '签到失败';
       btn.classList.add('is-error');
-      if (btnIcon) btnIcon.className = 'fas fa-xmark';
+      if (btnIcon) btnIcon.className = 'fas fa-times';
       if (btnLabel) btnLabel.textContent = '签到失败';
       if (status) status.textContent = '❌ ' + msg;
       if (result) result.innerHTML = '<span style="color:var(--danger)">❌ ' + escapeHTML(msg) + '</span>';
@@ -2275,7 +2376,7 @@ async function quickSign() {
     }
   } catch (e) {
     btn.classList.add('is-error');
-    if (btnIcon) btnIcon.className = 'fas fa-xmark';
+    if (btnIcon) btnIcon.className = 'fas fa-times';
     if (btnLabel) btnLabel.textContent = '网络错误';
     if (status) status.textContent = '❌ 网络错误，请稍后重试';
     if (result) result.innerHTML = '<span style="color:var(--danger)">❌ 网络错误</span>';
@@ -2356,7 +2457,7 @@ function renderEmailWarning() {
     box.innerHTML = '';
   } else {
     box.innerHTML = `<div class="alert alert-warning">
-      <i class="fas fa-triangle-exclamation"></i>
+      <i class="fas fa-exclamation-triangle"></i>
       <div>
         <strong>没有绑定邮箱，不能开启邮件通知</strong>
         <p>绑定后签到成功或失败都会发邮件提醒，避免漏签。</p>
@@ -2471,12 +2572,12 @@ async function loadEmailStatus() {
 
   if (currentUser.emailVerified) {
     container.innerHTML = '<div style="background:var(--success-subtle);padding:12px 14px;border-radius:var(--radius-control);font-size:13px;color:var(--success)">'
-      + '<i class="fas fa-circle-check"></i> 已绑定 <b>' + escapeHTML(currentUser.email) + '</b></div>';
+      + '<i class="fas fa-check-circle"></i> 已绑定 <b>' + escapeHTML(currentUser.email) + '</b></div>';
     if (form) form.classList.add('hidden');
     if (rebind) rebind.classList.remove('hidden');
   } else {
     container.innerHTML = '<div style="background:var(--warning-subtle);padding:12px 14px;border-radius:var(--radius-control);font-size:13px;color:var(--warning)">'
-      + '<i class="fas fa-circle-info"></i> 未绑定邮箱 · 绑定后可收到签到提醒</div>';
+      + '<i class="fas fa-info-circle"></i> 未绑定邮箱 · 绑定后可收到签到提醒</div>';
     if (form) form.classList.remove('hidden');
     if (rebind) rebind.classList.add('hidden');
   }
@@ -2704,7 +2805,7 @@ async function loadInviteInfo() {
     if (currentUser.invitedBy) {
       document.getElementById('bindInviteArea').innerHTML =
         '<div style="background:var(--success-subtle);padding:10px 12px;border-radius:9px;margin-bottom:var(--s-3);font-size:12.5px;color:var(--success)">'
-        + '<i class="fas fa-circle-check"></i> 已绑定邀请人</div>';
+        + '<i class="fas fa-check-circle"></i> 已绑定邀请人</div>';
     }
 
     const list = document.getElementById('invitedList');
