@@ -265,7 +265,14 @@
     @media (max-width: 400px) {
       .stats-grid { grid-template-columns: 1fr; }
     }
-  </style>
+  .welcome-hero{background:linear-gradient(135deg,#1b2a4a 0%,#2d3f6e 55%,#3b5b9a 100%);color:#fff;border-radius:20px;padding:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px;box-shadow:0 12px 30px rgba(27,42,74,.18)}
+.welcome-kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#b9c8e8;margin-bottom:8px}
+.welcome-hero h2{font-size:clamp(22px,3vw,30px);font-weight:900;letter-spacing:-.02em;margin-bottom:6px}
+.welcome-status{font-size:13px;color:#d6e0f5;line-height:1.6}
+.welcome-actions{display:flex;gap:10px;flex-wrap:wrap}
+.welcome-actions .btn{background:#fff;color:#1b2a4a;border-color:#fff}
+.welcome-actions .btn-primary{background:#ffd23f;border-color:#ffd23f;color:#1b2a4a}
+</style>
 </head>
 <body>
   <div class="header">
@@ -363,6 +370,17 @@
           </div>
           <!-- 🆕 VIP 专属通知横幅 -->
           <div id="vipNoticeBanner"></div>
+          <div class="welcome-hero" id="welcomeHero">
+            <div>
+              <p class="welcome-kicker">AG 考勤 · 今日</p>
+              <h2>你好，<span id="welcomeName">同学</span></h2>
+              <p class="welcome-status" id="welcomeStatus">正在读取今日签到状态…</p>
+            </div>
+            <div class="welcome-actions">
+              <button class="btn btn-primary" onclick="quickSign()"><i class="fas fa-pen"></i> 立即签到</button>
+              <button class="btn btn-outline" onclick="document.querySelector('.menu-item[data-page=logs]').click()">查看记录</button>
+            </div>
+          </div>
           <div class="card" id="newbieGuide" style="background:#eef7ff;border:1px solid #b9d9ff;margin-bottom:16px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
               <div style="flex:1;min-width:240px;">
@@ -760,6 +778,8 @@
           document.getElementById('statSuccessSigns').textContent = data.stats.successSigns || 0;
           document.getElementById('statTodaySigns').textContent = data.stats.todaySigns || 0;
           document.getElementById('statActiveSubs').textContent = data.stats.autoSignEnabled ? 1 : 0;
+          const ws=document.getElementById('welcomeStatus');
+          if (ws) ws.textContent = (data.stats.todaySuccess > 0) ? '今天已完成签到 · 继续保持' : '今天还没有签到，点右侧「立即签到」即可';
         }
       } catch(e) {}
     }
@@ -1095,6 +1115,7 @@
           currentUser = data.user;
           localStorage.setItem('user', JSON.stringify(currentUser));
           document.getElementById('userName').textContent = (currentUser.name||currentUser.studentId)+' ('+currentUser.studentId+')';
+          const wn=document.getElementById('welcomeName'); if (wn) wn.textContent = currentUser.name || currentUser.studentId || '同学';
           renderSponsorBadge();
         }
       } catch(e) {}
