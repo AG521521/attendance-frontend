@@ -13,7 +13,7 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --y:#ffd23f;--g:#0f3d36;--soft:#eef5f2;--mute:#44625b;--line:#c3d7cf;
+  --y:#f2bb41;--g:#14223b;--coral:#ec6a4d;--soft:#eef2f6;--mute:#617089;--line:#d8e0eb;
   --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
@@ -185,14 +185,22 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .login-panel-head p{font-size:13px;color:var(--mute)}
 .login-panel .login-field input{border-color:#d7e6df;border-radius:12px;background:#fbfdfc}
 .login-panel .login-field input:focus{border-color:var(--g);outline:none;box-shadow:0 0 0 4px rgba(15,61,54,.08)}
-.login-panel .login-submit{border-radius:12px;background:var(--g);color:var(--y);margin-top:6px}
-.login-panel .login-submit:disabled{background:#c7d6d0;color:#fff}
+.login-panel .login-submit{background:var(--coral);color:#fff;border-color:var(--coral);border-radius:12px;margin-top:6px}
+.login-panel .login-submit:disabled{background:#bcc6d5;color:#fff}
 .login-foot{font-size:11.5px;text-align:center;margin-top:12px}
 .password-row{display:flex;gap:8px;align-items:stretch}
 .password-row input{flex:1;min-width:0}
 .pwd-fill{flex:none;padding:0 12px;border:1px solid #cfe8dc;border-radius:12px;background:#f2faf6;color:#153a2e;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
 .pwd-fill:hover{background:#e4f6ed}
-</style>
+@media(max-width:880px){
+  .auth-grid{display:flex;flex-direction:column;gap:20px}
+  .auth-copy{order:2}
+  .login-panel{order:1}
+  .auth-copy h1{font-size:clamp(32px,9vw,44px)}
+  .auth-lead{font-size:14.5px}
+  .login-panel{padding:22px}
+  .auth{padding:22px 0 32px}
+}</style>
 </head>
 <body>
 
@@ -237,7 +245,8 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
             <button type="button" class="pwd-fill" onclick="fillDefaultPassword()" title="一键填入默认考勤密码"><i class="fas fa-key"></i> 默认密码</button>
           </div>
         </div>
-        <p class="login-hint">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
+        <p class="login-hint">忘记密码？<a href="https://xskq.ahut.edu.cn/" target="_blank" rel="noopener">去官方考勤系统找回</a></p>
+        <p class="login-hint">电脑端请用电脑浏览器打开该网址登录；手机端请在官方「考勤服务号」或「掌上工大」中找回密码。</p>
         <label class="login-agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"> <span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 和 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
         <div class="login-error" id="loginError"></div>
         <button type="submit" class="login-submit" id="loginSubmit" disabled>登录</button>
@@ -259,34 +268,14 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 
     <section id="pay" aria-labelledby="payT">
       <h2 id="payT">赞助支持</h2>
-      <p class="sub">扫码赞助后，按提示提交信息，管理员会为你安排。</p>
-
-      <div class="tabs" role="tablist" aria-label="选择赞助方式">
-        <button type="button" role="tab" aria-selected="true" onclick="pick(0)">微信</button>
-        <button type="button" role="tab" aria-selected="false" onclick="pick(1)">支付宝</button>
+      <p class="sub">请先登录仪表盘，进入「赞助支持」选择套餐并扫码；支付后点“确认我已支付”，权益立即发放。</p>
+      <div class="note">
+        <p style="margin:0 0 8px;">首页不再直接提供赞助码，避免付款后无法自动匹配。</p>
+        <p style="margin:0;">登录后路径：「赞助支持」→ 选择套餐 → 扫码 → 确认我已支付。</p>
       </div>
-      <button class="frame" type="button" onclick="zoomPay()" aria-label="点击放大二维码"><span class="qrs">
-        <img src="https://login.agai.online/vxcode.png" alt="微信赞助码">
-        <img src="https://login.agai.online/zfbcode.png" alt="支付宝赞助码" hidden>
-      </span></button>
-      <p class="hint">点击二维码可放大。手机上也可长按识别，或截图后用扫一扫选相册。</p>
-
-      <ol class="steps">
-        <li>扫码赞助</li>
-        <li><div>
-          <div data-pay="0">在微信扫码后的页面下方直接填写，无需手动备注
-            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b></div></div>
-          <div data-pay="1" hidden>在备注里填写
-            <div class="ticket"><b>学号 + 密码 + 邮箱（可选）</b>
-              <button class="copy" id="copyBtn" type="button" onclick="copyNote()">复制</button></div></div>
-        </div></li>
-        <li>管理员核对后为你安排</li>
-      </ol>
-
-      <p class="note">每日 20:00 后支持的用户默认次日处理；当日默认不发邮件通知，可通过 QQ、微信、邮箱等提醒方式加急。</p>
-      <p class="agree-note">扫码赞助即表示你已阅读并同意<a href="terms.html">《用户协议》</a>和<a href="privacy.html">《隐私政策》</a>；以后登录时，登录行为同样视为你同意上述协议。</p>
+      <p style="margin-top:18px;"><a href="#login" class="copy" style="display:inline-block;text-decoration:none;">去登录</a></p>
+      <p class="agree-note">还没有账号？首次登录会自动创建账号。忘记密码请用电脑打开官方考勤系统找回，手机端可在「考勤服务号」或「掌上工大」找回。</p>
     </section>
-
     <section id="contact" aria-labelledby="ctT">
       <h2 id="ctT">联系我们</h2>
       <p class="sub">有任何问题，可在 QQ 频道留言或发送邮件。</p>
@@ -312,7 +301,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
       <a href="terms.html">用户协议</a>
       <a href="privacy.html">隐私政策</a>
     </nav>
-    <p class="fine">协议版本 2026-10-21-2 · 赞助与价格请私聊管理员</p>
+    <p class="fine">协议版本 2026-10-21-2 · 登录后在仪表盘赞助</p>
   </div>
 </footer>
 

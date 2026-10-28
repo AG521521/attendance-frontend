@@ -274,6 +274,101 @@
 .welcome-actions .btn-primary{background:#ffd23f;border-color:#ffd23f;color:#1b2a4a}
 #shareCard .btn-primary{background:#153a2e;border-color:#153a2e}
 #shareCode{font-family:var(--mono,monospace)}
+/* ===== 2026-10 用户仪表盘重设计：延续晚寝签到深蓝/珊瑚/金色视觉 ===== */
+:root{
+  --brand:#14223b;--brand-2:#213755;--brand-light:#e8eef5;
+  --bg:#eef2f6;--card:#ffffff;--border:#d8e0eb;
+  --text:#14223b;--text-secondary:#617089;
+  --success:#087e7c;--warning:#ec6a4d;--danger:#bd271d;
+  --radius:14px;--shadow:0 14px 36px rgba(20,34,59,.08);
+  --mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif}
+.sidebar{background:var(--brand);border-right:1px solid rgba(255,255,255,.06)}
+.sidebar-header{border-bottom:1px solid rgba(255,255,255,.1);padding:0 18px;height:70px;display:flex;align-items:center}
+.sidebar-header h2{font-size:15px;letter-spacing:.01em;color:#fff;display:flex;align-items:center;gap:9px}
+.sidebar-header h2 i{color:#f2bb41}
+.sidebar-menu{padding:12px 10px}
+.menu-item{color:#aebfd4;border-radius:10px;margin:3px 0;padding:11px 13px;font-size:13px;font-weight:700}
+.menu-item i{width:20px;color:#8fa5bf}
+.menu-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.menu-item.active{background:var(--warning);color:#fff;box-shadow:0 10px 20px rgba(236,106,77,.24)}
+.menu-item.active i{color:#fff}
+.main-content{background:var(--bg)}
+.topbar{background:rgba(255,255,255,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);height:70px;padding:0 26px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.card h2{font-size:16px;color:var(--brand);letter-spacing:0;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.card h2 i{color:var(--warning)}
+.btn{border-radius:9px;font-weight:800;font-size:13px;padding:9px 15px;border:1px solid transparent}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-2)}
+.btn-success{background:var(--success);border-color:var(--success);color:#fff}
+.btn-warning{background:var(--warning);border-color:var(--warning);color:#fff}
+.btn-outline{background:#fff;border-color:var(--border);color:var(--brand)}
+.btn-outline:hover{border-color:var(--brand)}
+.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--text);padding:10px 12px;font-size:13px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--focus,#356ae6);box-shadow:0 0 0 3px rgba(53,106,230,.1);outline:0}
+.form-group label{font-size:12.5px;color:var(--text-secondary);font-weight:800}
+.stats-grid{gap:12px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 20px rgba(20,34,59,.05);padding:16px}
+.stat-value{color:var(--brand);font-size:26px;font-weight:900;letter-spacing:-.03em}
+.stat-label{color:var(--text-secondary);font-size:12px;font-weight:700}
+.welcome-hero{background:linear-gradient(135deg,#14223b 0%,#213755 55%,#2f4a6e 100%);border-radius:18px;padding:26px;box-shadow:0 18px 40px rgba(20,34,59,.2)}
+.welcome-kicker{color:#aac8d5;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;font-weight:800}
+.welcome-hero h2{color:#fff;font-size:clamp(23px,3vw,30px);letter-spacing:-.03em}
+.welcome-hero h2 span{color:#f2bb41}
+.welcome-status{color:#cbd7e8;font-size:13px}
+.welcome-actions .btn{background:#fff;border-color:#fff;color:#14223b}
+.welcome-actions .btn-primary{background:#f2bb41;border-color:#f2bb41;color:#14223b}
+#newbieGuide{background:#f9fbfd!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#newbieGuide h2{color:var(--brand)!important}
+#newbieGuide .btn-primary{background:var(--brand)!important;border-color:var(--brand)!important;color:#fff!important}
+#shareCard{background:#fff!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#shareCard h2{color:var(--brand)!important}
+#shareCard .btn-primary{background:var(--brand)!important;border-color:var(--brand)!important;color:#fff!important}
+#shareCard input{border-color:var(--border)!important;background:#f9fbfd!important;color:var(--text-secondary)!important;border-radius:9px!important}
+.qq-link-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 20px rgba(20,34,59,.05)}
+.qq-link-card:hover{border-color:var(--warning)}
+.list-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.list-item h4{color:var(--brand)}
+.log-row{border-bottom:1px solid var(--border)}
+.badge{border-radius:999px;font-weight:800}
+.badge-success{background:#e5f4f2;color:var(--success)}
+.table th{background:#f9fbfd;color:var(--text-secondary);font-size:12px;font-weight:800}
+.table td{border-bottom:1px solid var(--border)}
+#page-buy > .card:first-child{background:linear-gradient(135deg,#14223b 0%,#213755 60%,#2f4a6e 100%)!important;border:0!important;box-shadow:0 18px 40px rgba(20,34,59,.18)}
+#page-buy > .card:first-child h2{color:#fff!important}
+#page-buy > .card:first-child p{color:#cbd7e8!important}
+#packagesList > div{gap:12px!important}
+#packagesList > div > div{border:1px solid var(--border)!important;border-radius:14px!important;background:#fff!important;box-shadow:0 8px 20px rgba(20,34,59,.05)}
+#packagesList h3{color:var(--brand)!important}
+#packagesList .btn-primary{background:var(--brand)!important;border-color:var(--brand)!important}
+#paymentArea{border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#paymentArea h2{color:var(--brand)!important}
+#paymentArea #paymentAmount{color:var(--brand)!important}
+#paymentArea .form-group input{border-color:var(--border)!important;border-radius:9px!important}
+#paymentArea .btn-primary{background:var(--warning)!important;border-color:var(--warning)!important;color:#fff!important}
+#paymentResult > div{background:#e5f4f2!important;border-color:#b7dcd6!important}
+#paymentResult p{color:#0b5d58!important}
+.toast{background:var(--brand);color:#fff;border-radius:9px}
+.content{padding:24px 26px 40px}
+@media(max-width:820px){
+  .sidebar{background:var(--brand)}
+  .topbar{padding:0 16px}
+  .content{padding:16px 14px 32px}
+  .card{padding:16px}
+  .welcome-hero{padding:20px}
+  .sidebar-header{height:62px}
+  .menu-item{font-size:13px}
+}
+.qr-wrap{position:relative;display:inline-block;cursor:zoom-in;width:220px;height:220px}
+.qr-blur{width:220px;height:220px;object-fit:contain;border-radius:12px;border:1px solid #e2e8f0;filter:blur(7px);pointer-events:none}
+.qr-tip{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.58);color:#fff;font-weight:800;border-radius:12px;font-size:14px;letter-spacing:.03em}
+.qr-modal{position:fixed;inset:0;z-index:10001;background:rgba(2,6,23,.82);display:none;align-items:center;justify-content:center;padding:20px}
+.qr-modal.show{display:flex}
+.qr-modal-card{width:min(340px,100%);background:#fff;border-radius:16px;padding:18px;text-align:center}
+.qr-modal-card h3{font-size:18px;margin-bottom:4px}
+.qr-modal-card img{width:min(280px,76vw);height:min(280px,76vw);object-fit:contain;border:1px solid #e2e8f0;border-radius:12px;margin:10px auto;display:block}
 </style>
 </head>
 <body>
@@ -334,7 +429,7 @@
         localStorage.setItem('semesterServiceNoticeClosed_v1', 'true');
       }
       function goToSponsor() {
-        window.location.href = '/#support';
+        document.querySelector('.menu-item[data-page=buy]').click();
       }
       setTimeout(showSponsorModal, 3000);
     </script>
@@ -449,12 +544,12 @@
           <div class="auto-sign-hero">
             <div>
               <h2><i class="fas fa-moon" style="color:var(--brand);"></i> 自动签到</h2>
-              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:35 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
+              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期按设置的时间自动签到（普通用户固定 21:35，VIP / SVIP 可自定义）。</p>
               <div id="autoSignStatus" style="margin-top:14px;"></div>
             </div>
             <div class="auto-sign-time">
-              <strong>21:35</strong>
-              <span>统一签到时间</span>
+              <strong id="autoSignTimeDisplay">21:35</strong>
+              <span id="autoSignTimeLabel">统一签到时间</span>
             </div>
           </div>
           <div class="card">
@@ -462,6 +557,13 @@
             <div class="setting-line">
               <div class="setting-copy"><strong>启用自动签到</strong><p>适合每天晚上不想手动操作的同学。</p></div>
               <label class="switch"><input type="checkbox" id="autoSignEnabled"><span class="slider"></span></label>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+              <label>签到时间</label>
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <input type="time" id="autoSignTime" value="21:35" style="max-width:180px;">
+                <span id="signTimeHint" style="font-size:12.5px;color:var(--text-secondary);"></span>
+              </div>
             </div>
             <div class="form-group" style="margin-top:14px;">
               <label>签到日期</label>
@@ -559,15 +661,17 @@
             <h2><i class="fas fa-qrcode"></i> 扫码赞助</h2>
             <div style="text-align:center;margin:10px 0;">
               <div style="font-size:26px;font-weight:900;color:#0f766e;" id="paymentAmount">¥0.00</div>
-              <p style="font-size:12px;color:#64748b;margin-top:6px;">请精确支付此金额，<strong>备注填订单号 <span id="paymentOrderNo"></span></strong></p>
+              <p style="font-size:12px;color:#64748b;margin-top:6px;">请精确支付此金额，短码 <strong id="paymentOrderNo" style="font-size:16px;color:#0f766e;"></strong></p>
             </div>
-            <div style="text-align:center;">
-              <img id="qrCodeImage" src="" alt="收款码" style="width:220px;height:220px;object-fit:contain;border-radius:12px;border:1px solid #e2e8f0;">
+            <div class="qr-wrap" id="qrWrap" onclick="openQrModal()">
+              <img id="qrCodeImage" class="qr-blur" src="" alt="收款码">
+              <div class="qr-tip">点击放大扫码</div>
             </div>
-            <div style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
-              <p style="font-size:13px;color:#475569;line-height:1.8;margin:0 0 8px;">支付完成后，填写支付备注/交易单号后 4 位，点下方按钮立即到账（后台会核对）。</p>
+            <p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;">先放大扫码，关闭后再填写备注</p>
+            <div id="claimSection" class="hidden" style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
+              <p style="font-size:13px;color:#475569;line-height:1.8;margin:0 0 8px;">付款备注填上面的短码。支付完成后点“确认我已支付”，后台会核对。</p>
               <div class="form-group"><input type="text" id="paymentRef" placeholder="支付备注/交易单号后 4 位" maxlength="60"></div>
-              <button class="btn btn-primary" onclick="claimPayment()" id="claimBtn" style="width:100%;">我已支付，立即到账</button>
+              <button class="btn btn-primary" onclick="claimPayment()" id="claimBtn" style="width:100%;">确认我已支付</button>
               <p style="font-size:11.5px;color:#94a3b8;margin-top:8px;">未匹配到付款的订单可能被取消，并通过邮件通知。</p>
             </div>
             <div id="paymentResult" class="hidden" style="margin-top:12px;"></div>
@@ -604,6 +708,14 @@
     </div>
   </div>
 
+  <div id="qrModal" class="qr-modal" onclick="closeQrModal(event)">
+    <div class="qr-modal-card" onclick="event.stopPropagation()">
+      <h3>扫码赞助</h3>
+      <p id="qrModalAmount" style="font-size:13px;color:#64748b;"></p>
+      <img id="qrModalImage" src="" alt="收款码">
+      <button class="btn btn-primary" onclick="closeQrModal()" style="width:100%;">我已扫码，关闭</button>
+    </div>
+  </div>
   <div id="semesterQrModal" onclick="closeSemesterQr()" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72);">
     <div onclick="event.stopPropagation()" style="width:min(380px,100%);padding:22px;background:#fff;border-radius:16px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.28);">
       <h3 id="semesterQrTitle" style="margin-bottom:12px;">支持菜单</h3>
@@ -861,10 +973,25 @@
       if (!status) return;
       const selectedDays = (setting.customDays || []).map(d => days[d]).join('、') || '未选择日期';
       status.innerHTML = setting.enabled
-        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' 21:35 自动签到</span>'
+        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' '+escapeHTML(setting.signTime||'21:35')+' 自动签到</span>'
         : '<span class="badge badge-warning">未开启</span><span style="margin-left:10px;color:var(--text-secondary);">打开开关并保存后生效</span>';
     }
 
+    function canCustomSignTime() {
+      return !!(currentUser && currentUser.isVip && ['VIP', 'SVIP'].includes(currentUser.vipTier));
+    }
+    function updateSignTimeUI(setting) {
+      const input = document.getElementById('autoSignTime');
+      const hint = document.getElementById('signTimeHint');
+      const display = document.getElementById('autoSignTimeDisplay');
+      const label = document.getElementById('autoSignTimeLabel');
+      const custom = canCustomSignTime();
+      const time = (setting && setting.signTime) || '21:35';
+      if (input) { input.value = time; input.disabled = !custom; }
+      if (hint) hint.textContent = custom ? '你当前是 ' + currentUser.vipTier + '，可自定义签到时间' : '普通用户固定 21:35；VIP / SVIP 可自定义';
+      if (display) display.textContent = time;
+      if (label) label.textContent = custom ? '自定义签到时间' : '统一签到时间';
+    }
     async function loadAutoSignSetting() {
       try {
         const data = await api('/auto-sign');
@@ -874,13 +1001,14 @@
         document.getElementById('notifyOnSuccess').checked = setting.notifyOnSuccess !== false;
         document.getElementById('notifyOnFailure').checked = setting.notifyOnFailure !== false;
         setAutoSignDays(setting.customDays);
+        updateSignTimeUI(setting);
         renderAutoSignStatus(setting);
       } catch(e) {}
     }
 
     async function saveAutoSignSetting() {
-      if (!currentUser.isVip) {
-        showToast('自动签到为会员功能；免费用户只能手动签到', 'error');
+      if (!currentUser.isVip && !(Number(currentUser.signCredits || 0) > 0)) {
+        showToast('自动签到需要会员或次数卡；免费用户请手动签到', 'error');
         return;
       }
       const selectedDays = getSelectedAutoSignDays();
@@ -888,9 +1016,11 @@
         showToast('请至少选择一天', 'error');
         return;
       }
+      const timeInput = document.getElementById('autoSignTime');
       const body = {
         enabled: document.getElementById('autoSignEnabled').checked,
         customDays: selectedDays,
+        signTime: canCustomSignTime() && timeInput ? timeInput.value : '21:35',
         notifyOnSuccess: document.getElementById('notifyOnSuccess').checked,
         notifyOnFailure: document.getElementById('notifyOnFailure').checked
       };
@@ -1064,6 +1194,10 @@
         document.getElementById('paymentOrderNo').textContent = data.order.orderNo;
         document.getElementById('qrCodeImage').src = method === 'alipay' ? data.qrCodes.alipay : data.qrCodes.wechat;
         document.getElementById('paymentResult').classList.add('hidden');
+        document.getElementById('claimSection').classList.add('hidden');
+        qrViewed = false;
+        document.getElementById('paymentOrderNo').textContent = data.order.payCode || data.order.mark || data.order.orderNo;
+        document.getElementById('qrModalImage').src = data.order.payCode ? '' : '';
         document.getElementById('paymentRef').value = '';
         showToast('请精确支付 ¥' + Number(data.order.amount).toFixed(2) + '，备注订单号', 'info');
         startPolling(data.order.orderNo);
@@ -1095,7 +1229,28 @@
         + '<p style="font-size:13px;color:#166534;margin:0;">' + escapeHTML(names[tier] || tier || '') + ' · ' + escapeHTML(String(order.days || '')) + ' 天</p>'
         + '<p style="font-size:12px;color:#64748b;margin-top:6px;">已发放到你账号，后台会核对付款。</p></div>';
     }
+    let qrViewed = false;
+    function openQrModal() {
+      const img = document.getElementById('qrCodeImage');
+      const modal = document.getElementById('qrModal');
+      if (!img || !modal || !img.src) return;
+      document.getElementById('qrModalImage').src = img.src;
+      document.getElementById('qrModalAmount').textContent = document.getElementById('paymentAmount').textContent + ' · 短码 ' + document.getElementById('paymentOrderNo').textContent;
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeQrModal(event) {
+      const modal = document.getElementById('qrModal');
+      if (!modal) return;
+      if (event && event.target !== modal) return;
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+      qrViewed = true;
+      const claim = document.getElementById('claimSection');
+      if (claim) claim.classList.remove('hidden');
+    }
     async function claimPayment() {
+      if (!qrViewed) { showToast('请先点击放大二维码完成扫码', 'error'); return; }
       if (!sponsorOrder) { showToast('请先选择赞助档位', 'error'); return; }
       const ref = document.getElementById('paymentRef').value.trim();
       if (ref.length < 4) { showToast('请填写支付备注或交易单号后 4 位', 'error'); return; }
