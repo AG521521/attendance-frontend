@@ -395,7 +395,6 @@ async function submitLogin(e){
     }
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
-    localStorage.setItem('attendancePassword', pwd);
     window.location.href = data.user.role === 'admin' ? '/admin.html' : '/dashboard.html';
   } catch (ex) {
     err.textContent = '网络异常，请稍后重试。';

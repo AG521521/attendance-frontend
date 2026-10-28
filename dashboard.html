@@ -363,6 +363,25 @@
           </div>
           <!-- 🆕 VIP 专属通知横幅 -->
           <div id="vipNoticeBanner"></div>
+          <div class="card" id="newbieGuide" style="background:#eef7ff;border:1px solid #b9d9ff;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:240px;">
+                <h2 style="margin-bottom:8px;color:#153a5b;"><i class="fas fa-compass"></i> 新用户三步上手</h2>
+                <p style="font-size:13.5px;line-height:1.9;color:#31506b;margin:0;">
+                  1. 在「我的」确认考勤密码（默认 Ahgydx@920，改过就填新密码）。<br>
+                  2. 点「立即手动签到」，免费，不需要会员。<br>
+                  3. 想每天 21:35 自动签到？开通会员后在「自动签到」开启。
+                </p>
+              </div>
+              <button class="btn btn-primary" onclick="quickSign()" style="white-space:nowrap;"><i class="fas fa-pen"></i> 立即手动签到</button>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="document.querySelector('.menu-item[data-page=profile]').click()">去确认密码</button>
+              <button class="btn btn-outline" onclick="document.querySelector('.menu-item[data-page=subscriptions]').click()">去自动签到</button>
+              <button class="btn btn-outline" onclick="document.querySelector('.menu-item[data-page=logs]').click()">查看记录</button>
+              <button class="btn btn-outline" onclick="dismissGuide()">我知道了</button>
+            </div>
+          </div>
 
           <!-- QQ频道入口 -->
           <div class="qq-link-card" onclick="window.open('https://pd.qq.com/s/9fkh0w8xw','_blank')">
@@ -817,6 +836,10 @@
     }
 
     async function saveAutoSignSetting() {
+      if (!currentUser.isVip) {
+        showToast('自动签到为会员功能；免费用户只能手动签到', 'error');
+        return;
+      }
       const selectedDays = getSelectedAutoSignDays();
       if (selectedDays.length === 0) {
         showToast('请至少选择一天', 'error');
@@ -1041,6 +1064,8 @@
       let vt = '尚未加入本学期支持名单';
       if (currentUser.isVip) { const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null; vt = d && d > new Date() ? '已加入支持名单 · 至 '+d.toLocaleDateString() : '支持名单已到期'; }
       document.getElementById('profileVip').value = vt;
+      const tierNames = { FREE:'免费用户', MONTHLY:'月卡会员', TERM:'学期会员', YEARLY:'年费会员', VIP:'VIP会员', SVIP:'SVIP', LEGACY:'元老' };
+      document.getElementById('profileVip').value = (tierNames[currentUser.vipTier] || (currentUser.isVip ? '会员' : '免费用户')) + ' · ' + vt;
     }
     async function updateProfile() {
       const body = { name: document.getElementById('profileName').value };
@@ -1079,6 +1104,16 @@
       const t = setInterval(() => { cd--; btn.textContent = cd + 's'; if (cd <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = '发送验证码'; } }, 1000);
     }
     function logout() { localStorage.clear(); window.location.href = '/'; }
+
+    function dismissGuide() {
+      const g = document.getElementById('newbieGuide');
+      if (g) g.style.display = 'none';
+      localStorage.setItem('newbieGuideDismissed', '1');
+    }
+    if (localStorage.getItem('newbieGuideDismissed') === '1') {
+      const guideEl = document.getElementById('newbieGuide');
+      if (guideEl) guideEl.style.display = 'none';
+    }
 
     // ========== 初始化 ==========
     initAutoSignExperience();
