@@ -1,7 +1,7 @@
 (() => {
   const CONFIG = {
     API_BASE: 'https://api.agai.online/api',
-    PLANT_API_BASE: 'https://login.agai.online/api'
+    PLANT_API_BASE: 'https://api.agai.online/api'
   };
 
   function escapeHTML(value) {

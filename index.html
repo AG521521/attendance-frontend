@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<meta name="description" content="AG工作室晚寝签到辅助服务：服务状态、赞助方式与联系方式。">
-<title>AG工作室 · 服务暂缓中</title>
+<meta name="description" content="AG工作室晚寝签到辅助服务：登录、手动签到、自动签到与赞助方式。">
+<title>AG工作室 · 登录</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -126,6 +126,27 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .card button{width:100%;margin-top:14px;padding:11px;border:0;background:var(--g);color:var(--y);font-weight:800;cursor:pointer}
 
 /* 6 · 页脚 */
+.login-card{width:min(420px,100%);padding:24px;background:#fff;border:3px solid var(--g);text-align:left;max-height:calc(100vh - 40px);overflow:auto}
+.login-card h3{font-size:22px;font-weight:900;margin-bottom:4px}
+.login-sub{font-size:13.5px;color:var(--mute);margin-bottom:18px}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
+.login-field input{width:100%;padding:11px 12px;border:2px solid var(--g);background:#fff;font:inherit;color:var(--g)}
+.login-field input:focus{outline:3px solid var(--y);outline-offset:0}
+.login-hint{font-size:12.5px;color:var(--mute);line-height:1.6;margin-top:6px}
+.login-agree{display:flex;gap:9px;align-items:flex-start;margin:14px 0 10px;font-size:13px;line-height:1.6;color:var(--mute)}
+.login-agree input{width:17px;height:17px;margin-top:2px;accent-color:var(--g);flex:none}
+.login-agree a{font-weight:800}
+.login-error{min-height:18px;color:#b42318;font-size:13px;font-weight:700;margin-bottom:6px}
+.login-submit{width:100%;padding:12px;border:0;background:var(--g);color:var(--y);font-weight:900;font-size:15px;cursor:pointer}
+.login-submit:disabled{opacity:.45;cursor:not-allowed}
+.login-cancel{width:100%;margin-top:10px;padding:10px;border:0;background:transparent;color:var(--mute);font-weight:700;cursor:pointer}
+.nav-login{background:var(--g);color:var(--y);border-radius:99px;padding:5px 14px;text-decoration:none}
+.nav-login:hover{background:#0b2f2a;border-color:transparent}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.login-cta{padding:12px 24px;border:0;background:var(--g);color:var(--y);font-weight:900;font-size:15px;cursor:pointer}
+.login-cta:hover{background:#0b2f2a}
+.hero-link{display:inline-flex;align-items:center;padding:12px 4px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
 .foot{background:var(--g);color:#b9d4cc;padding:26px 0;font-size:13.5px}
 .foot .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
 .foot b{color:#fff}
@@ -146,7 +167,8 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
   <div class="wrap">
     <div class="top">
       <b>AG工作室</b>
-      <nav class="topnav" aria-label="页面导航">
+            <nav class="topnav" aria-label="页面导航">
+        <a href="#" class="nav-login" onclick="openLogin();return false;">登录</a>
         <a href="#pay">赞助</a>
         <a href="#contact">联系</a>
         <a href="terms.html">用户协议</a>
@@ -154,8 +176,9 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
       </nav>
     </div>
     <div class="heroin">
-      <h1>服务<br>暂缓中</h1>
-      <p class="lead">近期服务器调整，免费服务暂缓，赞助用户正常使用。恢复后会第一时间在 QQ 频道通知。</p>
+      <h1>服务<br>已恢复</h1>
+            <p class="lead">登录后即可手动签到；付费会员自动签到每天 21:35 执行。免费用户仅支持手动签到。</p>
+      <div class="hero-actions"><button type="button" class="login-cta" onclick="openLogin()">登录 / 开始使用</button><a class="hero-link" href="#pay">查看赞助</a></div>
     </div>
   </div>
   <div class="tape" aria-hidden="true"></div>
@@ -168,13 +191,13 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
   </div>
 </section>
 
-<section class="band" aria-label="服务时间线">
+<section class="band" aria-label="服务说明">
   <div class="wrap">
-    <div class="heads"><span>本学期<em>现在</em></span><span>下学期</span></div>
+    <div class="heads"><span>当前服务状态<em>已恢复</em></span><span>免费 vs 付费</span></div>
     <p class="who">免费用户</p>
-    <div class="bar"><i class="seg off">暂停</i><i class="seg on">恢复</i></div>
-    <p class="who">赞助用户</p>
-    <div class="bar"><i class="seg on all">正常使用，不受影响</i></div>
+    <div class="bar"><i class="seg on all">手动签到可用</i></div>
+    <p class="who">付费会员</p>
+    <div class="bar"><i class="seg on all">自动签到每天 21:35</i></div>
   </div>
 </section>
 
@@ -251,6 +274,23 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
   </div>
 </div>
 
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-label="登录" onclick="closeLogin()">
+  <div class="login-card" onclick="event.stopPropagation()">
+    <h3>登录 AG 考勤</h3>
+    <p class="login-sub">使用学号和考勤密码登录；首次登录会自动创建账号。</p>
+    <form id="loginForm" onsubmit="submitLogin(event)">
+      <div class="login-field"><label for="loginStudentId">学号</label><input id="loginStudentId" name="studentId" autocomplete="username" inputmode="numeric" placeholder="请输入学号" required></div>
+      <div class="login-field"><label for="loginPassword">考勤密码</label><input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required></div>
+      <p class="login-hint">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
+      <label class="login-agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"> <span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 和 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="login-submit" id="loginSubmit" disabled>登录</button>
+      <button type="button" class="login-cancel" onclick="closeLogin()">取消</button>
+      <p class="login-hint" style="text-align:center;margin-top:12px;">登录后：手动签到免费；自动签到仅限会员。</p>
+    </form>
+  </div>
+</div>
+<script src="shared.js"></script>
 <script>
 var tt;
 function toast(m){
@@ -280,7 +320,7 @@ function zoomPay(){
 }
 function openGroup(){openQR('qq_group_qr.png','AG工作室股东大会','长按识别或截图保存，用 QQ 扫码加入')}
 function closeQR(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeQR()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeQR();closeLogin();}});
 
 function doCopy(text,ok,fail){
   function fallback(){
@@ -303,6 +343,65 @@ function copyNote(){
 function copyEmail(){
   var e='support@agai.online';
   doCopy(e,function(){toast('邮箱已复制：'+e)},function(){toast('复制失败，请手动记录')});
+}
+
+var API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE) || 'https://api.agai.online/api';
+
+function openLogin(){
+  var m = document.getElementById('loginModal');
+  m.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('loginError').textContent = '';
+  setTimeout(function(){ document.getElementById('loginStudentId').focus(); }, 60);
+}
+function closeLogin(){
+  var m = document.getElementById('loginModal');
+  if (m) m.classList.remove('show');
+  document.body.style.overflow = '';
+}
+function onLoginAgreeChange(){
+  document.getElementById('loginSubmit').disabled = !document.getElementById('loginAgree').checked;
+}
+async function submitLogin(e){
+  e.preventDefault();
+  var sid = document.getElementById('loginStudentId').value.trim();
+  var pwd = document.getElementById('loginPassword').value;
+  var err = document.getElementById('loginError');
+  var btn = document.getElementById('loginSubmit');
+  err.textContent = '';
+  if (!document.getElementById('loginAgree').checked) {
+    err.textContent = '请先阅读并勾选同意《用户协议》和《隐私政策》。';
+    return;
+  }
+  if (!sid || !pwd) {
+    err.textContent = '请输入学号和考勤密码。';
+    return;
+  }
+  var oldText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '登录中...';
+  try {
+    var res = await fetch(API_BASE + '/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ studentId: sid, attendancePassword: pwd })
+    });
+    var data = await res.json().catch(function(){ return {}; });
+    if (!res.ok || !data.success) {
+      err.textContent = data.message || '登录失败，请检查学号和考勤密码。';
+      btn.disabled = false;
+      btn.textContent = oldText;
+      return;
+    }
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('attendancePassword', pwd);
+    window.location.href = data.user.role === 'admin' ? '/admin.html' : '/dashboard.html';
+  } catch (ex) {
+    err.textContent = '网络异常，请稍后重试。';
+    btn.disabled = false;
+    btn.textContent = oldText;
+  }
 }
 </script>
 </body>
