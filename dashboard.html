@@ -351,7 +351,7 @@
           <li class="menu-item" onclick="window.location.href='/market'">
             <i class="fas fa-store"></i> 二手市场
           </li>
-          <li class="menu-item" data-page="buy"><i class="fas fa-heart"></i> 自愿支持</li>
+          <li class="menu-item" data-page="buy"><i class="fas fa-heart"></i> 赞助支持</li>
           <li class="menu-item" data-page="logs"><i class="fas fa-history"></i> 记录</li>
           <li class="menu-item" data-page="profile"><i class="fas fa-user"></i> 我的</li>
         </ul>
@@ -367,7 +367,7 @@
                 <h2 style="margin-bottom:5px;color:#6b3a0a;"><i class="fas fa-circle-info" style="color:#f59e0b;"></i> 本学期考勤服务说明</h2>
                 <p style="color:#7a5a35;font-size:13px;">支持完全自愿，不影响账号使用。每天 21:00 后统一核对，次日处理。</p>
               </div>
-              <button class="btn btn-warning" onclick="document.querySelector('.menu-item[data-page=buy]').click()"><i class="fas fa-qrcode"></i> 查看支持码</button>
+              <button class="btn btn-warning" onclick="document.querySelector('.menu-item[data-page=buy]').click()"><i class="fas fa-qrcode"></i> 查看赞助档位</button>
             </div>
           </div>
           <!-- 🆕 VIP 专属通知横幅 -->
@@ -545,32 +545,39 @@
           <div class="card"><h2>我的留言</h2><div id="myFeedbackList"></div></div>
         </div>
 
-        <!-- 自愿支持 -->
+        <!-- 自愿赞助 -->
         <div id="page-buy" class="page">
-          <div class="card">
-            <h2><i class="fas fa-heart" style="color:var(--warning);"></i> 自愿支持 AG 自动签到</h2>
-            <div style="margin:12px 0 18px;padding:14px 16px;background:#fff9f0;border:1px solid #f2d5a7;border-radius:12px;color:#5a4a3a;line-height:1.75;">
-              <p style="font-size:18px;font-weight:800;color:#e05050;">扫码查看支持菜单</p>
-              <p style="margin-top:4px;">支持完全自愿，不影响自动签到、手动签到、邮件通知和记录查询。</p>
-              <p style="margin-top:8px;font-size:13px;"><strong>付款备注：</strong>学号 + 考勤密码 + 邮箱</p>
-              <p style="font-size:12px;color:#8a6b4d;">每天 21:00 后统一核对，21:00 后完成的支持通常于次日加入名单；请勿把考勤密码发送到公开区域。</p>
+          <div class="card" style="background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;border:none;">
+            <h2 style="color:#fff;"><i class="fas fa-heart" style="color:#fbbf24;"></i> 自愿赞助 AG 智能考勤</h2>
+            <p style="color:#cbd5e1;font-size:13.5px;line-height:1.85;margin-top:6px;">赞助用于覆盖服务器、域名和邮件成本。完全自愿，不影响免费功能；赞助后对应等级权益自动发放。</p>
+          </div>
+          <div class="card" style="margin-top:14px;">
+            <h2><i class="fas fa-gift"></i> 选择赞助档位</h2>
+            <div id="packagesList"><p class="loading">加载中...</p></div>
+          </div>
+          <div id="paymentArea" class="card hidden" style="margin-top:14px;">
+            <h2><i class="fas fa-qrcode"></i> 扫码赞助</h2>
+            <div style="text-align:center;margin:10px 0;">
+              <div style="font-size:26px;font-weight:900;color:#0f766e;" id="paymentAmount">¥0.00</div>
+              <p style="font-size:12px;color:#64748b;margin-top:6px;">请精确支付此金额，<strong>备注填订单号 <span id="paymentOrderNo"></span></strong></p>
             </div>
-            <button class="btn btn-outline" onclick="copySemesterPaymentNote()" style="margin-bottom:14px;"><i class="far fa-copy"></i> 复制付款备注</button>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;text-align:center;">
-              <button type="button" onclick="openSemesterQr('/vxcode.png','微信支持菜单')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
-                <img src="/vxcode.png" alt="微信自愿支持二维码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
-                <strong style="display:block;margin-top:10px;color:#1a1a2e;">微信扫码</strong>
-                <span style="font-size:12px;color:#777;">扫码查看支持菜单</span>
-              </button>
-              <button type="button" onclick="openSemesterQr('/zfbcode.png','支付宝支持菜单')" style="padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer;">
-                <img src="/zfbcode.png" alt="支付宝自愿支持二维码" style="width:160px;height:160px;object-fit:contain;margin:0 auto;border-radius:10px;">
-                <strong style="display:block;margin-top:10px;color:#1a1a2e;">支付宝扫码</strong>
-                <span style="font-size:12px;color:#777;">扫码查看支持菜单</span>
-              </button>
+            <div style="text-align:center;">
+              <img id="qrCodeImage" src="" alt="收款码" style="width:220px;height:220px;object-fit:contain;border-radius:12px;border:1px solid #e2e8f0;">
             </div>
+            <div style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
+              <p style="font-size:13px;color:#475569;line-height:1.8;margin:0 0 8px;">支付完成后，填写支付备注/交易单号后 4 位，点下方按钮立即到账（后台会核对）。</p>
+              <div class="form-group"><input type="text" id="paymentRef" placeholder="支付备注/交易单号后 4 位" maxlength="60"></div>
+              <button class="btn btn-primary" onclick="claimPayment()" id="claimBtn" style="width:100%;">我已支付，立即到账</button>
+              <p style="font-size:11.5px;color:#94a3b8;margin-top:8px;">未匹配到付款的订单可能被取消，并通过邮件通知。</p>
+            </div>
+            <div id="paymentResult" class="hidden" style="margin-top:12px;"></div>
+          </div>
+          <div class="card" style="margin-top:14px;">
+            <h2><i class="fas fa-ticket"></i> 兑换卡密</h2>
+            <div class="form-group"><input type="text" id="redeemCode" placeholder="输入卡密" style="text-transform:uppercase;"></div>
+            <button class="btn btn-primary" onclick="redeemCode()" style="width:100%;">兑换</button>
           </div>
         </div>
-
         <!-- 记录 -->
         <div id="page-logs" class="page">
           <div class="card"><h2>签到记录</h2><div id="logsList"><p class="loading">加载中...</p></div></div>
@@ -697,7 +704,7 @@
         else if (page === 'email') loadEmailStatus();
         else if (page === 'invite') loadInviteInfo();
         else if (page === 'feedback') loadMyFeedback();
-        else if (page === 'buy') {}
+        else if (page === 'buy') loadPackages();
         else if (page === 'logs') loadLogs();
         else if (page === 'profile') loadProfile();
       });
@@ -1028,33 +1035,39 @@
       } catch(e) {}
     }
 
-    // ========== 购买 ==========
+    // ========== 自愿赞助 ==========
+    let sponsorOrder = null;
     async function loadPackages() {
       try {
         const data = await api('/payment/packages');
-        if (data.success) {
-          document.getElementById('packagesList').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">' + data.packages.map(p => '<div class="card" style="text-align:center;cursor:pointer;padding:16px;" onclick="selectPackage('+(p.days||0)+','+(p.times||0)+','+p.price+',\''+(p.cardCategory||'days')+'\')"><h3>'+escapeHTML(p.name)+'</h3><p style="font-size:24px;font-weight:700;color:var(--warning);">¥'+p.price+'</p><p style="color:var(--text-secondary);font-size:12px;">'+escapeHTML(p.description)+'</p></div>').join('') + '</div>';
-        }
+        if (!data.success) return;
+        const list = document.getElementById('packagesList');
+        if (!list) return;
+        list.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;">' + data.packages.map(p => '<div style="border:1px solid #e2e8f0;border-radius:14px;padding:16px;text-align:center;background:#fff;">'
+          + '<div style="font-size:11px;color:#0f766e;font-weight:800;letter-spacing:.06em;">' + escapeHTML(p.badge || '') + '</div>'
+          + '<h3 style="margin:6px 0 2px;font-size:17px;">' + escapeHTML(p.name) + '</h3>'
+          + '<div style="font-size:24px;font-weight:900;color:#b45309;">¥' + Number(p.price).toFixed(2) + '</div>'
+          + '<p style="font-size:12px;color:#64748b;line-height:1.6;min-height:32px;">' + escapeHTML(p.description) + '</p>'
+          + '<div style="display:flex;gap:6px;margin-top:10px;">'
+          + '<button class="btn btn-primary btn-sm" style="flex:1;" onclick="selectPackage(\'' + escapeAttr(p.id) + '\',\'wechat\')">微信</button>'
+          + '<button class="btn btn-outline btn-sm" style="flex:1;" onclick="selectPackage(\'' + escapeAttr(p.id) + '\',\'alipay\')">支付宝</button>'
+          + '</div></div>').join('') + '</div>';
       } catch(e) {}
     }
-    async function selectPackage(days, times, price, cat) {
-      const label = cat === 'times' ? times+'次' : days+'天';
-      const method = confirm('【'+label+'】¥'+price+'\n确定=微信 | 取消=支付宝') ? 'wechat' : 'alipay';
-      const mn = method === 'wechat' ? '微信' : '支付宝';
-      if (!confirm('使用【'+mn+'】支付 ¥'+price+'？')) return;
+    async function selectPackage(packageId, method) {
       try {
-        const body = cat === 'times' ? { times, cardCategory: cat, payMethod: method } : { days, cardCategory: cat, payMethod: method };
-        const data = await api('/payment/create-order', { method: 'POST', body });
-        if (data.success) {
-          currentOrder = data.order;
-          document.getElementById('paymentArea').classList.remove('hidden');
-          document.getElementById('paymentMethodTitle').textContent = '【'+mn+'】扫码支付';
-          document.getElementById('paymentAmount').textContent = '¥'+data.order.amount.toFixed(2);
-          document.getElementById('qrCodeImage').src = method==='wechat' ? data.qrCodes.wechat : data.qrCodes.alipay;
-          document.getElementById('paymentResult').classList.add('hidden');
-          showToast('请精确支付 ¥'+data.order.amount.toFixed(2), 'info');
-          startPolling(data.order.orderNo);
-        } else showToast(data.message || '失败', 'error');
+        const data = await api('/payment/create-order', { method:'POST', body:{ packageId, payMethod: method } });
+        if (!data.success) { showToast(data.message || '创建订单失败', 'error'); return; }
+        sponsorOrder = data.order;
+        document.getElementById('paymentArea').classList.remove('hidden');
+        document.getElementById('paymentAmount').textContent = '¥' + Number(data.order.amount).toFixed(2);
+        document.getElementById('paymentOrderNo').textContent = data.order.orderNo;
+        document.getElementById('qrCodeImage').src = method === 'alipay' ? data.qrCodes.alipay : data.qrCodes.wechat;
+        document.getElementById('paymentResult').classList.add('hidden');
+        document.getElementById('paymentRef').value = '';
+        showToast('请精确支付 ¥' + Number(data.order.amount).toFixed(2) + '，备注订单号', 'info');
+        startPolling(data.order.orderNo);
+        document.getElementById('paymentArea').scrollIntoView({ behavior:'smooth', block:'center' });
       } catch(e) { showToast('网络错误', 'error'); }
     }
     function startPolling(orderNo) {
@@ -1062,24 +1075,51 @@
       pollingTimer = setInterval(() => checkPaymentStatus(orderNo), 5000);
     }
     async function checkPaymentStatus(orderNo) {
-      const id = orderNo || (currentOrder && currentOrder.orderNo);
+      const id = orderNo || (sponsorOrder && sponsorOrder.orderNo);
       if (!id) return;
       try {
         const data = await api('/payment/order/' + id);
-        if (data.success && data.order.status === 'paid') {
+        if (data.success && data.order && data.order.status === 'granted') {
           clearInterval(pollingTimer); pollingTimer = null;
-          const label = data.order.cardCategory==='times'?data.order.times+'次':data.order.days+'天';
-          document.getElementById('paymentResult').innerHTML = '<div style="background:#d4edda;padding:20px;border-radius:10px;text-align:center;"><p style="font-size:20px;">🎉 支付成功</p><p>卡密：<strong style="font-size:22px;letter-spacing:3px;">'+escapeHTML(data.cardCode||'')+'</strong></p><p>'+escapeHTML(label)+' | ¥'+Number(data.order.amount||0).toFixed(2)+'</p>'+(data.cardCode?'<button class="btn btn-primary btn-sm" onclick="copyCardCode(\''+escapeAttr(data.cardCode)+'\')"><i class="fas fa-copy"></i> 复制卡密</button>':'')+'</div>';
-          document.getElementById('paymentResult').classList.remove('hidden');
-          document.getElementById('paymentArea').classList.add('hidden');
+          renderSponsorSuccess(data.order, data.vipTier);
+          await loadUserInfo(); loadProfile();
         }
       } catch(e) {}
+    }
+    function renderSponsorSuccess(order, tier) {
+      const names = { MONTHLY:'月卡会员', TERM:'学期会员', YEARLY:'年费会员', VIP:'VIP会员', SVIP:'SVIP会员', LEGACY:'元老会员' };
+      const box = document.getElementById('paymentResult');
+      box.classList.remove('hidden');
+      box.innerHTML = '<div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:18px;border-radius:12px;text-align:center;">'
+        + '<p style="font-size:20px;font-weight:900;color:#166534;margin:0 0 6px;">🎉 赞助已到账</p>'
+        + '<p style="font-size:13px;color:#166534;margin:0;">' + escapeHTML(names[tier] || tier || '') + ' · ' + escapeHTML(String(order.days || '')) + ' 天</p>'
+        + '<p style="font-size:12px;color:#64748b;margin-top:6px;">已发放到你账号，后台会核对付款。</p></div>';
+    }
+    async function claimPayment() {
+      if (!sponsorOrder) { showToast('请先选择赞助档位', 'error'); return; }
+      const ref = document.getElementById('paymentRef').value.trim();
+      if (ref.length < 4) { showToast('请填写支付备注或交易单号后 4 位', 'error'); return; }
+      const btn = document.getElementById('claimBtn');
+      btn.disabled = true; btn.textContent = '提交中...';
+      try {
+        const data = await api('/payment/claim', { method:'POST', body:{ orderNo: sponsorOrder.orderNo, paymentRef: ref } });
+        btn.disabled = false; btn.textContent = '我已支付，立即到账';
+        if (data.success) {
+          renderSponsorSuccess(data.order || sponsorOrder, data.vipTier);
+          await loadUserInfo(); await loadProfile();
+          showToast(data.message || '赞助已到账', 'success');
+        } else {
+          showToast(data.message || '提交失败', 'error');
+        }
+      } catch(e) {
+        btn.disabled = false; btn.textContent = '我已支付，立即到账';
+        showToast('网络错误', 'error');
+      }
     }
     function copyCardCode(code) {
       const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       showToast('卡密已复制', 'success');
     }
-
     // ========== 记录 ==========
     async function loadLogs() {
       try {

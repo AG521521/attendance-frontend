@@ -171,6 +171,9 @@
         <div class="menu-item" data-page="orders">
           <i class="fas fa-shopping-bag"></i> 订单管理
         </div>
+        <div class="menu-item" data-page="sponsor-orders">
+          <i class="fas fa-hand-holding-heart"></i> 赞助订单
+        </div>
         <div class="menu-item" data-page="market-items">
           <i class="fas fa-box"></i> 商品管理
         </div>
@@ -331,6 +334,37 @@
         </div>
       </div>
 
+      <!-- ===== 赞助订单 ===== -->
+      <div id="page-sponsor-orders" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-hand-holding-heart"></i> 赞助订单</h3>
+            <button class="btn btn-outline" onclick="loadSponsorOrders()"><i class="fas fa-sync-alt"></i> 刷新</button>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+            <select id="sponsorOrderStatus" onchange="loadSponsorOrders()" style="padding:10px; border-radius:8px;">
+              <option value="">全部状态</option>
+              <option value="pending">待支付</option>
+              <option value="granted">已发放</option>
+              <option value="rejected">已取消</option>
+              <option value="expired">已过期</option>
+            </select>
+            <select id="sponsorReviewStatus" onchange="loadSponsorOrders()" style="padding:10px; border-radius:8px;">
+              <option value="">全部核对</option>
+              <option value="unreviewed">待核对</option>
+              <option value="confirmed">已确认</option>
+              <option value="rejected">已拒绝</option>
+            </select>
+          </div>
+          <div id="sponsorOrdersTable">加载中...</div>
+        </div>
+        <div class="content-card" style="margin-top:18px;">
+          <div class="card-header"><h3><i class="fas fa-bullhorn"></i> 系统公告邮件</h3></div>
+          <p style="font-size:13px;color:#64748b;line-height:1.8;">向所有绑定邮箱的用户按等级模板发送“网站已恢复运行”公告，包含官网和专属邀请链接。</p>
+          <button class="btn btn-primary" onclick="sendAnnouncement()" id="announcementBtn"><i class="fas fa-paper-plane"></i> 发送公告邮件</button>
+          <span id="announcementResult" style="margin-left:10px;"></span>
+        </div>
+      </div>
       <!-- ===== 商品管理 ===== -->
       <div id="page-market-items" class="hidden">
         <div class="content-card">
@@ -542,7 +576,7 @@
 
         const titles = {
           dashboard: '仪表盘', users: '考勤用户管理', 'market-users': '交易平台用户管理', cards: '卡密管理',
-          reports: '举报管理', orders: '订单管理', 'market-items': '商品管理',
+          reports: '举报管理', orders: '订单管理', 'sponsor-orders': '赞助订单', 'market-items': '商品管理',
           feedback: '留言管理', email: '群发邮件', settings: '系统设置'
         };
         document.getElementById('pageTitle').textContent = titles[page];
@@ -553,6 +587,7 @@
         else if (page === 'cards') loadCards();
         else if (page === 'reports') loadReports();
         else if (page === 'orders') loadOrders();
+        else if (page === 'sponsor-orders') loadSponsorOrders();
         else if (page === 'market-items') loadMarketItems();
         else if (page === 'feedback') loadFeedbacks();
         else if (page === 'email') loadEmailStats();
@@ -846,6 +881,79 @@
       });
     });
 
+    // ========== 赞助订单 ==========
+    function escSponsor(v) {
+      return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    async function loadSponsorOrders() {
+      const box = document.getElementById('sponsorOrdersTable');
+      if (!box) return;
+      const status = (document.getElementById('sponsorOrderStatus') || {}).value || '';
+      const reviewStatus = (document.getElementById('sponsorReviewStatus') || {}).value || '';
+      const params = new URLSearchParams();
+      if (status) params.set('status', status);
+      if (reviewStatus) params.set('reviewStatus', reviewStatus);
+      try {
+        const res = await fetch(`${API_BASE}/admin/sponsor-orders?${params.toString()}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (!data.success) { box.innerHTML = '<p class="empty">加载失败</p>'; return; }
+        if (!data.orders.length) { box.innerHTML = '<p class="empty">暂无赞助订单</p>'; return; }
+        const tiers = { MONTHLY: '月卡', TERM: '学期', YEARLY: '学年', VIP: 'VIP', SVIP: 'SVIP' };
+        box.innerHTML = '<div style="overflow-x:auto;"><table><thead><tr><th>订单号</th><th>用户</th><th>档位</th><th>金额</th><th>状态</th><th>核对</th><th>支付备注</th><th>创建时间</th><th>操作</th></tr></thead><tbody>' +
+          data.orders.map(o => {
+            const u = o.userId || {};
+            const canConfirm = o.status === 'granted' && o.reviewStatus !== 'confirmed';
+            const canRevoke = o.status === 'granted' && o.reviewStatus !== 'rejected';
+            const actions = (canConfirm ? '<button class="btn btn-success" style="padding:6px 10px;font-size:12px;" onclick="confirmSponsorOrder(\'' + o._id + '\')">确认到账</button> ' : '') +
+              (canRevoke ? '<button class="btn btn-danger" style="padding:6px 10px;font-size:12px;" onclick="revokeSponsorOrder(\'' + o._id + '\')">取消权益</button>' : '');
+            return '<tr>' +
+              '<td style="font-size:12px;">' + escSponsor(o.orderNo) + '</td>' +
+              '<td>' + escSponsor(u.studentId || '') + '<br><span style="color:#94a3b8;font-size:12px;">' + escSponsor(u.name || '') + '</span></td>' +
+              '<td>' + escSponsor(tiers[o.tier] || o.tier) + '<br><span style="color:#94a3b8;font-size:12px;">' + escSponsor(o.days) + '天</span></td>' +
+              '<td>¥' + Number(o.amount || 0).toFixed(2) + '</td>' +
+              '<td>' + escSponsor(o.status) + '</td>' +
+              '<td>' + escSponsor(o.reviewStatus) + '</td>' +
+              '<td style="max-width:160px;word-break:break-all;font-size:12px;">' + escSponsor(o.paymentRef || o.claimNote || '') + '</td>' +
+              '<td style="font-size:12px;">' + escSponsor(new Date(o.createdAt).toLocaleString('zh-CN')) + '</td>' +
+              '<td>' + actions + '</td></tr>';
+          }).join('') + '</tbody></table></div>';
+      } catch (e) { box.innerHTML = '<p class="empty">加载失败</p>'; }
+    }
+    async function confirmSponsorOrder(id) {
+      if (!confirm('确认已收到付款并保留该用户权益？')) return;
+      const res = await fetch(`${API_BASE}/admin/sponsor-orders/${id}/confirm`, {
+        method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}'
+      });
+      const data = await res.json();
+      alert(data.message || (data.success ? '已确认' : '操作失败'));
+      loadSponsorOrders();
+    }
+    async function revokeSponsorOrder(id) {
+      const note = prompt('取消原因（会通过邮件通知用户）：', '未匹配到付款');
+      if (note === null) return;
+      if (!confirm('确定取消该订单权益并发送邮件通知？')) return;
+      const res = await fetch(`${API_BASE}/admin/sponsor-orders/${id}/revoke`, {
+        method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ note })
+      });
+      const data = await res.json();
+      alert(data.message || (data.success ? '已取消' : '操作失败'));
+      loadSponsorOrders();
+    }
+    async function sendAnnouncement() {
+      if (!confirm('向所有绑定邮箱的用户发送恢复运行公告？')) return;
+      const btn = document.getElementById('announcementBtn');
+      const out = document.getElementById('announcementResult');
+      btn.disabled = true; btn.textContent = '发送中...';
+      try {
+        const res = await fetch(`${API_BASE}/admin/announcement`, {
+          method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '{}'
+        });
+        const data = await res.json();
+        out.textContent = data.message || '';
+        alert(data.message || '发送完成');
+      } catch (e) { alert('发送失败'); }
+      btn.disabled = false; btn.textContent = '发送公告邮件';
+    }
     // ========== 卡密管理 ==========
     async function loadCards() {
       const status = document.getElementById('cardStatusFilter')?.value || '';
