@@ -361,6 +361,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   .sidebar-header{height:62px}
   .menu-item{font-size:13px}
 }
+.qr-wrap{position:relative;display:inline-block;cursor:zoom-in;width:220px;height:220px}
+.qr-blur{width:220px;height:220px;object-fit:contain;border-radius:12px;border:1px solid #e2e8f0;filter:blur(7px);pointer-events:none}
+.qr-tip{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.58);color:#fff;font-weight:800;border-radius:12px;font-size:14px;letter-spacing:.03em}
+.qr-modal{position:fixed;inset:0;z-index:10001;background:rgba(2,6,23,.82);display:none;align-items:center;justify-content:center;padding:20px}
+.qr-modal.show{display:flex}
+.qr-modal-card{width:min(340px,100%);background:#fff;border-radius:16px;padding:18px;text-align:center}
+.qr-modal-card h3{font-size:18px;margin-bottom:4px}
+.qr-modal-card img{width:min(280px,76vw);height:min(280px,76vw);object-fit:contain;border:1px solid #e2e8f0;border-radius:12px;margin:10px auto;display:block}
 </style>
 </head>
 <body>
@@ -421,7 +429,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         localStorage.setItem('semesterServiceNoticeClosed_v1', 'true');
       }
       function goToSponsor() {
-        window.location.href = '/#support';
+        document.querySelector('.menu-item[data-page=buy]').click();
       }
       setTimeout(showSponsorModal, 3000);
     </script>
@@ -536,12 +544,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           <div class="auto-sign-hero">
             <div>
               <h2><i class="fas fa-moon" style="color:var(--brand);"></i> 自动签到</h2>
-              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期统一于 21:35 自动签到，你只需要决定哪几天启用、是否收邮件提醒。</p>
+              <p class="auto-sign-note">不需要创建任务，也不用设置复杂订阅。开启后，系统会在你选择的日期按设置的时间自动签到（普通用户固定 21:35，VIP / SVIP 可自定义）。</p>
               <div id="autoSignStatus" style="margin-top:14px;"></div>
             </div>
             <div class="auto-sign-time">
-              <strong>21:35</strong>
-              <span>统一签到时间</span>
+              <strong id="autoSignTimeDisplay">21:35</strong>
+              <span id="autoSignTimeLabel">统一签到时间</span>
             </div>
           </div>
           <div class="card">
@@ -549,6 +557,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             <div class="setting-line">
               <div class="setting-copy"><strong>启用自动签到</strong><p>适合每天晚上不想手动操作的同学。</p></div>
               <label class="switch"><input type="checkbox" id="autoSignEnabled"><span class="slider"></span></label>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+              <label>签到时间</label>
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <input type="time" id="autoSignTime" value="21:35" style="max-width:180px;">
+                <span id="signTimeHint" style="font-size:12.5px;color:var(--text-secondary);"></span>
+              </div>
             </div>
             <div class="form-group" style="margin-top:14px;">
               <label>签到日期</label>
@@ -646,15 +661,17 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             <h2><i class="fas fa-qrcode"></i> 扫码赞助</h2>
             <div style="text-align:center;margin:10px 0;">
               <div style="font-size:26px;font-weight:900;color:#0f766e;" id="paymentAmount">¥0.00</div>
-              <p style="font-size:12px;color:#64748b;margin-top:6px;">请精确支付此金额，<strong>备注填订单号 <span id="paymentOrderNo"></span></strong></p>
+              <p style="font-size:12px;color:#64748b;margin-top:6px;">请精确支付此金额，短码 <strong id="paymentOrderNo" style="font-size:16px;color:#0f766e;"></strong></p>
             </div>
-            <div style="text-align:center;">
-              <img id="qrCodeImage" src="" alt="收款码" style="width:220px;height:220px;object-fit:contain;border-radius:12px;border:1px solid #e2e8f0;">
+            <div class="qr-wrap" id="qrWrap" onclick="openQrModal()">
+              <img id="qrCodeImage" class="qr-blur" src="" alt="收款码">
+              <div class="qr-tip">点击放大扫码</div>
             </div>
-            <div style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
-              <p style="font-size:13px;color:#475569;line-height:1.8;margin:0 0 8px;">支付完成后，填写支付备注/交易单号后 4 位，点下方按钮立即到账（后台会核对）。</p>
+            <p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;">先放大扫码，关闭后再填写备注</p>
+            <div id="claimSection" class="hidden" style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
+              <p style="font-size:13px;color:#475569;line-height:1.8;margin:0 0 8px;">付款备注填上面的短码。支付完成后点“确认我已支付”，后台会核对。</p>
               <div class="form-group"><input type="text" id="paymentRef" placeholder="支付备注/交易单号后 4 位" maxlength="60"></div>
-              <button class="btn btn-primary" onclick="claimPayment()" id="claimBtn" style="width:100%;">我已支付，立即到账</button>
+              <button class="btn btn-primary" onclick="claimPayment()" id="claimBtn" style="width:100%;">确认我已支付</button>
               <p style="font-size:11.5px;color:#94a3b8;margin-top:8px;">未匹配到付款的订单可能被取消，并通过邮件通知。</p>
             </div>
             <div id="paymentResult" class="hidden" style="margin-top:12px;"></div>
@@ -691,6 +708,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     </div>
   </div>
 
+  <div id="qrModal" class="qr-modal" onclick="closeQrModal(event)">
+    <div class="qr-modal-card" onclick="event.stopPropagation()">
+      <h3>扫码赞助</h3>
+      <p id="qrModalAmount" style="font-size:13px;color:#64748b;"></p>
+      <img id="qrModalImage" src="" alt="收款码">
+      <button class="btn btn-primary" onclick="closeQrModal()" style="width:100%;">我已扫码，关闭</button>
+    </div>
+  </div>
   <div id="semesterQrModal" onclick="closeSemesterQr()" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72);">
     <div onclick="event.stopPropagation()" style="width:min(380px,100%);padding:22px;background:#fff;border-radius:16px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.28);">
       <h3 id="semesterQrTitle" style="margin-bottom:12px;">支持菜单</h3>
@@ -948,10 +973,25 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
       if (!status) return;
       const selectedDays = (setting.customDays || []).map(d => days[d]).join('、') || '未选择日期';
       status.innerHTML = setting.enabled
-        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' 21:35 自动签到</span>'
+        ? '<span class="badge badge-success">已开启</span><span style="margin-left:10px;color:var(--text-secondary);">每逢 '+escapeHTML(selectedDays)+' '+escapeHTML(setting.signTime||'21:35')+' 自动签到</span>'
         : '<span class="badge badge-warning">未开启</span><span style="margin-left:10px;color:var(--text-secondary);">打开开关并保存后生效</span>';
     }
 
+    function canCustomSignTime() {
+      return !!(currentUser && currentUser.isVip && ['VIP', 'SVIP'].includes(currentUser.vipTier));
+    }
+    function updateSignTimeUI(setting) {
+      const input = document.getElementById('autoSignTime');
+      const hint = document.getElementById('signTimeHint');
+      const display = document.getElementById('autoSignTimeDisplay');
+      const label = document.getElementById('autoSignTimeLabel');
+      const custom = canCustomSignTime();
+      const time = (setting && setting.signTime) || '21:35';
+      if (input) { input.value = time; input.disabled = !custom; }
+      if (hint) hint.textContent = custom ? '你当前是 ' + currentUser.vipTier + '，可自定义签到时间' : '普通用户固定 21:35；VIP / SVIP 可自定义';
+      if (display) display.textContent = time;
+      if (label) label.textContent = custom ? '自定义签到时间' : '统一签到时间';
+    }
     async function loadAutoSignSetting() {
       try {
         const data = await api('/auto-sign');
@@ -961,13 +1001,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         document.getElementById('notifyOnSuccess').checked = setting.notifyOnSuccess !== false;
         document.getElementById('notifyOnFailure').checked = setting.notifyOnFailure !== false;
         setAutoSignDays(setting.customDays);
+        updateSignTimeUI(setting);
         renderAutoSignStatus(setting);
       } catch(e) {}
     }
 
     async function saveAutoSignSetting() {
-      if (!currentUser.isVip) {
-        showToast('自动签到为会员功能；免费用户只能手动签到', 'error');
+      if (!currentUser.isVip && !(Number(currentUser.signCredits || 0) > 0)) {
+        showToast('自动签到需要会员或次数卡；免费用户请手动签到', 'error');
         return;
       }
       const selectedDays = getSelectedAutoSignDays();
@@ -975,9 +1016,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         showToast('请至少选择一天', 'error');
         return;
       }
+      const timeInput = document.getElementById('autoSignTime');
       const body = {
         enabled: document.getElementById('autoSignEnabled').checked,
         customDays: selectedDays,
+        signTime: canCustomSignTime() && timeInput ? timeInput.value : '21:35',
         notifyOnSuccess: document.getElementById('notifyOnSuccess').checked,
         notifyOnFailure: document.getElementById('notifyOnFailure').checked
       };
@@ -1151,6 +1194,10 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         document.getElementById('paymentOrderNo').textContent = data.order.orderNo;
         document.getElementById('qrCodeImage').src = method === 'alipay' ? data.qrCodes.alipay : data.qrCodes.wechat;
         document.getElementById('paymentResult').classList.add('hidden');
+        document.getElementById('claimSection').classList.add('hidden');
+        qrViewed = false;
+        document.getElementById('paymentOrderNo').textContent = data.order.payCode || data.order.mark || data.order.orderNo;
+        document.getElementById('qrModalImage').src = data.order.payCode ? '' : '';
         document.getElementById('paymentRef').value = '';
         showToast('请精确支付 ¥' + Number(data.order.amount).toFixed(2) + '，备注订单号', 'info');
         startPolling(data.order.orderNo);
@@ -1182,7 +1229,28 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         + '<p style="font-size:13px;color:#166534;margin:0;">' + escapeHTML(names[tier] || tier || '') + ' · ' + escapeHTML(String(order.days || '')) + ' 天</p>'
         + '<p style="font-size:12px;color:#64748b;margin-top:6px;">已发放到你账号，后台会核对付款。</p></div>';
     }
+    let qrViewed = false;
+    function openQrModal() {
+      const img = document.getElementById('qrCodeImage');
+      const modal = document.getElementById('qrModal');
+      if (!img || !modal || !img.src) return;
+      document.getElementById('qrModalImage').src = img.src;
+      document.getElementById('qrModalAmount').textContent = document.getElementById('paymentAmount').textContent + ' · 短码 ' + document.getElementById('paymentOrderNo').textContent;
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeQrModal(event) {
+      const modal = document.getElementById('qrModal');
+      if (!modal) return;
+      if (event && event.target !== modal) return;
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+      qrViewed = true;
+      const claim = document.getElementById('claimSection');
+      if (claim) claim.classList.remove('hidden');
+    }
     async function claimPayment() {
+      if (!qrViewed) { showToast('请先点击放大二维码完成扫码', 'error'); return; }
       if (!sponsorOrder) { showToast('请先选择赞助档位', 'error'); return; }
       const ref = document.getElementById('paymentRef').value.trim();
       if (ref.length < 4) { showToast('请填写支付备注或交易单号后 4 位', 'error'); return; }
