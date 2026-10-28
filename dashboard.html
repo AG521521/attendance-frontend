@@ -1189,7 +1189,7 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
       } catch(e) { showToast('网络错误', 'error'); }
     }
     async function unbindEmail() {
-      if (!confirm('确定解绑？VIP将失效。')) return;
+      if (!confirm('确定解绑？解绑后将收不到签到提醒，但账号仍可正常使用。')) return;
       try {
         const data = await api('/email/unbind', { method: 'POST' });
         if (data.success) { showToast('已解绑', 'success'); await loadUserInfo(); loadEmailStatus(); }
@@ -1276,7 +1276,7 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
           + '<div style="font-size:11px;color:#0f766e;font-weight:800;letter-spacing:.06em;">' + escapeHTML(p.badge || '') + '</div>'
           + '<h3 style="margin:6px 0 2px;font-size:17px;">' + escapeHTML(p.name) + '</h3>'
           + '<div style="font-size:24px;font-weight:900;color:#b45309;">¥' + Number(p.price).toFixed(2) + '</div>'
-          + '<p style="font-size:12px;color:#64748b;line-height:1.6;min-height:32px;">' + escapeHTML(p.description) + '</p>'
+          + '<p style="font-size:12px;color:#64748b;line-height:1.6;min-height:32px;">' + (p.type === 'counts' ? ('永久 · ' + p.counts + ' 次') : escapeHTML(p.description)) + '</p>'
           + '<div style="display:flex;gap:6px;margin-top:10px;">'
           + '<button class="btn btn-primary btn-sm" style="flex:1;" onclick="selectPackage(\'' + escapeAttr(p.id) + '\',\'wechat\')">微信</button>'
           + '<button class="btn btn-outline btn-sm" style="flex:1;" onclick="selectPackage(\'' + escapeAttr(p.id) + '\',\'alipay\')">支付宝</button>'
