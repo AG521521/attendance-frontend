@@ -159,45 +159,88 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
   .foot a{margin-left:0;margin-right:14px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* ===== 2026-10 登录页重设计 ===== */
+.topbar{background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(15,61,54,.08);position:sticky;top:0;z-index:50}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap}
+.brand{font-size:17px;font-weight:900;text-decoration:none;letter-spacing:-.02em}
+.nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:700}
+.nav a{text-decoration:none;color:var(--mute)}
+.nav a:hover{color:var(--g)}
+.auth{background:radial-gradient(circle at 12% 18%,#fff2bd 0,transparent 36%),radial-gradient(circle at 92% 8%,#d9f3e8 0,transparent 42%),linear-gradient(180deg,#f8fcfa 0%,#edf7f2 100%);padding:clamp(34px,6vw,70px) 0 clamp(40px,7vw,78px)}
+.auth-grid{display:grid;gap:34px;align-items:center}
+@media(min-width:880px){.auth-grid{grid-template-columns:1.06fr .94fr;gap:72px}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:800 11px/1 var(--mono);letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
+.eyebrow::before{content:'';width:26px;height:2px;background:var(--g)}
+.auth-copy h1{font-size:clamp(40px,6vw,64px);line-height:1.06;letter-spacing:-.045em;margin:16px 0 18px;font-weight:900}
+.auth-lead{font-size:clamp(15px,1.6vw,17px);line-height:1.85;color:var(--mute);max-width:30em;font-weight:600}
+.auth-points{list-style:none;margin:26px 0 0;display:grid;gap:12px;font-size:14px;font-weight:700}
+.auth-points li{display:flex;align-items:center;gap:10px;color:var(--g)}
+.auth-points .dot{width:8px;height:8px;border-radius:50%;background:var(--y);box-shadow:0 0 0 4px rgba(255,210,63,.22);flex:none}
+.auth-note{margin-top:24px;font-size:12.5px;line-height:1.7;color:var(--mute);max-width:30em}
+.login-panel{background:#fff;border:1px solid rgba(15,61,54,.08);border-radius:24px;padding:clamp(22px,3vw,32px);box-shadow:0 24px 70px rgba(15,61,54,.12);position:relative;overflow:hidden;text-align:left}
+.login-panel::before{content:'';position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--y),#8fd9c3,var(--g))}
+.login-panel-head{margin-bottom:18px}
+.login-mark{width:42px;height:42px;border-radius:14px;background:var(--g);color:var(--y);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
+.login-panel-head h2{font-size:22px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+.login-panel-head p{font-size:13px;color:var(--mute)}
+.login-panel .login-field input{border-color:#d7e6df;border-radius:12px;background:#fbfdfc}
+.login-panel .login-field input:focus{border-color:var(--g);outline:none;box-shadow:0 0 0 4px rgba(15,61,54,.08)}
+.login-panel .login-submit{border-radius:12px;background:var(--g);color:var(--y);margin-top:6px}
+.login-panel .login-submit:disabled{background:#c7d6d0;color:#fff}
+.login-foot{font-size:11.5px;text-align:center;margin-top:12px}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="top">
-      <b>AG工作室</b>
-            <nav class="topnav" aria-label="页面导航">
-        <a href="#" class="nav-login" onclick="openLogin();return false;">登录</a>
-        <a href="#pay">赞助</a>
-        <a href="#contact">联系</a>
-        <a href="terms.html">用户协议</a>
-        <a href="privacy.html">隐私政策</a>
-      </nav>
-    </div>
-    <div class="heroin">
-      <h1>服务<br>已恢复</h1>
-            <p class="lead">登录后即可手动签到；付费会员自动签到每天 21:35 执行。免费用户仅支持手动签到。</p>
-      <div class="hero-actions"><button type="button" class="login-cta" onclick="openLogin()">登录 / 开始使用</button><a class="hero-link" href="#pay">查看赞助</a></div>
-    </div>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="/">AG工作室</a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#login">登录</a>
+      <a href="#pay">支持</a>
+      <a href="#contact">联系</a>
+      <a href="terms.html">用户协议</a>
+      <a href="privacy.html">隐私政策</a>
+    </nav>
   </div>
-  <div class="tape" aria-hidden="true"></div>
 </header>
+
+<main class="auth">
+  <div class="wrap auth-grid">
+    <section class="auth-copy">
+      <span class="eyebrow">AG ATTENDANCE</span>
+      <h1>晚寝签到，<br>轻松一点。</h1>
+      <p class="auth-lead">登录后即可查看签到状态、完成手动签到和查询记录。整个过程只需要学号和考勤密码。</p>
+      <ul class="auth-points">
+        <li><span class="dot"></span> 学号 + 考勤密码登录</li>
+        <li><span class="dot"></span> 支持每天 21:35 自动签到（按需开启）</li>
+        <li><span class="dot"></span> 签到记录、邮件提醒与反馈</li>
+      </ul>
+      <p class="auth-note">首次登录会自动创建账号。遇到问题可以通过 QQ 频道或邮箱联系我们。</p>
+    </section>
+    <section class="login-panel" id="login">
+      <div class="login-panel-head">
+        <div class="login-mark"><i class="fas fa-moon"></i></div>
+        <h2>登录你的考勤面板</h2>
+        <p>使用学号和考勤密码登录</p>
+      </div>
+      <form id="loginForm" onsubmit="submitLogin(event)">
+        <div class="login-field"><label for="loginStudentId">学号</label><input id="loginStudentId" name="studentId" autocomplete="username" inputmode="numeric" placeholder="请输入学号" required></div>
+        <div class="login-field"><label for="loginPassword">考勤密码</label><input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required></div>
+        <p class="login-hint">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
+        <label class="login-agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"> <span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 和 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
+        <div class="login-error" id="loginError"></div>
+        <button type="submit" class="login-submit" id="loginSubmit" disabled>登录</button>
+        <p class="login-hint login-foot">首次登录会自动创建账号；登录即表示你同意上述协议。</p>
+      </form>
+    </section>
+  </div>
+</main>
 
 <section class="noticebar" aria-label="服务说明">
   <div class="wrap">
     <b>服务说明</b>
     <p>本服务由个人开发者运营。赞助或登录前，请阅读并同意<a href="terms.html">《用户协议》</a>与<a href="privacy.html">《隐私政策》</a>。</p>
-  </div>
-</section>
-
-<section class="band" aria-label="服务说明">
-  <div class="wrap">
-    <div class="heads"><span>当前服务状态<em>已恢复</em></span><span>免费 vs 付费</span></div>
-    <p class="who">免费用户</p>
-    <div class="bar"><i class="seg on all">手动签到可用</i></div>
-    <p class="who">付费会员</p>
-    <div class="bar"><i class="seg on all">自动签到每天 21:35</i></div>
   </div>
 </section>
 
@@ -230,7 +273,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
         <li>管理员核对后为你安排</li>
       </ol>
 
-      <p class="note">每日 20:00 后赞助的用户默认次日开通；当日默认不发邮件通知，可通过 QQ、微信、邮箱等强提醒方式免费加急。自定义签到时间、日期等需求请开通 VIP。</p>
+      <p class="note">每日 20:00 后支持的用户默认次日处理；当日默认不发邮件通知，可通过 QQ、微信、邮箱等提醒方式加急。</p>
       <p class="agree-note">扫码赞助即表示你已阅读并同意<a href="terms.html">《用户协议》</a>和<a href="privacy.html">《隐私政策》</a>；以后登录时，登录行为同样视为你同意上述协议。</p>
     </section>
 
@@ -274,22 +317,6 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
   </div>
 </div>
 
-<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-label="登录" onclick="closeLogin()">
-  <div class="login-card" onclick="event.stopPropagation()">
-    <h3>登录 AG 考勤</h3>
-    <p class="login-sub">使用学号和考勤密码登录；首次登录会自动创建账号。</p>
-    <form id="loginForm" onsubmit="submitLogin(event)">
-      <div class="login-field"><label for="loginStudentId">学号</label><input id="loginStudentId" name="studentId" autocomplete="username" inputmode="numeric" placeholder="请输入学号" required></div>
-      <div class="login-field"><label for="loginPassword">考勤密码</label><input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required></div>
-      <p class="login-hint">默认考勤密码：Ahgydx@920（如果你没有改过）。</p>
-      <label class="login-agree"><input type="checkbox" id="loginAgree" onchange="onLoginAgreeChange()"> <span>我已阅读并同意 <a href="terms.html" target="_blank" rel="noopener">《用户协议》</a> 和 <a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a></span></label>
-      <div class="login-error" id="loginError"></div>
-      <button type="submit" class="login-submit" id="loginSubmit" disabled>登录</button>
-      <button type="button" class="login-cancel" onclick="closeLogin()">取消</button>
-      <p class="login-hint" style="text-align:center;margin-top:12px;">登录后：手动签到免费；自动签到仅限会员。</p>
-    </form>
-  </div>
-</div>
 <script src="shared.js"></script>
 <script>
 var tt;
@@ -320,7 +347,7 @@ function zoomPay(){
 }
 function openGroup(){openQR('qq_group_qr.png','AG工作室股东大会','长按识别或截图保存，用 QQ 扫码加入')}
 function closeQR(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeQR();closeLogin();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeQR()});
 
 function doCopy(text,ok,fail){
   function fallback(){
