@@ -469,7 +469,11 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
   .qr-wrap,.qr-blur{width:min(220px,70vw)!important;height:min(220px,70vw)!important}
   .form-group input,.form-group select,.form-group textarea{font-size:14px}
   .member-card{flex-direction:column}
-}</style>
+}/* 顶部用户名对比度修复 */
+.header,.header .user-info,.header .user-info span,#userName{color:var(--text)!important}
+.header-tier{color:#8a6a12!important;background:rgba(201,162,39,.16)!important}
+body.dark .header,body.dark .header .user-info,body.dark .header .user-info span,body.dark #userName{color:#e8f0ed!important}
+body.dark .header-tier{color:#e7c873!important;background:rgba(231,200,115,.16)!important}</style>
 </head>
 <body>
   <div class="header">
