@@ -171,6 +171,9 @@
         <div class="menu-item" data-page="orders">
           <i class="fas fa-shopping-bag"></i> 订单管理
         </div>
+        <div class="menu-item" data-page="packages">
+          <i class="fas fa-tags"></i> 套餐管理
+        </div>
         <div class="menu-item" data-page="sponsor-orders">
           <i class="fas fa-hand-holding-heart"></i> 赞助订单
         </div>
@@ -363,6 +366,19 @@
           <p style="font-size:13px;color:#64748b;line-height:1.8;">向所有绑定邮箱的用户按等级模板发送“网站已恢复运行”公告，包含官网和专属邀请链接。</p>
           <button class="btn btn-primary" onclick="sendAnnouncement()" id="announcementBtn"><i class="fas fa-paper-plane"></i> 发送公告邮件</button>
           <span id="announcementResult" style="margin-left:10px;"></span>
+        </div>
+      </div>
+      <!-- ===== 套餐管理 ===== -->
+      <div id="page-packages" class="hidden">
+        <div class="content-card">
+          <div class="card-header">
+            <h3><i class="fas fa-tags"></i> 赞助套餐管理</h3>
+            <div>
+              <button class="btn btn-success" onclick="adminAddPackage()"><i class="fas fa-plus"></i> 新增套餐</button>
+              <button class="btn btn-outline" onclick="loadAdminPackages()"><i class="fas fa-sync-alt"></i> 刷新</button>
+            </div>
+          </div>
+          <div id="adminPackagesTable">加载中...</div>
         </div>
       </div>
       <!-- ===== 商品管理 ===== -->
@@ -576,7 +592,7 @@
 
         const titles = {
           dashboard: '仪表盘', users: '考勤用户管理', 'market-users': '交易平台用户管理', cards: '卡密管理',
-          reports: '举报管理', orders: '订单管理', 'sponsor-orders': '赞助订单', 'market-items': '商品管理',
+          reports: '举报管理', orders: '订单管理', 'sponsor-orders': '赞助订单', packages: '套餐管理', 'market-items': '商品管理',
           feedback: '留言管理', email: '群发邮件', settings: '系统设置'
         };
         document.getElementById('pageTitle').textContent = titles[page];
@@ -588,6 +604,7 @@
         else if (page === 'reports') loadReports();
         else if (page === 'orders') loadOrders();
         else if (page === 'sponsor-orders') loadSponsorOrders();
+        else if (page === 'packages') loadAdminPackages();
         else if (page === 'market-items') loadMarketItems();
         else if (page === 'feedback') loadFeedbacks();
         else if (page === 'email') loadEmailStats();
@@ -881,6 +898,63 @@
       });
     });
 
+    // ========== 套餐管理 ==========
+    async function loadAdminPackages() {
+      const box = document.getElementById('adminPackagesTable');
+      if (!box) return;
+      try {
+        const res = await fetch(`${API_BASE}/admin/sponsor-packages`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        if (!data.success || !data.packages || !data.packages.length) { box.innerHTML = '<p class="empty">暂无套餐</p>'; return; }
+        box.innerHTML = '<div style="overflow-x:auto;"><table><thead><tr><th>套餐</th><th>价格</th><th>类型</th><th>天数</th><th>次数</th><th>状态</th><th>操作</th></tr></thead><tbody>' +
+          data.packages.map(p => '<tr><td>' + (p.name || '') + '<br><span style="color:#94a3b8;font-size:12px;">' + (p.packageId || '') + '</span></td>' +
+            '<td>¥' + Number(p.price || 0).toFixed(2) + '</td><td>' + (p.type === 'counts' ? '次数卡' : '时间卡') + '</td>' +
+            '<td>' + (p.days || 0) + '</td><td>' + (p.counts || 0) + '</td><td>' + (p.active ? '启用' : '停用') + '</td>' +
+            '<td><button class="btn btn-outline" style="padding:6px 10px;font-size:12px;" onclick="adminEditPackage(\'' + p._id + '\')">编辑</button> ' +
+            '<button class="btn btn-danger" style="padding:6px 10px;font-size:12px;" onclick="adminDeletePackage(\'' + p._id + '\')">删除</button></td></tr>').join('') +
+          '</tbody></table></div>';
+      } catch (e) { box.innerHTML = '<p class="empty">加载失败</p>'; }
+    }
+    async function adminAddPackage() {
+      const name = prompt('套餐名称，例如：月卡');
+      if (!name) return;
+      const price = prompt('价格，例如：6.66');
+      if (price === null) return;
+      const type = prompt('类型：days=时间卡，counts=次数卡', 'days') || 'days';
+      const days = type === 'days' ? prompt('天数，例如：30', '30') : '0';
+      const counts = type === 'counts' ? prompt('次数，例如：10', '10') : '0';
+      const res = await fetch(`${API_BASE}/admin/sponsor-packages`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), price: Number(price), type, days: Number(days || 0), counts: Number(counts || 0), description: name.trim() })
+      });
+      const data = await res.json();
+      alert(data.message || (data.success ? '已新增' : '新增失败'));
+      loadAdminPackages();
+    }
+    async function adminEditPackage(id) {
+      const name = prompt('新名称（留空不改）');
+      const price = prompt('新价格（留空不改）');
+      if (name === null && price === null) return;
+      const body = {};
+      if (name) body.name = name.trim();
+      if (price) body.price = Number(price);
+      const res = await fetch(`${API_BASE}/admin/sponsor-packages/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      alert(data.message || (data.success ? '已保存' : '保存失败'));
+      loadAdminPackages();
+    }
+    async function adminDeletePackage(id) {
+      if (!confirm('确定删除这个套餐？')) return;
+      const res = await fetch(`${API_BASE}/admin/sponsor-packages/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+      const data = await res.json();
+      alert(data.message || (data.success ? '已删除' : '删除失败'));
+      loadAdminPackages();
+    }
     // ========== 赞助订单 ==========
     function escSponsor(v) {
       return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
