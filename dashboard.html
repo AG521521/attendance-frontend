@@ -612,6 +612,7 @@ body.dark .login-hint,body.dark .helper{color:#94a3b8}</style>
         <div id="page-email" class="page">
           <div class="card">
             <h2><i class="fas fa-envelope"></i> 邮箱绑定</h2>
+            <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin:0 0 12px;">绑定邮箱后可以收到签到成功/失败提醒。不绑定也能正常使用，但收不到邮件提醒，可能会漏签，建议绑定。</p>
             <div id="emailStatus"></div>
             <div id="emailBindForm">
               <div class="form-group"><label>邮箱</label><input type="email" id="bindEmail" placeholder="your@email.com"></div>
@@ -1084,7 +1085,7 @@ body.dark .login-hint,body.dark .helper{color:#94a3b8}</style>
         container.innerHTML = '<div style="background:#d4edda;padding:14px;border-radius:10px;"><i class="fas fa-check-circle" style="color:var(--success);"></i> 已绑定：'+escapeHTML(currentUser.email)+'</div>';
         form.classList.add('hidden'); rebind.classList.remove('hidden');
       } else {
-        container.innerHTML = '<div style="background:#fff3cd;padding:14px;border-radius:10px;"><i class="fas fa-info-circle" style="color:var(--warning);"></i> 未绑定邮箱</div>';
+        container.innerHTML = '<div style="background:#fff3cd;padding:14px;border-radius:10px;"><i class="fas fa-info-circle" style="color:var(--warning);"></i> 未绑定邮箱 · 绑定后可收到签到提醒（不强制）</div>';
         form.classList.remove('hidden'); rebind.classList.add('hidden');
       }
     }
