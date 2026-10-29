@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<meta name="description" content="AG工作室晚寝签到辅助服务：登录、手动签到、自动签到与常见问题。">
+<meta name="description" content="AG工作室晚寝签到辅助服务：登录、手动签到、自动签到与赞助方式。">
 <title>AG工作室 · 登录</title>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -23,9 +23,6 @@ body{background:var(--soft);color:var(--g);font:15px/1.7 var(--font)}
 button{font:inherit;color:inherit}
 a{color:var(--g)}
 .wrap{width:min(1040px,100%);margin:0 auto;padding:0 max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}
-
-/* 内联 SVG 图标 */
-.ico{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex:none}
 
 /* 1 · 黄色警示区 */
 .hero{background:var(--y)}
@@ -66,27 +63,39 @@ h1{font-size:clamp(64px,22vw,120px);font-weight:900;line-height:.98;letter-spaci
 .bar .seg:nth-child(2){animation-delay:.4s}
 @keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
 
-/* 4 · 常见问题 + 联系 */
+/* 4 · 赞助 + 联系 */
 .low{padding:clamp(32px,6vw,58px) 0 max(44px,env(safe-area-inset-bottom))}
 .two{display:grid;gap:48px}
 @media(min-width:860px){.two{grid-template-columns:1.05fr .95fr;gap:72px;align-items:start}}
 h2{font-size:24px;font-weight:900;line-height:1.3}
 .sub{margin:6px 0 18px;color:var(--mute);font-size:14.5px;max-width:30em}
 
-/* FAQ */
-.faq-list{display:grid;gap:12px;margin-top:8px}
-.faq-item{padding:14px 16px;background:#fff;border-left:5px solid var(--y);border-radius:2px}
-.faq-q{font-size:15px;font-weight:800;line-height:1.5;color:var(--g);margin-bottom:6px}
-.faq-a{font-size:14px;line-height:1.75;color:var(--mute)}
-.faq-more{display:grid;gap:12px;margin-top:12px}
-.faq-more[hidden]{display:none}
-.faq-toggle{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;border:2px solid var(--g);border-radius:99px;background:#fff;color:var(--g);font-weight:800;font-size:14px;cursor:pointer;transition:background .18s,color .18s}
-.faq-toggle:hover{background:var(--g);color:var(--y)}
-.faq-toggle .ico{transition:transform .24s}
-.faq-toggle[aria-expanded="true"] .ico{transform:rotate(180deg)}
-@media(max-width:600px){
-  .faq-toggle{width:100%;justify-content:center}
-}
+.tabs{display:inline-flex;padding:4px;border:2px solid var(--g);border-radius:99px}
+.tabs button{padding:7px 24px;border:0;border-radius:99px;background:none;font-weight:800;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--g);color:var(--y)}
+
+.frame{display:block;position:relative;width:min(262px,78vw);margin:22px 0 10px;padding:20px;border:0;background:#fff;cursor:zoom-in}
+.frame:hover{outline:3px solid var(--y)}
+.qrs{display:block}
+.frame::before,.frame::after,.qrs::before,.qrs::after{content:'';position:absolute;width:30px;height:30px;border:4px solid var(--g)}
+.frame::before{top:0;left:0;border-right:0;border-bottom:0}
+.frame::after{bottom:0;right:0;border-left:0;border-top:0}
+.qrs::before{top:0;right:0;border-left:0;border-bottom:0}
+.qrs::after{bottom:0;left:0;border-right:0;border-top:0}
+.qrs img{display:block;width:100%;aspect-ratio:1;object-fit:contain}
+.qrs img[hidden]{display:none}
+.hint{font-size:13px;color:var(--mute)}
+
+.steps{list-style:none;counter-reset:s;margin-top:22px;display:grid;gap:14px;font-size:14.5px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--y);font:800 13px var(--mono)}
+.ticket{display:flex;align-items:center;gap:10px;margin-top:8px;padding:9px 9px 9px 14px;border:2px dashed var(--g);background:#fff}
+.ticket b{flex:1;min-width:0;font-size:14px}
+.copy{padding:6px 14px;border:0;border-radius:99px;background:var(--g);color:var(--y);font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
+.copy.done{background:var(--y);color:var(--g)}
+.note{margin-top:18px;padding:12px 14px;border-left:5px solid var(--y);background:#fff;font-size:13.5px;color:var(--mute)}
+.agree-note{margin-top:14px;font-size:13px;color:var(--mute);line-height:1.65}
+.agree-note a{font-weight:800;text-underline-offset:3px}
 
 .cts{margin-top:14px;border-top:3px solid var(--g)}
 .ct{
@@ -116,7 +125,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .card p{margin-top:10px;font-size:13px;font-weight:600}
 .card button{width:100%;margin-top:14px;padding:11px;border:0;background:var(--g);color:var(--y);font-weight:800;cursor:pointer}
 
-/* 5 · 登录面板与页脚 */
+/* 6 · 页脚 */
 .login-card{width:min(420px,100%);padding:24px;background:#fff;border:3px solid var(--g);text-align:left;max-height:calc(100vh - 40px);overflow:auto}
 .login-card h3{font-size:22px;font-weight:900;margin-bottom:4px}
 .login-sub{font-size:13.5px;color:var(--mute);margin-bottom:18px}
@@ -144,7 +153,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 .foot a{color:var(--y);text-decoration:none;margin-left:16px}
 .foot a:hover{text-decoration:underline}
 .foot .fine{width:100%;color:#8fb3a8;font-size:12.5px;line-height:1.7}
-#faq,#contact{scroll-margin-top:18px}
+#pay,#contact{scroll-margin-top:18px}
 
 @media(max-width:600px){
   .foot a{margin-left:0;margin-right:14px}
@@ -191,8 +200,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
   .auth-lead{font-size:14.5px}
   .login-panel{padding:22px}
   .auth{padding:22px 0 32px}
-}
-</style>
+}</style>
 </head>
 <body>
 
@@ -201,7 +209,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
     <a class="brand" href="/">AG工作室</a>
     <nav class="nav" aria-label="页面导航">
       <a href="#login">登录</a>
-      <a href="#faq">常见问题</a>
+      <a href="#pay">支持</a>
       <a href="#contact">联系</a>
       <a href="terms.html">用户协议</a>
       <a href="privacy.html">隐私政策</a>
@@ -224,11 +232,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
     </section>
     <section class="login-panel" id="login">
       <div class="login-panel-head">
-        <div class="login-mark">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </div>
+        <div class="login-mark"><i class="fas fa-moon"></i></div>
         <h2>登录你的考勤面板</h2>
         <p>使用学号和考勤密码登录</p>
       </div>
@@ -238,14 +242,7 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
           <label for="loginPassword">考勤密码</label>
           <div class="password-row">
             <input id="loginPassword" name="attendancePassword" type="password" autocomplete="current-password" placeholder="请输入考勤密码" required>
-            <button type="button" class="pwd-fill" onclick="fillDefaultPassword()" title="一键填入默认考勤密码">
-              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="7.5" cy="15.5" r="5.5"/>
-                <path d="m21 2-9.6 9.6"/>
-                <path d="m15.5 7.5 3 3L22 7l-3-3"/>
-              </svg>
-              默认密码
-            </button>
+            <button type="button" class="pwd-fill" onclick="fillDefaultPassword()" title="一键填入默认考勤密码"><i class="fas fa-key"></i> 默认密码</button>
           </div>
         </div>
         <p class="login-hint">忘记密码？<a href="https://xskq.ahut.edu.cn/" target="_blank" rel="noopener">去官方考勤系统找回</a></p>
@@ -269,74 +266,16 @@ h2{font-size:24px;font-weight:900;line-height:1.3}
 <main class="low">
   <div class="wrap two">
 
-    <section id="faq" aria-labelledby="faqT">
-      <h2 id="faqT">常见问题</h2>
-      <p class="sub">关于签到、密码、账号与支持的常见疑问。</p>
-
-      <!-- 外显 5 条 -->
-      <div class="faq-list">
-        <div class="faq-item">
-          <h3 class="faq-q">在任何地点都可以签到吗？</h3>
-          <p class="faq-a">可以。本服务不限制签到地点，无论是否在校、身处何地，任何时间均可完成签到。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">忘记考勤密码怎么办？</h3>
-          <p class="faq-a">电脑端可点击登录面板下方提供的官方网址前往找回；手机端请通过官方「考勤服务号」微信服务号或「掌上工大」找回密码。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">考勤密码指什么？默认密码是多少？</h3>
-          <p class="faq-a">考勤密码即学校官方考勤系统的登录密码。若从未修改，默认密码为 <code style="font-family:var(--mono);font-size:13.5px;background:#f7f4ea;padding:1px 5px;border-radius:4px;">Ahgydx@920</code>；若已修改，请填写修改后的密码。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">首次登录需要注册吗？</h3>
-          <p class="faq-a">不需要。使用学号与考勤密码首次登录时，系统会自动为你创建账号。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">请假后未关闭自动签到，会有影响吗？</h3>
-          <p class="faq-a">没有影响。若你已在官方考勤系统中提交请假或离校申请并已通过审批，官方考勤系统中不会生成对应的签到任务，因此自动签到不会对你的考勤记录造成任何影响。</p>
-        </div>
+    <section id="pay" aria-labelledby="payT">
+      <h2 id="payT">赞助支持</h2>
+      <p class="sub">请先登录仪表盘，进入「赞助支持」选择套餐并扫码；支付后点“确认我已支付”，权益立即发放。</p>
+      <div class="note">
+        <p style="margin:0 0 8px;">首页不再直接提供赞助码，避免付款后无法自动匹配。</p>
+        <p style="margin:0;">登录后路径：「赞助支持」→ 选择套餐 → 扫码 → 确认我已支付。</p>
       </div>
-
-      <!-- 折叠 7 条 -->
-      <div class="faq-more" id="faqMore" hidden>
-        <div class="faq-item">
-          <h3 class="faq-q">假期期间自动签到会自动暂停吗？</h3>
-          <p class="faq-a">不会。自动签到会按照你设定的周期持续运行；如需暂停，请登录后进入「自动签到」页面手动关闭。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">自动签到是免费的吗？</h3>
-          <p class="faq-a">登录后可在仪表盘「自动签到」页面按需开启，具体权益与资费以页面内说明为准。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">签到失败了怎么处理？</h3>
-          <p class="faq-a">可在「记录」页面查看失败原因；如仍无法解决，请通过 QQ 频道或邮箱联系我们。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">如何接收签到成功或失败的提醒？</h3>
-          <p class="faq-a">登录后在「邮箱」页面完成绑定并开启通知，即可在签到成功或失败时收到邮件提醒。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">考勤密码会被泄露吗？</h3>
-          <p class="faq-a">考勤密码仅用于调用官方考勤系统完成签到，不会对外公开；详细说明请参阅《用户协议》与《隐私政策》。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">如何赞助支持？</h3>
-          <p class="faq-a">登录仪表盘后，进入「赞助支持」选择套餐并扫码支付，权益将自动发放。</p>
-        </div>
-        <div class="faq-item">
-          <h3 class="faq-q">如何联系开发者？</h3>
-          <p class="faq-a">见本页「联系我们」区域，可通过 QQ 频道、QQ 群或邮箱与我们取得联系。</p>
-        </div>
-      </div>
-
-      <button type="button" class="faq-toggle" id="faqToggle" onclick="toggleFaq()" aria-expanded="false" aria-controls="faqMore">
-        <span id="faqToggleText">查看更多问题</span>
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
+      <p style="margin-top:18px;"><a href="#login" class="copy" style="display:inline-block;text-decoration:none;">去登录</a></p>
+      <p class="agree-note">还没有账号？首次登录会自动创建账号。忘记密码请用电脑打开官方考勤系统找回，手机端可在「考勤服务号」或「掌上工大」找回。</p>
     </section>
-
     <section id="contact" aria-labelledby="ctT">
       <h2 id="ctT">联系我们</h2>
       <p class="sub">有任何问题，可在 QQ 频道留言或发送邮件。</p>
@@ -386,25 +325,13 @@ function toast(m){
   clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},2400);
 }
 
-/* FAQ 展开 / 收起 */
-function toggleFaq(){
-  var more = document.getElementById('faqMore');
-  var btn = document.getElementById('faqToggle');
-  var txt = document.getElementById('faqToggleText');
-  if (!more || !btn || !txt) return;
-
-  var isOpen = btn.getAttribute('aria-expanded') === 'true';
-  if (isOpen) {
-    more.setAttribute('hidden', '');
-    btn.setAttribute('aria-expanded', 'false');
-    txt.textContent = '查看更多问题';
-  } else {
-    more.removeAttribute('hidden');
-    btn.setAttribute('aria-expanded', 'true');
-    txt.textContent = '收起';
-  }
+var cur=0;
+function pick(i){
+  cur=i;
+  document.querySelectorAll('.tabs button').forEach(function(b,j){b.setAttribute('aria-selected',j===i)});
+  document.querySelectorAll('.qrs img').forEach(function(m,j){m.hidden=j!==i});
+  document.querySelectorAll('[data-pay]').forEach(function(d){d.hidden=d.getAttribute('data-pay')!==String(i)});
 }
-
 function openQR(src,title,tip){
   var im=document.getElementById('mImg');
   im.style.display='';im.src=src;
@@ -412,6 +339,10 @@ function openQR(src,title,tip){
   document.getElementById('mTip').textContent=tip;
   document.getElementById('modal').classList.add('show');
   document.body.style.overflow='hidden';
+}
+function zoomPay(){
+  var m=document.querySelectorAll('.qrs img')[cur];
+  openQR(m.src,cur?'支付宝赞助码':'微信赞助码','长按识别或截图保存，用对应 App 扫码');
 }
 function openGroup(){openQR('qq_group_qr.png','AG工作室股东大会','长按识别或截图保存，用 QQ 扫码加入')}
 function closeQR(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
@@ -427,6 +358,13 @@ function doCopy(text,ok,fail){
   }
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok).catch(fallback)}
   else{fallback()}
+}
+function copyNote(){
+  var b=document.getElementById('copyBtn');
+  doCopy('AG工作室赞助 - 学号：请填写  密码：请填写  邮箱（可选）：',function(){
+    b.classList.add('done');b.textContent='已复制';toast('格式已复制');
+    setTimeout(function(){b.classList.remove('done');b.textContent='复制'},2000);
+  },function(){toast('复制失败，请手动记录')});
 }
 function copyEmail(){
   var e='support@agai.online';
@@ -445,10 +383,21 @@ function fillDefaultPassword(){
   toast('已填入默认考勤密码');
 }
 
+function openLogin(){
+  var m = document.getElementById('loginModal');
+  m.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('loginError').textContent = '';
+  setTimeout(function(){ document.getElementById('loginStudentId').focus(); }, 60);
+}
+function closeLogin(){
+  var m = document.getElementById('loginModal');
+  if (m) m.classList.remove('show');
+  document.body.style.overflow = '';
+}
 function onLoginAgreeChange(){
   document.getElementById('loginSubmit').disabled = !document.getElementById('loginAgree').checked;
 }
-
 async function submitLogin(e){
   e.preventDefault();
   var sid = document.getElementById('loginStudentId').value.trim();
