@@ -1528,7 +1528,7 @@ async function quickSign() {
   const btnLabel = btn.querySelector('span');
   const btnIcon = btn.querySelector('.ico');
 
-  // ========== 新增：前端签到时间检测 ==========
+  // ========== 前端签到时间检测 ==========
   const now = new Date();
   const currentMins = now.getHours() * 60 + now.getMinutes();
   // 官方时间：21:20 开始，22:50 结束。我们放宽到 23:00 (1380分钟)
@@ -2062,14 +2062,24 @@ async function loadPackages() {
       const pkgId = p.id || p._id || p.packageId || '';
       const isCounts = p.type === 'counts';
       const disabledAttr = isCounts ? 'disabled' : '';
-      const descHTML = isCounts ? '<span class="pkg-warn" style="color:var(--red);">暂不可用</span>' : escapeHTML(p.description || '');
       
-      const isBest = p.badge === '热卖' || p.badge === '推荐';
+      // ====== 新增：在这里识别 365天/SVIP 套餐，并替换文案 ======
+      let pkgName = p.name || '';
+      let pkgDesc = p.description || '';
+      let isSvip = p.days === 365 || pkgName.includes('学年') || pkgName.includes('SVIP');
+      
+      if (isSvip && !isCounts) {
+        pkgName = '在校期间会员 (SVIP)';
+        pkgDesc = '在校期间永久有效，直至毕业';
+      }
+      const descHTML = isCounts ? '<span class="pkg-warn" style="color:var(--red);">暂不可用</span>' : escapeHTML(pkgDesc);
+      
+      const isBest = p.badge === '热卖' || p.badge === '推荐' || isSvip;
       const bestClass = isBest ? 'best' : '';
 
       return `<div class="pkg ${isCounts ? 'is-disabled' : ''} ${bestClass}">
-        <div class="pkg-tag">${escapeHTML(p.badge || '')}</div>
-        <h3>${escapeHTML(p.name || '')}</h3>
+        <div class="pkg-tag">${escapeHTML(p.badge || (isSvip ? '毕业前有效' : ''))}</div>
+        <h3>${escapeHTML(pkgName)}</h3>
         <div class="pkg-price">¥${Number(p.price || 0).toFixed(2)}</div>
         <p class="pkg-desc">${descHTML}</p>
         <div class="pkg-actions">
