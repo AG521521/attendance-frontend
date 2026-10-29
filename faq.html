@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="description" content="AG工作室晚寝签到辅助服务常见问题。">
+<title>AG工作室 · 常见问题</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --y:#f2bb41;--g:#14223b;--coral:#ec6a4d;--soft:#eef2f6;--mute:#617089;--line:#d8e0eb;
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{background:var(--soft);color:var(--g);font:15px/1.7 var(--font)}
+:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+button{font:inherit;color:inherit}
+a{color:var(--g)}
+.wrap{width:min(1040px,100%);margin:0 auto;padding:0 max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-0.125em;flex:none}
+.noticebar{background:#fff;border-bottom:3px solid var(--g)}
+.noticebar .wrap{display:flex;gap:12px;align-items:flex-start;padding-top:12px;padding-bottom:12px}
+.noticebar b{flex:none;background:var(--g);color:var(--y);padding:2px 10px;border-radius:99px;font-size:12px;line-height:1.6;margin-top:2px}
+.noticebar p{font-size:13.5px;line-height:1.65;color:var(--mute)}
+.low{padding:clamp(32px,6vw,58px) 0 max(44px,env(safe-area-inset-bottom))}
+.two{display:grid;gap:48px}
+@media(min-width:860px){.two{grid-template-columns:1.05fr .95fr;gap:72px;align-items:start}}
+h2{font-size:24px;font-weight:900;line-height:1.3}
+.sub{margin:6px 0 18px;color:var(--mute);font-size:14.5px;max-width:30em}
+.faq-list{display:grid;gap:12px;margin-top:8px}
+.faq-item{padding:14px 16px;background:#fff;border-left:5px solid var(--y);border-radius:2px}
+.faq-q{font-size:15px;font-weight:800;line-height:1.5;color:var(--g);margin-bottom:6px}
+.faq-a{font-size:14px;line-height:1.75;color:var(--mute)}
+.faq-more{display:grid;gap:12px;margin-top:12px}
+.faq-more[hidden]{display:none}
+.faq-toggle{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;border:2px solid var(--g);border-radius:99px;background:#fff;color:var(--g);font-weight:800;font-size:14px;cursor:pointer;transition:background .18s,color .18s}
+.faq-toggle:hover{background:var(--g);color:var(--y)}
+.faq-toggle .ico{transition:transform .24s}
+.faq-toggle[aria-expanded="true"] .ico{transform:rotate(180deg)}
+@media(max-width:600px){.faq-toggle{width:100%;justify-content:center}}
+.cts{margin-top:14px;border-top:3px solid var(--g)}
+.ct{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px;width:100%;padding:15px 0;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;text-decoration:none;cursor:pointer}
+.ct .k{font-size:13px;color:var(--mute)}
+.ct .v{font-size:18px;font-weight:800;word-break:break-all}
+.ct .v.m{font-family:var(--mono);font-size:17px}
+.ct .a{grid-column:2;grid-row:1/3;padding:5px 14px;border:2px solid var(--g);border-radius:99px;font-size:13px;font-weight:800}
+.ct:hover .a{background:var(--g);color:var(--y)}
+.toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));z-index:10000;transform:translate(-50%,16px);padding:10px 20px;border-radius:99px;background:var(--g);color:var(--y);font-size:14px;font-weight:800;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;max-width:calc(100vw - 40px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(7,28,24,.86)}
+.modal.show{display:flex}
+.card{width:min(440px,100%);padding:22px;background:var(--y);text-align:center}
+.card h3{margin-bottom:14px;font-size:17px;font-weight:900}
+.card img{width:min(380px,76vw);aspect-ratio:1;object-fit:contain;background:#fff;padding:10px}
+.card p{margin-top:10px;font-size:13px;font-weight:600}
+.card button{width:100%;margin-top:14px;padding:11px;border:0;background:var(--g);color:var(--y);font-weight:800;cursor:pointer}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
+.login-field input{width:100%;padding:11px 12px;border:2px solid var(--g);background:#fff;font:inherit;color:var(--g)}
+.login-field input:focus{outline:3px solid var(--y);outline-offset:0}
+.login-hint{font-size:12.5px;color:var(--mute);line-height:1.6;margin-top:6px}
+.login-agree{display:flex;gap:9px;align-items:flex-start;margin:14px 0 10px;font-size:13px;line-height:1.6;color:var(--mute)}
+.login-agree input{width:17px;height:17px;margin-top:2px;accent-color:var(--g);flex:none}
+.login-agree a{font-weight:800}
+.login-error{min-height:18px;color:#b42318;font-size:13px;font-weight:700;margin-bottom:6px}
+.login-submit{width:100%;padding:12px;border:0;background:var(--g);color:var(--y);font-weight:900;font-size:15px;cursor:pointer}
+.login-submit:disabled{opacity:.45;cursor:not-allowed}
+.foot{background:var(--g);color:#b9d4cc;padding:26px 0;font-size:13.5px}
+.foot .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.foot b{color:#fff}
+.foot a{color:var(--y);text-decoration:none;margin-left:16px}
+.foot a:hover{text-decoration:underline}
+.foot .fine{width:100%;color:#8fb3a8;font-size:12.5px;line-height:1.7}
+#faq,#contact,#login{scroll-margin-top:18px}
+@media(max-width:600px){.foot a{margin-left:0;margin-right:14px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+.topbar{background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(15,61,54,.08);position:sticky;top:0;z-index:50}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap}
+.brand{font-size:17px;font-weight:900;text-decoration:none;letter-spacing:-.02em}
+.nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;font-weight:700}
+.nav a{text-decoration:none;color:var(--mute)}
+.nav a:hover{color:var(--g)}
+.auth{background:radial-gradient(circle at 12% 18%,#fff2bd 0,transparent 36%),radial-gradient(circle at 92% 8%,#d9f3e8 0,transparent 42%),linear-gradient(180deg,#f8fcfa 0%,#edf7f2 100%);padding:clamp(34px,6vw,70px) 0 clamp(40px,7vw,78px)}
+.auth-grid{display:grid;gap:34px;align-items:center}
+@media(min-width:880px){.auth-grid{grid-template-columns:1.06fr .94fr;gap:72px}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:800 11px/1 var(--mono);letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
+.eyebrow::before{content:'';width:26px;height:2px;background:var(--g)}
+.auth-copy h1{font-size:clamp(40px,6vw,64px);line-height:1.06;letter-spacing:-.045em;margin:16px 0 18px;font-weight:900}
+.auth-lead{font-size:clamp(15px,1.6vw,17px);line-height:1.85;color:var(--mute);max-width:30em;font-weight:600}
+.auth-points{list-style:none;margin:26px 0 0;display:grid;gap:12px;font-size:14px;font-weight:700}
+.auth-points li{display:flex;align-items:center;gap:10px;color:var(--g)}
+.auth-points .dot{width:8px;height:8px;border-radius:50%;background:var(--y);box-shadow:0 0 0 4px rgba(255,210,63,.22);flex:none}
+.auth-note{margin-top:24px;font-size:12.5px;line-height:1.7;color:var(--mute);max-width:30em}
+.login-panel{background:#fff;border:1px solid rgba(15,61,54,.08);border-radius:24px;padding:clamp(22px,3vw,32px);box-shadow:0 24px 70px rgba(15,61,54,.12);position:relative;overflow:hidden;text-align:left}
+.login-panel::before{content:'';position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--y),#8fd9c3,var(--g))}
+.login-panel-head{margin-bottom:18px}
+.login-mark{width:54px;height:54px;border-radius:50%;background:transparent;color:var(--y);display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:12px;filter:drop-shadow(0 6px 12px rgba(242,187,65,.45))}
+.login-panel-head h2{font-size:22px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+.login-panel-head p{font-size:13px;color:var(--mute)}
+.login-panel .login-field input{border-color:#d7e6df;border-radius:12px;background:#fbfdfc}
+.login-panel .login-field input:focus{border-color:var(--g);outline:none;box-shadow:0 0 0 4px rgba(15,61,54,.08)}
+.login-panel .login-submit{background:var(--coral);color:#fff;border-color:var(--coral);border-radius:12px;margin-top:6px}
+.login-panel .login-submit:disabled{background:#bcc6d5;color:#fff}
+.login-foot{font-size:11.5px;text-align:center;margin-top:12px}
+.password-row{display:flex;gap:8px;align-items:stretch}
+.password-row input{flex:1;min-width:0}
+.pwd-fill{flex:none;padding:0 12px;border:1px solid #cfe8dc;border-radius:12px;background:#f2faf6;color:#153a2e;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.pwd-fill:hover{background:#e4f6ed}
+.auth-copy{order:2}
+.login-panel{order:1}
+@media(max-width:880px){
+  .auth-grid{display:flex;flex-direction:column;gap:20px}
+  .auth-copy{order:2}
+  .login-panel{order:1}
+  .auth-copy h1{font-size:clamp(32px,9vw,44px)}
+  .auth-lead{font-size:14.5px}
+  .login-panel{padding:22px}
+  .auth{padding:22px 0 32px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="/">AG工作室</a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="index.html">登录</a>
+      <a href="faq.html">常见问题</a>
+      <a href="#contact">联系</a>
+      <a href="terms.html">用户协议</a>
+      <a href="privacy.html">隐私政策</a>
+    </nav>
+  </div>
+</header>
+
+
+
+<section class="noticebar" aria-label="服务说明">
+  <div class="wrap">
+    <b>服务说明</b>
+    <p>本服务由个人开发者运营。赞助或登录前，请阅读并同意<a href="terms.html">《用户协议》</a>与<a href="privacy.html">《隐私政策》</a>。</p>
+  </div>
+</section>
+
+<main class="low">
+  <div class="wrap two">
+    <section id="faq" aria-labelledby="faqT">
+      <h2 id="faqT">常见问题</h2>
+      <p class="sub">关于签到、密码、账号与支持的常见疑问。</p>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3 class="faq-q">在任何地点都可以签到吗？</h3>
+          <p class="faq-a">可以。本服务不限制签到地点，无论是否在校、身处何地，任何时间均可完成签到。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">忘记考勤密码怎么办？</h3>
+          <p class="faq-a">电脑端可点击登录面板下方提供的官方网址前往找回；手机端请通过官方「考勤服务号」微信服务号或「掌上工大」找回密码。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">考勤密码指什么？默认密码是多少？</h3>
+          <p class="faq-a">考勤密码即学校官方考勤系统的登录密码。若从未修改，默认密码为 <code style="font-family:var(--mono);font-size:13.5px;background:#f7f4ea;padding:1px 5px;border-radius:4px;">Ahgydx@920</code>；若已修改，请填写修改后的密码。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">首次登录需要注册吗？</h3>
+          <p class="faq-a">不需要。使用学号与考勤密码首次登录时，系统会自动为你创建账号。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">请假后未关闭自动签到，会有影响吗？</h3>
+          <p class="faq-a">没有影响。若你已在官方考勤系统中提交请假或离校申请并已通过审批，官方考勤系统中不会生成对应的签到任务，因此自动签到不会对你的考勤记录造成任何影响。</p>
+        </div>
+      </div>
+      <div class="faq-more" id="faqMore" hidden>
+        <div class="faq-item">
+          <h3 class="faq-q">假期期间自动签到会自动暂停吗？</h3>
+          <p class="faq-a">不会。自动签到会按照你设定的周期持续运行；如需暂停，请登录后进入「自动签到」页面手动关闭。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">自动签到是免费的吗？</h3>
+          <p class="faq-a">登录后可在仪表盘「自动签到」页面按需开启，具体权益与资费以页面内说明为准。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">签到失败了怎么处理？</h3>
+          <p class="faq-a">可在「记录」页面查看失败原因；如仍无法解决，请通过 QQ 频道或邮箱联系我们。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">如何接收签到成功或失败的提醒？</h3>
+          <p class="faq-a">登录后在「邮箱」页面完成绑定并开启通知，即可在签到成功或失败时收到邮件提醒。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">考勤密码会被泄露吗？</h3>
+          <p class="faq-a">考勤密码仅用于调用官方考勤系统完成签到，不会对外公开；详细说明请参阅《用户协议》与《隐私政策》。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">如何赞助支持？</h3>
+          <p class="faq-a">登录仪表盘后，进入「赞助支持」选择套餐并扫码支付，权益将自动发放。</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">如何联系开发者？</h3>
+          <p class="faq-a">见本页「联系我们」区域，可通过 QQ 频道、QQ 群或邮箱与我们取得联系。</p>
+        </div>
+      </div>
+      <button type="button" class="faq-toggle" id="faqToggle" onclick="toggleFaq()" aria-expanded="false" aria-controls="faqMore">
+        <span id="faqToggleText">查看更多问题</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+    </section>
+    <section id="contact" aria-labelledby="ctT">
+      <h2 id="ctT">联系我们</h2>
+      <p class="sub">有任何问题，可在 QQ 频道留言或发送邮件。</p>
+      <div class="cts">
+        <a class="ct" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener">
+          <span class="k">QQ 频道</span><span class="v m">aggzs66666</span><span class="a">打开</span></a>
+        <a class="ct" href="https://qm.qq.com/q/yBoRfiIT8k" target="_blank" rel="noopener">
+          <span class="k">QQ 群</span><span class="v m">1107914277</span><span class="a">打开</span></a>
+        <button class="ct" type="button" onclick="openGroup()">
+          <span class="k">群二维码</span><span class="v">AG工作室股东大会</span><span class="a">放大</span></button>
+        <button class="ct" type="button" onclick="copyEmail()">
+          <span class="k">邮箱</span><span class="v m">support@agai.online</span><span class="a">复制</span></button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><b>AG工作室</b> · 个人开发者运营</p>
+    <nav aria-label="法律信息">
+      <a href="terms.html">用户协议</a>
+      <a href="privacy.html">隐私政策</a>
+    </nav>
+    <p class="fine">协议版本 2026-10-21-2 · 登录后在仪表盘赞助</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal" id="modal" onclick="closeQR()" role="dialog" aria-modal="true" aria-label="二维码">
+  <div class="card" onclick="event.stopPropagation()">
+    <h3 id="mTitle"></h3>
+    <img id="mImg" alt="二维码" onerror="this.style.display='none';document.getElementById('mTip').textContent='二维码加载失败，请稍后重试'">
+    <p id="mTip"></p>
+    <button type="button" onclick="closeQR()">关闭</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+var tt;
+function toast(m){
+  var t=document.getElementById('toast');
+  t.textContent=m;t.classList.add('show');
+  clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},2400);
+}
+function toggleFaq(){
+  var more = document.getElementById('faqMore');
+  var btn = document.getElementById('faqToggle');
+  var txt = document.getElementById('faqToggleText');
+  if (!more || !btn || !txt) return;
+  var isOpen = btn.getAttribute('aria-expanded') === 'true';
+  if (isOpen) {
+    more.setAttribute('hidden', '');
+    btn.setAttribute('aria-expanded', 'false');
+    txt.textContent = '查看更多问题';
+  } else {
+    more.removeAttribute('hidden');
+    btn.setAttribute('aria-expanded', 'true');
+    txt.textContent = '收起';
+  }
+}
+function openQR(src,title,tip){
+  var im=document.getElementById('mImg');
+  im.style.display='';im.src=src;
+  document.getElementById('mTitle').textContent=title;
+  document.getElementById('mTip').textContent=tip;
+  document.getElementById('modal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function openGroup(){openQR('qq_group_qr.png','AG工作室股东大会','长按识别或截图保存，用 QQ 扫码加入')}
+function closeQR(){document.getElementById('modal').classList.remove('show');document.body.style.overflow=''}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeQR()});
+function doCopy(text,ok,fail){
+  function fallback(){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.cssText='position:fixed;top:0;opacity:0';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    try{document.execCommand('copy')?ok():fail()}catch(e){fail()}
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok).catch(fallback)}
+  else{fallback()}
+}
+function copyEmail(){
+  var e='support@agai.online';
+  doCopy(e,function(){toast('邮箱已复制：'+e)},function(){toast('复制失败，请手动记录')});
+}
+var API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE) || 'https://api.agai.online/api';
+(function(){ try { var p = new URLSearchParams(location.search).get('invite'); if (p) localStorage.setItem('pendingInviteCode', p.trim().toUpperCase()); } catch(e) {} })();
+function fillDefaultPassword(){
+  var el = document.getElementById('loginPassword');
+  if (!el) return;
+  el.value = 'Ahgydx@920';
+  el.focus();
+  toast('已填入默认考勤密码');
+}
+function onLoginAgreeChange(){
+  document.getElementById('loginSubmit').disabled = !document.getElementById('loginAgree').checked;
+}
+async function submitLogin(e){
+  e.preventDefault();
+  var sid = document.getElementById('loginStudentId').value.trim();
+  var pwd = document.getElementById('loginPassword').value;
+  var err = document.getElementById('loginError');
+  var btn = document.getElementById('loginSubmit');
+  err.textContent = '';
+  if (!document.getElementById('loginAgree').checked) {
+    err.textContent = '请先阅读并勾选同意《用户协议》和《隐私政策》。';
+    return;
+  }
+  if (!sid || !pwd) {
+    err.textContent = '请输入学号和考勤密码。';
+    return;
+  }
+  var oldText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '登录中...';
+  try {
+    var res = await fetch(API_BASE + '/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ studentId: sid, attendancePassword: pwd })
+    });
+    var data = await res.json().catch(function(){ return {}; });
+    if (!res.ok || !data.success) {
+      err.textContent = data.message || '登录失败，请检查学号和考勤密码。';
+      btn.disabled = false;
+      btn.textContent = oldText;
+      return;
+    }
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    window.location.href = data.user.role === 'admin' ? '/admin.html' : '/dashboard.html';
+  } catch (ex) {
+    err.textContent = '网络异常，请稍后重试。';
+    btn.disabled = false;
+    btn.textContent = oldText;
+  }
+}
+</script>
+</body>
+</html>
