@@ -6,15 +6,15 @@
 <title>AG 智能考勤 · 控制面板</title>
 <style>
 /* ============================================================
-   Design Tokens (DeepSeek / Vercel 极简科技风)
+   Design Tokens (丰富强调色，Vercel / DeepSeek 质感)
    ============================================================ */
 :root{
   --bg: #fafafa;
   --surface: #ffffff;
-  --surface-hover: #f3f4f6;
+  --surface-hover: #f4f4f5;
   
-  --border: #e5e7eb;
-  --border-dark: #d1d5db;
+  --border: #e4e4e7;
+  --border-dark: #d4d4d8;
 
   --text-primary: #09090b;
   --text-secondary: #52525b;
@@ -25,15 +25,22 @@
   --primary-hover: #27272a;
   --primary-text: #ffffff;
   
-  /* 状态色 */
+  /* 强调色库 */
   --blue: #2563eb;
   --blue-subtle: #eff6ff;
-  --green: #16a34a;
-  --green-subtle: #f0fdf4;
-  --red: #dc2626;
+  --green: #10b981;
+  --green-subtle: #ecfdf5;
+  --red: #ef4444;
   --red-subtle: #fef2f2;
-  --amber: #d97706;
+  --amber: #f59e0b;
   --amber-subtle: #fffbeb;
+  --purple: #8b5cf6;
+  --purple-subtle: #f5f3ff;
+  --pink: #ec4899;
+  --pink-subtle: #fdf2f8;
+  
+  /* 赞助/爱心 */
+  --heart: #f43f5e;
 
   /* 品牌色 */
   --wx: #07C160;
@@ -53,8 +60,8 @@
   --s-8: 32px;
   --s-10: 40px;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
 
   --mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -69,21 +76,23 @@ body.dark{
   --surface: #0a0a0a;
   --surface-hover: #171717;
 
-  --border: #262626;
-  --border-dark: #404040;
+  --border: #27272a;
+  --border-dark: #3f3f46;
 
   --text-primary: #ededed;
   --text-secondary: #a1a1aa;
   --text-tertiary: #52525b;
 
   --primary: #ffffff;
-  --primary-hover: #e5e5e5;
+  --primary-hover: #e4e4e7;
   --primary-text: #000000;
 
   --blue-subtle: #172554;
-  --green-subtle: #052e16;
+  --green-subtle: #022c22;
   --red-subtle: #450a0a;
   --amber-subtle: #451a03;
+  --purple-subtle: #2e1065;
+  --pink-subtle: #500724;
 
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.6);
@@ -150,7 +159,7 @@ a{color:inherit;text-decoration:none}
 .user-id{ color: var(--text-tertiary); font-size: 12px; margin-left: 2px; }
 .tier-badge{
   font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;
-  background: var(--bg); border: 1px solid var(--border); color: var(--text-secondary); white-space: nowrap;
+  border: 1px solid transparent; white-space: nowrap; transition: all .3s;
 }
 .icon-btn{
   width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid transparent;
@@ -195,12 +204,12 @@ a{color:inherit;text-decoration:none}
 .card-heading .ico{ font-size: 16px; color: var(--text-secondary); }
 
 /* ============================================================
-   Card (极简细边框风格)
+   Card
    ============================================================ */
 .card{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--s-5); margin-bottom: var(--s-4); box-shadow: var(--shadow-sm); }
 
 /* ============================================================
-   Buttons (利落的矩形微圆角)
+   Buttons
    ============================================================ */
 .btn{
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -221,7 +230,6 @@ a{color:inherit;text-decoration:none}
 .btn-sm{height: 28px; padding: 0 10px; font-size: 12px; border-radius: 4px;}
 .btn-block{width:100%}
 
-/* 按钮加载/成功/失败状态 */
 .spin { animation: spin 1s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 .hero-actions .btn.is-loading{pointer-events:none;opacity:.8}
@@ -254,12 +262,12 @@ a{color:inherit;text-decoration:none}
    ============================================================ */
 .badge{
   display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
-  border-radius: 4px; font-size: 12px; font-weight: 500; line-height: 1.4; border: 1px solid var(--border);
+  border-radius: 4px; font-size: 12px; font-weight: 500; line-height: 1.4; border: 1px solid transparent;
 }
-.badge-success{background:var(--green-subtle); color:var(--green); border-color: transparent;}
-.badge-warning{background:var(--amber-subtle); color:var(--amber); border-color: transparent;}
-.badge-danger{background:var(--red-subtle); color:var(--red); border-color: transparent;}
-.badge-neutral{background:var(--surface); color:var(--text-secondary);}
+.badge-success{background:var(--green-subtle); color:var(--green);}
+.badge-warning{background:var(--amber-subtle); color:var(--amber);}
+.badge-danger{background:var(--red-subtle); color:var(--red);}
+.badge-neutral{background:var(--surface-hover); color:var(--text-secondary);}
 
 /* ============================================================
    Empty / Loading
@@ -268,7 +276,7 @@ a{color:inherit;text-decoration:none}
 .loading{ text-align: center; padding: var(--s-6); color: var(--text-tertiary); font-size: 13px; }
 
 /* ============================================================
-   Hero (极简深邃卡片)
+   Hero
    ============================================================ */
 .hero{
   background: #09090b; color: #fff; border-radius: var(--radius-lg);
@@ -303,25 +311,25 @@ body.dark .hero{ background: #111; border-color: #333; }
    Onboarding
    ============================================================ */
 .onboard-progress{ height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin: var(--s-3) 0 var(--s-2); }
-.onboard-bar{ height: 100%; width: 0; background: var(--text-primary); transition: width .4s ease; }
+.onboard-bar{ height: 100%; width: 0; background: var(--blue); transition: width .4s ease; }
 .onboard-meta{ font-size: 12px; color: var(--text-tertiary); margin-bottom: var(--s-4); font-family: var(--mono);}
 .onboard-step{ display: flex; align-items: center; gap: 16px; padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
 .onboard-step:last-child{border-bottom:0;padding-bottom:0}
 .step-dot{ width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--text-tertiary); }
-.onboard-step.done .step-dot{ background: var(--text-primary); border-color: var(--text-primary); color: var(--bg); }
+.onboard-step.done .step-dot{ background: var(--green); border-color: var(--green); color: #fff; }
 .step-body{flex:1;min-width:0}
 .step-body strong{ display: block; font-size: 14px; font-weight: 600; }
 .step-body p{ font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
-.step-done-text{ font-size: 12px; font-weight: 500; color: var(--text-tertiary); font-family: var(--mono); }
+.step-done-text{ font-size: 12px; font-weight: 500; color: var(--green); font-family: var(--mono); }
 
 /* ============================================================
    Alert
    ============================================================ */
-.alert{ display: flex; align-items: flex-start; gap: 12px; padding: 16px; border-radius: var(--radius-sm); margin-bottom: var(--s-4); font-size: 13px; background: var(--surface); border: 1px solid var(--border); }
+.alert{ display: flex; align-items: flex-start; gap: 12px; padding: 16px; border-radius: var(--radius-sm); margin-bottom: var(--s-4); font-size: 13px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--text-tertiary); }
 .alert .ico{ font-size: 16px; flex: 0 0 auto; margin-top: 1px; }
 .alert strong{ display: block; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
 .alert p{ color: var(--text-secondary); line-height: 1.5; }
-.alert-warning{ border-left: 2px solid var(--amber); }
+.alert-warning{ border-left-color: var(--amber); }
 
 /* ============================================================
    Toggle
@@ -334,7 +342,7 @@ body.dark .hero{ background: #111; border-color: #333; }
 .toggle input{opacity:0;width:0;height:0;position:absolute}
 .toggle-track{ position:absolute;inset:0; background: var(--border-dark); border-radius: 11px; transition: background .2s; cursor:pointer; }
 .toggle-track::after{ content:""; position:absolute; width:18px;height:18px; left:2px;top:2px; background:#fff; border-radius:50%; transition: transform .2s cubic-bezier(.22,1,.36,1); box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-.toggle input:checked + .toggle-track{background: var(--text-primary)}
+.toggle input:checked + .toggle-track{ background: var(--green); }
 .toggle input:checked + .toggle-track::after{transform: translateX(18px)}
 .toggle input:disabled + .toggle-track{opacity:.3;cursor:not-allowed}
 
@@ -344,11 +352,11 @@ body.dark .hero{ background: #111; border-color: #333; }
 .auto-hero{ display: grid; grid-template-columns: 1.2fr .8fr; gap: var(--s-5); padding: var(--s-5); border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); margin-bottom: var(--s-4); }
 .auto-note{ font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 .auto-clock{ display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: var(--radius-sm); background: var(--bg); border: 1px solid var(--border); min-height: 100px; }
-.auto-clock strong{ font-family: var(--mono); font-size: 32px; font-weight: 600; letter-spacing: -0.04em; color: var(--text-primary); }
+.auto-clock strong{ font-family: var(--mono); font-size: 32px; font-weight: 600; letter-spacing: -0.04em; color: var(--blue); }
 .auto-clock span{ font-size: 12px; color: var(--text-tertiary); margin-top: 4px; }
 .weekdays{display:flex;gap:8px;flex-wrap:wrap}
 .weekday{ width: 36px; height: 36px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary); font-size: 13px; font-weight: 500; transition: all .15s; }
-.weekday.selected{ background: var(--text-primary); border-color: var(--text-primary); color: var(--bg); }
+.weekday.selected{ background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,.3); }
 
 /* ============================================================
    Row
@@ -362,19 +370,13 @@ body.dark .hero{ background: #111; border-color: #333; }
 /* ============================================================
    Invite
    ============================================================ */
-.invite-code{ display: inline-block; padding: 12px 24px; border-radius: var(--radius-sm); background: var(--bg); border: 1px dashed var(--border-dark); font-family: var(--mono); font-size: 20px; font-weight: 600; letter-spacing: 4px; cursor: pointer; margin: var(--s-3) 0; color: var(--text-primary); }
+.invite-code{ display: inline-block; padding: 12px 24px; border-radius: var(--radius-sm); background: var(--bg); border: 1px dashed var(--border-dark); font-family: var(--mono); font-size: 20px; font-weight: 600; letter-spacing: 4px; cursor: pointer; margin: var(--s-3) 0; color: var(--blue); }
 
 /* ============================================================
-   赞助购买页 & 套餐卡片 (woyao.pro 风格)
+   赞助购买页 & 套餐卡片
    ============================================================ */
-/* 优惠码 */
-.coupon-wrap {
-  display: flex; gap: 8px; margin-bottom: 24px; max-width: 400px;
-}
-.coupon-wrap input {
-  flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  background: var(--surface); font-family: var(--mono); font-size: 13px; text-transform: uppercase;
-}
+.coupon-wrap { display: flex; gap: 8px; margin-bottom: 24px; max-width: 400px; }
+.coupon-wrap input { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-family: var(--mono); font-size: 13px; text-transform: uppercase; }
 .coupon-wrap input:focus { outline: none; border-color: var(--text-primary); }
 
 .pkg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s-4); }
@@ -386,7 +388,6 @@ body.dark .hero{ background: #111; border-color: #333; }
 .pkg:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -10px rgba(0,0,0,0.1); border-color: var(--text-tertiary); }
 body.dark .pkg:hover { box-shadow: 0 12px 24px -10px rgba(0,0,0,0.5); border-color: #555; }
 
-/* 推荐标签 */
 .pkg.best { border-color: var(--blue); }
 .pkg.best::before {
   content: "推荐"; position: absolute; top: -10px; right: 16px;
@@ -404,7 +405,6 @@ body.dark .pkg:hover { box-shadow: 0 12px 24px -10px rgba(0,0,0,0.5); border-col
 .pkg-desc{ font-size: 13px; color: var(--text-secondary); flex: 1; margin-bottom: var(--s-5); line-height: 1.6; }
 
 .pkg-actions{ display: flex; gap: 8px; }
-/* 支付按钮动态特效 */
 .pay-btn {
   flex: 1; height: 40px; border-radius: var(--radius-sm); border: 1px solid var(--border);
   background: var(--surface); color: var(--text-primary); font-size: 13px; font-weight: 600;
@@ -418,18 +418,17 @@ body.dark .pkg:hover { box-shadow: 0 12px 24px -10px rgba(0,0,0,0.5); border-col
 }
 .pay-btn:hover::after { left: 150%; }
 
-/* 微信特供色 */
 .pay-btn.wx { color: var(--wx); border-color: rgba(7,193,96,0.3); background: var(--green-subtle); }
 .pay-btn.wx:hover { background: var(--wx); color: #fff; border-color: var(--wx); box-shadow: 0 4px 12px rgba(7,193,96,0.3); }
-/* 支付宝特供色 */
+
 .pay-btn.ali { color: var(--ali); border-color: rgba(22,119,255,0.3); background: var(--blue-subtle); }
 .pay-btn.ali:hover { background: var(--ali); color: #fff; border-color: var(--ali); box-shadow: 0 4px 12px rgba(22,119,255,0.3); }
 
-.pay-btn .ico { font-size: 16px; fill: currentColor; stroke: none; }
+.pay-btn .ico { font-size: 18px; fill: currentColor; stroke: none; }
 .pkg.is-disabled { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
 
 /* ============================================================
-   Log / More
+   Log / More Grid
    ============================================================ */
 .log-row{ display:flex; align-items:center; gap:16px; padding:12px 0; border-bottom:1px solid var(--border); }
 .log-row:last-child{border-bottom:0}
@@ -442,20 +441,21 @@ body.dark .pkg:hover { box-shadow: 0 12px 24px -10px rgba(0,0,0,0.5); border-col
 .more-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap: var(--s-3); }
 .more-item{ display:flex; flex-direction:column; align-items:flex-start; gap: 8px; padding:16px; border:1px solid var(--border); border-radius: var(--radius-md); background:var(--surface); text-align:left; transition: all .15s; }
 .more-item:hover{ background: var(--surface-hover); border-color: var(--border-dark); }
-.more-item .ico{ font-size: 20px; color: var(--text-primary); }
+.more-item .ico{ font-size: 20px; }
 .more-item span{ font-size: 14px; font-weight: 500; }
 .more-item small{ font-size: 12px; color: var(--text-tertiary); }
 
 /* ============================================================
-   Sponsor CTA
+   Sponsor CTA (更多页)
    ============================================================ */
-.sponsor-cta{ display:flex; align-items:center; gap:16px; width:100%; padding:20px; border-radius: var(--radius-md); border:1px solid var(--border); background:var(--surface); text-align:left; margin-bottom:var(--s-5); transition: all .15s; box-shadow: var(--shadow-sm); }
-.sponsor-cta:hover{ border-color: var(--text-secondary); background: var(--surface-hover); }
-.sponsor-cta-icon{ width:40px; height:40px; border-radius: var(--radius-sm); background: var(--text-primary); color: var(--bg); display:flex; align-items:center; justify-content:center; font-size:20px; }
-.sponsor-cta-body strong{ display:block; font-size:15px; font-weight: 600; margin-bottom: 2px; }
+.sponsor-cta{ display:flex; align-items:center; gap:16px; width:100%; padding:20px; border-radius: var(--radius-md); border:1px solid rgba(244,63,94,0.2); background:linear-gradient(135deg, #fff1f2, #fff); text-align:left; margin-bottom:var(--s-5); transition: all .2s; box-shadow: var(--shadow-sm); }
+body.dark .sponsor-cta{ background:linear-gradient(135deg, rgba(244,63,94,.1), var(--surface)); border-color: rgba(244,63,94,0.3); }
+.sponsor-cta:hover{ border-color: var(--heart); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(244,63,94,0.15); }
+.sponsor-cta-icon{ width:40px; height:40px; border-radius: var(--radius-sm); background: linear-gradient(135deg, #f43f5e, #fb923c); color: #fff; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow: 0 4px 12px rgba(244,63,94,0.3); }
+.sponsor-cta-icon .ico { fill: currentColor; stroke: none; }
+.sponsor-cta-body strong{ display:block; font-size:15px; font-weight: 600; margin-bottom: 2px; color: var(--text-primary); }
 .sponsor-cta-body span{ font-size:13px; color:var(--text-secondary); }
-.cta-pill{ display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:var(--blue); color:#fff; margin-left:6px; vertical-align:middle;}
-.sponsor-cta-arrow{ font-size:16px; color:var(--text-tertiary); margin-left: auto; }
+.sponsor-cta-arrow{ font-size:16px; color:var(--heart); margin-left: auto; }
 
 /* ============================================================
    Toast & Modal
@@ -525,9 +525,10 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
   .tab-item.tab-sponsor{ z-index:2; }
   .tab-sponsor-icon{
     width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    background:var(--text-primary); color:var(--bg); font-size:20px; margin-top:-18px;
-    border:4px solid var(--bg); box-shadow:0 4px 12px rgba(0,0,0,.15); transition: transform .15s;
+    background: linear-gradient(135deg, #f43f5e, #fb923c); color: #fff; font-size:20px; margin-top:-18px;
+    border:4px solid var(--bg); box-shadow:0 4px 12px rgba(244,63,94,0.4); transition: transform .15s;
   }
+  .tab-sponsor-icon .ico { fill: currentColor; stroke: none; }
   .tab-item.tab-sponsor.active .tab-sponsor-icon{ transform: translateY(-2px); }
 }
 </style>
@@ -535,7 +536,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
 <body>
 
 <!-- ============================================================
-     SVG Sprite：1.5px 极细线条 + 官方品牌色图标
+     SVG Sprite：包含标准的 1.5px 线条与实心图标
      ============================================================ -->
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
   <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
@@ -546,7 +547,10 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
   <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
   <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
   <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></symbol>
-  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  
+  <!-- 实心爱心 -->
+  <symbol id="i-heart-fill" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
+  
   <symbol id="i-robot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol>
   <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
@@ -574,14 +578,12 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
   <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
   <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
   
-  <!-- 微信图标 (官方品牌色/实心) -->
-  <symbol id="i-wechat" viewBox="0 0 1024 1024">
-    <path d="M682.666667 392.533333c-153.6 0-277.333333 102.4-277.333334 230.4 0 128 123.733333 230.4 277.333334 230.4 36.266667 0 68.266667-8.533333 98.133333-21.333333l68.266667 34.133333-21.333334-64c46.933333-42.666667 72.533333-98.133333 72.533334-162.133333 0-128-123.733333-230.4-277.333334-230.4v-17.066667zM618.666667 571.733333c-17.066667 0-29.866667-12.8-29.866667-29.866666s12.8-29.866667 29.866667-29.866667 29.866667 12.8 29.866666 29.866667-12.8 29.866667-29.866666 29.866667z m136.533333 0c-17.066667 0-29.866667-12.8-29.866667-29.866666s12.8-29.866667 29.866667-29.866667 29.866667 12.8 29.866667 29.866667-12.8 29.866667-29.866667 29.866667zM341.333333 512c-170.666667 0-307.2 115.2-307.2 256 0 72.533333 34.133333 140.8 89.6 187.733333l-29.866666 76.8 89.6-42.666666c34.133333 12.8 72.533333 21.333333 115.2 21.333333 29.866667 0 59.733333-4.266667 85.333333-12.8-21.333333-46.933333-34.133333-98.133333-34.133333-153.6 0-196.266667 179.2-358.4 405.333333-358.4 17.066667 0 34.133333 0 51.2 4.266667-51.2-145.066667-226.133333-256-426.666666-256-213.333333 0-392.533333 140.8-392.533334 320 0 89.6 42.666667 170.666667 115.2 230.4l-38.4 93.866666 106.666667-51.2c38.4 12.8 81.066667 21.333333 123.733333 21.333334v-12.8zM238.933333 392.533333c-21.333333 0-38.4-17.066667-38.4-38.4s17.066667-38.4 38.4-38.4 38.4 17.066667 38.4 38.4-17.066667 38.4-38.4 38.4z m204.8 0c-21.333333 0-38.4-17.066667-38.4-38.4s17.066667-38.4 38.4-38.4 38.4 17.066667 38.4 38.4-17.066667 38.4-38.4 38.4z" fill="currentColor"/>
+  <!-- 标准版微信 / 支付宝 -->
+  <symbol id="i-wechat" viewBox="0 0 24 24">
+    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z" fill="currentColor"/>
   </symbol>
-  
-  <!-- 支付宝图标 (官方品牌色/实心) -->
-  <symbol id="i-alipay" viewBox="0 0 1024 1024">
-    <path d="M960 853.333333c-47.786667-22.186667-250.88-107.093333-268.8-115.2 23.04-44.373333 42.666667-113.92 42.666667-177.066666h-164.266667v-87.04h206.933333v-46.933334h-206.933333V298.666667h-99.413333v128.426666H231.253333v46.933334h239.36v87.04H275.2v46.933333h373.333333c-8.533333 51.2-27.733333 102.4-53.333333 140.8-64-38.4-151.893333-85.333333-243.2-85.333333-153.6 0-256 85.333333-256 192 0 132.266667 128 213.333333 298.666667 213.333333 187.733333 0 320-98.133333 392.533333-226.133333 115.2 57.6 251.733333 132.266667 268.8 140.8V853.333333z m-571.733333-85.333333c-128 0-213.333333-46.933333-213.333334-128 0-55.466667 64-106.666667 170.666667-106.666667 72.533333 0 140.8 29.866667 200.533333 72.533334-46.933333 93.866667-119.466667 162.133333-157.866666 162.133333z" fill="currentColor"/>
+  <symbol id="i-alipay" viewBox="0 0 24 24">
+    <path d="M22.5 17.3c-1.8-.8-5.8-2.5-8.1-3.5.8-1.6 1.4-3.4 1.8-5.3h-4.1V7.2h5.1V6h-5.1V2.1h-2.7c-.4 0-.5.2-.5.5V6H3.8v1.2h5.1v1.3H4.3v1.2h8.3c-.3 1.4-.7 2.7-1.2 3.9-1.4-.8-3.3-1.7-5.2-1.7-3.2 0-5 1.9-5 4.2 0 2.8 2.6 4.6 6 4.6 3.7 0 6.4-2 7.8-4.8 2.5 1.2 5.4 2.8 5.9 3.1.4.2.8.1 1-.3.1-.4 0-.8-.4-1zm-12 2.4c-2.6 0-4.2-1-4.2-2.7 0-1.2 1.3-2.2 3.5-2.2 1.4 0 2.8.6 4 1.5-.9 1.9-2.4 3.4-3.3 3.4z" fill="currentColor"/>
   </symbol>
 </svg>
 
@@ -609,7 +611,9 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
       <a class="side-item" href="/market"><svg class="ico"><use href="#i-store"/></svg> 二手市场</a>
 
       <div class="side-group-label">支持</div>
-      <button class="side-item" data-nav="buy"><svg class="ico"><use href="#i-heart"/></svg> 赞助支持</button>
+      <button class="side-item" data-nav="buy" style="color: var(--heart);">
+        <svg class="ico" style="color: var(--heart); fill: currentColor; stroke: none;"><use href="#i-heart-fill"/></svg> 赞助支持
+      </button>
     </nav>
   </aside>
 
@@ -644,7 +648,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
       <div id="page-dashboard" class="page active">
         <div class="card" id="onboardingCard">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <h2 class="card-heading" style="margin-bottom:0"><svg class="ico"><use href="#i-star"/></svg> 新手上手</h2>
+            <h2 class="card-heading" style="margin-bottom:0"><svg class="ico" style="color:var(--amber);"><use href="#i-star"/></svg> 新手上手</h2>
             <button class="btn btn-ghost btn-sm" onclick="dismissOnboarding()">跳过</button>
           </div>
           <div class="onboard-progress"><div class="onboard-bar" id="onboardingBar"></div></div>
@@ -672,7 +676,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
 
         <div class="card" style="padding:16px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
           <div style="display:flex; align-items:center; gap:12px;">
-            <svg class="ico" style="color:var(--text-secondary); font-size:18px;"><use href="#i-info"/></svg>
+            <svg class="ico" style="color:var(--blue); font-size:18px;"><use href="#i-info"/></svg>
             <p style="font-size:13px; color:var(--text-secondary); margin:0;">本学期考勤服务完全自愿，不影响账号使用。</p>
           </div>
           <button class="btn btn-secondary btn-sm" onclick="goPage('buy')">查看档位</button>
@@ -681,7 +685,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:16px">
             <div>
-              <h2 class="card-heading" style="margin-bottom:4px"><svg class="ico"><use href="#i-share"/></svg> 邀请同学</h2>
+              <h2 class="card-heading" style="margin-bottom:4px"><svg class="ico" style="color:var(--amber);"><use href="#i-share"/></svg> 邀请同学</h2>
               <p style="font-size:13px;color:var(--text-secondary);margin:0">分享专属链接，邀请成功后双方都有奖励。</p>
             </div>
             <button class="btn btn-secondary btn-sm" onclick="shareInvite()"><svg class="ico"><use href="#i-share"/></svg> 分享</button>
@@ -696,8 +700,8 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <a class="card" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;padding:16px;text-decoration:none;transition:all .15s;">
-          <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--text-primary);font-size:18px;border:1px solid var(--border);">
-            <svg class="ico"><use href="#i-qq"/></svg>
+          <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:#e0f2fe;color:#0ea5e9;display:flex;align-items:center;justify-content:center;font-size:18px;">
+            <svg class="ico" style="stroke-width:2;"><use href="#i-qq"/></svg>
           </div>
           <div style="flex:1;min-width:0">
             <div style="font-size:14px;font-weight:500;color:var(--text-primary);">加入 QQ 频道</div>
@@ -719,13 +723,13 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-bolt"/></svg> 签到状态</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--amber);"><use href="#i-bolt"/></svg> 签到状态</h2>
           <p id="signResult" style="font-size:14px;color:var(--text-secondary);">点击上方「立即签到」开始</p>
           <p style="font-size:12px;color:var(--text-tertiary);margin-top:12px;">免费，不需要会员。结果会记录在「记录」页面。</p>
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-calendar"/></svg> 自动签到状态</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--blue);"><use href="#i-calendar"/></svg> 自动签到状态</h2>
           <div id="activeSignBox"><p class="loading">加载中…</p></div>
         </div>
       </div>
@@ -739,7 +743,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
 
         <div class="auto-hero">
           <div>
-            <h2 class="card-heading" style="margin-bottom:12px"><svg class="ico"><use href="#i-moon"/></svg> 签到计划</h2>
+            <h2 class="card-heading" style="margin-bottom:12px"><svg class="ico" style="color:var(--purple);"><use href="#i-moon"/></svg> 签到计划</h2>
             <p class="auto-note">开启后，系统会在你选择的日期按设定时间自动签到。除 VIP / SVIP 外，签到时间固定 21:35；VIP / SVIP 可自定义。</p>
             <div id="autoSignStatus" style="margin-top:16px"></div>
           </div>
@@ -750,7 +754,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-sliders"/></svg> 签到偏好</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--blue);"><use href="#i-sliders"/></svg> 签到偏好</h2>
 
           <div class="setting-row">
             <div class="setting-copy">
@@ -818,7 +822,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         <p class="page-sub">绑定后签到成功或失败都会收到提醒。</p>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-mail"/></svg> 邮箱绑定</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--blue);"><use href="#i-mail"/></svg> 邮箱绑定</h2>
           <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">
             不绑定也能正常签到，但收不到通知，容易漏签，建议绑定。
           </p>
@@ -861,7 +865,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         <div class="card" style="background:#09090b; color:#fff; border:none;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
             <div>
-              <div id="memberBadge" style="display:inline-block;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;font-weight:500;border:1px solid rgba(255,255,255,0.2);">免费</div>
+              <div id="memberBadge" style="display:inline-block;padding:2px 8px;border-radius:4px;background:#71717a;color:#fff;font-size:12px;font-weight:600;">免费</div>
               <h2 id="memberName" style="font-size:24px;font-weight:600;letter-spacing:-0.02em;margin:12px 0 4px;color:#fff">同学</h2>
               <p id="memberSub" style="font-size:13px;color:#a1a1aa;font-family:var(--mono);">学号</p>
             </div>
@@ -878,13 +882,13 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-user-edit"/></svg> 个人信息</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--blue);"><use href="#i-user-edit"/></svg> 个人信息</h2>
           <div class="field"><label>学号</label><input type="text" id="profileStudentId" disabled></div>
           <div class="field"><label>姓名</label><input type="text" id="profileName" placeholder="请输入姓名"></div>
           <div class="field">
             <label>考勤密码</label>
             <input type="password" id="profileAttendancePassword" placeholder="留空则不修改" autocomplete="new-password">
-            <p class="hint">默认密码 <code style="font-family:var(--mono);background:var(--bg);padding:2px 6px;border-radius:4px;color:var(--text-primary);border:1px solid var(--border);">Ahgydx@920</code>，改过就填新密码。</p>
+            <p class="hint">默认密码 <code style="font-family:var(--mono);background:var(--bg);padding:2px 6px;border-radius:4px;color:var(--red);">Ahgydx@920</code>，改过就填新密码。</p>
           </div>
           <div class="field"><label>邮箱</label><input type="text" id="profileEmail" disabled></div>
           <div class="field"><label>本学期服务状态</label><input type="text" id="profileVip" disabled></div>
@@ -892,7 +896,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-ticket"/></svg> 兑换卡密</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--amber);"><use href="#i-ticket"/></svg> 兑换卡密</h2>
           <div class="field">
             <input type="text" id="redeemCodeProfile" placeholder="输入卡密" style="text-transform:uppercase" autocomplete="off">
           </div>
@@ -906,44 +910,44 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         <p class="page-sub">其余功能与支持入口。</p>
 
         <button class="sponsor-cta" onclick="goPage('buy')">
-          <div class="sponsor-cta-icon"><svg class="ico"><use href="#i-heart"/></svg></div>
+          <div class="sponsor-cta-icon"><svg class="ico"><use href="#i-heart-fill"/></svg></div>
           <div class="sponsor-cta-body">
-            <strong>赞助支持 AG 考勤<span class="cta-pill">自愿</span></strong>
+            <strong>赞助支持 AG 考勤</strong>
             <span>帮助维护服务器与日常运行</span>
           </div>
           <svg class="ico sponsor-cta-arrow"><use href="#i-chevron-right"/></svg>
         </button>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-grid"/></svg> 更多功能</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--text-secondary);"><use href="#i-grid"/></svg> 更多功能</h2>
           <div class="more-grid">
             <button class="more-item" data-nav="email">
-              <svg class="ico"><use href="#i-mail"/></svg>
+              <svg class="ico" style="color:var(--blue);"><use href="#i-mail"/></svg>
               <span>邮箱</span>
               <small>绑定与签到提醒</small>
             </button>
             <button class="more-item" data-nav="invite">
-              <svg class="ico"><use href="#i-gift"/></svg>
+              <svg class="ico" style="color:var(--amber);"><use href="#i-gift"/></svg>
               <span>邀请好友</span>
               <small>双方各得 10 天 VIP</small>
             </button>
             <button class="more-item" data-nav="feedback">
-              <svg class="ico"><use href="#i-message"/></svg>
+              <svg class="ico" style="color:var(--green);"><use href="#i-message"/></svg>
               <span>留言反馈</span>
               <small>问题与建议</small>
             </button>
             <button class="more-item" data-nav="logs">
-              <svg class="ico"><use href="#i-history"/></svg>
+              <svg class="ico" style="color:var(--purple);"><use href="#i-history"/></svg>
               <span>签到记录</span>
               <small>历史明细</small>
             </button>
             <a class="more-item" href="/market">
-              <svg class="ico"><use href="#i-store"/></svg>
+              <svg class="ico" style="color:var(--pink);"><use href="#i-store"/></svg>
               <span>二手市场</span>
               <small>校园闲置交易</small>
             </a>
             <a class="more-item" href="https://pd.qq.com/s/9fkh0w8xw" target="_blank" rel="noopener">
-              <svg class="ico"><use href="#i-qq"/></svg>
+              <svg class="ico" style="color:#0ea5e9;"><use href="#i-qq"/></svg>
               <span>QQ 频道</span>
               <small>交流与提醒</small>
             </a>
@@ -957,7 +961,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         <p class="page-sub">双方各得奖励。</p>
 
         <div class="card" style="text-align:center; padding: 40px 20px;">
-          <h2 class="card-heading" style="justify-content:center;margin-bottom:8px"><svg class="ico"><use href="#i-gift"/></svg> 邀请好友</h2>
+          <h2 class="card-heading" style="justify-content:center;margin-bottom:8px"><svg class="ico" style="color:var(--amber);"><use href="#i-gift"/></svg> 邀请好友</h2>
           <p style="font-size:14px;margin:12px 0;color:var(--text-secondary);">
             双方各得 <strong style="color:var(--text-primary);font-weight:600;"><span id="rewardDays">10</span> 天 VIP</strong>
           </p>
@@ -970,13 +974,13 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
           </div>
           <input type="text" id="inviteUrl" readonly class="hidden">
           <div style="margin-top:32px;font-size:13px;color:var(--text-secondary);">
-            已邀请 <strong id="inviteCount" style="color:var(--text-primary);font-weight:600;">0</strong> 人
+            已邀请 <strong id="inviteCount" style="color:var(--blue);font-weight:600;">0</strong> 人
           </div>
           <div id="invitedList" style="margin-top:16px;max-height:220px;overflow-y:auto;text-align:left;"></div>
         </div>
 
         <div class="card" id="bindInviteCard">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-user"/></svg> 我有邀请码</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--blue);"><use href="#i-user"/></svg> 我有邀请码</h2>
           <div id="bindInviteArea"></div>
           <div class="field">
             <input type="text" id="inputInviteCode" placeholder="输入 8 位邀请码" style="text-transform:uppercase" autocomplete="off">
@@ -991,7 +995,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         <p class="page-sub">问题和建议都可以写在这里。</p>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-pen"/></svg> 提交反馈</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--green);"><use href="#i-pen"/></svg> 提交反馈</h2>
           <div class="field">
             <label>类型</label>
             <select id="feedbackType">
@@ -1007,19 +1011,19 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-inbox"/></svg> 我的留言</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--purple);"><use href="#i-inbox"/></svg> 我的留言</h2>
           <div id="myFeedbackList"><p class="loading">加载中…</p></div>
         </div>
       </div>
 
-      <!-- ================= 赞助（全新重写） ================= -->
+      <!-- ================= 赞助 ================= -->
       <div id="page-buy" class="page">
         <h1 class="page-title">赞助支持</h1>
         <p class="page-sub">完全自愿，帮助服务器与日常运行。支付后权益自动发放。</p>
 
         <div class="card" style="margin-bottom:var(--s-5);">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
-            <h2 class="card-heading" style="margin:0;"><svg class="ico"><use href="#i-gift"/></svg> 选择套餐</h2>
+            <h2 class="card-heading" style="margin:0;"><svg class="ico" style="color:var(--heart);"><use href="#i-gift"/></svg> 选择套餐</h2>
             <div class="coupon-wrap" style="margin-bottom:0;">
               <input type="text" id="couponCode" placeholder="输入优惠码" autocomplete="off">
               <button class="btn btn-secondary" onclick="applyCoupon()">使用</button>
@@ -1030,7 +1034,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div id="paymentArea" class="card hidden">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-qrcode"/></svg> 扫码赞助</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--blue);"><use href="#i-qrcode"/></svg> 扫码赞助</h2>
           <div style="text-align:center;margin:16px 0">
             <div style="font-family:var(--mono); font-size:32px;font-weight:700;letter-spacing:-0.03em;color:var(--text-primary);" id="paymentAmount">¥0.00</div>
             <p style="font-size:12px;color:var(--text-tertiary);margin-top:8px;">请准确支付上方金额，否则可能无法匹配订单。</p>
@@ -1057,7 +1061,7 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
         </div>
 
         <div class="card">
-          <h2 class="card-heading"><svg class="ico"><use href="#i-ticket"/></svg> 兑换卡密</h2>
+          <h2 class="card-heading"><svg class="ico" style="color:var(--amber);"><use href="#i-ticket"/></svg> 兑换卡密</h2>
           <div class="field">
             <input type="text" id="redeemCode" placeholder="输入卡密" style="text-transform:uppercase" autocomplete="off">
           </div>
@@ -1088,8 +1092,8 @@ body.dark .modal-mask { background:rgba(0,0,0,.8); }
     <svg class="ico"><use href="#i-calendar"/></svg><span>自动签到</span>
   </button>
   <button class="tab-item tab-sponsor" data-tab="buy" onclick="goPage('buy')">
-    <span class="tab-sponsor-icon"><svg class="ico"><use href="#i-heart"/></svg></span>
-    <span>赞助</span>
+    <span class="tab-sponsor-icon"><svg class="ico"><use href="#i-heart-fill"/></svg></span>
+    <span style="color: var(--heart);">赞助</span>
   </button>
   <button class="tab-item" data-tab="profile" onclick="goPage('profile')">
     <svg class="ico"><use href="#i-user"/></svg><span>我的</span>
@@ -1171,6 +1175,16 @@ const TIER_NAMES = {
   VIP: 'VIP',
   SVIP: 'SVIP',
   LEGACY: '元老'
+};
+
+const TIER_COLORS = {
+  FREE: '#71717a',     // 灰
+  MONTHLY: '#0ea5e9',  // 天蓝
+  TERM: '#8b5cf6',     // 紫
+  YEARLY: '#d946ef',   // 粉紫
+  VIP: '#f59e0b',      // 琥珀金
+  SVIP: '#ef4444',     // 红
+  LEGACY: '#14223b'    // 深蓝黑
 };
 
 const CUSTOM_TIME_TIERS = ['VIP', 'SVIP'];
@@ -1350,7 +1364,7 @@ function renderOnboarding() {
   box.innerHTML = steps.map((s, i) => {
     const action = s.done ? '<span class="step-done-text">已完成</span>' : `<button class="btn btn-secondary btn-sm" data-step="${i}">${escapeHTML(s.label)}</button>`;
     return `<div class="onboard-step ${s.done ? 'done' : ''}">
-      <div class="step-dot">${s.done ? '<svg class="ico" style="width:14px;height:14px;"><use href="#i-check"/></svg>' : (i + 1)}</div>
+      <div class="step-dot">${s.done ? '<svg class="ico" style="width:14px;height:14px;stroke-width:2;"><use href="#i-check"/></svg>' : (i + 1)}</div>
       <div class="step-body"><strong>${escapeHTML(s.title)}</strong><p>${escapeHTML(s.desc)}</p></div>
       ${action}
     </div>`;
@@ -1382,9 +1396,16 @@ async function loadUserInfo() {
 
     const headerTier = document.getElementById('headerTier');
     if (headerTier) {
+      const tierKey = currentUser.vipTier || 'FREE';
       const expire = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null;
       const daysLeft = expire ? Math.max(0, Math.ceil((expire.getTime() - Date.now()) / 86400000)) : 0;
-      headerTier.textContent = (TIER_NAMES[currentUser.vipTier] || '免费') + (currentUser.isVip && expire ? ' · ' + daysLeft + '天' : '');
+      
+      headerTier.textContent = (TIER_NAMES[tierKey] || '免费') + (currentUser.isVip && expire ? ' · ' + daysLeft + '天' : '');
+      
+      // 动态注入顶栏身份颜色
+      headerTier.style.color = TIER_COLORS[tierKey] || '#71717a';
+      headerTier.style.borderColor = TIER_COLORS[tierKey] || '#e4e4e7';
+      headerTier.style.background = 'transparent';
     }
 
     const welcomeName = document.getElementById('welcomeName');
@@ -1405,7 +1426,7 @@ async function loadNotice() {
     if (!card) return;
     if (!data.success || !data.notice || !data.notice.enabled) { card.classList.add('hidden'); return; }
     const n = data.notice;
-    document.getElementById('noticeTitle').innerHTML = '<svg class="ico"><use href="#i-bullhorn"/></svg> ' + escapeHTML(n.title);
+    document.getElementById('noticeTitle').innerHTML = '<svg class="ico" style="color:var(--blue);"><use href="#i-bullhorn"/></svg> ' + escapeHTML(n.title);
     document.getElementById('noticeContent').innerHTML = '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">' + escapeHTML(n.content) + '</div>';
     card.classList.remove('hidden');
   } catch (e) {}
@@ -1419,7 +1440,7 @@ async function loadVipNotice() {
     if (!data.success || !data.notice || !data.notice.enabled) { container.innerHTML = ''; return; }
     const n = data.notice;
     container.innerHTML = `<div class="alert alert-warning" style="margin-bottom:16px;">
-      <svg class="ico"><use href="#i-bullhorn"/></svg>
+      <svg class="ico" style="color:var(--amber);"><use href="#i-bullhorn"/></svg>
       <div><strong>${escapeHTML(n.title)}</strong><p>${escapeHTML(n.content)}</p></div>
     </div>`;
   } catch (e) { container.innerHTML = ''; }
@@ -1439,7 +1460,10 @@ async function loadStats() {
     document.getElementById('statActiveSubs').textContent = data.stats.autoSignEnabled ? '开' : '关';
 
     const ws = document.getElementById('welcomeStatus');
-    if (ws) { ws.textContent = (data.stats.todaySuccess > 0) ? '今日签到已完成。' : '今日尚未签到，点击右侧按钮开始。'; }
+    if (ws) { 
+      ws.textContent = (data.stats.todaySuccess > 0) ? '✅ 今日签到已完成。' : '⭕ 今日尚未签到，点击右侧按钮开始。'; 
+      ws.style.color = (data.stats.todaySuccess > 0) ? 'var(--green)' : '#a1a1aa';
+    }
     renderOnboarding();
   } catch (e) {}
 }
@@ -1466,7 +1490,7 @@ async function loadActiveSubs() {
       const dayText = autoSignState.customDays.length ? autoSignState.customDays.map(d => DAY_NAMES[d]).join('、') : '未选择';
       const mailText = (s.notifyOnSuccess || s.notifyOnFailure) ? '邮件提醒已开启' : '未开启邮件提醒';
       box.innerHTML = `<div class="row">
-        <div><div class="row-title">自动签到已开启</div><p class="row-sub"><svg class="ico"><use href="#i-clock"/></svg> ${escapeHTML(autoSignState.signTime)} · 每周 ${escapeHTML(dayText)} · ${mailText}</p></div>
+        <div><div class="row-title">自动签到已开启</div><p class="row-sub"><svg class="ico" style="color:var(--blue);"><use href="#i-clock"/></svg> ${escapeHTML(autoSignState.signTime)} · 每周 ${escapeHTML(dayText)} · ${mailText}</p></div>
         <span class="badge badge-success">运行中</span>
       </div>`;
     }
@@ -1488,7 +1512,7 @@ async function quickSign() {
   btn.classList.remove('is-success', 'is-error');
   if (btnIcon) { btnIcon.innerHTML = '<use href="#i-loader"/>'; btnIcon.classList.add('spin'); }
   if (btnLabel) btnLabel.textContent = '签到中...';
-  if (status) status.textContent = '正在请求签到接口...';
+  if (status) { status.textContent = '正在请求签到接口...'; status.style.color = '#a1a1aa'; }
   if (result) result.textContent = '正在处理，请稍候。';
 
   try {
@@ -1499,8 +1523,8 @@ async function quickSign() {
       btn.classList.add('is-success');
       if (btnIcon) { btnIcon.innerHTML = '<use href="#i-check"/>'; btnIcon.classList.remove('spin'); }
       if (btnLabel) btnLabel.textContent = '签到成功';
-      if (status) status.textContent = '今日签到已完成。';
-      if (result) result.innerHTML = '<span style="color:var(--green);font-weight:500;">✅ 签到成功 · ' + new Date().toLocaleTimeString('zh-CN') + '</span>';
+      if (status) { status.textContent = '✅ 今日签到已完成。'; status.style.color = 'var(--green)'; }
+      if (result) result.innerHTML = '<span style="color:var(--green);font-weight:600;">✅ 签到成功 · ' + new Date().toLocaleTimeString('zh-CN') + '</span>';
       showToast('签到成功', 'success');
       loadStats();
     } else {
@@ -1508,8 +1532,8 @@ async function quickSign() {
       btn.classList.add('is-error');
       if (btnIcon) { btnIcon.innerHTML = '<use href="#i-times"/>'; btnIcon.classList.remove('spin'); }
       if (btnLabel) btnLabel.textContent = '签到失败';
-      if (status) status.textContent = '签到请求失败。';
-      if (result) result.innerHTML = '<span style="color:var(--red);font-weight:500;">❌ ' + escapeHTML(msg) + '</span>';
+      if (status) { status.textContent = '❌ 签到请求失败。'; status.style.color = 'var(--red)'; }
+      if (result) result.innerHTML = '<span style="color:var(--red);font-weight:600;">❌ ' + escapeHTML(msg) + '</span>';
       showToast(msg, 'error');
     }
   } catch (e) {
@@ -1517,8 +1541,8 @@ async function quickSign() {
     btn.classList.add('is-error');
     if (btnIcon) { btnIcon.innerHTML = '<use href="#i-times"/>'; btnIcon.classList.remove('spin'); }
     if (btnLabel) btnLabel.textContent = '网络错误';
-    if (status) status.textContent = '网络连接异常。';
-    if (result) result.innerHTML = '<span style="color:var(--red);font-weight:500;">❌ ' + escapeHTML(msg) + '</span>';
+    if (status) { status.textContent = '❌ 网络连接异常。'; status.style.color = 'var(--red)'; }
+    if (result) result.innerHTML = '<span style="color:var(--red);font-weight:600;">❌ ' + escapeHTML(msg) + '</span>';
     showToast(msg, 'error');
   } finally {
     setTimeout(() => {
@@ -1559,8 +1583,8 @@ function renderAutoSignStatus(setting) {
   if (!status) return;
   const dayText = (setting.customDays || []).length ? setting.customDays.map(d => DAY_NAMES[d]).join('、') : '未选择日期';
   status.innerHTML = setting.enabled
-    ? '<span class="badge badge-success">已开启</span><span style="margin-left:8px;color:var(--text-secondary);font-size:13px;">每逢 ' + escapeHTML(dayText) + ' ' + escapeHTML(setting.signTime || '21:35') + ' 自动签到</span>'
-    : '<span class="badge badge-neutral">未开启</span><span style="margin-left:8px;color:var(--text-tertiary);font-size:13px;">打开开关并保存后生效</span>';
+    ? '<span class="badge badge-success">已开启</span><span style="margin-left:8px;color:var(--text-secondary);font-size:13px;font-weight:500;">每逢 ' + escapeHTML(dayText) + ' ' + escapeHTML(setting.signTime || '21:35') + ' 自动签到</span>'
+    : '<span class="badge badge-neutral">未开启</span><span style="margin-left:8px;color:var(--text-tertiary);font-size:13px;font-weight:500;">打开开关并保存后生效</span>';
 }
 
 function updateSignTimeUI(setting) {
@@ -1587,7 +1611,7 @@ function renderEmailWarning() {
   } else {
     box.innerHTML = `<div class="alert alert-warning">
       <svg class="ico" style="color:var(--amber);"><use href="#i-alert"/></svg>
-      <div><strong>未绑定邮箱</strong><p>绑定后签到状态会通过邮件通知。 <button class="btn btn-ghost btn-sm" style="text-decoration:underline;height:auto;padding:0;" onclick="goPage('email')">去绑定</button></p></div>
+      <div><strong>未绑定邮箱</strong><p>绑定后签到状态会通过邮件通知。 <button class="btn btn-ghost btn-sm" style="text-decoration:underline;height:auto;padding:0;color:var(--amber);font-weight:600;" onclick="goPage('email')">去绑定</button></p></div>
     </div>`;
   }
   ['notifyOnSuccess', 'notifyOnFailure'].forEach(id => {
@@ -1681,11 +1705,11 @@ async function loadEmailStatus() {
   if (!container) return;
 
   if (currentUser.emailVerified) {
-    container.innerHTML = '<div style="background:var(--green-subtle);padding:12px;border-radius:var(--radius-sm);font-size:13px;color:var(--green);font-weight:500;"><svg class="ico" style="margin-right:4px;"><use href="#i-check-circle"/></svg> 已绑定 <b>' + escapeHTML(currentUser.email) + '</b></div>';
+    container.innerHTML = '<div style="background:var(--green-subtle); border:1px solid var(--green); padding:12px; border-radius:var(--radius-sm); font-size:13px; color:var(--green); font-weight:600;"><svg class="ico" style="margin-right:4px; stroke-width:2.5;"><use href="#i-check-circle"/></svg> 已绑定 <b>' + escapeHTML(currentUser.email) + '</b></div>';
     if (form) form.classList.add('hidden');
     if (rebind) rebind.classList.remove('hidden');
   } else {
-    container.innerHTML = '<div style="background:var(--amber-subtle);padding:12px;border-radius:var(--radius-sm);font-size:13px;color:var(--amber);font-weight:500;"><svg class="ico" style="margin-right:4px;"><use href="#i-info"/></svg> 未绑定邮箱</div>';
+    container.innerHTML = '<div style="background:var(--amber-subtle); border:1px solid var(--amber); padding:12px; border-radius:var(--radius-sm); font-size:13px; color:var(--amber); font-weight:600;"><svg class="ico" style="margin-right:4px; stroke-width:2.5;"><use href="#i-info"/></svg> 未绑定邮箱，请绑定</div>';
     if (form) form.classList.remove('hidden');
     if (rebind) rebind.classList.add('hidden');
   }
@@ -1763,7 +1787,8 @@ async function loadProfile() {
   document.getElementById('profileAttendancePassword').value = '';
   document.getElementById('profileEmail').value = currentUser.email || '未绑定';
 
-  const tierName = TIER_NAMES[currentUser.vipTier] || (currentUser.isVip ? '会员' : '免费');
+  const tierKey = currentUser.vipTier || 'FREE';
+  const tierName = TIER_NAMES[tierKey] || (currentUser.isVip ? '会员' : '免费');
   let vipText = '未加入支持名单';
   if (currentUser.isVip) {
     const d = currentUser.vipExpireAt ? new Date(currentUser.vipExpireAt) : null;
@@ -1774,8 +1799,9 @@ async function loadProfile() {
   const badge = document.getElementById('memberBadge');
   if (badge) {
     badge.textContent = tierName;
-    if(currentUser.vipTier !== 'FREE') { badge.style.background = '#fff'; badge.style.color = '#000'; badge.style.border = 'none'; }
-    else { badge.style.background = 'rgba(255,255,255,0.1)'; badge.style.color = '#fff'; badge.style.border = '1px solid rgba(255,255,255,0.2)'; }
+    badge.style.background = TIER_COLORS[tierKey] || '#71717a'; // 使用身份专属色
+    badge.style.color = '#fff';
+    badge.style.border = 'none';
   }
 
   const nameEl = document.getElementById('memberName');
@@ -1838,7 +1864,7 @@ async function loadInviteInfo() {
     document.getElementById('rewardDays').textContent = data.rewardDays || 10;
 
     if (currentUser.invitedBy) {
-      document.getElementById('bindInviteArea').innerHTML = '<div style="background:var(--green-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:12px;font-size:13px;color:var(--green);font-weight:500;"><svg class="ico"><use href="#i-check-circle"/></svg> 已绑定邀请人</div>';
+      document.getElementById('bindInviteArea').innerHTML = '<div style="background:var(--green-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:12px; font-size:13px; color:var(--green); font-weight:500;"><svg class="ico" style="margin-right:4px;"><use href="#i-check-circle"/></svg> 已绑定邀请人</div>';
     }
 
     const list = document.getElementById('invitedList');
@@ -1946,7 +1972,7 @@ function closeFeedbackModal() {
 }
 
 /* ============================================================
-   Sponsor (woyao.pro 风格全新重写)
+   Sponsor
    ============================================================ */
 async function loadPackages() {
   const list = document.getElementById('packagesList');
@@ -1972,7 +1998,6 @@ async function loadPackages() {
       const disabledAttr = isCounts ? 'disabled' : '';
       const descHTML = isCounts ? '<span class="pkg-warn" style="color:var(--red);">暂不可用</span>' : escapeHTML(p.description || '');
       
-      // 模拟一个 “推荐” 标签给中间价位的套餐
       const isBest = p.badge === '热卖' || p.badge === '推荐';
       const bestClass = isBest ? 'best' : '';
 
@@ -2121,7 +2146,7 @@ async function loadLogs() {
     if (!data.logs || !data.logs.length) { container.innerHTML = '<p class="empty">暂无记录</p>'; return; }
     container.innerHTML = data.logs.map(l =>
       '<div class="log-row">'
-      + '<span class="log-status">' + (l.status === 'success' ? '<svg class="ico" style="color:var(--green);"><use href="#i-check-circle"/></svg>' : '<svg class="ico" style="color:var(--red);"><use href="#i-times"/></svg>') + '</span>'
+      + '<span class="log-status">' + (l.status === 'success' ? '<svg class="ico" style="color:var(--green); stroke-width:2;"><use href="#i-check-circle"/></svg>' : '<svg class="ico" style="color:var(--red); stroke-width:2;"><use href="#i-times"/></svg>') + '</span>'
       + '<div class="log-body"><div class="log-title">' + escapeHTML(l.subscriptionName || '手动签到') + '</div>'
       + '<div class="log-time">' + new Date(l.executedAt || l.signTime).toLocaleString('zh-CN') + '</div></div>'
       + '<span class="log-msg" title="' + escapeAttr(l.message || '') + '">' + escapeHTML(l.message || '') + '</span>'
