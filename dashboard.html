@@ -473,7 +473,70 @@ body.dark #paymentArea{background:#152824!important;border-color:#29443e!importa
 .header,.header .user-info,.header .user-info span,#userName{color:var(--text)!important}
 .header-tier{color:#8a6a12!important;background:rgba(201,162,39,.16)!important}
 body.dark .header,body.dark .header .user-info,body.dark .header .user-info span,body.dark #userName{color:#e8f0ed!important}
-body.dark .header-tier{color:#e7c873!important;background:rgba(231,200,115,.16)!important}</style>
+body.dark .header-tier{color:#e7c873!important;background:rgba(231,200,115,.16)!important}/* ===== 2026-10-30 仪表盘现代主题 v2：靛蓝 + 紫罗兰 + 青色 ===== */
+:root{
+  --bg:#f5f7fb;--card:#ffffff;--border:#e8ecf4;--text:#0f172a;--text-secondary:#64748b;
+  --brand:#4f46e5;--brand-2:#6366f1;--brand-light:#eef2ff;
+  --success:#10b981;--warning:#f59e0b;--danger:#ef4444;
+  --radius:18px;--shadow:0 14px 34px rgba(15,23,42,.07);
+}
+body{background:radial-gradient(1200px 600px at 10% -10%,#eef2ff 0%,transparent 55%),radial-gradient(900px 500px at 110% 0%,#ecfeff 0%,transparent 50%),var(--bg);color:var(--text)}
+.sidebar{background:linear-gradient(180deg,#0f172a 0%,#151d33 60%,#1e1b4b 100%)}
+.menu-item{color:#94a3b8;border-radius:12px;transition:all .18s}
+.menu-item:hover{background:rgba(255,255,255,.06);color:#e2e8f0}
+.menu-item.active{background:linear-gradient(135deg,#4f46e5,#7c3aed)!important;color:#fff!important;box-shadow:0 10px 22px rgba(79,70,229,.32)}
+.menu-item.active i{color:#fff!important}
+.header{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.header,.header .user-info,.header .user-info span,#userName{color:var(--text)!important}
+.header-tier{color:#4338ca!important;background:#eef2ff!important}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card h2{color:#0f172a;font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;font-weight:800;letter-spacing:-.01em}
+.btn-primary{background:linear-gradient(135deg,#4f46e5,#6366f1);border:0;color:#fff;box-shadow:0 8px 18px rgba(79,70,229,.24)}
+.btn-primary:hover{background:linear-gradient(135deg,#4338ca,#4f46e5)}
+.btn-warning{background:linear-gradient(135deg,#f59e0b,#fbbf24);border:0;color:#1f2937}
+.btn-success{background:linear-gradient(135deg,#059669,#10b981);border:0}
+.btn-outline{border:1px solid var(--border);color:#4f46e5;background:#fff}
+.welcome-hero{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 52%,#06b6d4 100%)!important;border-radius:22px;box-shadow:0 24px 50px rgba(79,70,229,.28)}
+.welcome-hero h2{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;font-weight:900;letter-spacing:-.01em}
+.welcome-hero h2 span{color:#a5f3fc}
+.welcome-kicker{color:#c7d2fe!important}
+.welcome-actions .btn-primary{background:#fff!important;border-color:#fff!important;color:#4f46e5!important}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(15,23,42,.1)}
+.stat-value{color:#4f46e5;font-family:'Segoe UI','PingFang SC',sans-serif;font-weight:900}
+#newbieGuide{background:#fff!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#newbieGuide h2{color:#0f172a!important}
+#newbieGuide .btn-primary{background:linear-gradient(135deg,#4f46e5,#6366f1)!important;border:0!important;color:#fff!important}
+#shareCard{background:linear-gradient(135deg,#eef2ff,#ecfeff)!important;border:1px solid #dbe4ff!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+#shareCard h2{color:#312e81!important}
+#shareCard .btn-primary{background:linear-gradient(135deg,#4f46e5,#6366f1)!important;border:0!important;color:#fff!important}
+#page-buy > .card:first-child{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 55%,#06b6d4 100%)!important;border:0!important;border-radius:22px!important}
+#page-buy > .card:first-child h2{color:#fff!important}
+#page-buy > .card:first-child p{color:#e0e7ff!important}
+#packagesList > div > div{border:1px solid var(--border)!important;border-radius:16px!important;background:#fff!important;box-shadow:0 10px 24px rgba(15,23,42,.05);transition:transform .18s,box-shadow .18s}
+#packagesList > div > div:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(79,70,229,.12)}
+#packagesList h3{color:#0f172a!important}
+#paymentAmount{color:#4f46e5!important}
+#paymentArea .btn-primary{background:linear-gradient(135deg,#4f46e5,#6366f1)!important;border:0!important}
+#memberCard{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 55%,#06b6d4 100%)!important;border-radius:20px!important;box-shadow:0 22px 44px rgba(79,70,229,.28)!important}
+#memberCard #memberDays{color:#a5f3fc!important}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.badge-success{background:#d1fae5;color:#065f46}
+.badge-warning{background:#fef3c7;color:#92400e}
+body.dark{--bg:#0b1020;--card:#141a2e;--border:#242c42;--text:#e2e8f0;--text-secondary:#94a3b8;--brand:#818cf8;--brand-2:#a5b4fc}
+body.dark{background:radial-gradient(900px 500px at 10% -10%,#1e1b4b 0%,transparent 55%),#0b1020;color:#e2e8f0}
+body.dark .sidebar{background:linear-gradient(180deg,#0b1020,#111827)}
+body.dark .header{background:rgba(20,26,46,.85);border-color:#242c42;color:#e2e8f0}
+body.dark .header,body.dark .header .user-info,body.dark .header .user-info span,body.dark #userName{color:#e2e8f0!important}
+body.dark .header-tier{color:#c7d2fe!important;background:rgba(129,140,248,.16)!important}
+body.dark .card{background:#141a2e;border-color:#242c42;color:#e2e8f0}
+body.dark .card h2{color:#f1f5f9}
+body.dark .stat-card{background:#141a2e;border-color:#242c42}
+body.dark .stat-value{color:#a5b4fc}
+body.dark .list-item{background:#0f1526;border-color:#242c42}
+body.dark .menu-item.active{background:linear-gradient(135deg,#6366f1,#7c3aed)!important}
+body.dark .welcome-hero{background:linear-gradient(135deg,#312e81,#4f46e5 55%,#0e7490)!important}
+body.dark .form-group input,body.dark .form-group select,body.dark .form-group textarea{background:#0f1526;border-color:#242c42;color:#e2e8f0}</style>
 </head>
 <body>
   <div class="header">
