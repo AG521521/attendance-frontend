@@ -2063,22 +2063,30 @@ async function loadPackages() {
       const isCounts = p.type === 'counts';
       const disabledAttr = isCounts ? 'disabled' : '';
       
-      // ====== 新增：在这里识别 365天/SVIP 套餐，并替换文案 ======
-      let pkgName = p.name || '';
+      let pkgName = p.name || '会员套餐';
       let pkgDesc = p.description || '';
-      let isSvip = p.days === 365 || pkgName.includes('学年') || pkgName.includes('SVIP');
-      
-      if (isSvip && !isCounts) {
-        pkgName = '在校期间会员 (SVIP)';
+      let pkgTag = p.badge || '';
+      let isBest = false;
+
+      // 判断是否是 SVIP（通过名称或者标识）
+      const isSvip = pkgName.includes('SVIP') || pkgName.includes('在校期间') || pkgDesc.includes('在校永久');
+      // 判断是否是学年/年卡
+      const isYear = !isSvip && (pkgName.includes('学年') || pkgName.includes('年卡') || pkgName.includes('一年'));
+
+      if (isSvip) {
         pkgDesc = '在校期间永久有效，直至毕业';
+        isBest = true;
+        if (!pkgTag) pkgTag = '毕业前有效';
+      } else if (isYear) {
+        isBest = true;
+        if (!pkgTag) pkgTag = '推荐';
       }
-      const descHTML = isCounts ? '<span class="pkg-warn" style="color:var(--red);">暂不可用</span>' : escapeHTML(pkgDesc);
       
-      const isBest = p.badge === '热卖' || p.badge === '推荐' || isSvip;
+      const descHTML = isCounts ? '<span class="pkg-warn" style="color:var(--red);">暂不可用</span>' : escapeHTML(pkgDesc);
       const bestClass = isBest ? 'best' : '';
 
       return `<div class="pkg ${isCounts ? 'is-disabled' : ''} ${bestClass}">
-        <div class="pkg-tag">${escapeHTML(p.badge || (isSvip ? '毕业前有效' : ''))}</div>
+        <div class="pkg-tag">${escapeHTML(pkgTag)}</div>
         <h3>${escapeHTML(pkgName)}</h3>
         <div class="pkg-price">¥${Number(p.price || 0).toFixed(2)}</div>
         <p class="pkg-desc">${descHTML}</p>
